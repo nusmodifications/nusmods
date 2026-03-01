@@ -1,10 +1,13 @@
 import { RawLesson } from '../types/modules';
+import { ModuleAttributeEntry } from '../types/api';
+import { Logger } from '../services/logger';
 import departments from './fixtures/departments.json';
 import faculties from './fixtures/faculties.json';
 import {
   cleanModuleInfo,
   getDepartmentCodeMap,
   getFacultyCodeMap,
+  mapAttributes,
   parseWorkload,
   getLessonCovidZones,
 } from './GetSemesterData';
@@ -221,5 +224,98 @@ describe(parseWorkload, () => {
     invalidInputs.forEach((input) => {
       expect(parseWorkload(input)).toEqual(input);
     });
+  });
+});
+
+describe(mapAttributes, () => {
+  const mockLogger: Logger = {
+    trace: jest.fn(),
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    fatal: jest.fn(),
+    child: () => mockLogger,
+  };
+
+  function attr(key: string, value: string): ModuleAttributeEntry {
+    return { CourseAttribute: key, CourseAttributeValue: value };
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('should return undefined for empty attributes', () => {
+    expect(mapAttributes([], mockLogger)).toBeUndefined();
+  });
+
+  test('should handle new-format truthy/falsy values', () => {
+    expect(mapAttributes([attr('PRQY', 'Yes')], mockLogger)).toEqual({ su: true });
+    expect(mapAttributes([attr('PRQY', 'No')], mockLogger)).toBeUndefined();
+  });
+
+  test('should handle old-format uppercase truthy/falsy values', () => {
+    expect(mapAttributes([attr('PRQY', 'YES')], mockLogger)).toEqual({ su: true });
+    expect(mapAttributes([attr('PRQY', 'NO')], mockLogger)).toBeUndefined();
+  });
+
+  test('should handle new-format HFYP value', () => {
+    expect(mapAttributes([attr('HFYP', 'HT - Honours Thesis/Rsh Project')], mockLogger)).toEqual({
+      fyp: true,
+    });
+  });
+
+  test('should handle old-format HFYP short code', () => {
+    expect(mapAttributes([attr('HFYP', 'HT')], mockLogger)).toEqual({ fyp: true });
+  });
+
+  test('should handle new-format MPE values', () => {
+    expect(mapAttributes([attr('MPE', 'S1 - Sem 1')], mockLogger)).toEqual({ mpes1: true });
+    expect(mapAttributes([attr('MPE', 'S2 - Sem 2')], mockLogger)).toEqual({ mpes2: true });
+    expect(mapAttributes([attr('MPE', 'S1&S2 - Sem 1 & 2')], mockLogger)).toEqual({
+      mpes1: true,
+      mpes2: true,
+    });
+  });
+
+  test('should handle old-format MPE short codes', () => {
+    expect(mapAttributes([attr('MPE', 'S1')], mockLogger)).toEqual({ mpes1: true });
+    expect(mapAttributes([attr('MPE', 'S2')], mockLogger)).toEqual({ mpes2: true });
+    expect(mapAttributes([attr('MPE', 'S1&S2')], mockLogger)).toEqual({
+      mpes1: true,
+      mpes2: true,
+    });
+  });
+
+  test('should handle SFS subcategory values', () => {
+    expect(mapAttributes([attr('SFS', 'DA - Data Analytics')], mockLogger)).toEqual({ sfs: true });
+    expect(mapAttributes([attr('SFS', 'DA')], mockLogger)).toEqual({ sfs: true });
+  });
+
+  test('should handle old-format SFS YES value', () => {
+    expect(mapAttributes([attr('SFS', 'YES')], mockLogger)).toEqual({ sfs: true });
+  });
+
+  test('should handle SFS falsy values', () => {
+    expect(mapAttributes([attr('SFS', 'No')], mockLogger)).toBeUndefined();
+    expect(mapAttributes([attr('SFS', 'NO')], mockLogger)).toBeUndefined();
+  });
+
+  test('should warn on unrecognized attribute values', () => {
+    mapAttributes([attr('PRQY', 'UNKNOWN')], mockLogger);
+    expect(mockLogger.warn).toHaveBeenCalledWith(
+      { value: 'UNKNOWN', key: 'PRQY' },
+      'Non-standard course attribute value',
+    );
+  });
+
+  test('should combine multiple attributes', () => {
+    expect(
+      mapAttributes(
+        [attr('PRQY', 'YES'), attr('YEAR', 'Yes'), attr('MPE', 'S1')],
+        mockLogger,
+      ),
+    ).toEqual({ su: true, year: true, mpes1: true });
   });
 });
