@@ -4,19 +4,28 @@ import path from 'path';
 
 import env from '../env.json';
 
-const TERM = '2520';
+const ACADEMIC_YEAR = '2025/26';
 
 // Sanity check to see if there are at least this many modules before overwriting cpexModules.json
 // The last time I ran this fully there were 3418 modules
 const threshold = 1500;
 
-const baseUrl = env['baseUrl'].endsWith('/') ? env['baseUrl'].slice(0, -1) : env['baseUrl'];
+const baseUrl = env['baseUrl'].endsWith('/') ? env['baseUrl'] : `${env['baseUrl']}/`;
 
 const FETCH_OK = '00000';
 
-axios.defaults.headers.common = {
-  'X-STUDENT-API': env['studentKey'],
-  'X-APP-API': env['appKey'],
+const MAX_ITEMS = 1000;
+
+// Authentication headers matching the new NUS API
+const acadHeaders = {
+  'Content-Type': 'application/json',
+  'X-API-KEY': env['acadApiKey'],
+  'X-APP-KEY': env['acadAppKey'],
+};
+
+const courseHeaders = {
+  'Content-Type': 'application/json',
+  'X-API-KEY': env['courseApiKey'],
 };
 
 function getTimestampForFilename(): string {
@@ -36,29 +45,38 @@ function getTimestampForFilename(): string {
   );
 }
 
-type ApiResponse<T> = {
+// V1 API response format (used by edurec endpoints)
+type V1ApiResponse<T> = {
   msg: string;
   code: string;
-  ts: string;
   data: T;
 };
 
-type GetDepartmentsResponseData = {
-  AcademicOrganisation: string;
+type AcademicGrp = {
+  EffectiveStatus: string;
+  AcademicGroup: string;
+  DescriptionShort: string;
   Description: string;
+  EffectiveDate: string;
 };
 
 // Set everything to optional because we cannot trust the API to be consistent
 type Module = {
-  CourseTitle?: string;
-  ModularCredit?: string;
-  Subject?: string;
+  Title?: string;
+  UnitsMin?: number | null;
+  SubjectArea?: string;
   CatalogNumber?: string;
-  PrintCatalog?: string;
-  ModuleAttributes?: {
-    CourseAttribute: string;
-    CourseAttributeValue: string;
+  CourseAttributes?: {
+    Code: string;
+    Value: string;
   }[];
+};
+
+// MPE attribute value → semester flag mapping (new API format)
+const mpeValueMap: Record<string, { inS1CPEx?: boolean; inS2CPEx?: boolean }> = {
+  'S1 - Sem 1': { inS1CPEx: true },
+  'S2 - Sem 2': { inS2CPEx: true },
+  'S1&S2 - Sem 1 & 2': { inS1CPEx: true, inS2CPEx: true },
 };
 
 export type CPExModule = {
@@ -70,99 +88,118 @@ export type CPExModule = {
 };
 
 async function scraper() {
-  const getDepartmentsResponse = await axios.post<ApiResponse<GetDepartmentsResponseData[]>>(
-    `${baseUrl}/config/get-acadorg`,
-    {
-      eff_status: 'A',
-      acad_org: '%',
-    },
+  // Fetch faculties (academic groups) using the new edurec endpoint
+  const getFacultiesResponse = await axios.get<V1ApiResponse<AcademicGrp[]>>(
+    `${baseUrl}edurec/config/v1/get-acadgroup`,
+    { headers: acadHeaders },
   );
-  const departmentsData = getDepartmentsResponse.data.data;
-  console.log(`Total departments: ${departmentsData.length}`);
+
+  if (getFacultiesResponse.data.code !== FETCH_OK) {
+    throw new Error(`Failed to fetch faculties: ${getFacultiesResponse.data.msg}`);
+  }
+
+  const facultiesData = getFacultiesResponse.data.data;
+  console.log(`Total faculties: ${facultiesData.length}`);
 
   const collatedCPExModulesMap = new Map<string, CPExModule>();
 
-  for (let i = 0; i < departmentsData.length; i++) {
-    const department = departmentsData[i];
+  for (let i = 0; i < facultiesData.length; i++) {
+    const faculty = facultiesData[i];
+    const acadGroupCode =
+      faculty.AcademicGroup.length >= 3
+        ? faculty.AcademicGroup.slice(0, 3)
+        : faculty.AcademicGroup;
 
     console.log(
-      `[${i + 1}/${departmentsData.length}] Fetching modules for ${
-        department.Description
-      } with acadorg: ${department.AcademicOrganisation}...`,
+      `[${i + 1}/${facultiesData.length}] Fetching modules for ${faculty.Description} (${acadGroupCode})...`,
     );
 
-    const getModulesResponse = await axios.post<ApiResponse<Module[]>>(`${baseUrl}/module`, {
-      acadorg: department.AcademicOrganisation,
-      term: TERM,
-    });
+    // Fetch modules with pagination
+    let offset = 0;
+    let hasMore = true;
 
-    if (getModulesResponse.data.code !== FETCH_OK) {
-      console.log(
-        `Error fetching modules for ${department.Description} with acadorg: ${department.AcademicOrganisation}`,
-      );
-      continue;
-    }
+    while (hasMore) {
+      let modules: Module[];
+      try {
+        const getModulesResponse = await axios.get<{ data: Module[]; itemCount: number }>(
+          `${baseUrl}CourseNUSMods`,
+          {
+            headers: courseHeaders,
+            params: {
+              acadGroupCode,
+              applicableInYear: ACADEMIC_YEAR,
+              latestVersionOnly: 'True',
+              maxItems: String(MAX_ITEMS),
+              offset: String(offset),
+            },
+          },
+        );
 
-    const modulesData = getModulesResponse.data.data;
-
-    for (const module of modulesData) {
-      if (
-        !module.CourseTitle ||
-        !module.ModularCredit ||
-        !module.Subject ||
-        !module.CatalogNumber ||
-        !module.ModuleAttributes ||
-        !module.PrintCatalog
-      ) {
-        continue;
-      }
-
-      // Filter out hidden modules
-      if (module.PrintCatalog !== 'Y') {
-        continue;
-      }
-
-      const moduleTitle = module.CourseTitle;
-      const moduleCode = `${module.Subject}${module.CatalogNumber}`;
-
-      // Filter duplicate modules
-      if (collatedCPExModulesMap.has(moduleCode)) {
-        continue;
-      }
-
-      const moduleCredit = module.ModularCredit;
-      const cpexAttribute = module.ModuleAttributes.find(
-        (attribute) => attribute.CourseAttribute === 'MPE', // this still isn't changed to CPEx
-      );
-
-      if (!cpexAttribute) {
-        continue;
-      }
-
-      const cpexModuleToAdd: CPExModule = {
-        title: moduleTitle,
-        moduleCode,
-        moduleCredit,
-      };
-
-      switch (cpexAttribute.CourseAttributeValue) {
-        case 'S1':
-          cpexModuleToAdd.inS1CPEx = true;
+        modules = getModulesResponse.data.data;
+      } catch (e: unknown) {
+        const err = e as { response?: { status?: number }; message?: string };
+        // The modules endpoint may return 404 for faculties with no modules
+        if (err.response?.status === 404) {
+          console.log(`  No modules found for ${faculty.Description} (404)`);
           break;
-        case 'S2':
-          cpexModuleToAdd.inS2CPEx = true;
-          break;
-        case 'S1&S2':
-          cpexModuleToAdd.inS1CPEx = true;
-          cpexModuleToAdd.inS2CPEx = true;
-          break;
-        default:
-          console.log(
-            `Unknown CPEx attribute value: ${cpexAttribute.CourseAttributeValue} for ${moduleCode} ${moduleTitle}`,
-          );
-          break;
+        }
+        console.log(
+          `  Error fetching modules for ${faculty.Description} (${acadGroupCode}): ${err.message}`,
+        );
+        break;
       }
-      collatedCPExModulesMap.set(moduleCode, cpexModuleToAdd);
+
+      for (const module of modules) {
+        if (
+          !module.Title ||
+          module.UnitsMin == null ||
+          !module.SubjectArea ||
+          !module.CatalogNumber ||
+          !module.CourseAttributes
+        ) {
+          continue;
+        }
+
+        const moduleTitle = module.Title;
+        const moduleCode = `${module.SubjectArea}${module.CatalogNumber}`;
+
+        // Filter duplicate modules
+        if (collatedCPExModulesMap.has(moduleCode)) {
+          continue;
+        }
+
+        const moduleCredit = String(module.UnitsMin);
+        const cpexAttribute = module.CourseAttributes.find(
+          (attribute) => attribute.Code.trim() === 'MPE',
+        );
+
+        if (!cpexAttribute) {
+          continue;
+        }
+
+        const value = cpexAttribute.Value.trim();
+        const semesterFlags = mpeValueMap[value];
+
+        if (!semesterFlags) {
+          console.log(`Unknown CPEx attribute value: ${value} for ${moduleCode} ${moduleTitle}`);
+          continue;
+        }
+
+        const cpexModuleToAdd: CPExModule = {
+          title: moduleTitle,
+          moduleCode,
+          moduleCredit,
+          ...semesterFlags,
+        };
+
+        collatedCPExModulesMap.set(moduleCode, cpexModuleToAdd);
+      }
+
+      if (modules.length < MAX_ITEMS) {
+        hasMore = false;
+      } else {
+        offset += MAX_ITEMS;
+      }
     }
   }
 
