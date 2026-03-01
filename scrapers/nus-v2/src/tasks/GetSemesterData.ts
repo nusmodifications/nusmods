@@ -57,22 +57,26 @@ const attributeMap: { [attribute: string]: keyof NUSModuleAttributes } = {
 };
 
 // Known truthy values for course attributes
-const truthyValues = new Set(['Yes', 'HT - Honours Thesis/Rsh Project']);
+const truthyValues = new Set(['Yes', 'YES', 'HT - Honours Thesis/Rsh Project', 'HT']);
 
 // Known falsy values for course attributes
-const falsyValues = new Set(['No']);
+const falsyValues = new Set(['No', 'NO']);
 
 // MPE value → attribute keys mapping
 const mpeValueMap: { [value: string]: (keyof NUSModuleAttributes)[] } = {
   'S1 - Sem 1': ['mpes1'],
   'S2 - Sem 2': ['mpes2'],
   'S1&S2 - Sem 1 & 2': ['mpes1', 'mpes2'],
+  'S1': ['mpes1'],
+  'S2': ['mpes2'],
+  'S1&S2': ['mpes1', 'mpes2'],
 };
 
 // Known SFS subcategory values that indicate the module is in SkillsFuture
 // Series. The API changed from returning "YES"/"NO" to returning specific
 // subcategory codes.
 const sfsTruthyValues = new Set([
+  'YES',
   'DA',
   'DA - Data Analytics',
   'AM',
@@ -404,6 +408,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
             covidZones: sourceDatum.semesterData.covidZones,
             ...targetExamInfo,
           };
+          targetDatum.timetablePropagated = true;
         }
       }
     }
