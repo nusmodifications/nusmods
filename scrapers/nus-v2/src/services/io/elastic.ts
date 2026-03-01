@@ -130,10 +130,10 @@ export default class ElasticPersist implements Persist {
         index: INDEX_NAME,
       });
     } catch (e) {
-      // Ignore not_found errors - the module is already gone from the index
       if (e.name !== 'ResponseError' || e.meta?.body?.result !== 'not_found') {
         throw e;
       }
+      logger.info(`Module ${moduleCode} not found in Elasticsearch index, skipping delete`);
     }
   };
 
