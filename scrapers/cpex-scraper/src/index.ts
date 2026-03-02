@@ -127,7 +127,6 @@ async function scraper() {
 
     while (hasMore) {
       let modules: Module[];
-      let itemCount: number;
       try {
         const getModulesResponse = await axios.get<{ data: Module[]; itemCount: number }>(
           `${baseUrl}CourseNUSMods`,
@@ -144,7 +143,6 @@ async function scraper() {
         );
 
         modules = getModulesResponse.data.data;
-        itemCount = getModulesResponse.data.itemCount;
       } catch (e: unknown) {
         const err = e as { response?: { status?: number }; message?: string };
         // The modules endpoint may return 404 for faculties with no modules
@@ -204,8 +202,11 @@ async function scraper() {
         collatedCPExModulesMap.set(moduleCode, cpexModuleToAdd);
       }
 
-      offset += modules.length;
-      hasMore = offset < itemCount;
+      if (modules.length < MAX_ITEMS) {
+        hasMore = false;
+      } else {
+        offset += MAX_ITEMS;
+      }
     }
   }
 
