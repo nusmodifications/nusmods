@@ -99,6 +99,19 @@ async function scraper() {
   }
 
   const facultiesData = getFacultiesResponse.data.data;
+
+  // Ensure faculty 099 (Non-Faculty-based Departments) is included, as it may
+  // be missing from the API response but is needed for modules like CS2101.
+  if (!facultiesData.some((faculty) => faculty.AcademicGroup === '099')) {
+    facultiesData.push({
+      AcademicGroup: '099',
+      DescriptionShort: 'Non-Faculty-based Departments',
+      Description: 'Non-Faculty-based Departments',
+      EffectiveStatus: 'A',
+      EffectiveDate: '1905-01-01',
+    });
+  }
+
   console.log(`Total faculties: ${facultiesData.length}`);
 
   const collatedCPExModulesMap = new Map<string, CPExModule>();
@@ -175,7 +188,7 @@ async function scraper() {
           continue;
         }
 
-        const moduleCredit = String(module.UnitsMin);
+        const moduleCredit = module.UnitsMin === null ? '0' : String(module.UnitsMin);
         const cpexAttribute = module.CourseAttributes.find(
           (attribute) => attribute.Code.trim() === 'MPE',
         );
