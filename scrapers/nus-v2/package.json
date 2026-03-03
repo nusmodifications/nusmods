@@ -46,7 +46,7 @@
     "@types/jest": "^29.5.2",
     "@types/lodash": "4.17.14",
     "@types/mock-fs": "4.13.4",
-    "@types/node": "18.19.69",
+    "@types/node": "22.13.5",
     "@types/oboe": "2.1.4",
     "@types/promise-queue": "2.2.3",
     "@types/ramda": "0.30.2",
@@ -69,6 +69,9 @@
     "typescript": "5.9.3"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=22"
+  },
+  "resolutions": {
+    "@types/node": "22.13.5"
   }
 }
