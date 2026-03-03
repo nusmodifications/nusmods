@@ -45,12 +45,37 @@ function getTimestampForFilename(): string {
   );
 }
 
-// Strip HTML tags and normalize whitespace (mirrors nus-v2 stripTags/cleanString)
-function stripTags(string: string): string {
-  return string
-    .replace(/<[^>]*>?/gm, ' ')
-    .replace(/\s+/g, ' ')
+// --- Normalization helpers (mirrors nus-v2 cleanString / sanitizeModuleInfo) ---
+
+/** Strip HTML tags, decode common HTML entities, remove NBSPs, collapse whitespace. */
+function cleanString(s: string): string {
+  return s
+    .replace(/<[^>]*>?/gm, ' ')        // strip HTML tags
+    .replace(/&nbsp;/gi, ' ')           // decode &nbsp;
+    .replace(/&amp;/gi, '&')            // decode &amp;
+    .replace(/&lt;/gi, '<')             // decode &lt;
+    .replace(/&gt;/gi, '>')             // decode &gt;
+    .replace(/&quot;/gi, '"')           // decode &quot;
+    .replace(/&#39;/gi, "'")            // decode &#39;
+    .replace(/\u00A0/g, ' ')            // replace NBSP unicode char
+    .replace(/\s+/g, ' ')              // collapse whitespace
     .trim();
+}
+
+/** Normalize a module code: clean HTML/entities, strip ALL whitespace, uppercase. */
+function normalizeModuleCode(subject: string, catalogNbr: string): string {
+  const raw = cleanString(subject) + cleanString(catalogNbr);
+  return raw.replace(/\s/g, '').toUpperCase();
+}
+
+/** Normalize title: collapse whitespace, trim. */
+function normalizeTitle(s: string): string {
+  return cleanString(s);
+}
+
+/** Normalize credit: trim whitespace. */
+function normalizeCredit(n: number | null): string {
+  return n === null ? '0' : String(n).trim();
 }
 
 // V1 API response format (used by edurec endpoints)
@@ -127,6 +152,12 @@ async function scraper() {
 
   const collatedCPExModulesMap = new Map<string, CPExModule>();
 
+  // Summary counters
+  let totalRawRows = 0;
+  let skippedIncomplete = 0;
+  let duplicatesMerged = 0;
+  const unknownMpeValues = new Set<string>();
+
   for (let i = 0; i < facultiesData.length; i++) {
     const faculty = facultiesData[i];
 
@@ -181,6 +212,8 @@ async function scraper() {
       }
 
       for (const module of modules) {
+        totalRawRows++;
+
         if (
           !module.Title ||
           module.UnitsMin == null ||
@@ -188,18 +221,14 @@ async function scraper() {
           !module.CatalogNumber ||
           !module.CourseAttributes
         ) {
+          skippedIncomplete++;
           continue;
         }
 
-        const moduleTitle = stripTags(module.Title);
-        const moduleCode = `${stripTags(module.SubjectArea)}${stripTags(module.CatalogNumber)}`;
+        const moduleCode = normalizeModuleCode(module.SubjectArea, module.CatalogNumber);
+        const moduleTitle = normalizeTitle(module.Title);
+        const moduleCredit = normalizeCredit(module.UnitsMin);
 
-        // Filter duplicate modules
-        if (collatedCPExModulesMap.has(moduleCode)) {
-          continue;
-        }
-
-        const moduleCredit = module.UnitsMin === null ? '0' : String(module.UnitsMin);
         const cpexAttribute = module.CourseAttributes.find(
           (attribute) => attribute.Code.trim() === 'MPE',
         );
@@ -212,18 +241,44 @@ async function scraper() {
         const semesterFlags = mpeValueMap[value];
 
         if (!semesterFlags) {
-          console.log(`Unknown CPEx attribute value: ${value} for ${moduleCode} ${moduleTitle}`);
+          if (!unknownMpeValues.has(value)) {
+            console.log(`Unknown CPEx attribute value: '${value}' (first seen at ${moduleCode})`);
+            unknownMpeValues.add(value);
+          }
           continue;
         }
 
-        const cpexModuleToAdd: CPExModule = {
+        // Merge duplicates with OR semantics for semester flags
+        const existing = collatedCPExModulesMap.get(moduleCode);
+        if (existing) {
+          duplicatesMerged++;
+
+          // Warn on conflicting title or credit
+          if (existing.title !== moduleTitle) {
+            console.log(
+              `  Warning: conflicting title for ${moduleCode}: '${existing.title}' vs '${moduleTitle}'`,
+            );
+          }
+          if (existing.moduleCredit !== moduleCredit) {
+            console.log(
+              `  Warning: conflicting credit for ${moduleCode}: '${existing.moduleCredit}' vs '${moduleCredit}'`,
+            );
+          }
+
+          // Keep first non-empty title/credit, OR semester flags
+          existing.title = existing.title || moduleTitle;
+          existing.moduleCredit = existing.moduleCredit || moduleCredit;
+          existing.inS1CPEx = existing.inS1CPEx || semesterFlags.inS1CPEx;
+          existing.inS2CPEx = existing.inS2CPEx || semesterFlags.inS2CPEx;
+          continue;
+        }
+
+        collatedCPExModulesMap.set(moduleCode, {
           title: moduleTitle,
           moduleCode,
           moduleCredit,
           ...semesterFlags,
-        };
-
-        collatedCPExModulesMap.set(moduleCode, cpexModuleToAdd);
+        });
       }
 
       if (modules.length < MAX_ITEMS) {
@@ -234,8 +289,18 @@ async function scraper() {
     }
   }
 
-  const collatedCPExModules = Array.from(collatedCPExModulesMap.values());
-  console.log(`Collated ${collatedCPExModules.length} modules.`);
+  // Sort by moduleCode for deterministic output (matches nus-v2 CollateModules sortBy)
+  const collatedCPExModules = Array.from(collatedCPExModulesMap.values()).sort((a, b) =>
+    a.moduleCode.localeCompare(b.moduleCode),
+  );
+
+  // Summary
+  console.log(`\n--- Scrape Summary ---`);
+  console.log(`Total raw rows:          ${totalRawRows}`);
+  console.log(`Skipped (incomplete):    ${skippedIncomplete}`);
+  console.log(`Unknown MPE values:      ${unknownMpeValues.size}`);
+  console.log(`Duplicate codes merged:  ${duplicatesMerged}`);
+  console.log(`Final module count:      ${collatedCPExModules.length}`);
 
   const DATA_DIR = path.join(__dirname, '../../data');
   if (!fs.existsSync(DATA_DIR)) {
