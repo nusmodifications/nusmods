@@ -2,6 +2,9 @@
   "name": "nusmods",
   "version": "3.0.0-alpha",
   "description": "NUSMods v3",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=development OPTIMISER_API_URL=/api/optimiser/optimise webpack serve --config webpack/webpack.config.dev.js",
     "start:local": "cross-env NODE_ENV=development OPTIMISER_API_URL=http://localhost:8020/optimise webpack serve --config webpack/webpack.config.dev.js",
