@@ -8,9 +8,9 @@
   "main": "src/index.ts",
   "scripts": {
     "scrape": "node build/src/index.js",
-    "dev": "yarn build && node build/src/index.js",
+    "dev": "pnpm run build && node build/src/index.js",
     "build": "tsc",
-    "lint": "tsc && yarn lint:code && yarn format:check",
+    "lint": "tsc && pnpm run lint:code && pnpm run format:check",
     "lint:code": "eslint --ext .js,.ts src",
     "format": "oxfmt --no-error-on-unmatched-pattern --write \"src/**/*.{js,ts}\" package.json",
     "format:check": "oxfmt --no-error-on-unmatched-pattern --check \"src/**/*.{js,ts}\" package.json"

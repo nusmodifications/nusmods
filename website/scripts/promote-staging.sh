@@ -14,7 +14,7 @@ echo "Promote $FRONTEND_STAGING_DIR to production at $FRONTEND_PROD_DIR."
 
 # Ensure that staging exists
 if [[ ! -d $FRONTEND_STAGING_DIR || ! -d $TIMETABLE_ONLY_STAGING_DIR ]]; then
-  echo "Staging directory does not exist! You should probably run yarn build first"
+  echo "Staging directory does not exist! You should probably run pnpm build first"
   echo "Aborting"
   exit 1
 fi
@@ -31,8 +31,8 @@ ls -la $TIMETABLE_ONLY_STAGING_DIR
 # Dry run
 echo
 echo "Dry running deployment..."
-npm run rsync -- --dry-run $FRONTEND_PROD_DIR
-npm run rsync:export -- --dry-run $TIMETABLE_ONLY_PROD_DIR
+pnpm run rsync -- --dry-run $FRONTEND_PROD_DIR
+pnpm run rsync:export -- --dry-run $TIMETABLE_ONLY_PROD_DIR
 
 # Sync filename with `scripts/build.js`.
 COMMIT_HASH_FILE="commit-hash.txt"
@@ -72,8 +72,8 @@ fi
 # Deploy
 echo
 echo "Promoting..."
-npm run rsync -- $FRONTEND_PROD_DIR
-npm run rsync:export -- $TIMETABLE_ONLY_PROD_DIR
+pnpm run rsync -- $FRONTEND_PROD_DIR
+pnpm run rsync:export -- $TIMETABLE_ONLY_PROD_DIR
 
 # Create release
 if [ -x "$(command -v sentry-cli)" ]; then

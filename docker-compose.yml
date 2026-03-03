@@ -8,10 +8,8 @@ services:
         - GIT_COMMIT_HASH
         - DATA_API_BASE_URL
     volumes:
-      - ~/.cache/yarn:/home/node/.cache/yarn
-      - ./website:/home/node/app/website
-      - ./packages:/home/node/app/packages
-      - ./.prettierrc.js:/home/node/app/.prettierrc.js
+      - ~/.local/share/pnpm/store:/home/node/.local/share/pnpm/store
+      - ./:/home/node/app
     expose:
       - 8080
       - 8081
@@ -26,9 +24,8 @@ services:
     env_file:
       - export/.env
     volumes:
-      - ~/.cache/yarn:/home/node/.cache/yarn
-      - ./export:/home/node/app/export
-      - ./.prettierrc.js:/home/node/app/.prettierrc.js
+      - ~/.local/share/pnpm/store:/home/node/.local/share/pnpm/store
+      - ./:/home/node/app
     expose:
       - 8082
     depends_on:
