@@ -32,7 +32,7 @@
   "jsnext:main": "dist/index.es.js",
   "scripts": {
     "clean": "rimraf dist coverage",
-    "lint": "documentation lint src && eslint --ext .ts src && pnpm run format:check",
+    "lint": "documentation lint src && eslint --ext .ts src && pnpm format:check",
     "format": "oxfmt --no-error-on-unmatched-pattern --write \"src/**/*.ts\" package.json",
     "format:check": "oxfmt --no-error-on-unmatched-pattern --check \"src/**/*.ts\" package.json",
     "docs": "documentation readme src --section=API",

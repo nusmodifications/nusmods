@@ -7,11 +7,11 @@
   "main": "src/index.ts",
   "scripts": {
     "scrape": "node build/index.js",
-    "dev": "pnpm run build && node build/index.js",
+    "dev": "pnpm build && node build/index.js",
     "docs": "cp swagger.yaml docs/* data/",
     "bunyan": "bunyan -L -o short --color",
     "build": "tsc -p tsconfig.prod.json",
-    "lint": "tsc --noEmit && pnpm run lint:code && pnpm run format:check",
+    "lint": "tsc --noEmit && pnpm lint:code && pnpm format:check",
     "lint:code": "eslint --ext .js,.ts src",
     "format": "oxfmt --no-error-on-unmatched-pattern --write \"src/**/*.{js,ts}\" package.json",
     "format:check": "oxfmt --no-error-on-unmatched-pattern --check \"src/**/*.{js,ts}\" package.json",

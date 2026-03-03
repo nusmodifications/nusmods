@@ -31,8 +31,8 @@ ls -la $TIMETABLE_ONLY_STAGING_DIR
 # Dry run
 echo
 echo "Dry running deployment..."
-pnpm run rsync -- --dry-run $FRONTEND_PROD_DIR
-pnpm run rsync:export -- --dry-run $TIMETABLE_ONLY_PROD_DIR
+pnpm rsync -- --dry-run $FRONTEND_PROD_DIR
+pnpm rsync:export -- --dry-run $TIMETABLE_ONLY_PROD_DIR
 
 # Sync filename with `scripts/build.js`.
 COMMIT_HASH_FILE="commit-hash.txt"
@@ -72,8 +72,8 @@ fi
 # Deploy
 echo
 echo "Promoting..."
-pnpm run rsync -- $FRONTEND_PROD_DIR
-pnpm run rsync:export -- $TIMETABLE_ONLY_PROD_DIR
+pnpm rsync -- $FRONTEND_PROD_DIR
+pnpm rsync:export -- $TIMETABLE_ONLY_PROD_DIR
 
 # Create release
 if [ -x "$(command -v sentry-cli)" ]; then

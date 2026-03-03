@@ -13,14 +13,14 @@ echo "Running on Node version: $(node --version)"
 
 # Build the scraper
 rm -rf build
-pnpm run build
+pnpm build
 
 # Run the scraper
 echo "Running scraper"
 node build/index.js all
 
 # Update docs
-pnpm run docs
+pnpm docs
 
 # Sync with live data
 echo "Syncing data"
