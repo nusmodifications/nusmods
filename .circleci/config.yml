@@ -27,7 +27,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run: corepack enable && corepack prepare pnpm@latest --activate
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm test --runInBand
@@ -43,7 +43,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run: corepack enable && corepack prepare pnpm@latest --activate
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm test --runInBand
@@ -60,7 +60,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run: corepack enable && corepack prepare pnpm@latest --activate
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
       - run:
@@ -78,7 +78,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run: corepack enable && corepack prepare pnpm@latest --activate
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run:
           name: Install dependencies
           command: pnpm install --frozen-lockfile
