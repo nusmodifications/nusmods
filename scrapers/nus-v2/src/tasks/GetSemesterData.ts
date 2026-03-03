@@ -67,8 +67,8 @@ const mpeValueMap: { [value: string]: (keyof NUSModuleAttributes)[] } = {
   'S1 - Sem 1': ['mpes1'],
   'S2 - Sem 2': ['mpes2'],
   'S1&S2 - Sem 1 & 2': ['mpes1', 'mpes2'],
-  'S1': ['mpes1'],
-  'S2': ['mpes2'],
+  S1: ['mpes1'],
+  S2: ['mpes2'],
   'S1&S2': ['mpes1', 'mpes2'],
 };
 
@@ -392,9 +392,9 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
       // Copy timetable data from source modules to target modules
       for (const [targetCode, sourceCode] of equivalentModules.entries()) {
-        const targetDatum = semesterModuleData.find(
-          (m) => m.moduleCode === targetCode,
-        ) as WritableSemesterModuleData | undefined;
+        const targetDatum = semesterModuleData.find((m) => m.moduleCode === targetCode) as
+          | WritableSemesterModuleData
+          | undefined;
         const sourceDatum = semesterModuleData.find((m) => m.moduleCode === sourceCode);
 
         if (targetDatum && sourceDatum?.semesterData) {

@@ -39,7 +39,7 @@ describe(getAcadYearModules, () => {
         modules: {},
         moduleCodes: {},
       },
-    } as any);
+    }) as any;
 
   const expectModuleCodes = (modules: ModuleCode[]) =>
     modules.map((moduleCode) =>

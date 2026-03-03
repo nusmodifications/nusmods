@@ -267,7 +267,7 @@ If a community libdef is not available, you can try writing your own and placing
 
 ### Testing and Linting
 
-We use [Jest][jest] with [Enzyme][enzyme] and [Testing Library][testing-library] to test our code and React components, [TypeScript][ts] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
+We use [Jest][jest] with [Enzyme][enzyme] and [Testing Library][testing-library] to test our code and React components, [TypeScript][ts] for typechecking, [Stylelint][stylelint], [ESLint][eslint] using [Airbnb config][eslint-airbnb] for linting, and [Oxfmt][oxfmt] for formatting.
 
 **Note: The majority of React tests are written with Enzyme. For new unit tests, please try to use [Testing Library][testing-library] instead!**
 
@@ -291,6 +291,10 @@ $ yarn lint:code
 
 # Run TypeScript type checking
 $ yarn typecheck
+
+# Format and check formatting
+$ yarn format
+$ yarn format:check
 ```
 
 #### End to End testing
@@ -411,7 +415,7 @@ Components should keep their styles and tests in the same directory with the sam
 [eslint]: https://eslint.org/
 [svgr]: https://github.com/smooth-code/svgr
 [eslint-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
-[prettier]: https://prettier.io/docs/en/
+[oxfmt]: https://oxc.rs/docs/guide/usage/formatter
 [stylelint]: https://stylelint.io/
 [zames-guide]: https://medium.com/@zameschua/getting-my-feet-wet-my-experience-with-open-source-and-nusmods-f1381450517e
 [css-modules]: https://github.com/css-modules/css-modules

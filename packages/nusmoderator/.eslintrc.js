@@ -13,9 +13,8 @@ module.exports = {
     browser: true,
     node: true,
   },
-  plugins: ['@typescript-eslint', 'prettier', 'import'],
+  plugins: ['@typescript-eslint', 'import'],
   rules: {
-    'prettier/prettier': warnInDevelopment,
     'import/extensions': [
       warnInDevelopment,
       'always',

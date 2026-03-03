@@ -59,7 +59,7 @@ jobs:
       - attach_workspace:
           at: ~/nusmods
       - run: yarn --frozen-lockfile --non-interactive
-      - run: yarn prettier --check src
+      - run: yarn format:check
       - run:
           name: Build export service
           environment:
@@ -85,6 +85,9 @@ jobs:
       - run:
           name: Lint styles
           command: yarn lint:styles
+      - run:
+          name: Check formatting
+          command: yarn format:check
       - run:
           name: Typecheck Code
           command: yarn typecheck
@@ -150,7 +153,6 @@ jobs:
             done
 
             go test ./_test/. -v
-
 
 workflows:
   build_and_test:

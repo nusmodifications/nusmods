@@ -6,9 +6,22 @@ import * as R from 'ramda';
 import { NusModsLexer, NusModsVisitor } from './antlr4';
 import { PrereqTree } from '../../types/modules';
 import { Logger } from '../logger';
-import { NusModsParser, BinopContext, CompoundContext, Course_itemsContext, CoursesContext, OpContext, OverallContext, PrereqContext, PrimitiveContext, ProgramsContext, Cohort_yearsContext, Program_typesContext } from './antlr4/NusModsParser';
+import {
+  NusModsParser,
+  BinopContext,
+  CompoundContext,
+  Course_itemsContext,
+  CoursesContext,
+  OpContext,
+  OverallContext,
+  PrereqContext,
+  PrimitiveContext,
+  ProgramsContext,
+  Cohort_yearsContext,
+  Program_typesContext,
+} from './antlr4/NusModsParser';
 import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
-import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor'
+import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 
 function generateAndBranch(modules: PrereqTree[]) {
   const children: PrereqTree[] = R.uniq(modules);
@@ -20,11 +33,11 @@ function generateAndBranch(modules: PrereqTree[]) {
   // Simplify conjunction
   // Ignore because TS doesn't recognise Object.hasOwnProperty is a type guard.
   // @ts-ignore
-  const result = children.flatMap(child => child.hasOwnProperty('and') ? child.and : child);
+  const result = children.flatMap((child) => (child.hasOwnProperty('and') ? child.and : child));
   if (result.length === 1) {
     return result[0];
   }
-  return { and: result }
+  return { and: result };
 }
 
 function generateOrBranch(modules: PrereqTree[]) {
@@ -36,54 +49,56 @@ function generateOrBranch(modules: PrereqTree[]) {
   // Simplify disjunction
   // Ignore because TS doesn't recognise Object.hasOwnProperty is a type guard.
   // @ts-ignore
-  const result = children.flatMap(child => child.hasOwnProperty('or') ? child.or : child);
+  const result = children.flatMap((child) => (child.hasOwnProperty('or') ? child.or : child));
   if (result.length === 1) {
     return result[0];
   }
-  return { or: result }
+  return { or: result };
 }
 
 /**
  * ReqTreeVisitor, implements the visitor design pattern using
  * the auto generated visitor from ANTLR4.
  */
-class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements NusModsVisitor<PrereqTree> {
-  errors: Error[]
+class ReqTreeVisitor
+  extends AbstractParseTreeVisitor<PrereqTree>
+  implements NusModsVisitor<PrereqTree>
+{
+  errors: Error[];
   // If any of these are seen more than once, bail, because the prereq tree is too complex.
-  specialVisited: { programType: number}
+  specialVisited: { programType: number };
   constructor() {
     super();
     this.errors = [];
-    this.specialVisited = { programType: 0 }
+    this.specialVisited = { programType: 0 };
   }
 
   protected defaultResult(): PrereqTree {
-    return "";
+    return '';
   }
 
   visitWithSingularAlternative(ctx: ParserRuleContext, rule: string): PrereqTree {
     if (ctx.children === undefined) {
-      return ""
+      return '';
     }
     // This can have either 0 children (ie all empty and filtered out)
     // Or 1 child (ie one subrule is populated)
-    const result = ctx.children.map(child => child.accept(this)).filter(n => n !== '');
+    const result = ctx.children.map((child) => child.accept(this)).filter((n) => n !== '');
     if (result.length !== 0 && result.length !== 1) {
       this.errors.push(new Error(`${rule} has children != 0/1 which is impossible ${result}`));
-      return ""
+      return '';
     }
-    return result.length === 0 ? '' : result[0] as PrereqTree;
+    return result.length === 0 ? '' : (result[0] as PrereqTree);
   }
-
 
   // @ts-ignore
   visitOverall?: ((ctx: OverallContext) => PrereqTree) | undefined = (ctx) => {
     return ctx?.compound()?.accept(this);
-  }
+  };
 
   visitCompound?: ((ctx: CompoundContext) => PrereqTree) | undefined = (ctx) => {
-    return this.visitWithSingularAlternative(ctx, "compound");
-  }
+    return this.visitWithSingularAlternative(ctx, 'compound');
+  };
 
   // @ts-ignore
   visitBinop?: ((ctx: BinopContext) => PrereqTree) | undefined = (ctx) => {
@@ -91,7 +106,7 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
     const rhs = ctx?.compound()?.accept(this);
     const boolOp = ctx?.boolean_expr()?.text;
     if (lhs === undefined || rhs === undefined) {
-      this.errors.push(new Error(`visitBinop bad lhs/rhs: lhs:${lhs} rhs:${rhs}`))
+      this.errors.push(new Error(`visitBinop bad lhs/rhs: lhs:${lhs} rhs:${rhs}`));
       return;
     }
     // Simplifying the tree
@@ -108,25 +123,28 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
       case 'OR':
         return generateOrBranch([lhs, rhs]);
       default:
-        this.errors.push(new Error(`visitBinop unkown Binop type: ${boolOp}`))
+        this.errors.push(new Error(`visitBinop unkown Binop type: ${boolOp}`));
         return;
     }
-  }
+  };
 
   visitOp?: ((ctx: OpContext) => PrereqTree) | undefined = (ctx) => {
-    return this.visitWithSingularAlternative(ctx, "op");
-  }
+    return this.visitWithSingularAlternative(ctx, 'op');
+  };
 
   visitPrimitive?: ((ctx: PrimitiveContext) => PrereqTree) | undefined = (ctx) => {
-    return this.visitWithSingularAlternative(ctx, "primitive");
-  }
+    return this.visitWithSingularAlternative(ctx, 'primitive');
+  };
 
   visitPrereq?: ((ctx: PrereqContext) => PrereqTree) | undefined = (ctx) => {
-    return this.visitWithSingularAlternative(ctx, "prereq");
-  }
+    return this.visitWithSingularAlternative(ctx, 'prereq');
+  };
 
   visitCourses?: ((ctx: CoursesContext) => PrereqTree) | undefined = (ctx) => {
-    const courses = ctx.course_items().PROGRAMS_VALUE().map(node => node.text);
+    const courses = ctx
+      .course_items()
+      .PROGRAMS_VALUE()
+      .map((node) => node.text);
     const courseCount = ctx.contains_number();
     // According to NUS documentation, if there is no course count, then ALL the
     // courses are required.
@@ -140,11 +158,11 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
       return generateOrBranch(courses);
     }
     return { nOf: [n, courses] };
-  }
+  };
 
   visitCourse_items?: ((ctx: Course_itemsContext) => PrereqTree) | undefined = (ctx) => {
-    return generateAndBranch(ctx.PROGRAMS_VALUE().map(node => node.text));
-  }
+    return generateAndBranch(ctx.PROGRAMS_VALUE().map((node) => node.text));
+  };
 
   // Special values
 
@@ -154,11 +172,11 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
   visitProgram_types?: ((ctx: Program_typesContext) => PrereqTree) | undefined = (ctx) => {
     this.specialVisited.programType++;
     if (this.specialVisited.programType > 1) {
-      this.errors.push(new Error("Visitor saw too many program types"));
-      return "";
+      this.errors.push(new Error('Visitor saw too many program types'));
+      return '';
     }
-    return "";
-  }
+    return '';
+  };
 }
 
 /**
@@ -180,7 +198,10 @@ export default function parseString(prerequisite: string, logger: Logger): Prere
   const visitor = new ReqTreeVisitor();
   const result = tree.accept(visitor);
   if (visitor.errors.length > 0) {
-    logger.info({ prerequisite, errors: visitor.errors }, 'Prereq tree visitor encountered parsing errors');
+    logger.info(
+      { prerequisite, errors: visitor.errors },
+      'Prereq tree visitor encountered parsing errors',
+    );
     return null;
   }
   return result;

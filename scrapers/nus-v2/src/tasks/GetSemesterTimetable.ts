@@ -238,9 +238,10 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
     this.logger.info({ valid, invalid }, 'Processed and removed invalid lessons');
 
     // TODO: TEMPORARY - Only apply legacy ordering for the academic year the mapping was generated from.
-    const semesterOrder = this.academicYear === config.academicYear
-      ? legacyTimetableOrder[String(this.semester) as keyof typeof legacyTimetableOrder]
-      : undefined;
+    const semesterOrder =
+      this.academicYear === config.academicYear
+        ? legacyTimetableOrder[String(this.semester) as keyof typeof legacyTimetableOrder]
+        : undefined;
 
     return mapValues(timetables, (timetableObject, moduleCode) => {
       // 5. Remove the lesson key inserted in (2) and remap the weeks to their correct shape

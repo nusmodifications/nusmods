@@ -31,7 +31,7 @@ These principles guide our decisions on what to build, how to build it, and how 
 
 - [TypeScript](https://www.typescriptlang.org/) for type safety.
 - [ESLint](https://eslint.org/) for linting.
-- [Prettier](https://prettier.io/) for code formatting.
+- [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) for code formatting.
 - [Jest](https://jestjs.io/) for testing.
 - [CircleCI](https://circleci.com/) for continuous integration.
 - [Sentry](https://sentry.io/) for error reporting.

@@ -28,7 +28,7 @@ module.exports = {
     node: true,
   },
 
-  plugins: ['@typescript-eslint', 'prettier', 'import'],
+  plugins: ['@typescript-eslint', 'import'],
 
   overrides: [
     {
@@ -46,8 +46,6 @@ module.exports = {
   ignorePatterns: ["**/antlr4/*"],
 
   rules: {
-    'prettier/prettier': WARN_IN_DEV,
-
     'import/extensions': [
       'error',
       'always',
