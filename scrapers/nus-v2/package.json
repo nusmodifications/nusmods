@@ -69,5 +69,8 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "resolutions": {
+    "@types/node": "22.13.5"
   }
 }
