@@ -312,10 +312,7 @@ describe(mapAttributes, () => {
 
   test('should combine multiple attributes', () => {
     expect(
-      mapAttributes(
-        [attr('PRQY', 'YES'), attr('YEAR', 'Yes'), attr('MPE', 'S1')],
-        mockLogger,
-      ),
+      mapAttributes([attr('PRQY', 'YES'), attr('YEAR', 'Yes'), attr('MPE', 'S1')], mockLogger),
     ).toEqual({ su: true, year: true, mpes1: true });
   });
 });

@@ -110,9 +110,8 @@ function matchModule(module: Module) {
 }
 
 const roundOneStartDate = new Date(
-  modregData.Undergraduate.filter(
-    (data) => data.type === 'Select Courses' && data.name === '1',
-  )[0].start,
+  modregData.Undergraduate.filter((data) => data.type === 'Select Courses' && data.name === '1')[0]
+    .start,
 );
 const enhanceReportVisibility =
   isWithinInterval(new Date(), {

@@ -259,10 +259,9 @@ export function normalizeForComparison(str: string | null | undefined): string {
  * This is used to propagate timetable data to "shadow" dual-coded modules that the new
  * NUS API doesn't return timetable data for.
  */
-export function findEquivalentModules<T extends { Code: string; Title: string; UnitsMin: number | null; CourseDesc: string }>(
-  modulesWithoutTimetable: T[],
-  modulesWithTimetable: T[],
-): Map<string, string> {
+export function findEquivalentModules<
+  T extends { Code: string; Title: string; UnitsMin: number | null; CourseDesc: string },
+>(modulesWithoutTimetable: T[], modulesWithTimetable: T[]): Map<string, string> {
   const equivalents = new Map<string, string>();
 
   // Build a lookup map: normalized title -> list of modules with that title (that have timetable)
@@ -335,11 +334,11 @@ function weeksToNumbers(weeks: Weeks): number[] {
  * Matching is done on the full key (all fields).
  */
 export function sortTimetableByLegacyOrder<
-  T extends Pick<RawLesson, 'lessonType' | 'classNo' | 'day' | 'startTime' | 'endTime' | 'venue' | 'weeks'>,
->(
-  lessons: T[],
-  legacyOrder: string[] | undefined,
-): T[] {
+  T extends Pick<
+    RawLesson,
+    'lessonType' | 'classNo' | 'day' | 'startTime' | 'endTime' | 'venue' | 'weeks'
+  >,
+>(lessons: T[], legacyOrder: string[] | undefined): T[] {
   if (!legacyOrder) return lessons;
 
   const keyIndex = new Map<string, number>();

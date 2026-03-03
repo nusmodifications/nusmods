@@ -7,7 +7,7 @@ describe(insertRequisiteTree, () => {
       (moduleCode) =>
         ({
           moduleCode,
-        } as any),
+        }) as any,
     );
 
   test('should insert prereq tree and fulfilled requirements', () => {

@@ -86,7 +86,8 @@ async function scraper() {
     const department = departmentsData[i];
 
     console.log(
-      `[${i + 1}/${departmentsData.length}] Fetching modules for ${department.Description
+      `[${i + 1}/${departmentsData.length}] Fetching modules for ${
+        department.Description
       } with acadorg: ${department.AcademicOrganisation}...`,
     );
 
