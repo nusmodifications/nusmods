@@ -7,13 +7,13 @@ The config ensures that we support 98% of our users' devices.
 ## Installation
 
 ```sh
-yarn
+pnpm install
 ```
 
 ## Generating config files
 
 ```sh
-yarn start
+pnpm start
 ```
 
 Files `index.js` and `browserslist-stats.json` will be generated.

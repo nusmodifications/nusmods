@@ -6,8 +6,8 @@ A lightweight library with helpful functions for NUS-related matters.
 
 ```sh
 npm i nusmoderator -S
-# or if you use yarn:
-yarn add nusmoderator
+# or if you use pnpm:
+pnpm add nusmoderator
 ```
 
 ## API

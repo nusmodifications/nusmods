@@ -179,12 +179,12 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 
 3. **Run test server**
    ```bash
-   yarn start:optimiser
+   pnpm start:optimiser
    ```
 
 4. **Run frontend**(if needed)
    ```bash
-   yarn start:local
+   pnpm start:local
    ```
 
 5. **Test the API**

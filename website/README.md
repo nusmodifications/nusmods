@@ -18,10 +18,10 @@ Don't know where to start? First, read our repository [contribution guide](../CO
 
 ## Getting Started
 
-Install [Node 22 LTS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
+Install [Node 22 LTS](https://nodejs.org/en/) and [pnpm](https://pnpm.io/installation) then run the following command:
 
 ```sh
-$ yarn
+$ pnpm install
 ```
 
 This will install all of the dependencies you need.
@@ -31,7 +31,7 @@ This will install all of the dependencies you need.
 To run the development build, simply run:
 
 ```sh
-$ yarn start
+$ pnpm start
 ```
 
 This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If you need to use the optimiser, please refer to [the optimiser's README](./api/optimiser/README.md).
@@ -273,28 +273,28 @@ We use [Jest][jest] with [Enzyme][enzyme] and [Testing Library][testing-library]
 
 ```sh
 # Run all tests once with code coverage
-$ yarn test
+$ pnpm test
 
 # Writing tests with watch
-$ yarn test:watch
+$ pnpm test:watch
 
 # Lint all JS and CSS
-$ yarn lint
+$ pnpm lint
 
 # Linting CSS, JS source, and run typechecking separately
-$ yarn lint:styles
-$ yarn lint:code
+$ pnpm lint:styles
+$ pnpm lint:code
 # Append `--fix` to fix lint errors automatically
-# e.g. yarn lint:code --fix
-# p.s. Use yarn lint:styles --fix with care (it's experimental),
+# e.g. pnpm lint:code --fix
+# p.s. Use pnpm lint:styles --fix with care (it's experimental),
 #      remember to reset changes for themes.scss.
 
 # Run TypeScript type checking
-$ yarn typecheck
+$ pnpm typecheck
 
 # Format and check formatting
-$ yarn format
-$ yarn format:check
+$ pnpm format
+$ pnpm format:check
 ```
 
 #### End to End testing
@@ -308,40 +308,40 @@ By default the tests are ran against http://latest.nusmods.com, although they ca
 # these are omitted for brevity
 
 # Run end to end test against staging
-yarn e2e
+pnpm e2e
 
 # Run against deploy preview
-LAUNCH_URL="https://nusmods-website-example-modsbots-projects.vercel.app" yarn e2e
+LAUNCH_URL="https://nusmods-website-example-modsbots-projects.vercel.app" pnpm e2e
 
 # Run against local development server
-yarn start              # Start a local development server
+pnpm start              # Start a local development server
 ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
-LAUNCH_URL="http://localhost:8080" LOCAL_TEST=1 yarn e2e
+LAUNCH_URL="http://localhost:8080" LOCAL_TEST=1 pnpm e2e
 
 # Run against local production server
-yarn build              # Build to ./dist directory
+pnpm build              # Build to ./dist directory
 npx serve -s dist       # Start a local server that serves ./dist
 ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
-LAUNCH_URL="http://localhost:5000" LOCAL_TEST=1 yarn e2e
+LAUNCH_URL="http://localhost:5000" LOCAL_TEST=1 pnpm e2e
 ```
 
 ### Deployment
 
 **This section is outdated! We're overhauling our deployment processes at the moment. For more up-to-date (but which will also soon be outdated) deployment info, please refer to this [deployment guide](../DEPLOYMENT.md).**
 
-Our staging is served from the `./dist` directory, which is generated using `yarn build`. From there, it can be promoted to production using `yarn promote-staging`. This flow is summarized below:
+Our staging is served from the `./dist` directory, which is generated using `pnpm build`. From there, it can be promoted to production using `pnpm promote-staging`. This flow is summarized below:
 
 ```sh
-$ yarn                  # Install dependencies
-$ yarn test             # Ensure all unit tests pass
-$ yarn build            # Build to staging ./dist directory
+$ pnpm install          # Install dependencies
+$ pnpm test             # Ensure all unit tests pass
+$ pnpm build            # Build to staging ./dist directory
 # Open http://staging.nusmods.com and manually test to ensure it works
-$ yarn promote-staging  # Promote ./dist to production
+$ pnpm promote-staging  # Promote ./dist to production
 ```
 
-- `yarn build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.
-- `yarn promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
-- `yarn rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `yarn promote-staging` but could be used to sync `./dist` to any folder.
+- `pnpm build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.
+- `pnpm promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
+- `pnpm rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `pnpm promote-staging` but could be used to sync `./dist` to any folder.
 
 ## Project Structure
 

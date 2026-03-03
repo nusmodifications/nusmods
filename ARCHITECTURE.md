@@ -36,7 +36,7 @@ These principles guide our decisions on what to build, how to build it, and how 
 - [CircleCI](https://circleci.com/) for continuous integration.
 - [Sentry](https://sentry.io/) for error reporting.
 - [Webpack](https://webpack.js.org/) for bundling.
-- [Yarn](https://yarnpkg.com/) for package management.
+- [pnpm](https://pnpm.io/) for package management.
 
 ## Project Structure
 
@@ -49,7 +49,7 @@ These principles guide our decisions on what to build, how to build it, and how 
 
 Some of these folders have their own READMEs that go into more detail about their purpose and how they work. You can find them in the respective folders.
 
-Each folder is a separate project, with their own dependencies and build pipelines. Unfortunately, this means that we have to run `yarn install` in each folder, and we have to run `yarn build` in each folder to build the project. We wanted to use workspaces but installation times and complexity were too high.
+The repository is a pnpm workspace with a single `pnpm-lock.yaml` at the root. Run `pnpm install` once from the root to install all dependencies across all packages.
 
 Projects in the `/packages` folder are published to npm, and can be used by other projects outside of NUSMods. We use these packages to share code between our frontend and backend.
 
