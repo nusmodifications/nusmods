@@ -45,6 +45,14 @@ function getTimestampForFilename(): string {
   );
 }
 
+// Strip HTML tags and normalize whitespace (mirrors nus-v2 stripTags/cleanString)
+function stripTags(string: string): string {
+  return string
+    .replace(/<[^>]*>?/gm, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 // V1 API response format (used by edurec endpoints)
 type V1ApiResponse<T> = {
   msg: string;
@@ -183,8 +191,8 @@ async function scraper() {
           continue;
         }
 
-        const moduleTitle = module.Title;
-        const moduleCode = `${module.SubjectArea}${module.CatalogNumber}`;
+        const moduleTitle = stripTags(module.Title);
+        const moduleCode = `${stripTags(module.SubjectArea)}${stripTags(module.CatalogNumber)}`;
 
         // Filter duplicate modules
         if (collatedCPExModulesMap.has(moduleCode)) {
