@@ -72,11 +72,14 @@ type Module = {
   }[];
 };
 
-// MPE attribute value → semester flag mapping (new API format)
+// MPE attribute value → semester flag mapping (supports both old and new API formats)
 const mpeValueMap: Record<string, { inS1CPEx?: boolean; inS2CPEx?: boolean }> = {
   'S1 - Sem 1': { inS1CPEx: true },
   'S2 - Sem 2': { inS2CPEx: true },
   'S1&S2 - Sem 1 & 2': { inS1CPEx: true, inS2CPEx: true },
+  'S1': { inS1CPEx: true },
+  'S2': { inS2CPEx: true },
+  'S1&S2': { inS1CPEx: true, inS2CPEx: true },
 };
 
 export type CPExModule = {
