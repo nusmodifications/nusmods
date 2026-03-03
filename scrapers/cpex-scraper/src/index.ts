@@ -1,27 +1,27 @@
-import axios from "axios";
-import fs from "fs";
-import path from "path";
+import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
-import env from "../env.json";
+import env from '../env.json';
 
-const TERM = "2520";
+const TERM = '2520';
 
 // Sanity check to see if there are at least this many modules before overwriting cpexModules.json
 // The last time I ran this fully there were 3418 modules
 const threshold = 1500;
 
-const baseUrl = env["baseUrl"].endsWith("/") ? env["baseUrl"].slice(0, -1) : env["baseUrl"];
+const baseUrl = env['baseUrl'].endsWith('/') ? env['baseUrl'].slice(0, -1) : env['baseUrl'];
 
-const FETCH_OK = "00000";
+const FETCH_OK = '00000';
 
 axios.defaults.headers.common = {
-  "X-STUDENT-API": env["studentKey"],
-  "X-APP-API": env["appKey"],
+  'X-STUDENT-API': env['studentKey'],
+  'X-APP-API': env['appKey'],
 };
 
 function getTimestampForFilename(): string {
   function pad2(n: number): string {
-    return n < 10 ? "0" + n : String(n);
+    return n < 10 ? '0' + n : String(n);
   }
 
   const date = new Date();
@@ -73,8 +73,8 @@ async function scraper() {
   const getDepartmentsResponse = await axios.post<ApiResponse<GetDepartmentsResponseData[]>>(
     `${baseUrl}/config/get-acadorg`,
     {
-      eff_status: "A",
-      acad_org: "%",
+      eff_status: 'A',
+      acad_org: '%',
     },
   );
   const departmentsData = getDepartmentsResponse.data.data;
@@ -118,7 +118,7 @@ async function scraper() {
       }
 
       // Filter out hidden modules
-      if (module.PrintCatalog !== "Y") {
+      if (module.PrintCatalog !== 'Y') {
         continue;
       }
 
@@ -132,7 +132,7 @@ async function scraper() {
 
       const moduleCredit = module.ModularCredit;
       const cpexAttribute = module.ModuleAttributes.find(
-        (attribute) => attribute.CourseAttribute === "MPE", // this still isn't changed to CPEx
+        (attribute) => attribute.CourseAttribute === 'MPE', // this still isn't changed to CPEx
       );
 
       if (!cpexAttribute) {
@@ -146,13 +146,13 @@ async function scraper() {
       };
 
       switch (cpexAttribute.CourseAttributeValue) {
-        case "S1":
+        case 'S1':
           cpexModuleToAdd.inS1CPEx = true;
           break;
-        case "S2":
+        case 'S2':
           cpexModuleToAdd.inS2CPEx = true;
           break;
-        case "S1&S2":
+        case 'S1&S2':
           cpexModuleToAdd.inS1CPEx = true;
           cpexModuleToAdd.inS2CPEx = true;
           break;
@@ -169,17 +169,17 @@ async function scraper() {
   const collatedCPExModules = Array.from(collatedCPExModulesMap.values());
   console.log(`Collated ${collatedCPExModules.length} modules.`);
 
-  const DATA_DIR = path.join(__dirname, "../../data");
+  const DATA_DIR = path.join(__dirname, '../../data');
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR);
   }
-  const OLD_DATA_DIR = path.join(DATA_DIR, "/old");
+  const OLD_DATA_DIR = path.join(DATA_DIR, '/old');
   if (!fs.existsSync(OLD_DATA_DIR)) {
     fs.mkdirSync(OLD_DATA_DIR);
   }
 
   if (collatedCPExModules.length >= threshold) {
-    fs.writeFileSync(path.join(DATA_DIR, "cpexModules.json"), JSON.stringify(collatedCPExModules));
+    fs.writeFileSync(path.join(DATA_DIR, 'cpexModules.json'), JSON.stringify(collatedCPExModules));
     console.log(`Wrote ${collatedCPExModules.length} modules to cpexModules.json.`);
   } else {
     console.log(
@@ -190,7 +190,7 @@ async function scraper() {
   const archiveFilename = `cpexModules-${getTimestampForFilename()}.json`;
   fs.writeFileSync(path.join(OLD_DATA_DIR, archiveFilename), JSON.stringify(collatedCPExModules));
   console.log(`Wrote ${collatedCPExModules.length} modules to archive ${archiveFilename}.`);
-  console.log("Done!");
+  console.log('Done!');
 }
 
 scraper().catch((error) => {
