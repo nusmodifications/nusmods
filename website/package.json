@@ -139,6 +139,7 @@
   },
   "dependencies": {
     "@authenio/samlify-node-xmllint": "2.0.0",
+    "@material/button": "14.0.0",
     "@material/fab": "14.0.0",
     "@material/snackbar": "14.0.0",
     "@sentry/browser": "7.119.1",
