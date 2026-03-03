@@ -24,6 +24,7 @@ export type WritableSemesterModuleData = {
   moduleCode: ModuleCode;
   module: SemesterModule;
   semesterData?: SemesterData;
+  timetablePropagated?: boolean;
 };
 
 export type SemesterModuleData = Readonly<WritableSemesterModuleData>;

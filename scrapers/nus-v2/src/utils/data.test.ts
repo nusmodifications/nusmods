@@ -287,10 +287,20 @@ describe(findEquivalentModules, () => {
 
   it('should find modules with matching title, credits, and description', () => {
     const withoutTimetable = [
-      makeModuleInfo('GEH1007', 'Quantitative Reasoning', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEH1007',
+        'Quantitative Reasoning',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
     const withTimetable = [
-      makeModuleInfo('GEC1038', 'Quantitative Reasoning', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEC1038',
+        'Quantitative Reasoning',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
 
     const result = findEquivalentModules(withoutTimetable, withTimetable);
@@ -301,10 +311,20 @@ describe(findEquivalentModules, () => {
 
   it('should not match modules with different titles', () => {
     const withoutTimetable = [
-      makeModuleInfo('GEH1007', 'Quantitative Reasoning', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEH1007',
+        'Quantitative Reasoning',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
     const withTimetable = [
-      makeModuleInfo('GEC1038', 'Different Title', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEC1038',
+        'Different Title',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
 
     const result = findEquivalentModules(withoutTimetable, withTimetable);
@@ -314,10 +334,20 @@ describe(findEquivalentModules, () => {
 
   it('should not match modules with different credits', () => {
     const withoutTimetable = [
-      makeModuleInfo('GEH1007', 'Quantitative Reasoning', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEH1007',
+        'Quantitative Reasoning',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
     const withTimetable = [
-      makeModuleInfo('GEC1038', 'Quantitative Reasoning', 2, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEC1038',
+        'Quantitative Reasoning',
+        2,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
 
     const result = findEquivalentModules(withoutTimetable, withTimetable);
@@ -327,7 +357,12 @@ describe(findEquivalentModules, () => {
 
   it('should not match modules with different descriptions', () => {
     const withoutTimetable = [
-      makeModuleInfo('GEH1007', 'Quantitative Reasoning', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEH1007',
+        'Quantitative Reasoning',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
     const withTimetable = [
       makeModuleInfo('GEC1038', 'Quantitative Reasoning', 4, 'This is a different description.'),
@@ -339,12 +374,8 @@ describe(findEquivalentModules, () => {
   });
 
   it('should handle null credits', () => {
-    const withoutTimetable = [
-      makeModuleInfo('MOD001', 'Test Module', null, 'Test description'),
-    ];
-    const withTimetable = [
-      makeModuleInfo('MOD002', 'Test Module', null, 'Test description'),
-    ];
+    const withoutTimetable = [makeModuleInfo('MOD001', 'Test Module', null, 'Test description')];
+    const withTimetable = [makeModuleInfo('MOD002', 'Test Module', null, 'Test description')];
 
     const result = findEquivalentModules(withoutTimetable, withTimetable);
 
@@ -354,10 +385,20 @@ describe(findEquivalentModules, () => {
 
   it('should normalize title comparison', () => {
     const withoutTimetable = [
-      makeModuleInfo('GEH1007', 'QUANTITATIVE   REASONING', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEH1007',
+        'QUANTITATIVE   REASONING',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
     const withTimetable = [
-      makeModuleInfo('GEC1038', 'quantitative reasoning', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEC1038',
+        'quantitative reasoning',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
 
     const result = findEquivalentModules(withoutTimetable, withTimetable);
@@ -368,10 +409,20 @@ describe(findEquivalentModules, () => {
 
   it('should normalize description comparison', () => {
     const withoutTimetable = [
-      makeModuleInfo('GEH1007', 'Quantitative Reasoning', 4, 'This   module\nteaches  quantitative reasoning.'),
+      makeModuleInfo(
+        'GEH1007',
+        'Quantitative Reasoning',
+        4,
+        'This   module\nteaches  quantitative reasoning.',
+      ),
     ];
     const withTimetable = [
-      makeModuleInfo('GEC1038', 'Quantitative Reasoning', 4, 'This module teaches quantitative reasoning.'),
+      makeModuleInfo(
+        'GEC1038',
+        'Quantitative Reasoning',
+        4,
+        'This module teaches quantitative reasoning.',
+      ),
     ];
 
     const result = findEquivalentModules(withoutTimetable, withTimetable);
@@ -410,12 +461,8 @@ describe(findEquivalentModules, () => {
   });
 
   it('should return empty map when no candidates match', () => {
-    const withoutTimetable = [
-      makeModuleInfo('MOD001', 'Module One', 4, 'Description one'),
-    ];
-    const withTimetable = [
-      makeModuleInfo('MOD002', 'Module Two', 4, 'Description two'),
-    ];
+    const withoutTimetable = [makeModuleInfo('MOD001', 'Module One', 4, 'Description one')];
+    const withTimetable = [makeModuleInfo('MOD002', 'Module Two', 4, 'Description two')];
 
     const result = findEquivalentModules(withoutTimetable, withTimetable);
 
