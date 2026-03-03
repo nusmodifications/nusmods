@@ -378,6 +378,9 @@ importers:
       downshift:
         specifier: 6.1.12
         version: 6.1.12(react@18.3.1)
+      history:
+        specifier: 4.10.1
+        version: 4.10.1
       ical-generator:
         specifier: https://github.com/nusmodifications/ical-generator.git#a2aa62ed
         version: https://codeload.github.com/nusmodifications/ical-generator/tar.gz/a2aa62ed82a7c947b3f02172ac2c8ed5a9e32eb8
@@ -468,6 +471,9 @@ importers:
       searchkit:
         specifier: 2.4.1-alpha.5
         version: 2.4.1-alpha.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tippy.js:
+        specifier: 5.2.1
+        version: 5.2.1
       use-subscription:
         specifier: 1.10.0
         version: 1.10.0(react@18.3.1)
@@ -547,6 +553,9 @@ importers:
       '@types/enzyme':
         specifier: 3.10.18
         version: 3.10.18
+      '@types/history':
+        specifier: 4.7.11
+        version: 4.7.11
       '@types/jest':
         specifier: 29.5.14
         version: 29.5.14
