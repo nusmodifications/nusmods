@@ -6,14 +6,17 @@ your changes. Please fill it up to the best of your ability.
 -->
 
 ## Context
+
 <!-- Please link to a Github issue (type `#` to autocomplete issue) -->
 <!-- Or provide a brief explanation about the problem -->
 
 ## Implementation
+
 <!-- Explain how your solution solves the problem -->
 <!-- If it affects UI, an image or gif is greatly encouraged. -->
 
 ## Other Information
+
 <!--
 This section is optional, it's for stuff like:
 - Any questions you may have

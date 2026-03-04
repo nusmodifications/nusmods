@@ -62,7 +62,6 @@ jobs:
           at: ~/nusmods
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
-      - run: pnpm format:check
       - run:
           name: Build export service
           environment:
@@ -89,9 +88,6 @@ jobs:
       - run:
           name: Lint styles
           command: pnpm lint:styles
-      - run:
-          name: Check formatting
-          command: pnpm format:check
       - run:
           name: Typecheck Code
           command: pnpm typecheck

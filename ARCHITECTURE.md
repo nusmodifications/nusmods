@@ -5,8 +5,8 @@ NUSMods is a volunteer-run open source project. We don't work for NUS, and we do
 ## Principles
 
 1. Keep it pragmatically simple.
-3. Make it easy to contribute.
-2. Open source, open data, open community.
+2. Make it easy to contribute.
+3. Open source, open data, open community.
 4. Have fun and learn something new.
 
 These principles guide our decisions on what to build, how to build it, and how to work together. As such, we have landed on a stack that is entirely JavaScript-based, and we keep everything stateless and avoid servers and databases where possible. We do, however, encourage trying out new technologies and tools, as long as they don't violate our principles. In fact, many of our decisions are made to allow us to try out new technologies (e.g. React, serverless functions, etc.).

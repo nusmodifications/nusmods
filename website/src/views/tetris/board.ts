@@ -58,7 +58,7 @@ export function makePiece(shape: string[], color: ColorIndex): Piece {
   };
 }
 
-// prettier-ignore
+// oxfmt-ignore
 export const PIECES = [
   // I-piece
   makePiece([

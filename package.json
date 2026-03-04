@@ -5,6 +5,13 @@
   "engines": {
     "node": ">=22"
   },
+  "scripts": {
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
+  },
+  "devDependencies": {
+    "oxfmt": "0.36.0"
+  },
   "pnpm": {
     "overrides": {
       "cheerio": "1.0.0-rc.12",
