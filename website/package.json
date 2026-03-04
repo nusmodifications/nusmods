@@ -22,8 +22,7 @@
     "test:integration": "jest --config jest.integration.config.js",
     "test:watch": "jest --watch",
     "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
-    "ci": "cross-env NODE_ENV=production pnpm lint && pnpm typecheck && pnpm test && pnpm test:integration && pnpm build",
-    "prepare": "cd .. && husky website/.husky"
+    "ci": "cross-env NODE_ENV=production pnpm lint && pnpm typecheck && pnpm test && pnpm test:integration && pnpm build"
   },
   "dependencies": {
     "@authenio/samlify-node-xmllint": "2.0.0",

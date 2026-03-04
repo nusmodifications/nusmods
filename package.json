@@ -2,11 +2,17 @@
   "name": "nusmods-root",
   "private": true,
   "scripts": {
+    "prepare": "husky",
     "format": "oxfmt",
     "format:check": "oxfmt --check"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
     "oxfmt": "0.36.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md}": "oxfmt --write"
   },
   "engines": {
     "node": ">=22"
