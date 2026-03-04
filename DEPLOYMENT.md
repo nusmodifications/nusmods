@@ -1,49 +1,130 @@
-# Production Server Setup Guides
+# Deployment Guide
 
-This document contains deployment notes for NUSMods services that run outside Vercel.
+This document describes the current NUSMods deployment model.
 
-## Website and Export Deployment
+## Overview
 
-The website and export services are deployed on Vercel.
+NUSMods is deployed as two parts:
 
-The old Docker deployment files and scripts (`docker-compose*.yml`, `prod-up.sh`,
-`prod-deploy.sh`, `prod-down.sh`, and `website/scripts/promote-staging.sh`) were
-removed from this repository. Deployment is now managed through Vercel project settings.
+1. Website + export endpoints on Vercel.
+2. Self-managed data pipeline (scraper + static API data hosting, plus search infra).
 
-If you need to self-host website/export outside Vercel, use an older commit as a
-reference and maintain your own deployment workflow.
+## Website and Export (Vercel)
 
-## CentOS API Server Setup
+The website (`nusmods.com`) and export service are deployed via Vercel.
 
-NUS’s new student development platform runs CentOS 7 instead of the Ubuntu that we normally run. The instructions below will set up the scraper and API server on CentOS 7.
+- Website config: `website/vercel.json`
+- Export config: `export/vercel.json`
 
-1. Install software (run the commands below as root – log in as root by running `sudo su -`)
-    1. Install git: `yum install -y git`.
-    1. Install Nginx and enable its systemctl service by following https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-centos-7.
-    1. Install Node.js.
-    1. [Install pnpm](https://pnpm.io/installation).
-    1. Install and enable PM2: `pnpm add -g pm2 && pm2 startup systemd`
-    1. As a regular user, ensure that you can run PM2 by running `pm2`. If `pm2` can't be executed, check the permissions of the /usr/local/lib/npm folder. Try running  **(untested!)** `chmod u+rx -R /usr/local/lib/npm/bin`.
-1. Configure scraper
-    1. Clone the NUSMods repository: `git clone https//github.com/nusmodifications/nusmods.git`.
-    1. `cd nusmods/scrapers/nus-v2`
-    1. Follow the getting started instructions in the [scraper README.md](https://github.com/nusmodifications/nusmods/tree/master/scrapers/nus-v2#getting-started) to set up the scraper. If you have SSH access to existing scraper servers, you can use `scp` to copy their env.json for convenience.
-    1. Test that the scraper will work by running `pnpm dev test | pnpm bunyan`. If you see an error, it may actually just be a transient issue with the NUS APIs that the test script pings; they throw many random errors all the time.
-    1. Enable scraper service by running `pm2 start ecosystem.config.js`.
-1. Configure file server
-    1. (Optional) Copy production API data from existing data servers to a `/home/<username>/api.nusmods.com` folder: on the data server, run `scp -r api.nusmods.com <target server>:~`.
-    1. Configure Nginx (run below commands as root)
-        1. `cd /etc/nginx`
-        1. Edit `nginx.conf`: comment out the default `server` block.
-        1. Copy [this gist](https://gist.github.com/taneliang/3c6fdbb1a993fd24afcaafeb9a750f0c) to a new `conf.d/api.nusmods.com.conf` file. Be sure to correct the path to the API data folder.
-        1. `systemctl enable nginx`
-        1. `systemctl restart nginx`
-    1. Visit the IP address of the server in your browser. If you see a 403 Forbidden error:
-        1. Configure folder permissions.
-            1. Obtain the directory permissions of the data folder and all its parent directories: `namei -om /home/<username>/api.nusmods.com`.
-            1. All folders in the list require read and execute permissions. If some folders do not have them, run `chmod a+rx <folder>`.
-        1. Configure SELinux to allow the data folder to be served: [`chcon -Rt httpd_sys_content_t /home/<username>/api.nusmods.com`](https://stackoverflow.com/a/26228135/5281021).
-        1. Change existing file permissions if necessary: `chmod a+r -R api.nusmods.com`.
-    1. Set ACL policies on the data directory to ensure that all future directories and files can be served by Nginx: `setfacl -R -d --set u::rwx,g::rx,o::rx api.nusmods.com`.
-1. Add a DNS record to point to the server's public address.
-1. Set up HTTPS.
+Operational flow:
+
+1. Push a branch / open a PR to get a preview deployment.
+2. Merge to the production branch configured in Vercel.
+3. Validate critical flows after deploy:
+   - module search
+   - timetable rendering
+   - timetable export (PNG/PDF)
+   - error reporting
+
+For local production-like verification:
+
+```sh
+cd website
+pnpm build
+npx serve -s dist
+```
+
+## Self-Managed Data/API Infrastructure
+
+Use this section if you operate scraper/data infrastructure outside Vercel.
+
+### Recommended baseline
+
+- Ubuntu LTS
+- Node 22 LTS
+- pnpm
+- PM2
+- Nginx (for static API data serving)
+
+### Server bootstrap (Ubuntu)
+
+```sh
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git nginx curl build-essential
+```
+
+Install Node 22 LTS and pnpm using your standard team method (nvm, fnm, or distro policy), then verify:
+
+```sh
+node -v
+pnpm -v
+```
+
+Install PM2 globally:
+
+```sh
+pnpm add -g pm2
+pm2 -v
+```
+
+### Repository setup
+
+```sh
+git clone https://github.com/nusmodifications/nusmods.git
+cd nusmods
+pnpm install
+```
+
+### Scraper setup and runtime
+
+In `scrapers/nus-v2`:
+
+```sh
+cd scrapers/nus-v2
+cp env.example.json env.json
+# fill in env.json with required internal API credentials / endpoints
+pnpm dev test | pnpm bunyan
+pnpm build
+pm2 start ecosystem.config.js
+pm2 save
+pm2 startup systemd
+```
+
+Notes:
+
+- Scraper production scripts are defined in `scrapers/nus-v2/package.json`.
+- PM2 config is in `scrapers/nus-v2/ecosystem.config.js`.
+- ElasticSearch config is optional for local development, but required for production search.
+
+### Static API data serving (Nginx)
+
+The API static JSON data directory is typically served as `api.nusmods.com`.
+
+1. Place generated data under your chosen path (for example, `/home/<user>/api.nusmods.com`).
+2. Configure an Nginx server block to serve that directory.
+3. Enable and restart Nginx:
+
+```sh
+sudo systemctl enable nginx
+sudo systemctl restart nginx
+```
+
+4. Validate permissions for all parent directories and files.
+5. Point DNS to this host and verify public access.
+
+### Updating production data pipeline
+
+```sh
+cd /path/to/nusmods
+git pull
+pnpm install
+cd scrapers/nus-v2
+pnpm build
+pm2 restart ecosystem.config.js
+```
+
+Run a scraper health check after restart:
+
+```sh
+pnpm dev test | pnpm bunyan
+```
