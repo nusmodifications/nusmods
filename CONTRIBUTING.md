@@ -35,7 +35,7 @@ Tip: Pick an area you're interested in, and just focus on it. It is not necessar
 
 ## Development Tools
 
-You should have [Node.js](https://nodejs.org/) version 22 or above (use Node 22 LTS or `lts/jod` if possible) and [Yarn](https://yarnpkg.com/en/) version 1.2.0 or above. We recommend using [fnm](https://github.com/Schniz/fnm) to manage your Node versions.
+You should have [Node.js](https://nodejs.org/) version 22 or above (use Node 22 LTS or `lts/jod` if possible) and [pnpm](https://pnpm.io/installation). We recommend using [fnm](https://github.com/Schniz/fnm) to manage your Node versions.
 
 ## Proposing a Change
 
@@ -66,10 +66,10 @@ The core team is monitoring for pull requests. We will review your pull request 
 Before submitting a pull request, please make sure the following is done:
 
 1. [Fork the repository](https://github.com/nusmodifications/nusmods) and create your branch from `master`.
-1. Run `yarn` in the root of the project that you are working on (`/website`, `/export`, or `/packages/nusmoderator`).
+1. Run `pnpm install` from the repository root to install all dependencies.
 1. If you've fixed a bug or added code that should be tested, add tests! We ask that you write tests if your feature contains non-trivial logic. Tests can be omitted for minor layout or stylistic changes (or simply generate a snapshot).
-1. Ensure the test suite passes (`yarn test`). Tip: `yarn test:watch` is helpful in development.
-1. Run `yarn run ci` which runs the linting, testing and building steps. This is the command that is run on our CI system. There should not be errors shown. Alternatively, you can run the linting, testing and building step separately via `yarn run lint`, `yarn test` and `yarn run build` respectively.
+1. Ensure the test suite passes (`pnpm test`). Tip: `pnpm test:watch` is helpful in development.
+1. Run `pnpm run ci` which runs the linting, testing and building steps. This is the command that is run on our CI system. There should not be errors shown. Alternatively, you can run the linting, testing and building step separately via `pnpm run lint`, `pnpm test` and `pnpm run build` respectively.
 1. There might be project-specific contribution details. Please read the README of the respective projects.
 
 ## Other Open Source Projects

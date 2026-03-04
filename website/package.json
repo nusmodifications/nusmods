@@ -9,9 +9,9 @@
     "start": "cross-env NODE_ENV=development OPTIMISER_API_URL=/api/optimiser/optimise webpack serve --config webpack/webpack.config.dev.js",
     "start:local": "cross-env NODE_ENV=development OPTIMISER_API_URL=http://localhost:8020/optimise webpack serve --config webpack/webpack.config.dev.js",
     "start:export": "cross-env NODE_ENV=development OPEN_BROWSER=0 webpack serve --config webpack/webpack.config.timetable-only.js --port 8081",
-    "start:optimiser": "yarn prepare:optimiser && cd api/optimiser/_test/server && go run main.go -port 8020",
+    "start:optimiser": "pnpm prepare:optimiser && cd api/optimiser/_test/server && go run main.go -port 8020",
     "prepare:optimiser": "cp src/data/venues.json api/optimiser/_constants",
-    "build": "yarn prepare:optimiser && cross-env NODE_ENV=production node scripts/build",
+    "build": "pnpm prepare:optimiser && cross-env NODE_ENV=production node scripts/build",
     "rsync": "rsync -avu dist/",
     "rsync:export": "rsync -avu --delete-after dist-timetable/",
     "promote-staging": "bash scripts/promote-staging.sh",
@@ -25,7 +25,7 @@
     "test:integration": "jest --config jest.integration.config.js",
     "test:watch": "jest --watch",
     "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
-    "ci": "cross-env NODE_ENV=production yarn lint && yarn typecheck && yarn test && yarn test:integration && yarn build",
+    "ci": "cross-env NODE_ENV=production pnpm lint && pnpm typecheck && pnpm test && pnpm test:integration && pnpm build",
     "prepare": "cd .. && husky website/.husky"
   },
   "author": "NUSModifications",
@@ -69,6 +69,7 @@
     "@types/react-loadable": "5.5.11",
     "@types/react-modal": "3.16.3",
     "@types/react-redux": "7.1.34",
+    "@types/history": "4.7.11",
     "@types/react-router-dom": "5.3.3",
     "@types/react-scrollspy": "3.3.9",
     "@types/redux-mock-store": "1.5.0",
@@ -138,20 +139,23 @@
   },
   "dependencies": {
     "@authenio/samlify-node-xmllint": "2.0.0",
+    "@material/button": "14.0.0",
     "@material/fab": "14.0.0",
     "@material/snackbar": "14.0.0",
     "@sentry/browser": "7.119.1",
     "@sentry/node": "6.19.7",
     "@sentry/tracing": "6.19.7",
     "@tippy.js/react": "3.1.1",
+    "tippy.js": "5.2.1",
     "axios": "1.12.0",
     "body-scroll-lock": "3.1.5",
     "bootstrap": "4.6.2",
     "bowser": "2.11.0",
-    "browserslist-config-nusmods": "file:../packages/browserslist-config-nusmods",
+    "browserslist-config-nusmods": "workspace:*",
     "classnames": "2.5.1",
     "core-js": "3.39.0",
     "date-fns": "2.30.0",
+    "history": "4.10.1",
     "downshift": "6.1.12",
     "ical-generator": "https://github.com/nusmodifications/ical-generator.git#a2aa62ed",
     "immer": "10.1.1",
@@ -188,8 +192,5 @@
   },
   "browserslist": [
     "extends browserslist-config-nusmods"
-  ],
-  "resolutions": {
-    "cheerio": "1.0.0-rc.12"
-  }
+  ]
 }

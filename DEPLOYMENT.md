@@ -92,14 +92,14 @@ NUS’s new student development platform runs CentOS 7 instead of the Ubuntu tha
     1. Install git: `yum install -y git`.
     1. Install Nginx and enable its systemctl service by following https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-centos-7.
     1. Install Node.js.
-    1. [Install Yarn](https://yarnpkg.com/lang/en/docs/install/#centos-stable).
-    1. Install and enable PM2: `yarn global add pm2 && pm2 startup systemd`
-    1. As a regular user, ensure that you can run PM2 by running `pm2`. If `pm2` can't be executed, check the permissions of the /usr/local/lib/npm folder and the /usr/local/share/.config/yarn/global folders. Try running  **(untested!)** `chmod u+rx -R /usr/local/lib/npm/bin /usr/local/share/.config/yarn/global`.
+    1. [Install pnpm](https://pnpm.io/installation).
+    1. Install and enable PM2: `pnpm add -g pm2 && pm2 startup systemd`
+    1. As a regular user, ensure that you can run PM2 by running `pm2`. If `pm2` can't be executed, check the permissions of the /usr/local/lib/npm folder. Try running  **(untested!)** `chmod u+rx -R /usr/local/lib/npm/bin`.
 1. Configure scraper
     1. Clone the NUSMods repository: `git clone https//github.com/nusmodifications/nusmods.git`.
     1. `cd nusmods/scrapers/nus-v2`
     1. Follow the getting started instructions in the [scraper README.md](https://github.com/nusmodifications/nusmods/tree/master/scrapers/nus-v2#getting-started) to set up the scraper. If you have SSH access to existing scraper servers, you can use `scp` to copy their env.json for convenience.
-    1. Test that the scraper will work by running `yarn dev test | yarn bunyan`. If you see an error, it may actually just be a transient issue with the NUS APIs that the test script pings; they throw many random errors all the time.
+    1. Test that the scraper will work by running `pnpm dev test | pnpm bunyan`. If you see an error, it may actually just be a transient issue with the NUS APIs that the test script pings; they throw many random errors all the time.
     1. Enable scraper service by running `pm2 start ecosystem.config.js`.
 1. Configure file server
     1. (Optional) Copy production API data from existing data servers to a `/home/<username>/api.nusmods.com` folder: on the data server, run `scp -r api.nusmods.com <target server>:~`.

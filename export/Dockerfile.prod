@@ -5,7 +5,8 @@ RUN apk update && apk upgrade && \
     echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
     echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
     apk add --no-cache \
-      chromium
+      chromium && \
+    corepack enable
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
@@ -15,15 +16,27 @@ RUN mkdir -p /home/node/Downloads \
     && mkdir -p /home/node/app/export \
     && chown -R node:node /home/node
 
+WORKDIR /home/node/app
+
+# Copy workspace config first for layer caching
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+
+# Copy all workspace package.json files (needed for pnpm workspace resolution)
+COPY export/package.json ./export/
+COPY website/package.json ./website/
+COPY packages/nusmoderator/package.json ./packages/nusmoderator/
+COPY packages/browserslist-config-nusmods/package.json ./packages/browserslist-config-nusmods/
+COPY scrapers/nus-v2/package.json ./scrapers/nus-v2/
+COPY scrapers/cpex-scraper/package.json ./scrapers/cpex-scraper/
+
+RUN pnpm install --frozen-lockfile
+
 WORKDIR /home/node/app/export
 
-COPY ./export/package.json ./export/yarn.lock ./export/tsconfig.json ./
-
-RUN ls -la1; yarn --no-cache --frozen-lockfile
-
 COPY --chown=node:node ./export/src ./src
+COPY --chown=node:node ./export/tsconfig.json ./
 
-RUN yarn build
+RUN pnpm build
 
 # Run everything after as non-privileged user.
 USER node
