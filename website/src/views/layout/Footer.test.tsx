@@ -2,7 +2,8 @@ import { shallow } from 'enzyme';
 
 import { FooterComponent } from 'views/layout/Footer';
 
+const jest = vi;
 test('is a footer element', () => {
-  const actual = shallow(<FooterComponent toggleFeedback={vi.fn()} lastUpdatedDate={null} />);
+  const actual = shallow(<FooterComponent toggleFeedback={jest.fn()} lastUpdatedDate={null} />);
   expect(actual.type()).toBe('footer');
 });

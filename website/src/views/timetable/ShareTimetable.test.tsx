@@ -8,6 +8,7 @@ import Modal from 'views/components/Modal';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ShareTimetable, { SHORT_URL_KEY } from './ShareTimetable';
 
+const jest = vi;
 const mockAxios = axios as Mocked<typeof axios>;
 
 describe('ShareTimetable', () => {
@@ -15,7 +16,7 @@ describe('ShareTimetable', () => {
 
   // Mock Axios to stop it from firing API requests
   beforeEach(() => {
-    vi.spyOn(axios, 'put').mockResolvedValue({
+    jest.spyOn(axios, 'put').mockResolvedValue({
       data: { [SHORT_URL_KEY]: MOCK_SHORTURL },
       config: {},
       status: 200,

@@ -2,9 +2,10 @@ import { shallow } from 'enzyme';
 
 import SemesterSwitcher from './SemesterSwitcher';
 
+const jest = vi;
 describe('<SemesterSwitcher />', () => {
   test('simulates click events', () => {
-    const onButtonClick = vi.fn();
+    const onButtonClick = jest.fn();
     const wrapper = shallow(<SemesterSwitcher semester={2} onSelectSemester={onButtonClick} />);
     const buttons = wrapper.find('button');
     buttons.at(0).simulate('click');
@@ -15,7 +16,7 @@ describe('<SemesterSwitcher />', () => {
 
   describe('semester switching buttons are disabled appropriately', () => {
     test('left button', () => {
-      const onButtonClick = vi.fn();
+      const onButtonClick = jest.fn();
       const wrapper = shallow(<SemesterSwitcher semester={1} onSelectSemester={onButtonClick} />);
       const buttons = wrapper.find('button');
       buttons.at(0).simulate('click');
@@ -25,7 +26,7 @@ describe('<SemesterSwitcher />', () => {
     });
 
     test('right button', () => {
-      const onButtonClick = vi.fn();
+      const onButtonClick = jest.fn();
       const wrapper = shallow(<SemesterSwitcher semester={4} onSelectSemester={onButtonClick} />);
       const buttons = wrapper.find('button');
       buttons.at(1).simulate('click');

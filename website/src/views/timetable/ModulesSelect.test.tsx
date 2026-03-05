@@ -4,6 +4,7 @@ import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import Modal from 'views/components/Modal';
 import ModulesSelect from './ModulesSelect';
 
+const jest = vi;
 const modules = [
   {
     moduleCode: 'Test1',
@@ -20,15 +21,15 @@ const modules = [
 ];
 
 const commonProps = {
-  getFilteredModules: vi.fn((inputValue) => {
+  getFilteredModules: jest.fn((inputValue) => {
     if (!inputValue) return [];
     return modules.filter((m) => m.moduleCode.includes(inputValue));
   }),
-  onChange: vi.fn(),
+  onChange: jest.fn(),
   moduleCount: 3,
   placeholder: 'test placeholder',
   disabled: false,
-  onRemoveModule: vi.fn(),
+  onRemoveModule: jest.fn(),
 };
 
 describe(ModulesSelect, () => {

@@ -3,11 +3,12 @@ import ModuleMenu from './ModuleMenu';
 
 import styles from './PlannerModule.scss';
 
+const jest = vi;
 function makeModuleMenu(isInTimetable: boolean) {
-  const removeModule = vi.fn();
-  const editCustomData = vi.fn();
-  const addModuleToTimetable = vi.fn();
-  const viewSemesterTimetable = vi.fn();
+  const removeModule = jest.fn();
+  const editCustomData = jest.fn();
+  const addModuleToTimetable = jest.fn();
+  const viewSemesterTimetable = jest.fn();
   return {
     removeModule,
     editCustomData,

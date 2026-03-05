@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import SearchBox from './SearchBox';
 
+const jest = vi;
 describe(SearchBox, () => {
   test('should match snapshot', () => {
     expect(
@@ -11,8 +12,8 @@ describe(SearchBox, () => {
           isLoading={false}
           value=""
           placeholder=""
-          onChange={vi.fn()}
-          onSearch={vi.fn()}
+          onChange={jest.fn()}
+          onSearch={jest.fn()}
         />,
       ),
     ).toMatchSnapshot();
@@ -25,8 +26,8 @@ describe(SearchBox, () => {
           isLoading
           value=""
           placeholder=""
-          onChange={vi.fn()}
-          onSearch={vi.fn()}
+          onChange={jest.fn()}
+          onSearch={jest.fn()}
         />,
       ),
     ).toMatchSnapshot();
@@ -39,8 +40,8 @@ describe(SearchBox, () => {
           isLoading={false}
           value="Hello world"
           placeholder="Testing testing 123"
-          onChange={vi.fn()}
-          onSearch={vi.fn()}
+          onChange={jest.fn()}
+          onSearch={jest.fn()}
         />,
       ),
     ).toMatchSnapshot();

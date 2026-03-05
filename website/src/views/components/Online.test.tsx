@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import { OnlineComponent } from './Online';
 
+const jest = vi;
 describe(OnlineComponent, () => {
   const testContent = <span>Test</span>;
 
@@ -15,7 +16,7 @@ describe(OnlineComponent, () => {
   });
 
   test('should call render function with isOnline status', () => {
-    const render = vi.fn().mockReturnValue(null);
+    const render = jest.fn().mockReturnValue(null);
     const wrapper = shallow(<OnlineComponent isOnline>{render}</OnlineComponent>);
 
     expect(render).toHaveBeenLastCalledWith(true);

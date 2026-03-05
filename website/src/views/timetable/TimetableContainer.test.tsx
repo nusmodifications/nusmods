@@ -25,6 +25,7 @@ import modulesList from '__mocks__/moduleList.json';
 
 import { TimetableContainerComponent } from './TimetableContainer';
 
+const jest = vi;
 /**
  * A module that exists in our mock `moduleList` but which is also *not*
  * pre-loaded into `moduleBank`. Intended to be used by tests that expect
@@ -87,7 +88,7 @@ describe(TimetableContainerComponent, () => {
 
   beforeEach(() => {
     mockDom();
-    mockAxiosRequest = vi.spyOn(axios, 'request');
+    mockAxiosRequest = jest.spyOn(axios, 'request');
     mockAxiosRequest.mockResolvedValue(bfs1001Response);
   });
 

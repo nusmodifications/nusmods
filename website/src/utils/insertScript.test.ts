@@ -1,9 +1,10 @@
 import insertScript from './insertScript';
 
+const jest = vi;
 describe(insertScript, () => {
   test('insert a script tag', () => {
-    window.document.createElement = vi.fn().mockReturnValue({});
-    window.document.body.appendChild = vi.fn();
+    window.document.createElement = jest.fn().mockReturnValue({});
+    window.document.body.appendChild = jest.fn();
 
     insertScript('https://example.com/random.js');
     insertScript('https://example.com/random.js', { async: true });

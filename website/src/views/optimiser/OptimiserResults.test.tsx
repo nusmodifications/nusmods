@@ -2,13 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { defaultLectureOption } from 'test-utils/optimiser';
 import OptimiserResults, { OptimiserResultsProps } from './OptimiserResults';
 
+const jest = vi;
 const shareableLink = 'https://nusmods.com/timetable/sem-1/share?CS1231S=TUT:01A,LEC:1';
 const defaultShareableLink = 'https://nusmods.com/timetable/sem-1/share?CS1231S=TUT:01A,LEC:1';
 
 describe('OptimiserResults', () => {
   beforeEach(() => {
     // Provide a dummy implementation to silence the error
-    Element.prototype.scrollIntoView = vi.fn();
+    Element.prototype.scrollIntoView = jest.fn();
   });
 
   it('should render when there is a shareable link', () => {

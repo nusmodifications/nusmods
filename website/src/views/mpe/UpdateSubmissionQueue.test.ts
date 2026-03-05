@@ -1,6 +1,7 @@
 import type { MpeSubmission, MpePreference } from '../../types/mpe';
 import UpdateSubmissionQueue from './UpdateSubmissionQueue';
 
+const jest = vi;
 describe(UpdateSubmissionQueue, () => {
   const preference: MpePreference = {
     moduleTitle: 'Programming Methodology',
@@ -19,7 +20,7 @@ describe(UpdateSubmissionQueue, () => {
   };
 
   it('should limit concurrently calls to update', async () => {
-    const update = vi.fn().mockResolvedValue(undefined);
+    const update = jest.fn().mockResolvedValue(undefined);
     const queue = new UpdateSubmissionQueue(update);
 
     queue.update(emptySubmission);
@@ -35,7 +36,7 @@ describe(UpdateSubmissionQueue, () => {
 
   it('should rethrow last error', async () => {
     let rejections = 0;
-    const update = vi.fn().mockImplementation(() => {
+    const update = jest.fn().mockImplementation(() => {
       rejections += 1;
       return Promise.reject(new Error(String(rejections)));
     });

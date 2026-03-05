@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme';
 import { captureException } from 'utils/error';
 import ErrorBoundary from './ErrorBoundary';
 
+const jest = vi;
 const mockCaptureException = captureException as Mock;
 
 vi.mock('utils/error');
@@ -29,7 +30,7 @@ describe('ErrorBoundary', () => {
 
     // Silence console errors
     consoleError = global.console.error;
-    global.console.error = vi.fn();
+    global.console.error = jest.fn();
   });
 
   afterEach(() => {
@@ -59,7 +60,7 @@ describe('ErrorBoundary', () => {
 
   test('should show custom error page if provided', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const errorPage = vi.fn((_error: Error) => 'Custom content');
+    const errorPage = jest.fn((_error: Error) => 'Custom content');
 
     const wrapper = mount(
       <ErrorBoundary errorPage={errorPage}>

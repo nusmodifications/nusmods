@@ -4,6 +4,7 @@ import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
 import ModuleFinderPager, { displayPageRange } from './ModuleFinderPager';
 
+const jest = vi;
 describe(displayPageRange, () => {
   test('calculate page range correctly', () => {
     // One page
@@ -77,11 +78,11 @@ describe('ModuleFinderPager', () => {
     test('should respond to clicks on buttons', () => {
       const props = {
         ...defaultProps,
-        onGoToFirst: vi.fn(),
-        onGoToPrevious: vi.fn(),
-        onGoToPage: vi.fn(),
-        onGoToNext: vi.fn(),
-        onGoToLast: vi.fn(),
+        onGoToFirst: jest.fn(),
+        onGoToPrevious: jest.fn(),
+        onGoToPage: jest.fn(),
+        onGoToNext: jest.fn(),
+        onGoToLast: jest.fn(),
       };
 
       const actual = shallow(<ModuleFinderPager {...props} />);
@@ -107,11 +108,11 @@ describe('ModuleFinderPager', () => {
     test('should respond to clicks on buttons', () => {
       const props = {
         ...defaultProps,
-        onGoToFirst: vi.fn(),
-        onGoToPrevious: vi.fn(),
-        onGoToPage: vi.fn(),
-        onGoToNext: vi.fn(),
-        onGoToLast: vi.fn(),
+        onGoToFirst: jest.fn(),
+        onGoToPrevious: jest.fn(),
+        onGoToPage: jest.fn(),
+        onGoToNext: jest.fn(),
+        onGoToLast: jest.fn(),
       };
 
       const actual = shallow(<ModuleFinderPager {...props} />);

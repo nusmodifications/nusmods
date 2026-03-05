@@ -5,6 +5,7 @@ import { SearchkitManager } from 'searchkit';
 import renderWithRouterMatch from 'test-utils/renderWithRouterMatch';
 import ModuleFinderApiError from './ModuleFinderApiError';
 
+const jest = vi;
 vi.mock('views/components/RandomKawaii');
 
 const mockedUrl = 'https://someEsUrl.com';
@@ -43,7 +44,7 @@ describe(ModuleFinderApiError, () => {
 
     const { getByRole } = view;
     searchkit.history = {
-      push: vi.fn(),
+      push: jest.fn(),
     };
     const tryAgainButton = getByRole('button');
     await userEvent.click(tryAgainButton);

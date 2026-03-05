@@ -8,6 +8,8 @@ import {
   TimeRangeSelectProps,
 } from './OptimiserTimeRangeSelect';
 
+const jest = vi;
+
 vi.mock('./OptimiserFormTooltip', () => ({
   __esModule: true,
   default: () => <div />,
@@ -17,7 +19,7 @@ const SELECT_LABEL_TEXT = 'Choose a time from the given range';
 
 describe('OptimiserTimeRangeSelect', () => {
   it('should call setTime when valuue is changed', async () => {
-    const setTime = vi.fn();
+    const setTime = jest.fn();
     const props: TimeRangeSelectProps = {
       id: 'test',
       currentValue: '0800',

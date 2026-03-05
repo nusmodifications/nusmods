@@ -2,11 +2,12 @@ import axios from 'axios';
 import { nextBus } from 'apis/nextbus';
 import arrival from './__mocks__/arrival.json';
 
+const jest = vi;
 vi.mock('axios');
 
 describe(nextBus, () => {
   beforeEach(() => {
-    axios.get = vi.fn().mockResolvedValue({
+    axios.get = jest.fn().mockResolvedValue({
       data: arrival,
     });
   });

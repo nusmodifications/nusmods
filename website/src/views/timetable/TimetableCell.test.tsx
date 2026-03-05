@@ -4,6 +4,7 @@ import { HoverLesson, InteractableLesson } from 'types/timetables';
 import { EVERY_WEEK } from 'test-utils/timetable';
 import TimetableCell from './TimetableCell';
 
+const jest = vi;
 const NON_TA_LESSON: InteractableLesson = {
   moduleCode: 'CS1010',
   title: 'Intro',
@@ -29,14 +30,14 @@ const makeFactory =
   (lesson: InteractableLesson) =>
   (additionalProps: Partial<Props> = {}) => {
     const props = {
-      onHover: vi.fn(),
+      onHover: jest.fn(),
       showTitle: false,
       hoverLesson: null,
       transparent: false,
       ...additionalProps,
     };
 
-    const onClick = vi.fn();
+    const onClick = jest.fn();
 
     return {
       onClick,
@@ -52,7 +53,7 @@ describe(TimetableCell, () => {
 
     const buttons = wrapper.find('button');
     buttons.at(0).simulate('click', {
-      preventDefault: vi.fn(),
+      preventDefault: jest.fn(),
       currentTarget: document.createElement('button'),
     });
     expect(onClick).toBeCalled();
@@ -134,7 +135,7 @@ describe(TimetableCell, () => {
 
     const buttons = wrapper.find('button');
     buttons.at(0).simulate('click', {
-      preventDefault: vi.fn(),
+      preventDefault: jest.fn(),
       currentTarget: document.createElement('button'),
     });
     expect(onClick).toBeCalled();

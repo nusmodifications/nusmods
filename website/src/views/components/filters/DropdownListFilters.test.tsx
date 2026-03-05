@@ -4,6 +4,7 @@ import { RefinementItem } from 'types/views';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
 import DropdownListFilters from './DropdownListFilters';
 
+const jest = vi;
 describe(DropdownListFilters, () => {
   beforeEach(() => {
     mockDom();
@@ -25,7 +26,7 @@ describe(DropdownListFilters, () => {
   /* eslint-enable */
 
   function make(items: RefinementItem[], selectedItems: string[]) {
-    const onFilterChange = vi.fn();
+    const onFilterChange = jest.fn();
 
     return {
       onFilterChange,

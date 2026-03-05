@@ -4,8 +4,9 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive } from 'views/routes/paths';
 import { ModuleNotFoundPageComponent } from './ModuleNotFoundPage';
 
+const jest = vi;
 test('should fetch archive pages if moduleCode looks like a module code', () => {
-  const fetchModuleArchive = vi.fn();
+  const fetchModuleArchive = jest.fn();
   shallow(
     <ModuleNotFoundPageComponent
       moduleCode="CS1010S"
@@ -20,7 +21,7 @@ test('should fetch archive pages if moduleCode looks like a module code', () => 
 });
 
 test('should not fetch archive pages if tryArchive is false', () => {
-  const fetchModuleArchive = vi.fn();
+  const fetchModuleArchive = jest.fn();
   shallow(
     <ModuleNotFoundPageComponent
       moduleCode="CS1010S"
@@ -35,7 +36,7 @@ test('should not fetch archive pages if tryArchive is false', () => {
 });
 
 test("should not fetch archive pages if moduleCode doesn't look like module code", () => {
-  const fetchModuleArchive = vi.fn();
+  const fetchModuleArchive = jest.fn();
   shallow(
     <ModuleNotFoundPageComponent
       moduleCode="blah-blah"
@@ -54,7 +55,7 @@ test('should show spinner while archive pages are loading', () => {
     <ModuleNotFoundPageComponent
       moduleCode="CS1010S"
       availableArchive={[]}
-      fetchModuleArchive={vi.fn()}
+      fetchModuleArchive={jest.fn()}
       tryArchive
       isLoading
     />,
@@ -68,7 +69,7 @@ test('should suggest archive pages if they are available', () => {
     <ModuleNotFoundPageComponent
       moduleCode="CS1010S"
       availableArchive={['2015/2016', '2017/2018']}
-      fetchModuleArchive={vi.fn()}
+      fetchModuleArchive={jest.fn()}
       isLoading={false}
       tryArchive
     />,

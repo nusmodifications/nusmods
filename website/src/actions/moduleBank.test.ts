@@ -6,6 +6,7 @@ import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
 import { getLRUModules } from './moduleBank-lru';
 
+const jest = vi;
 // Mock NUSModsApi as its URLs contain the current AY, breaking the snapshot tests
 // every AY.
 vi.mock('apis/nusmods');
@@ -25,8 +26,8 @@ describe(actions.fetchModule, () => {
     const thunk = actions.fetchModule('CS1010S');
     expect(thunk).toBeInstanceOf(Function);
 
-    const dispatch = vi.fn().mockResolvedValue(undefined);
-    const getState = vi.fn().mockReturnValue({
+    const dispatch = jest.fn().mockResolvedValue(undefined);
+    const getState = jest.fn().mockReturnValue({
       moduleBank: { modules: { CS1010S: {} } },
     } as any);
 
@@ -43,8 +44,8 @@ describe(actions.fetchModule, () => {
       modules[`CS${i}`] = { timestamp: i };
     });
 
-    const dispatch = vi.fn().mockResolvedValue(undefined);
-    const getState = vi.fn().mockReturnValue({
+    const dispatch = jest.fn().mockResolvedValue(undefined);
+    const getState = jest.fn().mockReturnValue({
       moduleBank: { modules },
       timetables: {},
     } as any);
@@ -58,8 +59,8 @@ describe(actions.fetchModule, () => {
     const thunk = actions.fetchModule('CS1010S');
 
     const error = new Error('ModuleBank Test: Error loading module');
-    const dispatch = vi.fn().mockRejectedValueOnce(error);
-    const getState = vi.fn().mockReturnValue({
+    const dispatch = jest.fn().mockRejectedValueOnce(error);
+    const getState = jest.fn().mockReturnValue({
       moduleBank: { modules: { CS1010S: {} } },
     } as any);
 
@@ -102,7 +103,7 @@ test('fetchModuleArchive should return a request action', () => {
 });
 
 test('fetchAllModuleArchive should return multiple request actions', () => {
-  const dispatch = vi.fn().mockReturnValue(Promise.resolve());
+  const dispatch = jest.fn().mockReturnValue(Promise.resolve());
   const thunk = actions.fetchAllModuleArchive('CS1010S');
   expect(thunk).toEqual(expect.any(Function));
   thunk(dispatch);

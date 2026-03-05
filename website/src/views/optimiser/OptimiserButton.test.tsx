@@ -2,13 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { defaultLectureOption } from 'test-utils/optimiser';
 import OptimiserButton, { OptimiserButtonProps } from './OptimiserButton';
 
+const jest = vi;
 describe('OptimiserButton', () => {
   it('should be enabled when there are lesson options', () => {
     const props: OptimiserButtonProps = {
       isOptimising: false,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
-      onClick: vi.fn(),
+      onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toBeEnabled();
@@ -19,7 +20,7 @@ describe('OptimiserButton', () => {
       isOptimising: false,
       lessonOptions: [],
       freeDayConflicts: [],
-      onClick: vi.fn(),
+      onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toBeDisabled();
@@ -30,7 +31,7 @@ describe('OptimiserButton', () => {
       isOptimising: true,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
-      onClick: vi.fn(),
+      onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toBeDisabled();
@@ -48,7 +49,7 @@ describe('OptimiserButton', () => {
           days: [],
         },
       ],
-      onClick: vi.fn(),
+      onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toBeDisabled();
@@ -59,7 +60,7 @@ describe('OptimiserButton', () => {
       isOptimising: true,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
-      onClick: vi.fn(),
+      onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toHaveTextContent('Searching and optimising...');
@@ -70,7 +71,7 @@ describe('OptimiserButton', () => {
       isOptimising: false,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
-      onClick: vi.fn(),
+      onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toHaveTextContent('Optimise Timetable');

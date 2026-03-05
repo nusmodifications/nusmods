@@ -7,14 +7,15 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 import { Module } from 'types/modules';
 import { DisconnectedModuleTombstone, Props } from './ModuleTombstone';
 
+const jest = vi;
 describe(DisconnectedModuleTombstone, () => {
   let mockProps: Mocked<Props>;
 
   beforeEach(() => {
     mockProps = {
       module: CS1010S as unknown as Module,
-      resetTombstone: vi.fn(),
-      undo: vi.fn(),
+      resetTombstone: jest.fn(),
+      undo: jest.fn(),
     } as any;
   });
 

@@ -6,14 +6,15 @@ import { addColors } from 'test-utils/theme';
 import { TimetableModulesTableComponent, Props } from './TimetableModulesTable';
 import styles from './TimetableModulesTable.scss';
 
+const jest = vi;
 function make(props: Partial<Props> = {}) {
-  const selectModuleColor = vi.fn();
-  const hideLessonInTimetable = vi.fn();
-  const showLessonInTimetable = vi.fn();
-  const enableTaModule = vi.fn();
-  const disableTaModule = vi.fn();
-  const onRemoveModule = vi.fn();
-  const resetTombstone = vi.fn();
+  const selectModuleColor = jest.fn();
+  const hideLessonInTimetable = jest.fn();
+  const showLessonInTimetable = jest.fn();
+  const enableTaModule = jest.fn();
+  const disableTaModule = jest.fn();
+  const onRemoveModule = jest.fn();
+  const resetTombstone = jest.fn();
 
   const wrapper = shallow(
     <TimetableModulesTableComponent

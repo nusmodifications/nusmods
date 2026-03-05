@@ -15,6 +15,7 @@ import {
 import { defaultTimetableState } from 'reducers/timetables';
 import * as actions from './timetables';
 
+const jest = vi;
 const initialState = defaultTimetableState;
 
 vi.mock('storage', () => ({
@@ -85,7 +86,7 @@ describe('disabling ta module', () => {
       timetables: timetablesState(ta),
       moduleBank: { modules: { CS1010S, CS3216 } },
     };
-    const dispatch = vi.fn();
+    const dispatch = jest.fn();
     const action = actions.disableTaModule(semester, 'CS1010S');
     action(dispatch, () => state);
     const [[firstAction]] = dispatch.mock.calls;
@@ -112,7 +113,7 @@ describe('disabling ta module', () => {
       timetables: timetablesState(ta),
       moduleBank: { modules: { CS1010S: { semesterData: [] } } },
     };
-    const dispatch = vi.fn();
+    const dispatch = jest.fn();
     const action = actions.disableTaModule(semester, 'CS1010S');
     action(dispatch, () => state);
     const [[firstAction]] = dispatch.mock.calls;
@@ -152,7 +153,7 @@ describe('fillTimetableBlanks', () => {
     };
 
     const state: any = { timetables: timetablesState(timetable), moduleBank };
-    const dispatch = vi.fn();
+    const dispatch = jest.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toHaveBeenCalled();
   });
@@ -166,7 +167,7 @@ describe('fillTimetableBlanks', () => {
       CS3216: {},
     };
     const state: any = { timetables: timetablesState(timetable), moduleBank };
-    const dispatch = vi.fn();
+    const dispatch = jest.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).toHaveBeenCalledTimes(2);
 
@@ -233,7 +234,7 @@ describe('fillTimetableBlanks', () => {
     };
 
     const state: any = { timetables, moduleBank };
-    const dispatch = vi.fn();
+    const dispatch = jest.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).toHaveBeenCalledTimes(1);
     const [[firstAction]] = dispatch.mock.calls;
@@ -279,7 +280,7 @@ describe('fillTimetableBlanks', () => {
       timetables: timetablesState(timetable),
       moduleBank: moduleBankWithoutModule,
     };
-    const dispatch = vi.fn();
+    const dispatch = jest.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toThrow(TypeError);
   });
@@ -297,7 +298,7 @@ describe('fillTimetableBlanks', () => {
       lessons: { [semester]: timetable },
     };
     const state: any = { timetables, moduleBank };
-    const dispatch = vi.fn();
+    const dispatch = jest.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toThrow(TypeError);
   });
@@ -328,8 +329,8 @@ describe(actions.fetchTimetableModules, () => {
     },
   };
 
-  const dispatch = vi.fn().mockResolvedValue(undefined);
-  const getState = vi.fn().mockReturnValue(state);
+  const dispatch = jest.fn().mockResolvedValue(undefined);
+  const getState = jest.fn().mockReturnValue(state);
 
   beforeEach(() => {
     dispatch.mockClear();

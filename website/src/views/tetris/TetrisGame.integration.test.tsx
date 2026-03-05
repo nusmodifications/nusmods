@@ -3,11 +3,12 @@ import _ from 'lodash';
 
 import TetrisGame from './TetrisGame';
 
+const jest = vi;
 describe(TetrisGame, () => {
   test('integration test', () => {
     // Randomly play the game for 1000 turns 100 times to check the game
     // at least won't crash
-    const wrapper = shallow(<TetrisGame resetGame={vi.fn()} />);
+    const wrapper = shallow(<TetrisGame resetGame={jest.fn()} />);
     const instance = wrapper.instance() as TetrisGame;
 
     const moves = Object.entries({

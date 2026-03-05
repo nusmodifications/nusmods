@@ -12,6 +12,7 @@ import { CS1010S } from '__mocks__/modules';
 
 import { ModulePageContainerComponent } from './ModulePageContainer';
 
+const jest = vi;
 vi.mock('views/components/RandomKawaii');
 vi.mock('utils/error');
 
@@ -72,7 +73,7 @@ describe(ModulePageContainerComponent, () => {
 
   beforeEach(() => {
     mockDom();
-    mockAxiosRequest = vi.spyOn(axios, 'request');
+    mockAxiosRequest = jest.spyOn(axios, 'request');
   });
 
   afterEach(() => {

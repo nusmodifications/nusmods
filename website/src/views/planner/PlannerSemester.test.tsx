@@ -10,6 +10,7 @@ import config from 'config';
 import PlannerSemester from './PlannerSemester';
 import plannerModuleStyles from './PlannerModule.scss';
 
+const jest = vi;
 vi.mock('react-beautiful-dnd', () => ({
   Droppable: ({ children }: DroppableProps) => children({} as any, {} as any),
   Draggable: ({ children }: DraggableProps) => children({} as any, {} as any, {} as any),
@@ -20,11 +21,11 @@ function makePlannerSemester(year: string, semester: number, modules: PlannerMod
   const { store } = configureStore();
   const { history } = createHistory();
 
-  const addModule = vi.fn();
-  const removeModule = vi.fn();
-  const addCustomData = vi.fn();
-  const setPlaceholderModule = vi.fn();
-  const addModuleToTimetable = vi.fn();
+  const addModule = jest.fn();
+  const removeModule = jest.fn();
+  const addCustomData = jest.fn();
+  const setPlaceholderModule = jest.fn();
+  const addModuleToTimetable = jest.fn();
 
   return mount(
     <Provider store={store}>

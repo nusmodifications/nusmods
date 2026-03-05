@@ -4,6 +4,7 @@ import Modal from 'views/components/Modal';
 import { waitForComponentToPaint } from 'test-utils/wait';
 import { ModulesSelectComponent } from './ModulesSelect';
 
+const jest = vi;
 const modules = [
   {
     moduleCode: 'Test1',
@@ -20,16 +21,16 @@ const modules = [
 ];
 
 const commonProps = {
-  getFilteredModules: vi.fn((inputValue) => {
+  getFilteredModules: jest.fn((inputValue) => {
     if (!inputValue) return [];
     return modules.filter((m) => m.moduleCode.includes(inputValue));
   }),
-  onChange: vi.fn(),
+  onChange: jest.fn(),
   moduleCount: 3,
   placeholder: 'test placeholder',
   matchBreakpoint: false,
   disabled: false,
-  onRemoveModule: vi.fn(),
+  onRemoveModule: jest.fn(),
 };
 
 describe(ModulesSelectComponent, () => {

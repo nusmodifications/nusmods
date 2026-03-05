@@ -5,6 +5,7 @@ import { breakpointUp } from 'utils/css';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
 import useMediaQuery, { getMedia } from './useMediaQuery';
 
+const jest = vi;
 type Props = {
   mediaQuery: MediaQuery;
 };
@@ -53,7 +54,7 @@ describe(useMediaQuery, () => {
 
   test('should transform media query correctly', () => {
     mockWindowMatchMedia({ matches: false });
-    const matchMediaSpy = vi.spyOn(window, 'matchMedia');
+    const matchMediaSpy = jest.spyOn(window, 'matchMedia');
     expect(matchMediaSpy).not.toHaveBeenCalled();
 
     const jsonMediaQuery = breakpointUp('md');

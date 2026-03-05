@@ -4,13 +4,14 @@ import { History } from 'history';
 import createHistory from 'test-utils/createHistory';
 import HistoryDebouncer from './HistoryDebouncer';
 
+const jest = vi;
 describe(HistoryDebouncer, () => {
-  const mockNow = vi.spyOn(Date, 'now');
+  const mockNow = jest.spyOn(Date, 'now');
 
   function createHistoryMock(initialEntries = ['/']): Mocked<History> {
     const { history } = createHistory(initialEntries);
-    vi.spyOn(history, 'push');
-    vi.spyOn(history, 'replace');
+    jest.spyOn(history, 'push');
+    jest.spyOn(history, 'replace');
 
     return history as any;
   }
