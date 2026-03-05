@@ -20,7 +20,7 @@ describe(fromTermCode, () => {
 
 describe(cacheDownload, () => {
   test('should return and save to cache if download is successful', async () => {
-    const download = jest.fn().mockResolvedValue('My data');
+    const download = vi.fn().mockResolvedValue('My data');
     const cache = mockCache('File content');
 
     const result = await cacheDownload('data', download, cache);
@@ -30,7 +30,7 @@ describe(cacheDownload, () => {
   });
 
   test('should not throw if cache save is unsuccessful', async () => {
-    const download = jest.fn().mockResolvedValue('My data');
+    const download = vi.fn().mockResolvedValue('My data');
     const cache = mockCache('File content');
     cache.write.mockRejectedValue(new Error('The server is full of eels'));
 
@@ -40,7 +40,7 @@ describe(cacheDownload, () => {
   });
 
   test('should try to read from cache if download is not successful', async () => {
-    const download = jest.fn().mockRejectedValue(new Error('The API server is on fire'));
+    const download = vi.fn().mockRejectedValue(new Error('The API server is on fire'));
     const cache = mockCache('File content');
 
     const result = await cacheDownload('data', download, cache);
@@ -50,7 +50,7 @@ describe(cacheDownload, () => {
 
   test('should throw download error if reading from cache was also unsuccessful', async () => {
     const downloadError = new Error('The API server is on fire');
-    const download = jest.fn().mockRejectedValue(downloadError);
+    const download = vi.fn().mockRejectedValue(downloadError);
     const cache = mockCache('File content');
     cache.read.mockRejectedValue(new Error('The file system is also on fire'));
 
@@ -60,13 +60,13 @@ describe(cacheDownload, () => {
 
 describe(retry, () => {
   test('it should return the resolved value', async () => {
-    const fn = jest.fn().mockResolvedValue('Hello world');
+    const fn = vi.fn().mockResolvedValue('Hello world');
     await expect(retry(fn, 3)).resolves.toEqual('Hello world');
     expect(fn).toBeCalledTimes(1);
   });
 
   test('it should retry the function until it succeeds', async () => {
-    const fn = jest
+    const fn = vi
       .fn()
       .mockRejectedValueOnce(new Error('Oh no bees'))
       .mockResolvedValue('Hello world');
@@ -78,7 +78,7 @@ describe(retry, () => {
 
   test('it should retry the function until it runs out of tries', async () => {
     const error = new Error('Oh no bees');
-    const fn = jest.fn().mockRejectedValue(error);
+    const fn = vi.fn().mockRejectedValue(error);
     expect.assertions(2);
 
     try {
@@ -92,7 +92,7 @@ describe(retry, () => {
 
   test('it should not retry if condition returns false', async () => {
     const error = new Error('Oh no bees');
-    const fn = jest.fn().mockRejectedValue(error);
+    const fn = vi.fn().mockRejectedValue(error);
     expect.assertions(2);
 
     try {

@@ -4,7 +4,7 @@ import type { SemesterData, Module } from '../types/modules';
 import { combineModules, mergeAliases, moduleDataCheck } from './CollateModules';
 import { mockLogger } from '../utils/test-utils';
 
-jest.mock('../services/io/elastic');
+vi.mock('../services/io/elastic');
 
 describe(combineModules, () => {
   const logger = mockLogger();
