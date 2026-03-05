@@ -20,16 +20,16 @@ const modules = [
 ];
 
 const commonProps = {
-  getFilteredModules: jest.fn((inputValue) => {
+  getFilteredModules: vi.fn((inputValue) => {
     if (!inputValue) return [];
     return modules.filter((m) => m.moduleCode.includes(inputValue));
   }),
-  onChange: jest.fn(),
+  onChange: vi.fn(),
   moduleCount: 3,
   placeholder: 'test placeholder',
   matchBreakpoint: false,
   disabled: false,
-  onRemoveModule: jest.fn(),
+  onRemoveModule: vi.fn(),
 };
 
 describe(ModulesSelectComponent, () => {

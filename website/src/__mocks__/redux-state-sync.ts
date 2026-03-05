@@ -1,7 +1,5 @@
 import type { Middleware } from 'redux';
 
-module.exports = {
-  createStateSyncMiddleware(): Middleware {
-    return () => (next) => (action) => next(action);
-  },
-};
+export function createStateSyncMiddleware(): Middleware {
+  return () => (next) => (action) => next(action);
+}

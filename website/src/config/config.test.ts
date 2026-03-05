@@ -1,3 +1,5 @@
+vi.unmock('config');
+
 import _ from 'lodash';
 
 import { Semesters } from 'types/modules';

@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import axios, { AxiosResponse } from 'axios';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Maximize2, Minimize2 } from 'react-feather';
@@ -7,14 +8,14 @@ import Modal from 'views/components/Modal';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ShareTimetable, { SHORT_URL_KEY } from './ShareTimetable';
 
-const mockAxios = axios as jest.Mocked<typeof axios>;
+const mockAxios = axios as Mocked<typeof axios>;
 
 describe('ShareTimetable', () => {
   const MOCK_SHORTURL = 'https://shorten.nusmods.com';
 
   // Mock Axios to stop it from firing API requests
   beforeEach(() => {
-    jest.spyOn(axios, 'put').mockResolvedValue({
+    vi.spyOn(axios, 'put').mockResolvedValue({
       data: { [SHORT_URL_KEY]: MOCK_SHORTURL },
       config: {},
       status: 200,

@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import { shallow, mount } from 'enzyme';
 
 /* @var {Module} */
@@ -7,13 +8,13 @@ import { Module } from 'types/modules';
 import { DisconnectedModuleTombstone, Props } from './ModuleTombstone';
 
 describe(DisconnectedModuleTombstone, () => {
-  let mockProps: jest.Mocked<Props>;
+  let mockProps: Mocked<Props>;
 
   beforeEach(() => {
     mockProps = {
       module: CS1010S as unknown as Module,
-      resetTombstone: jest.fn(),
-      undo: jest.fn(),
+      resetTombstone: vi.fn(),
+      undo: vi.fn(),
     } as any;
   });
 

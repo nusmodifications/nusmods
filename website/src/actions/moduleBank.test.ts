@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import _ from 'lodash';
 
 import { TimetableConfig } from 'types/timetables';
@@ -7,8 +8,8 @@ import { getLRUModules } from './moduleBank-lru';
 
 // Mock NUSModsApi as its URLs contain the current AY, breaking the snapshot tests
 // every AY.
-jest.mock('apis/nusmods');
-const mockApi: jest.Mocked<typeof NUSModsApi> = NUSModsApi as any;
+vi.mock('apis/nusmods');
+const mockApi: Mocked<typeof NUSModsApi> = NUSModsApi as any;
 mockApi.moduleListUrl.mockReturnValue('test://MOCK_MOD_LIST_URL');
 mockApi.moduleDetailsUrl.mockImplementation(
   (...args) => `test://MOCK_MOD_DETAILS_URL/${args.join('/')}`,
@@ -24,8 +25,8 @@ describe(actions.fetchModule, () => {
     const thunk = actions.fetchModule('CS1010S');
     expect(thunk).toBeInstanceOf(Function);
 
-    const dispatch = jest.fn().mockResolvedValue(undefined);
-    const getState = jest.fn().mockReturnValue({
+    const dispatch = vi.fn().mockResolvedValue(undefined);
+    const getState = vi.fn().mockReturnValue({
       moduleBank: { modules: { CS1010S: {} } },
     } as any);
 
@@ -42,8 +43,8 @@ describe(actions.fetchModule, () => {
       modules[`CS${i}`] = { timestamp: i };
     });
 
-    const dispatch = jest.fn().mockResolvedValue(undefined);
-    const getState = jest.fn().mockReturnValue({
+    const dispatch = vi.fn().mockResolvedValue(undefined);
+    const getState = vi.fn().mockReturnValue({
       moduleBank: { modules },
       timetables: {},
     } as any);
@@ -57,8 +58,8 @@ describe(actions.fetchModule, () => {
     const thunk = actions.fetchModule('CS1010S');
 
     const error = new Error('ModuleBank Test: Error loading module');
-    const dispatch = jest.fn().mockRejectedValueOnce(error);
-    const getState = jest.fn().mockReturnValue({
+    const dispatch = vi.fn().mockRejectedValueOnce(error);
+    const getState = vi.fn().mockReturnValue({
       moduleBank: { modules: { CS1010S: {} } },
     } as any);
 
@@ -101,7 +102,7 @@ test('fetchModuleArchive should return a request action', () => {
 });
 
 test('fetchAllModuleArchive should return multiple request actions', () => {
-  const dispatch = jest.fn().mockReturnValue(Promise.resolve());
+  const dispatch = vi.fn().mockReturnValue(Promise.resolve());
   const thunk = actions.fetchAllModuleArchive('CS1010S');
   expect(thunk).toEqual(expect.any(Function));
   thunk(dispatch);

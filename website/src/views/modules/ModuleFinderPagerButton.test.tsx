@@ -43,7 +43,7 @@ describe(ModuleFinderPagerButton, () => {
   });
 
   test('should respond to clicks', () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const componentWrapper = shallow(
       <ModuleFinderPagerButton {...defaultProps} onClick={onClick} />,
     );

@@ -1,3 +1,4 @@
+import type { MockInstance } from 'vitest';
 import { act, screen, waitFor } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
@@ -82,11 +83,11 @@ function make(
 }
 
 describe(TimetableContainerComponent, () => {
-  let mockAxiosRequest: jest.SpiedFunction<typeof axios.request>;
+  let mockAxiosRequest: MockInstance<typeof axios.request>;
 
   beforeEach(() => {
     mockDom();
-    mockAxiosRequest = jest.spyOn(axios, 'request');
+    mockAxiosRequest = vi.spyOn(axios, 'request');
     mockAxiosRequest.mockResolvedValue(bfs1001Response);
   });
 

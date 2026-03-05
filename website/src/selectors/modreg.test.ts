@@ -1,10 +1,11 @@
+import type { MockInstance } from 'vitest';
 import { ModRegNotificationSettings } from 'types/reducers';
 import { convertModRegDates } from 'config';
 import { forceTimer } from 'utils/debug';
 
 import { getRounds } from './modreg';
 
-jest.mock('utils/debug');
+vi.mock('utils/debug');
 
 describe(getRounds, () => {
   const settings = (
@@ -18,7 +19,7 @@ describe(getRounds, () => {
   });
 
   const mockTime = (now: Date | string) => {
-    (forceTimer as unknown as jest.MockInstance<Date | null, []>).mockReturnValue(new Date(now));
+    (forceTimer as unknown as MockInstance<Date | null, []>).mockReturnValue(new Date(now));
   };
 
   const DEFAULT_SCHEDULE = {

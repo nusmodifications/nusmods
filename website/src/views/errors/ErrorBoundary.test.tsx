@@ -1,18 +1,17 @@
+import type { Mock } from 'vitest';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { captureException } from 'utils/error';
 import ErrorBoundary from './ErrorBoundary';
 
-const mockCaptureException = captureException as jest.Mock;
+const mockCaptureException = captureException as Mock;
 
-jest.mock('utils/error');
-jest.mock(
-  'views/errors/ErrorPage',
-  () =>
-    function ErrorPage() {
-      return '<ErrorPage> component';
-    },
-);
+vi.mock('utils/error');
+vi.mock('views/errors/ErrorPage', () => ({
+  default: function ErrorPage() {
+    return '<ErrorPage> component';
+  },
+}));
 
 // To be used to compare with error caught by ErrorBoundary
 const error = new Error('Test error');
@@ -30,7 +29,7 @@ describe('ErrorBoundary', () => {
 
     // Silence console errors
     consoleError = global.console.error;
-    global.console.error = jest.fn();
+    global.console.error = vi.fn();
   });
 
   afterEach(() => {
@@ -60,7 +59,7 @@ describe('ErrorBoundary', () => {
 
   test('should show custom error page if provided', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const errorPage = jest.fn((_error: Error) => 'Custom content');
+    const errorPage = vi.fn((_error: Error) => 'Custom content');
 
     const wrapper = mount(
       <ErrorBoundary errorPage={errorPage}>

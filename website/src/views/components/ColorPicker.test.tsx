@@ -6,7 +6,7 @@ import { expectColor } from 'test-utils/theme';
 import styles from './ColorPicker.scss';
 
 function makeColorPicker(color: ColorIndex = 0) {
-  const onChooseColor = jest.fn();
+  const onChooseColor = vi.fn();
   return {
     onChooseColor,
     wrapper: mount(

@@ -29,14 +29,14 @@ const makeFactory =
   (lesson: InteractableLesson) =>
   (additionalProps: Partial<Props> = {}) => {
     const props = {
-      onHover: jest.fn(),
+      onHover: vi.fn(),
       showTitle: false,
       hoverLesson: null,
       transparent: false,
       ...additionalProps,
     };
 
-    const onClick = jest.fn();
+    const onClick = vi.fn();
 
     return {
       onClick,
@@ -52,7 +52,7 @@ describe(TimetableCell, () => {
 
     const buttons = wrapper.find('button');
     buttons.at(0).simulate('click', {
-      preventDefault: jest.fn(),
+      preventDefault: vi.fn(),
       currentTarget: document.createElement('button'),
     });
     expect(onClick).toBeCalled();
@@ -134,7 +134,7 @@ describe(TimetableCell, () => {
 
     const buttons = wrapper.find('button');
     buttons.at(0).simulate('click', {
-      preventDefault: jest.fn(),
+      preventDefault: vi.fn(),
       currentTarget: document.createElement('button'),
     });
     expect(onClick).toBeCalled();

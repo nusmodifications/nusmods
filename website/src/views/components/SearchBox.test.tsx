@@ -11,8 +11,8 @@ describe(SearchBox, () => {
           isLoading={false}
           value=""
           placeholder=""
-          onChange={jest.fn()}
-          onSearch={jest.fn()}
+          onChange={vi.fn()}
+          onSearch={vi.fn()}
         />,
       ),
     ).toMatchSnapshot();
@@ -25,8 +25,8 @@ describe(SearchBox, () => {
           isLoading
           value=""
           placeholder=""
-          onChange={jest.fn()}
-          onSearch={jest.fn()}
+          onChange={vi.fn()}
+          onSearch={vi.fn()}
         />,
       ),
     ).toMatchSnapshot();
@@ -39,8 +39,8 @@ describe(SearchBox, () => {
           isLoading={false}
           value="Hello world"
           placeholder="Testing testing 123"
-          onChange={jest.fn()}
-          onSearch={jest.fn()}
+          onChange={vi.fn()}
+          onSearch={vi.fn()}
         />,
       ),
     ).toMatchSnapshot();

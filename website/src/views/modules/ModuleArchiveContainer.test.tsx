@@ -1,3 +1,4 @@
+import type { MockInstance } from 'vitest';
 import { act, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
@@ -11,8 +12,8 @@ import { CS1010S } from '__mocks__/modules';
 
 import { ModuleArchiveContainerComponent } from './ModuleArchiveContainer';
 
-jest.mock('views/components/RandomKawaii');
-jest.mock('utils/error');
+vi.mock('views/components/RandomKawaii');
+vi.mock('utils/error');
 
 const cs1010sResponse: AxiosResponse = {
   data: CS1010S,
@@ -67,11 +68,11 @@ function make(location: string = CANONICAL) {
 }
 
 describe(ModuleArchiveContainerComponent, () => {
-  let mockAxiosRequest: jest.SpiedFunction<typeof axios.request>;
+  let mockAxiosRequest: MockInstance<typeof axios.request>;
 
   beforeEach(() => {
     mockDom();
-    mockAxiosRequest = jest.spyOn(axios, 'request');
+    mockAxiosRequest = vi.spyOn(axios, 'request');
   });
 
   afterEach(() => {

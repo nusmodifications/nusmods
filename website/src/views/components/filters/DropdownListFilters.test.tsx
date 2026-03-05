@@ -25,7 +25,7 @@ describe(DropdownListFilters, () => {
   /* eslint-enable */
 
   function make(items: RefinementItem[], selectedItems: string[]) {
-    const onFilterChange = jest.fn();
+    const onFilterChange = vi.fn();
 
     return {
       onFilterChange,

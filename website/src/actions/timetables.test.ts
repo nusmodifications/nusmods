@@ -17,9 +17,9 @@ import * as actions from './timetables';
 
 const initialState = defaultTimetableState;
 
-jest.mock('storage', () => ({
-  getItem: jest.fn(),
-  setItem: jest.fn(),
+vi.mock('storage', () => ({
+  getItem: vi.fn(),
+  setItem: vi.fn(),
 }));
 
 // see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
@@ -85,7 +85,7 @@ describe('disabling ta module', () => {
       timetables: timetablesState(ta),
       moduleBank: { modules: { CS1010S, CS3216 } },
     };
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     const action = actions.disableTaModule(semester, 'CS1010S');
     action(dispatch, () => state);
     const [[firstAction]] = dispatch.mock.calls;
@@ -112,7 +112,7 @@ describe('disabling ta module', () => {
       timetables: timetablesState(ta),
       moduleBank: { modules: { CS1010S: { semesterData: [] } } },
     };
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     const action = actions.disableTaModule(semester, 'CS1010S');
     action(dispatch, () => state);
     const [[firstAction]] = dispatch.mock.calls;
@@ -152,7 +152,7 @@ describe('fillTimetableBlanks', () => {
     };
 
     const state: any = { timetables: timetablesState(timetable), moduleBank };
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toHaveBeenCalled();
   });
@@ -166,7 +166,7 @@ describe('fillTimetableBlanks', () => {
       CS3216: {},
     };
     const state: any = { timetables: timetablesState(timetable), moduleBank };
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).toHaveBeenCalledTimes(2);
 
@@ -233,7 +233,7 @@ describe('fillTimetableBlanks', () => {
     };
 
     const state: any = { timetables, moduleBank };
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).toHaveBeenCalledTimes(1);
     const [[firstAction]] = dispatch.mock.calls;
@@ -279,7 +279,7 @@ describe('fillTimetableBlanks', () => {
       timetables: timetablesState(timetable),
       moduleBank: moduleBankWithoutModule,
     };
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toThrow(TypeError);
   });
@@ -297,7 +297,7 @@ describe('fillTimetableBlanks', () => {
       lessons: { [semester]: timetable },
     };
     const state: any = { timetables, moduleBank };
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toThrow(TypeError);
   });
@@ -328,8 +328,8 @@ describe(actions.fetchTimetableModules, () => {
     },
   };
 
-  const dispatch = jest.fn().mockResolvedValue(undefined);
-  const getState = jest.fn().mockReturnValue(state);
+  const dispatch = vi.fn().mockResolvedValue(undefined);
+  const getState = vi.fn().mockReturnValue(state);
 
   beforeEach(() => {
     dispatch.mockClear();

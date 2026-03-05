@@ -8,7 +8,7 @@ const defaultShareableLink = 'https://nusmods.com/timetable/sem-1/share?CS1231S=
 describe('OptimiserResults', () => {
   beforeEach(() => {
     // Provide a dummy implementation to silence the error
-    Element.prototype.scrollIntoView = jest.fn();
+    Element.prototype.scrollIntoView = vi.fn();
   });
 
   it('should render when there is a shareable link', () => {

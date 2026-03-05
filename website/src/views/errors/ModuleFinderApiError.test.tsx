@@ -5,7 +5,7 @@ import { SearchkitManager } from 'searchkit';
 import renderWithRouterMatch from 'test-utils/renderWithRouterMatch';
 import ModuleFinderApiError from './ModuleFinderApiError';
 
-jest.mock('views/components/RandomKawaii');
+vi.mock('views/components/RandomKawaii');
 
 const mockedUrl = 'https://someEsUrl.com';
 const CANONICAL = '/modules?q=GER1000&sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4';
@@ -43,7 +43,7 @@ describe(ModuleFinderApiError, () => {
 
     const { getByRole } = view;
     searchkit.history = {
-      push: jest.fn(),
+      push: vi.fn(),
     };
     const tryAgainButton = getByRole('button');
     await userEvent.click(tryAgainButton);

@@ -77,11 +77,11 @@ describe('ModuleFinderPager', () => {
     test('should respond to clicks on buttons', () => {
       const props = {
         ...defaultProps,
-        onGoToFirst: jest.fn(),
-        onGoToPrevious: jest.fn(),
-        onGoToPage: jest.fn(),
-        onGoToNext: jest.fn(),
-        onGoToLast: jest.fn(),
+        onGoToFirst: vi.fn(),
+        onGoToPrevious: vi.fn(),
+        onGoToPage: vi.fn(),
+        onGoToNext: vi.fn(),
+        onGoToLast: vi.fn(),
       };
 
       const actual = shallow(<ModuleFinderPager {...props} />);
@@ -107,11 +107,11 @@ describe('ModuleFinderPager', () => {
     test('should respond to clicks on buttons', () => {
       const props = {
         ...defaultProps,
-        onGoToFirst: jest.fn(),
-        onGoToPrevious: jest.fn(),
-        onGoToPage: jest.fn(),
-        onGoToNext: jest.fn(),
-        onGoToLast: jest.fn(),
+        onGoToFirst: vi.fn(),
+        onGoToPrevious: vi.fn(),
+        onGoToPage: vi.fn(),
+        onGoToNext: vi.fn(),
+        onGoToLast: vi.fn(),
       };
 
       const actual = shallow(<ModuleFinderPager {...props} />);

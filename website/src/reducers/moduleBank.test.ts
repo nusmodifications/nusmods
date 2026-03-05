@@ -1,3 +1,4 @@
+import type { MockInstance } from 'vitest';
 import { Internal } from 'actions/moduleBank';
 import { REMOVE_LRU_MODULE, UPDATE_MODULE_TIMESTAMP } from 'actions/constants';
 import { ModuleBank } from 'types/reducers';
@@ -12,9 +13,9 @@ const defaultModuleBankState: ModuleBank = {
 };
 
 describe(UPDATE_MODULE_TIMESTAMP, () => {
-  let dateNowSpy: jest.SpyInstance;
+  let dateNowSpy: MockInstance;
   beforeEach(() => {
-    dateNowSpy = jest.spyOn(Date, 'now').mockReturnValue(12345);
+    dateNowSpy = vi.spyOn(Date, 'now').mockReturnValue(12345);
   });
 
   afterEach(() => {

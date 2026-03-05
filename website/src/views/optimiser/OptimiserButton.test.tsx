@@ -8,7 +8,7 @@ describe('OptimiserButton', () => {
       isOptimising: false,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
-      onClick: jest.fn(),
+      onClick: vi.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toBeEnabled();
@@ -19,7 +19,7 @@ describe('OptimiserButton', () => {
       isOptimising: false,
       lessonOptions: [],
       freeDayConflicts: [],
-      onClick: jest.fn(),
+      onClick: vi.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toBeDisabled();
@@ -30,7 +30,7 @@ describe('OptimiserButton', () => {
       isOptimising: true,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
-      onClick: jest.fn(),
+      onClick: vi.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toBeDisabled();
@@ -48,7 +48,7 @@ describe('OptimiserButton', () => {
           days: [],
         },
       ],
-      onClick: jest.fn(),
+      onClick: vi.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toBeDisabled();
@@ -59,7 +59,7 @@ describe('OptimiserButton', () => {
       isOptimising: true,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
-      onClick: jest.fn(),
+      onClick: vi.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toHaveTextContent('Searching and optimising...');
@@ -70,7 +70,7 @@ describe('OptimiserButton', () => {
       isOptimising: false,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
-      onClick: jest.fn(),
+      onClick: vi.fn(),
     };
     render(<OptimiserButton {...props} />);
     expect(screen.getByRole('button')).toHaveTextContent('Optimise Timetable');

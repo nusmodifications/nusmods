@@ -53,7 +53,7 @@ describe(useMediaQuery, () => {
 
   test('should transform media query correctly', () => {
     mockWindowMatchMedia({ matches: false });
-    const matchMediaSpy = jest.spyOn(window, 'matchMedia');
+    const matchMediaSpy = vi.spyOn(window, 'matchMedia');
     expect(matchMediaSpy).not.toHaveBeenCalled();
 
     const jsonMediaQuery = breakpointUp('md');

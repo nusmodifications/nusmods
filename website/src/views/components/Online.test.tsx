@@ -15,7 +15,7 @@ describe(OnlineComponent, () => {
   });
 
   test('should call render function with isOnline status', () => {
-    const render = jest.fn().mockReturnValue(null);
+    const render = vi.fn().mockReturnValue(null);
     const wrapper = shallow(<OnlineComponent isOnline>{render}</OnlineComponent>);
 
     expect(render).toHaveBeenLastCalledWith(true);

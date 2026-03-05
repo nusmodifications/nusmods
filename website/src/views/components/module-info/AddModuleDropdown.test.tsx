@@ -10,8 +10,8 @@ import { AddModuleDropdownComponent } from './AddModuleDropdown';
 
 describe(AddModuleDropdownComponent, () => {
   function make(module: Module, timetables: TimetableConfig = {}) {
-    const addModule = jest.fn();
-    const removeModule = jest.fn();
+    const addModule = vi.fn();
+    const removeModule = vi.fn();
 
     return {
       addModule,
