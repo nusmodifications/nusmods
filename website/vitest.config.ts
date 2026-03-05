@@ -20,10 +20,9 @@ function assetMockPlugin(): Plugin {
       ) {
         return FILE_MOCK;
       }
-      if (/\.svg\?url$/.test(source)) {
-        return FILE_MOCK;
-      }
-      if (/\.svg$/.test(source)) {
+      const cleanSource = source.split('?')[0];
+      if (cleanSource.endsWith('.svg')) {
+        if (source.includes('?url')) return FILE_MOCK;
         return SVG_MOCK;
       }
       if (/\.(?:css|scss)$/.test(source)) {
