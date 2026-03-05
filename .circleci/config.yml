@@ -46,7 +46,7 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-      - run: pnpm test --runInBand
+      - run: pnpm test
       - run: pnpm build
       - store_artifacts:
           path: dist
