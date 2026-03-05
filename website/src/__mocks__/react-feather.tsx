@@ -20,4 +20,4 @@ const handler: ProxyHandler<Record<string, ReturnType<typeof createMockIcon>>> =
 
 const mocks = new Proxy({} as Record<string, ReturnType<typeof createMockIcon>>, handler);
 
-module.exports = mocks;
+export default mocks;
