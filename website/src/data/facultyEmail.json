@@ -949,10 +949,7 @@
     "email": "dtk@nus.edu.sg",
     "match": {
       "type": "moduleCode",
-      "moduleCode": [
-        "DTK1234",
-        "DTK1234A"
-      ]
+      "moduleCode": ["DTK1234", "DTK1234A"]
     }
   },
   {

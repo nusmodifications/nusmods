@@ -32,9 +32,7 @@
   "jsnext:main": "dist/index.es.js",
   "scripts": {
     "clean": "rimraf dist coverage",
-    "lint": "documentation lint src && eslint --ext .ts src && pnpm format:check",
-    "format": "oxfmt --no-error-on-unmatched-pattern --write \"src/**/*.ts\" package.json",
-    "format:check": "oxfmt --no-error-on-unmatched-pattern --check \"src/**/*.ts\" package.json",
+    "lint": "documentation lint src && eslint --ext .ts src",
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
     "test": "jest --coverage",
@@ -55,7 +53,6 @@
     "eslint-plugin-import": "2.31.0",
     "jest": "26.6.3",
     "microbundle": "0.15.1",
-    "oxfmt": "0.36.0",
     "rimraf": "3.0.2",
     "ts-jest": "26.5.6",
     "typescript": "5.9.3"

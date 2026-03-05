@@ -50,15 +50,15 @@ function getTimestampForFilename(): string {
 /** Strip HTML tags, decode common HTML entities, remove NBSPs, collapse whitespace. */
 function cleanString(s: string): string {
   return s
-    .replace(/<[^>]*>?/gm, ' ')        // strip HTML tags
-    .replace(/&nbsp;/gi, ' ')           // decode &nbsp;
-    .replace(/&amp;/gi, '&')            // decode &amp;
-    .replace(/&lt;/gi, '<')             // decode &lt;
-    .replace(/&gt;/gi, '>')             // decode &gt;
-    .replace(/&quot;/gi, '"')           // decode &quot;
-    .replace(/&#39;/gi, "'")            // decode &#39;
-    .replace(/\u00A0/g, ' ')            // replace NBSP unicode char
-    .replace(/\s+/g, ' ')              // collapse whitespace
+    .replace(/<[^>]*>?/gm, ' ') // strip HTML tags
+    .replace(/&nbsp;/gi, ' ') // decode &nbsp;
+    .replace(/&amp;/gi, '&') // decode &amp;
+    .replace(/&lt;/gi, '<') // decode &lt;
+    .replace(/&gt;/gi, '>') // decode &gt;
+    .replace(/&quot;/gi, '"') // decode &quot;
+    .replace(/&#39;/gi, "'") // decode &#39;
+    .replace(/\u00A0/g, ' ') // replace NBSP unicode char
+    .replace(/\s+/g, ' ') // collapse whitespace
     .trim();
 }
 
@@ -110,8 +110,8 @@ const mpeValueMap: Record<string, { inS1CPEx?: boolean; inS2CPEx?: boolean }> = 
   'S1 - Sem 1': { inS1CPEx: true },
   'S2 - Sem 2': { inS2CPEx: true },
   'S1&S2 - Sem 1 & 2': { inS1CPEx: true, inS2CPEx: true },
-  'S1': { inS1CPEx: true },
-  'S2': { inS2CPEx: true },
+  S1: { inS1CPEx: true },
+  S2: { inS2CPEx: true },
   'S1&S2': { inS1CPEx: true, inS2CPEx: true },
 };
 
@@ -168,9 +168,7 @@ async function scraper() {
 
     // CourseNUSMods API expects the first 3 characters of the AcademicGroup code
     const acadGroupCode =
-      faculty.AcademicGroup.length >= 3
-        ? faculty.AcademicGroup.slice(0, 3)
-        : faculty.AcademicGroup;
+      faculty.AcademicGroup.length >= 3 ? faculty.AcademicGroup.slice(0, 3) : faculty.AcademicGroup;
 
     console.log(
       `[${i + 1}/${facultiesData.length}] Fetching modules for ${faculty.Description} (${acadGroupCode})...`,

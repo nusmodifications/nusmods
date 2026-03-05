@@ -1,10 +1,17 @@
 {
   "name": "nusmods-root",
   "private": true,
-  "packageManager": "pnpm@10.30.3",
+  "scripts": {
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
+  },
+  "devDependencies": {
+    "oxfmt": "0.36.0"
+  },
   "engines": {
     "node": ">=22"
   },
+  "packageManager": "pnpm@10.30.3",
   "pnpm": {
     "overrides": {
       "cheerio": "1.0.0-rc.12",

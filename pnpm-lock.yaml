@@ -10,7 +10,11 @@ overrides:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      oxfmt:
+        specifier: 0.36.0
+        version: 0.36.0
 
   export:
     dependencies:
@@ -90,9 +94,6 @@ importers:
       npm-run-all:
         specifier: 4.1.5
         version: 4.1.5
-      oxfmt:
-        specifier: 0.36.0
-        version: 0.36.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -111,9 +112,6 @@ importers:
       lodash:
         specifier: 4.17.23
         version: 4.17.23
-      oxfmt:
-        specifier: 0.36.0
-        version: 0.36.0
 
   packages/nusmoderator:
     dependencies:
@@ -151,9 +149,6 @@ importers:
       microbundle:
         specifier: 0.15.1
         version: 0.15.1(@types/babel__core@7.20.5)(ts-node@10.9.2(@types/node@22.13.5)(typescript@5.9.3))
-      oxfmt:
-        specifier: 0.36.0
-        version: 0.36.0
       rimraf:
         specifier: 3.0.2
         version: 3.0.2
@@ -182,9 +177,6 @@ importers:
       eslint:
         specifier: ^8.35.0
         version: 8.57.1
-      oxfmt:
-        specifier: 0.36.0
-        version: 0.36.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -312,9 +304,6 @@ importers:
       mock-fs:
         specifier: 5.4.1
         version: 5.4.1
-      oxfmt:
-        specifier: 0.36.0
-        version: 0.36.0
       swagger-ui-dist:
         specifier: 4.19.1
         version: 4.19.1
@@ -736,9 +725,6 @@ importers:
       npm-run-all:
         specifier: 4.1.5
         version: 4.1.5
-      oxfmt:
-        specifier: 0.36.0
-        version: 0.36.0
       postcss:
         specifier: 8.4.49
         version: 8.4.49
