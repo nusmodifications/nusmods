@@ -11,6 +11,7 @@ const handler: ProxyHandler<Record<string, ReturnType<typeof createMockIcon>>> =
   get(target, prop: string) {
     if (typeof prop !== 'string') return undefined;
     if (!(prop in target)) {
+      // eslint-disable-next-line no-param-reassign
       target[prop] = createMockIcon(prop);
     }
     return target[prop];

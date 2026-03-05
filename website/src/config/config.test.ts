@@ -1,3 +1,4 @@
+/* eslint-disable import/first -- vi.unmock must be before imports (hoisted by Vitest) */
 vi.unmock('config');
 
 import _ from 'lodash';
