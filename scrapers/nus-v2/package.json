@@ -11,9 +11,10 @@
     "docs": "cp swagger.yaml docs/* data/",
     "bunyan": "bunyan -L -o short --color",
     "build": "tsc -p tsconfig.prod.json",
-    "lint": "tsc --noEmit && pnpm lint:code",
-    "lint:code": "oxlint -c oxlint.config.mjs src",
+    "lint": "oxlint -c oxlint.config.mjs src",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run --coverage",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
     "test:watch": "vitest",
     "antlr4ts": "antlr4ts -no-listener -visitor src/services/requisite-tree/antlr4/NusMods.g4 -o src/services/requisite-tree/antlr4/"
   },
