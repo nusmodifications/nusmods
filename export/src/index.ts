@@ -32,6 +32,7 @@ if (process.env.NODE_ENV === 'production') {
     });
   } else {
     // TODO: Replace with Bunyan log?
+    // oxlint-disable-next-line no-console
     console.error('[WARNING] Sentry DSN is not specified - check config.ts');
   }
 }
@@ -47,19 +48,23 @@ render
     if (/^https?:\/\//.test(config.page)) {
       app.context.pageUrl = config.page;
     } else {
-      app.context.pageContent = await fs.readFile(config.page, 'utf-8');
+      app.context.pageContent = await fs.readFile(config.page, 'utf8');
     }
 
     const server = app.listen(Number(process.env.PORT) || 3000, process.env.HOST);
+    // oxlint-disable-next-line no-console
     console.log('Export server started');
 
     gracefulShutdown(server);
   })
-  .catch((e) => {
+  .catch((error) => {
+    // oxlint-disable-next-line no-console
     console.error('Cannot start browser:');
-    console.error(e);
+    // oxlint-disable-next-line no-console
+    console.error(error);
 
-    if (e.message.includes('ERR_CONNECTION_REFUSED')) {
+    if (error.message.includes('ERR_CONNECTION_REFUSED')) {
+      // oxlint-disable-next-line no-console
       console.error('Check that the export page dev server has been started');
     }
 
