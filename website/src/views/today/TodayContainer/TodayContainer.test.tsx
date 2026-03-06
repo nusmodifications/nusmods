@@ -1,3 +1,4 @@
+import type { Mock, Mocked } from 'vitest';
 import { flatten, size } from 'lodash';
 import { shallow } from 'enzyme';
 
@@ -14,8 +15,8 @@ import styles from '../DayEvents.scss';
 
 /* eslint-disable no-useless-computed-key */
 
-const mockWeather = weather as jest.Mocked<typeof weather>;
-const mockCaptureException = captureException as jest.Mock;
+const mockWeather = weather as Mocked<typeof weather>;
+const mockCaptureException = captureException as Mock;
 
 const COLORS = {
   CS3216: 1,
@@ -120,8 +121,8 @@ const LESSONS = {
   PC1222: PC1222_LESSONS,
 };
 
-jest.mock('apis/weather');
-jest.mock('utils/error');
+vi.mock('apis/weather');
+vi.mock('utils/error');
 
 //     August 2016            September 2016         October 2016
 // Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa

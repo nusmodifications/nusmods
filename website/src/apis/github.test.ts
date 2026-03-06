@@ -1,10 +1,11 @@
+import type { Mocked } from 'vitest';
 import axios from 'axios';
 import venueLocationsLocal from 'data/venues';
 import { mockResponse } from 'test-utils/axios';
 import { getVenueLocations } from './github';
 
-jest.mock('axios');
-const mockAxios = axios as jest.Mocked<typeof axios>;
+vi.mock('axios');
+const mockAxios = axios as Mocked<typeof axios>;
 
 afterEach(() => {
   mockAxios.get.mockReset();

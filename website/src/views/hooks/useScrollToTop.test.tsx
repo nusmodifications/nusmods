@@ -1,3 +1,4 @@
+import type { MockedFunction } from 'vitest';
 import { act, render } from '@testing-library/react';
 import type { FC } from 'react';
 import { Router } from 'react-router-dom';
@@ -7,8 +8,8 @@ import { scrollToHash } from 'utils/react';
 
 import useScrollToTop from './useScrollToTop';
 
-jest.mock('utils/react');
-const mockedScrollToHash = scrollToHash as jest.MockedFunction<typeof scrollToHash>;
+vi.mock('utils/react');
+const mockedScrollToHash = scrollToHash as MockedFunction<typeof scrollToHash>;
 
 const Tester: FC = () => {
   useScrollToTop();

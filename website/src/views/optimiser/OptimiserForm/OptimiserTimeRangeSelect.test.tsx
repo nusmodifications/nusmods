@@ -8,7 +8,9 @@ import {
   TimeRangeSelectProps,
 } from './OptimiserTimeRangeSelect';
 
-jest.mock('./OptimiserFormTooltip', () => ({
+const jest = vi;
+
+vi.mock('./OptimiserFormTooltip', () => ({
   __esModule: true,
   default: () => <div />,
 }));

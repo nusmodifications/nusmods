@@ -4,6 +4,7 @@ import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import Modal from 'views/components/Modal';
 import ModulesSelect from './ModulesSelect';
 
+const jest = vi;
 const modules = [
   {
     moduleCode: 'Test1',
@@ -38,6 +39,17 @@ describe(ModulesSelect, () => {
 
   afterAll(() => {
     mockDomReset();
+  });
+
+  // Downshift has an internal setTimeout that accesses `document` after test cleanup.
+  // Use fake timers to flush pending timers before jsdom is torn down.
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
   });
 
   it('should show results on input value change', () => {

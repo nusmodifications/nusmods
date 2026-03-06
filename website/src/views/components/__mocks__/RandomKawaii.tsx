@@ -1,4 +1,4 @@
 import type { FC } from 'react';
 
-const MockRandomKawaii: FC = jest.fn(() => <div data-testid="RandomKawaii component" />);
+const MockRandomKawaii: FC = vi.fn(() => <div data-testid="RandomKawaii component" />);
 export default MockRandomKawaii;

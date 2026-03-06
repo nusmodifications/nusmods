@@ -10,7 +10,8 @@ import config from 'config';
 import PlannerSemester from './PlannerSemester';
 import plannerModuleStyles from './PlannerModule.scss';
 
-jest.mock('react-beautiful-dnd', () => ({
+const jest = vi;
+vi.mock('react-beautiful-dnd', () => ({
   Droppable: ({ children }: DroppableProps) => children({} as any, {} as any),
   Draggable: ({ children }: DraggableProps) => children({} as any, {} as any, {} as any),
   DragDropContext: ({ children }: DragDropContextProps) => children,

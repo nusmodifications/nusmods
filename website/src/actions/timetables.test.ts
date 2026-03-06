@@ -15,11 +15,12 @@ import {
 import { defaultTimetableState } from 'reducers/timetables';
 import * as actions from './timetables';
 
+const jest = vi;
 const initialState = defaultTimetableState;
 
-jest.mock('storage', () => ({
-  getItem: jest.fn(),
-  setItem: jest.fn(),
+vi.mock('storage', () => ({
+  getItem: vi.fn(),
+  setItem: vi.fn(),
 }));
 
 // see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
