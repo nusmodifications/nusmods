@@ -12,5 +12,5 @@ vi.mock('fs-extra', () => ({
   readdir: vi.fn().mockResolvedValue([]),
   remove: vi.fn().mockResolvedValue(undefined),
   pathExists: vi.fn().mockResolvedValue(false),
-  stat: vi.fn().mockResolvedValue({ mtimeMs: Date.now() }),
+  stat: vi.fn().mockImplementation(() => Promise.resolve({ mtimeMs: Date.now() })),
 }));
