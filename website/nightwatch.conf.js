@@ -19,7 +19,7 @@ const config = {
           userName: process.env.BROWSERSTACK_USER,
           accessKey: process.env.BROWSERSTACK_ACCESS_KEY,
           debug: true,
-          consoleLogs: 'errors'
+          consoleLogs: 'errors',
         },
 
         browserName: 'Firefox',

@@ -1,2 +1,2 @@
-export const captureException = jest.fn();
-export const getScriptErrorHandler = jest.fn().mockReturnValue(() => jest.fn());
+export const captureException = vi.fn();
+export const getScriptErrorHandler = vi.fn().mockReturnValue(() => vi.fn());

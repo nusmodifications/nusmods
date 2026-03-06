@@ -2,18 +2,18 @@
 import type { INusApi } from '../nus-api';
 
 const mockApi: INusApi = {
-  getFacultyModules: jest.fn(),
-  getFacultyModulesForYear: jest.fn(),
-  getModuleExam: jest.fn(),
+  getFacultyModules: vi.fn(),
+  getFacultyModulesForYear: vi.fn(),
+  getModuleExam: vi.fn(),
 
-  getFaculty: jest.fn(),
-  getDepartment: jest.fn(),
+  getFaculty: vi.fn(),
+  getDepartment: vi.fn(),
 
-  getModuleTimetable: jest.fn(),
-  getDepartmentTimetables: jest.fn(),
-  getSemesterTimetables: jest.fn(),
+  getModuleTimetable: vi.fn(),
+  getDepartmentTimetables: vi.fn(),
+  getSemesterTimetables: vi.fn(),
 
-  getTermExams: jest.fn(),
+  getTermExams: vi.fn(),
 };
 
 export default mockApi;

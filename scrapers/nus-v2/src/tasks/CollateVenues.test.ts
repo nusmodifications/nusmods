@@ -5,7 +5,7 @@ import PX2108 from './fixtures/nusmods-timetable/PX2108.json';
 import CollateVenues, { extractVenueAvailability } from './CollateVenues';
 import { EVERY_WEEK } from '../utils/test-utils';
 
-jest.mock('../services/io/elastic');
+vi.mock('../services/io/elastic');
 
 describe(extractVenueAvailability, () => {
   test('should map lessons to venues', () => {

@@ -148,13 +148,13 @@ Components should dispatch the action to fetch data. The dispatch function retur
 import { fetchData } from 'actions/example';
 
 type Props = {
-  fetchData: () => Promise<MyData>,
-}
+  fetchData: () => Promise<MyData>;
+};
 
 type State = {
-  data: MyData | null,
-  error?: any,
-}
+  data: MyData | null;
+  error?: any;
+};
 
 class MyComponent extends React.Component<Props, State> {
   state: State = {
@@ -162,9 +162,10 @@ class MyComponent extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    this.props.fetchData()
-      .then(data => this.setState({ data }))
-      .catch(error => this.setState({ error }));
+    this.props
+      .fetchData()
+      .then((data) => this.setState({ data }))
+      .catch((error) => this.setState({ error }));
   }
 
   render() {
@@ -215,18 +216,17 @@ export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
 
 ```tsx
 type Props = {
-  myData: MyData | null,
-  fetchData: () => Promise<MyData>,
-}
+  myData: MyData | null;
+  fetchData: () => Promise<MyData>;
+};
 
 type State = {
-  error?: any,
-}
+  error?: any;
+};
 
 class MyComponent extends React.Component<Props, State> {
   componentDidMount() {
-    this.props.fetchData()
-      .catch(error => this.setState({ error }));
+    this.props.fetchData().catch((error) => this.setState({ error }));
   }
 
   render() {
@@ -246,9 +246,12 @@ class MyComponent extends React.Component<Props, State> {
   }
 }
 
-export default connect(state => ({
-  myData: state.exampleBank,
-}), { fetchData })(MyComponent);
+export default connect(
+  (state) => ({
+    myData: state.exampleBank,
+  }),
+  { fetchData },
+)(MyComponent);
 ```
 
 #### Getting request status

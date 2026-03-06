@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import _ from 'lodash';
 
 import { TimetableConfig } from 'types/timetables';
@@ -5,10 +6,11 @@ import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
 import { getLRUModules } from './moduleBank-lru';
 
+const jest = vi;
 // Mock NUSModsApi as its URLs contain the current AY, breaking the snapshot tests
 // every AY.
-jest.mock('apis/nusmods');
-const mockApi: jest.Mocked<typeof NUSModsApi> = NUSModsApi as any;
+vi.mock('apis/nusmods');
+const mockApi: Mocked<typeof NUSModsApi> = NUSModsApi as any;
 mockApi.moduleListUrl.mockReturnValue('test://MOCK_MOD_LIST_URL');
 mockApi.moduleDetailsUrl.mockImplementation(
   (...args) => `test://MOCK_MOD_DETAILS_URL/${args.join('/')}`,

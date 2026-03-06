@@ -11,6 +11,7 @@
     "strict": true,
     "useUnknownInCatchVariables": false,
     "skipLibCheck": true,
+    "types": ["vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", "vitest.config.ts"]
 }

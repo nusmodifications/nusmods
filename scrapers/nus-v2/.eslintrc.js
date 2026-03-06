@@ -43,7 +43,7 @@ module.exports = {
     },
   ],
 
-  ignorePatterns: ["**/antlr4/*"],
+  ignorePatterns: ['**/antlr4/*'],
 
   rules: {
     'import/extensions': [

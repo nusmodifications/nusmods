@@ -30,7 +30,7 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-      - run: pnpm test --runInBand
+      - run: pnpm test
       - run:
           name: Build scraper
           environment:
@@ -46,7 +46,7 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-      - run: pnpm test --runInBand
+      - run: pnpm test
       - run: pnpm build
       - store_artifacts:
           path: dist
@@ -62,7 +62,6 @@ jobs:
           at: ~/nusmods
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
-      - run: pnpm format:check
       - run:
           name: Build export service
           environment:
@@ -90,19 +89,15 @@ jobs:
           name: Lint styles
           command: pnpm lint:styles
       - run:
-          name: Check formatting
-          command: pnpm format:check
-      - run:
           name: Typecheck Code
           command: pnpm typecheck
       - run:
           name: Test code
           environment:
             NODE_ENV: test
-            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e
-            pnpm test --runInBand --reporters=default --reporters=jest-junit
+            pnpm test --reporter=default --reporter=junit --outputFile=reports/junit/js-test-results.xml
             if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "production" ]; then
               pnpm codecov --disable=gcov -f ./coverage/coverage-final.json
             fi
@@ -112,7 +107,7 @@ jobs:
             NODE_ENV: test
           command: |
             set -e
-            pnpm test:integration --runInBand
+            pnpm test:integration
       - run:
           name: Build
           command: pnpm build

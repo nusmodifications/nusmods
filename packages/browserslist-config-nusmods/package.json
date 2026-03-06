@@ -7,15 +7,12 @@
   "author": "NUSModifications",
   "main": "index.js",
   "scripts": {
-    "start": "node scripts/generate.js",
-    "format": "oxfmt --no-error-on-unmatched-pattern --write \"scripts/**/*.js\" package.json index.js",
-    "format:check": "oxfmt --no-error-on-unmatched-pattern --check \"scripts/**/*.js\" package.json index.js"
+    "start": "node scripts/generate.js"
   },
   "devDependencies": {
     "axios": "0.30.0",
     "browserslist": "4.24.3",
     "fs-extra": "9.1.0",
-    "lodash": "4.17.23",
-    "oxfmt": "0.36.0"
+    "lodash": "4.17.23"
   }
 }

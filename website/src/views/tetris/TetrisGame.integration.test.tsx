@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import TetrisGame from './TetrisGame';
 
+const jest = vi;
 describe(TetrisGame, () => {
   test('integration test', () => {
     // Randomly play the game for 1000 turns 100 times to check the game

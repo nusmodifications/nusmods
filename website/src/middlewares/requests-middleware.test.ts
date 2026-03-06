@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import axios, { AxiosInstance } from 'axios';
 import { Middleware } from 'redux';
 import configureStore, { MockStoreEnhanced } from 'redux-mock-store';
@@ -5,8 +6,8 @@ import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST, RequestsDispatchExt } from 'actions/requests';
 import requestMiddleware from './requests-middleware';
 
-jest.mock('axios');
-const mockAxios: jest.Mocked<AxiosInstance> = axios as any;
+vi.mock('axios');
+const mockAxios: Mocked<AxiosInstance> = axios as any;
 
 describe(requestMiddleware, () => {
   const mockStore = configureStore<unknown, RequestsDispatchExt>([requestMiddleware as Middleware]);

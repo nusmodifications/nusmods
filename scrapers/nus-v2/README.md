@@ -43,7 +43,6 @@ We use ElasticSearch for our module search page. For local development it is not
 - `lint` - run both linter and type checker
   - `lint:code` - lint the code through ESLint
 
-
 ## CLI commands
 
 Run these through `pnpm scrape` in production or `pnpm dev` in development piped through `pnpm bunyan` for formatting - eg. `pnpm dev test | pnpm bunyan`. You can also run `pnpm dev help` to see a list of all commands.

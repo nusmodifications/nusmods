@@ -1,8 +1,8 @@
-const twoHour = jest.fn().mockResolvedValue('Partially Cloudy (Day)');
+const twoHour = vi.fn().mockResolvedValue('Partially Cloudy (Day)');
 
-const tomorrow = jest.fn().mockResolvedValue('Morning thundery showers.');
+const tomorrow = vi.fn().mockResolvedValue('Morning thundery showers.');
 
-const fourDay = jest.fn().mockResolvedValue({
+const fourDay = vi.fn().mockResolvedValue({
   temperature: { low: 23, high: 32 },
   date: '2016-10-27',
   forecast: 'Afternoon thundery showers.',

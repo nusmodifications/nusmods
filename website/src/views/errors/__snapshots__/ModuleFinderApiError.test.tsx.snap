@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ModuleFinderApiError should render 1`] = `
+exports[`ModuleFinderApiError > should render 1`] = `
 <div>
   <div>
     <div
@@ -48,7 +48,7 @@ exports[`ModuleFinderApiError should render 1`] = `
 </div>
 `;
 
-exports[`ModuleFinderApiError should render with url 1`] = `
+exports[`ModuleFinderApiError > should render with url 1`] = `
 <div>
   <div>
     <div

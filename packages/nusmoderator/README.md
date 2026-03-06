@@ -16,20 +16,20 @@ pnpm add nusmoderator
 
 #### Table of Contents
 
-*   [getAcadYearStartDate](#getacadyearstartdate)
-    *   [Parameters](#parameters)
-*   [getAcadYear](#getacadyear)
-    *   [Parameters](#parameters-1)
-*   [getAcadSem](#getacadsem)
-    *   [Parameters](#parameters-2)
-    *   [Examples](#examples)
-*   [getAcadWeekName](#getacadweekname)
-    *   [Parameters](#parameters-3)
-    *   [Examples](#examples-1)
-*   [getAcadWeekInfo](#getacadweekinfo)
-    *   [Parameters](#parameters-4)
-*   [getExamWeek](#getexamweek)
-    *   [Parameters](#parameters-5)
+- [getAcadYearStartDate](#getacadyearstartdate)
+  - [Parameters](#parameters)
+- [getAcadYear](#getacadyear)
+  - [Parameters](#parameters-1)
+- [getAcadSem](#getacadsem)
+  - [Parameters](#parameters-2)
+  - [Examples](#examples)
+- [getAcadWeekName](#getacadweekname)
+  - [Parameters](#parameters-3)
+  - [Examples](#examples-1)
+- [getAcadWeekInfo](#getacadweekinfo)
+  - [Parameters](#parameters-4)
+- [getExamWeek](#getexamweek)
+  - [Parameters](#parameters-5)
 
 ### getAcadYearStartDate
 
@@ -38,7 +38,7 @@ Assumes Week 0 begins on the first Monday of August.
 
 #### Parameters
 
-*   `acadYear` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the academic year. E.g. "18/19"
+- `acadYear` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the academic year. E.g. "18/19"
 
 Returns **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** Start date of the academic year
 
@@ -48,7 +48,7 @@ Takes in a Date and returns an object of acad year and start date for that year.
 
 #### Parameters
 
-*   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)**&#x20;
+- `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)**&#x20;
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** acadYearObject - { year: "15/16", startDate: Date }
 
@@ -59,12 +59,12 @@ Expects a week number of a year.
 
 #### Parameters
 
-*   `acadWeekNumber` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**&#x20;
+- `acadWeekNumber` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**&#x20;
 
 #### Examples
 
 ```javascript
-acadWeekNumber(3)
+acadWeekNumber(3);
 ```
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Semester 1"
@@ -76,12 +76,12 @@ Expects a week number of a semester.
 
 #### Parameters
 
-*   `acadWeekNumber` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**&#x20;
+- `acadWeekNumber` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**&#x20;
 
 #### Examples
 
 ```javascript
-acadWeekNumber(3)
+acadWeekNumber(3);
 ```
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Recess" | "Reading" | "Examination"
@@ -92,7 +92,7 @@ Computes the current academic week and return in an object of acad date componen
 
 #### Parameters
 
-*   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)**&#x20;
+- `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)**&#x20;
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** {
 year: "15/16",
@@ -107,7 +107,7 @@ Get the first day of the exam week for the given semester
 
 #### Parameters
 
-*   `year` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**&#x20;
-*   `semester` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**&#x20;
+- `year` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**&#x20;
+- `semester` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**&#x20;
 
 Returns **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)**&#x20;
