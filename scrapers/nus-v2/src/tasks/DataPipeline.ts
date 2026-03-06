@@ -15,7 +15,7 @@ import CollateModules from './CollateModules';
 /**
  * Run the entire data pipeline
  */
-export default class DataPipeline extends BaseTask implements Task<void, Module[]> {
+export default class DataPipeline extends BaseTask implements Task<void, Array<Module>> {
   academicYear: string;
 
   name = 'Get all data';
@@ -59,7 +59,7 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
 
         const { aliases } = await new CollateVenues(semester, this.academicYear).run(modules);
 
-        return { modules, aliases };
+        return { aliases, modules };
       }),
     );
 
@@ -67,7 +67,7 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
     const allAliases = semesterResults.map((r) => r.aliases);
 
     const collateModules = new CollateModules(this.academicYear);
-    const modules = await collateModules.run({ semesterData, aliases: allAliases });
+    const modules = await collateModules.run({ aliases: allAliases, semesterData });
 
     // Delete all modules that are no longer active
     const removedModules = difference(

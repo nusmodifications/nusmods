@@ -1,4 +1,4 @@
-import { strict as assert } from 'assert';
+import { strict as assert } from 'node:assert';
 import { each, fromPairs, keyBy, isEmpty } from 'lodash';
 
 import type { AcademicGrp, AcademicOrg, ModuleAttributeEntry, ModuleInfo } from '../types/api';
@@ -24,35 +24,35 @@ import { difference } from '../utils/set';
 import { Logger } from '../services/logger';
 
 interface Input {
-  departments: AcademicOrg[];
-  faculties: AcademicGrp[];
-  modules: ModuleInfo[];
+  departments: Array<AcademicOrg>;
+  faculties: Array<AcademicGrp>;
+  modules: Array<ModuleInfo>;
 }
 
-type Output = SemesterModuleData[];
+type Output = Array<SemesterModuleData>;
 
 /**
  * Create a mapping of department code to department name from a list of faculties
  */
-export const getDepartmentCodeMap = (departments: AcademicOrg[]): DepartmentCodeMap =>
+export const getDepartmentCodeMap = (departments: Array<AcademicOrg>): DepartmentCodeMap =>
   fromPairs(
     departments.map((department) => [department.AcademicOrganisation, department.Description]),
   );
 
-export const getFacultyCodeMap = (departments: AcademicGrp[]): FacultyCodeMap =>
+export const getFacultyCodeMap = (departments: Array<AcademicGrp>): FacultyCodeMap =>
   fromPairs(departments.map((faculty) => [faculty.AcademicGroup, faculty.Description]));
 
 const attributeMap: { [attribute: string]: keyof NUSModuleAttributes } = {
-  YEAR: 'year',
-  UROP: 'urop',
-  SSGF: 'ssgf',
-  SFS: 'sfs',
-  PRQY: 'su',
-  NPRY: 'su',
   GRDY: 'grsu',
-  LABB: 'lab',
-  ISM: 'ism',
   HFYP: 'fyp',
+  ISM: 'ism',
+  LABB: 'lab',
+  NPRY: 'su',
+  PRQY: 'su',
+  SFS: 'sfs',
+  SSGF: 'ssgf',
+  UROP: 'urop',
+  YEAR: 'year',
   // MPE handled separately as it maps to multiple attributes
 };
 
@@ -63,13 +63,13 @@ const truthyValues = new Set(['Yes', 'YES', 'HT - Honours Thesis/Rsh Project', '
 const falsyValues = new Set(['No', 'NO']);
 
 // MPE value → attribute keys mapping
-const mpeValueMap: { [value: string]: (keyof NUSModuleAttributes)[] } = {
-  'S1 - Sem 1': ['mpes1'],
-  'S2 - Sem 2': ['mpes2'],
-  'S1&S2 - Sem 1 & 2': ['mpes1', 'mpes2'],
+const mpeValueMap: { [value: string]: Array<keyof NUSModuleAttributes> } = {
   S1: ['mpes1'],
-  S2: ['mpes2'],
+  'S1 - Sem 1': ['mpes1'],
   'S1&S2': ['mpes1', 'mpes2'],
+  'S1&S2 - Sem 1 & 2': ['mpes1', 'mpes2'],
+  S2: ['mpes2'],
+  'S2 - Sem 2': ['mpes2'],
 };
 
 // Known SFS subcategory values that indicate the module is in SkillsFuture
@@ -96,7 +96,7 @@ const sfsTruthyValues = new Set([
 ]);
 
 export function mapAttributes(
-  attributes: ModuleAttributeEntry[],
+  attributes: Array<ModuleAttributeEntry>,
   logger: Logger,
 ): NUSModuleAttributes | undefined {
   const nusAttributes: NUSModuleAttributes = {};
@@ -106,7 +106,7 @@ export function mapAttributes(
       const mappedAttributes = mpeValueMap[entry.CourseAttributeValue];
       if (!mappedAttributes) {
         logger.warn(
-          { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
+          { key: entry.CourseAttribute, value: entry.CourseAttributeValue },
           'Non-standard course attribute value',
         );
       } else {
@@ -117,7 +117,9 @@ export function mapAttributes(
       continue;
     }
 
-    if (!attributeMap[entry.CourseAttribute]) continue;
+    if (!attributeMap[entry.CourseAttribute]) {
+      continue;
+    }
 
     // SFS uses specific subcategory values instead of YES/NO
     if (entry.CourseAttribute === 'SFS') {
@@ -125,7 +127,7 @@ export function mapAttributes(
         nusAttributes[attributeMap[entry.CourseAttribute]] = true;
       } else if (!falsyValues.has(entry.CourseAttributeValue)) {
         logger.warn(
-          { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
+          { key: entry.CourseAttribute, value: entry.CourseAttributeValue },
           'Non-standard course attribute value',
         );
       }
@@ -136,13 +138,15 @@ export function mapAttributes(
       nusAttributes[attributeMap[entry.CourseAttribute]] = true;
     } else if (!falsyValues.has(entry.CourseAttributeValue)) {
       logger.warn(
-        { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
+        { key: entry.CourseAttribute, value: entry.CourseAttributeValue },
         'Non-standard course attribute value',
       );
     }
   }
 
-  if (isEmpty(nusAttributes)) return undefined;
+  if (isEmpty(nusAttributes)) {
+    return undefined;
+  }
   return nusAttributes;
 }
 
@@ -185,14 +189,18 @@ export function cleanModuleInfo(module: SemesterModule) {
  * If the string is unparsable, it is returned without any modification.
  */
 export function parseWorkload(workloadString: string | null | undefined): Workload | undefined {
-  if (!workloadString) return undefined;
+  if (!workloadString) {
+    return undefined;
+  }
 
   const cleanedWorkloadString = workloadString
-    .replace(/\(.*?\)/g, '') // Remove stuff in parenthesis
-    .replace(/NA/gi, '0') // Replace 'NA' with 0
-    .replace(/\s+/g, ''); // Remove whitespace
+    .replaceAll(/\(.*?\)/g, '') // Remove stuff in parenthesis
+    .replaceAll('NA', '0') // Replace 'NA' with 0
+    .replaceAll(/\s+/g, ''); // Remove whitespace
 
-  if (!/^((^|-|‐)([\d.]+)){5}$/.test(cleanedWorkloadString)) return workloadString;
+  if (!/^((^|-|‐)([\d.]+)){5}$/.test(cleanedWorkloadString)) {
+    return workloadString;
+  }
   // Workload string is formatted as A-B-C-D-E where
   // A: no. of lecture hours per week
   // B: no. of tutorial hours per week
@@ -201,10 +209,10 @@ export function parseWorkload(workloadString: string | null | undefined): Worklo
   // E: no. of hours for preparatory work by a student per week
   // Taken from CORS:
   // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
-  return cleanedWorkloadString.split(/[-‐]/).map((text) => parseFloat(text));
+  return cleanedWorkloadString.split(/[-‐]/).map((text) => Number.parseFloat(text));
 }
 
-export function getLessonCovidZones(lessons: RawLesson[]): CovidZoneId[] {
+export function getLessonCovidZones(lessons: Array<RawLesson>): Array<CovidZoneId> {
   const zones = new Set<CovidZoneId>();
   for (const { covidZone } of lessons) {
     zones.add(covidZone);
@@ -223,46 +231,31 @@ const mapModuleInfo = (
   acadYear: string,
 ): SemesterModule => {
   const {
-    OrganisationCode,
     AcademicGroup,
-    Title,
-    WorkloadHoursNUSMods,
-    PreclusionSummary,
+    AdditionalInformation,
+    CatalogNumber,
+    CorequisiteRule,
+    CorequisiteSummary,
+    CourseAttributes = [],
+    CourseDesc,
+    GradingBasisDesc,
+    OrganisationCode,
     PreclusionRule,
+    PreclusionSummary,
     PreRequisiteAdvisory,
     PrerequisiteRule,
     PrerequisiteSummary,
-    CorequisiteRule,
-    CorequisiteSummary,
-    UnitsMin,
-    CourseDesc,
     SubjectArea,
-    CatalogNumber,
-    CourseAttributes = [],
-    AdditionalInformation,
-    GradingBasisDesc,
+    Title,
+    UnitsMin,
+    WorkloadHoursNUSMods,
   } = moduleInfo;
 
   // We map department from our department list because
   // AcademicOrganisation.Description is empty for some reason
   return {
     acadYear,
-    preclusion: PreclusionSummary ?? undefined,
-    preclusionRule: PreclusionRule ?? undefined,
-    description: CourseDesc ?? undefined,
-    title: Title,
     additionalInformation: AdditionalInformation ?? undefined,
-    department: departmentMap[OrganisationCode],
-    faculty: facultyMap[AcademicGroup],
-    workload: parseWorkload(WorkloadHoursNUSMods),
-    gradingBasisDescription: GradingBasisDesc || '',
-    prerequisite: PrerequisiteSummary ?? undefined,
-    prerequisiteRule: PrerequisiteRule ?? undefined,
-    prerequisiteAdvisory: PreRequisiteAdvisory ?? undefined,
-    corequisite: CorequisiteSummary ?? undefined,
-    corequisiteRule: CorequisiteRule ?? undefined,
-    moduleCredit: UnitsMin === null ? '0' : String(UnitsMin),
-    moduleCode: SubjectArea + CatalogNumber,
     attributes: mapAttributes(
       CourseAttributes.map((attr) => ({
         CourseAttribute: attr.Code.trim(),
@@ -270,6 +263,21 @@ const mapModuleInfo = (
       })),
       logger,
     ),
+    corequisite: CorequisiteSummary ?? undefined,
+    corequisiteRule: CorequisiteRule ?? undefined,
+    department: departmentMap[OrganisationCode],
+    description: CourseDesc ?? undefined,
+    faculty: facultyMap[AcademicGroup],
+    gradingBasisDescription: GradingBasisDesc || '',
+    moduleCode: SubjectArea + CatalogNumber,
+    moduleCredit: UnitsMin === null ? '0' : String(UnitsMin),
+    preclusion: PreclusionSummary ?? undefined,
+    preclusionRule: PreclusionRule ?? undefined,
+    prerequisite: PrerequisiteSummary ?? undefined,
+    prerequisiteAdvisory: PreRequisiteAdvisory ?? undefined,
+    prerequisiteRule: PrerequisiteRule ?? undefined,
+    title: Title,
+    workload: parseWorkload(WorkloadHoursNUSMods),
   };
 };
 
@@ -301,13 +309,13 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     this.outputCache = this.getCache<Output>(`semester-${semester}-module-data`);
     this.logger = this.rootLogger.child({
       semester,
-      year: academicYear,
       task: GetSemesterData.name,
+      year: academicYear,
     });
   }
 
   async run(input: Input) {
-    const { semester, academicYear } = this;
+    const { academicYear, semester } = this;
 
     this.logger.info(`Getting semester data for ${academicYear} semester ${semester}`);
 
@@ -335,7 +343,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // The data source is less consistent than we'd like, because there are
     // modules with timetable but no module info, and modules with exam info
     // but no timetable/module info.
-    const semesterModuleData: SemesterModuleData[] = [];
+    const semesterModuleData: Array<SemesterModuleData> = [];
     each(modulesMap, (moduleInfo, moduleCode) => {
       const logger = this.logger.child({ moduleCode });
 
@@ -356,9 +364,9 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       if (timetable) {
         const examInfo = exams[moduleCode] || {};
         semesterModuleDatum.semesterData = {
+          covidZones: getLessonCovidZones(timetable),
           semester,
           timetable,
-          covidZones: getLessonCovidZones(timetable),
           ...examInfo,
         };
       }
@@ -383,8 +391,8 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       this.logger.info(
         {
           equivalents: Array.from(equivalentModules.entries()).map(([target, source]) => ({
-            target,
             source,
+            target,
           })),
         },
         `Found ${equivalentModules.size} equivalent module(s) - propagating timetable data`,
@@ -403,9 +411,9 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
           // Copy timetable and covidZones from source, but use target's own exam info
           targetDatum.semesterData = {
+            covidZones: sourceDatum.semesterData.covidZones,
             semester,
             timetable: sourceDatum.semesterData.timetable,
-            covidZones: sourceDatum.semesterData.covidZones,
             ...targetExamInfo,
           };
           targetDatum.timetablePropagated = true;

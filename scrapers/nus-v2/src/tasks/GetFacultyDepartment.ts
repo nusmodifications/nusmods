@@ -8,21 +8,21 @@ import BaseTask from './BaseTask';
 import { cacheDownload } from '../utils/api';
 
 const abbreviationMap = {
-  Mgmt: 'Management',
-  Eng: 'Engineering',
-  Conserv: 'Conservatory',
-  Edun: 'Education',
-  Ctr: 'Center',
   Appl: 'Applied',
-  "Computat'l": 'Computational',
-  Instits: 'Institutes',
-  Div: 'Division',
-  Info: 'Information',
-  Sci: 'Science',
-  Grad: 'Graduate',
-  DO: "Dean's Office",
-  Stud: 'Studies',
   'Coll.': 'College',
+  "Computat'l": 'Computational',
+  Conserv: 'Conservatory',
+  Ctr: 'Center',
+  Div: 'Division',
+  DO: "Dean's Office",
+  Edun: 'Education',
+  Eng: 'Engineering',
+  Grad: 'Graduate',
+  Info: 'Information',
+  Instits: 'Institutes',
+  Mgmt: 'Management',
+  Sci: 'Science',
+  Stud: 'Studies',
 };
 
 const abbreviationRegex = map(abbreviationMap, (expanded, abbr): [RegExp, string] => [
@@ -34,7 +34,7 @@ const abbreviationRegex = map(abbreviationMap, (expanded, abbr): [RegExp, string
 export function cleanNames(name: string): string {
   // 1. Expand all abbreviations. '&' has to be defined separately because it
   //    cannot be combined with word boundaries (\b) anchors
-  let expandedName = name.replace(/&/g, 'and');
+  let expandedName = name.replaceAll('&', 'and');
   abbreviationRegex.forEach(([regex, expanded]) => {
     expandedName = expandedName.replace(regex, expanded);
   });
@@ -57,12 +57,12 @@ export const cleanFacultyDepartment = <T extends AcademicGrp | AcademicOrg>(
  * Map department to their faculties. This is useful for the frontend
  */
 export function mapFacultyDepartments(
-  faculties: AcademicGrp[],
-  departments: AcademicOrg[],
-): { [key: string]: string[] } {
+  faculties: Array<AcademicGrp>,
+  departments: Array<AcademicOrg>,
+): { [key: string]: Array<string> } {
   // Get a mapping of faculty code -> name
   const facultyCodes: { [faculty: string]: string } = {};
-  const mappings: { [faculty: string]: string[] } = {};
+  const mappings: { [faculty: string]: Array<string> } = {};
 
   faculties.forEach((faculty) => {
     facultyCodes[faculty.AcademicGroup] = faculty.Description;
@@ -87,8 +87,8 @@ export function mapFacultyDepartments(
 }
 
 interface Output {
-  departments: AcademicOrg[];
-  faculties: AcademicGrp[];
+  departments: Array<AcademicOrg>;
+  faculties: Array<AcademicGrp>;
 }
 
 // Cache these for 7 days since they change rarely
@@ -108,8 +108,8 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     task: GetFacultyDepartment.name,
   });
 
-  departmentCache: Cache<AcademicOrg[]>;
-  facultyCache: Cache<AcademicGrp[]>;
+  departmentCache: Cache<Array<AcademicOrg>>;
+  facultyCache: Cache<Array<AcademicGrp>>;
 
   constructor(academicYear: string) {
     super(academicYear);
@@ -143,8 +143,8 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     if (!faculties.some((faculty) => faculty.AcademicGroup === '099')) {
       faculties.push({
         AcademicGroup: '099',
-        DescriptionShort: 'Non-Faculty-based Departments',
         Description: 'Non-Faculty-based Departments',
+        DescriptionShort: 'Non-Faculty-based Departments',
         EffectiveStatus: 'A',
         // 1905-01-01 is the default date used in the API
         EffectiveDate: '1905-01-01',

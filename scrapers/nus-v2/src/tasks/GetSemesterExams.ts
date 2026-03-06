@@ -1,4 +1,4 @@
-import { strict as assert } from 'assert';
+import { strict as assert } from 'node:assert';
 import { parse } from 'date-fns';
 import { keyBy, mapValues, partition } from 'lodash';
 
@@ -14,20 +14,17 @@ import { cacheDownload, getTermCode } from '../utils/api';
 import { validateExam, validateSemester } from '../services/validation';
 import { NotFoundError } from '../utils/errors';
 
-/* eslint-disable camelcase */
-
 /**
  * Extract the part of the raw ModuleExam that is used in SemesterData
  */
 export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
-  const { exam_date, start_time, duration } = moduleExam;
+  const { duration, exam_date, start_time } = moduleExam;
   const date = parse(`${exam_date} ${start_time} +08:00`, 'yyyy-MM-dd HH:mm XXX', new Date());
 
   return {
     examDate: date.toISOString(),
     examDuration: duration,
   };
-  /* eslint-enable */
 }
 
 type Output = ExamInfoMap;
@@ -39,7 +36,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
   semester: Semester;
   academicYear: string;
 
-  examCache: Cache<ModuleExam[]>;
+  examCache: Cache<Array<ModuleExam>>;
 
   get name() {
     return `Get exams for semester ${this.semester}`;
@@ -61,7 +58,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
 
     // Set expiry to 5 days in case the API goes down, we don't wipe all
     // existing exam data (ノ°Д°）ノ︵ ┻━┻
-    this.examCache = this.getCache<ModuleExam[]>(`semester-${semester}-exams`, 5 * 24 * 60);
+    this.examCache = this.getCache<Array<ModuleExam>>(`semester-${semester}-exams`, 5 * 24 * 60);
   }
 
   async run(): Promise<Output> {
@@ -71,7 +68,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
     const term = getTermCode(this.semester, this.academicYear);
 
     // Make API requests to get the exam info
-    let rawExams: ModuleExam[];
+    let rawExams: Array<ModuleExam>;
     try {
       rawExams = await cacheDownload(
         'exams',
@@ -79,18 +76,18 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
         this.examCache,
         this.logger,
       );
-    } catch (e) {
+    } catch (error) {
       // API may not return exam info for future semesters, we need to distinguish this from API
       // errors
-      if (e instanceof NotFoundError) {
+      if (error instanceof NotFoundError) {
         this.logger.error(
-          e,
+          error,
           `Cannot get exam data for ${this.academicYear} semester ${this.semester}`,
         );
         return {};
       }
 
-      throw e;
+      throw error;
     }
 
     // Try to filter out invalid exams

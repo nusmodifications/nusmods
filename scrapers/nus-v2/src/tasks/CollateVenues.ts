@@ -15,21 +15,21 @@ import { union } from '../utils/set';
 /**
  * Convert module timetable into venue availability and insert it into venues
  */
-export function extractVenueAvailability(timetable: LessonWithModuleCode[]) {
+export function extractVenueAvailability(timetable: Array<LessonWithModuleCode>) {
   // 1. Only include lessons that actually have a venue
   const filteredLessons = timetable.filter((lesson) => lesson.venue);
 
   // 2. Map lessons to the venue they're in
   const groupByVenue = groupBy(filteredLessons, (lesson) => lesson.venue);
 
-  return mapValues(groupByVenue, (venueLessons: LessonWithModuleCode[]) => {
+  return mapValues(groupByVenue, (venueLessons: Array<LessonWithModuleCode>) => {
     // 3. Remove the venue and covidZone key and map them again to the day of the lesson
-    const lessonWithoutVenue: VenueLesson[] = venueLessons.map(
-      ({ venue, covidZone, ...lesson }) => lesson,
+    const lessonWithoutVenue: Array<VenueLesson> = venueLessons.map(
+      ({ covidZone, venue, ...lesson }) => lesson,
     );
     const groupByDay = groupBy(lessonWithoutVenue, (lesson) => lesson.day);
 
-    return map(groupByDay, (classes: VenueLesson[], day: string) => {
+    return map(groupByDay, (classes: Array<VenueLesson>, day: string) => {
       // 4. Mark time between lesson start and end as occupied
       const availability: Availability = {};
       for (const lesson of classes) {
@@ -39,18 +39,18 @@ export function extractVenueAvailability(timetable: LessonWithModuleCode[]) {
       }
 
       return {
-        day,
-        classes,
         availability,
+        classes,
+        day,
       };
     });
   });
 }
 
-type Input = SemesterModuleData[];
+type Input = Array<SemesterModuleData>;
 interface Output {
-  venues: VenueInfo;
   aliases: ModuleAliases;
+  venues: VenueInfo;
 }
 
 // Use a longer expiry since we don't expect aliases to change often
@@ -92,9 +92,11 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
     this.logger.info(`Collating venues for ${this.academicYear} semester ${this.semester}`);
 
     // Insert module code and flatten lessons
-    const venueLessons: LessonWithModuleCode[] = compact(
+    const venueLessons: Array<LessonWithModuleCode> = compact(
       flatMap<SemesterModuleData, LessonWithModuleCode | undefined>(input, (module) => {
-        if (!module.semesterData || module.timetablePropagated) return undefined;
+        if (!module.semesterData || module.timetablePropagated) {
+          return undefined;
+        }
         return module.semesterData.timetable.map((lesson: RawLesson) => ({
           ...lesson,
           moduleCode: module.moduleCode,
@@ -114,7 +116,7 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
     const allAliases: ModuleAliases = {};
     for (const venue of values(venues)) {
       for (const availability of venue) {
-        const { lessons, aliases } = mergeDualCodedModules(availability.classes);
+        const { aliases, lessons } = mergeDualCodedModules(availability.classes);
         availability.classes = lessons;
 
         // Merge the alias mappings
@@ -143,9 +145,9 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
     await Promise.all([
       this.io.venueInformation(this.semester, venues),
       this.io.venueList(this.semester, venueList),
-      this.aliasCache.write(mapValues(outputAliases, (set): string[] => Array.from(set))),
+      this.aliasCache.write(mapValues(outputAliases, (set): Array<string> => Array.from(set))),
     ]);
 
-    return { venues, aliases: allAliases };
+    return { aliases: allAliases, venues };
   }
 }

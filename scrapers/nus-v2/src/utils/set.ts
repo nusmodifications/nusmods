@@ -1,15 +1,21 @@
-export function union<T>(...sets: Set<T>[]): Set<T> {
+export function union<T>(...sets: Array<Set<T>>): Set<T> {
   return new Set(sets.flatMap((s) => Array.from(s)));
 }
 
-export function intersection<T>(...sets: Set<T>[]): Set<T> {
-  if (sets.length === 0) return new Set();
-  if (sets.length === 1) return sets[0];
+export function intersection<T>(...sets: Array<Set<T>>): Set<T> {
+  if (sets.length === 0) {
+    return new Set();
+  }
+  if (sets.length === 1) {
+    return sets[0];
+  }
 
   const intersect = sets[0];
   sets.slice(1).forEach((set) =>
     intersect.forEach((i) => {
-      if (!set.has(i)) intersect.delete(i);
+      if (!set.has(i)) {
+        intersect.delete(i);
+      }
     }),
   );
 
