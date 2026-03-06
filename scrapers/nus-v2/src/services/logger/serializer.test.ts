@@ -3,8 +3,6 @@ import { errorSerializer } from './serializer';
 import { UnknownApiError } from '../../utils/errors';
 import { mockResponse } from '../../utils/test-utils';
 
-jest.unmock('bunyan');
-
 describe(errorSerializer, () => {
   test('should deserialize original error and axios response', () => {
     const error = new UnknownApiError('The server is on fire');

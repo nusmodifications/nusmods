@@ -1,12 +1,13 @@
+import type { Mocked } from 'vitest';
 import axios from 'axios';
 import { NusApi, callApi, callV1Api } from './nus-api';
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
 import { mockResponse } from '../utils/test-utils';
 
-const mockedAxios: jest.Mocked<typeof axios> = axios as any;
+const mockedAxios: Mocked<typeof axios> = axios as any;
 
 beforeEach(() => {
-  jest.spyOn(axios, 'get');
+  vi.spyOn(axios, 'get');
 });
 
 afterEach(() => {
