@@ -209,7 +209,7 @@ export function parseWorkload(workloadString: string | null | undefined): Worklo
   // E: no. of hours for preparatory work by a student per week
   // Taken from CORS:
   // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
-  return cleanedWorkloadString.split(/[-‐]/).map((text) => Number.parseFloat(text));
+  return cleanedWorkloadString.split(/[-‐]/).map((text: string) => Number.parseFloat(text));
 }
 
 export function getLessonCovidZones(lessons: Array<RawLesson>): Array<CovidZoneId> {

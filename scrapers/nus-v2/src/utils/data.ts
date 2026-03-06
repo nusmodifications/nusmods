@@ -34,11 +34,13 @@ export function titleize(string: string) {
   let capitalized = string
     .toLowerCase()
     // http://stackoverflow.com/a/7592235
-    .replaceAll(/(?:^|\s\(?|-|\/)\S/g, (char) => char.toUpperCase());
+    .replaceAll(/(?:^|\s\(?|-|\/)\S/g, (char: string) => char.toUpperCase());
 
   // Minor words are lowercase unless they are the first word of the title
   minorWords.forEach(([word, regex]) => {
-    capitalized = capitalized.replace(regex, (match, index) => (index === 0 ? match : word));
+    capitalized = capitalized.replace(regex, (match: string, index: number) =>
+      index === 0 ? match : word,
+    );
   });
 
   // Abbreviations are uppercase regardless of where they are
