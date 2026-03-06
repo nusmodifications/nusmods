@@ -8,7 +8,7 @@ import {
 } from './academicCalendar';
 
 /* eslint-disable no-console */
-console.warn = jest.fn();
+console.warn = vi.fn();
 
 describe('getAcadYearStartDate', () => {
   it('gets the starting date of an academic year', () => {
