@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import DataPipeline from './DataPipeline';
 import api, { NusApi } from '../services/nus-api';
 
@@ -13,9 +14,9 @@ import type { Module } from '../types/modules';
 import { fromTermCode } from '../utils/api';
 import { expectModulesEqual } from '../utils/test-utils';
 
-jest.mock('../services/io/elastic');
-jest.mock('../services/nus-api');
-const mockApi: jest.Mocked<NusApi> = api as any;
+vi.mock('../services/io/elastic');
+vi.mock('../services/nus-api');
+const mockApi: Mocked<NusApi> = api as any;
 
 /**
  * Full integration tests for the entire pipeline

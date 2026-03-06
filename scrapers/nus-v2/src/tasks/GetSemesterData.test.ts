@@ -229,12 +229,12 @@ describe(parseWorkload, () => {
 
 describe(mapAttributes, () => {
   const mockLogger: Logger = {
-    trace: jest.fn(),
-    debug: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-    fatal: jest.fn(),
+    trace: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    fatal: vi.fn(),
     child: () => mockLogger,
   };
 
@@ -243,7 +243,7 @@ describe(mapAttributes, () => {
   }
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('should return undefined for empty attributes', () => {

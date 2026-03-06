@@ -9,7 +9,7 @@ import GetSemesterTimetable, { transformModgrpToClassNo } from './GetSemesterTim
 import { TimetableLesson } from '../types/api';
 import { Semester } from '../types/modules';
 
-jest.mock('../services/io/elastic');
+vi.mock('../services/io/elastic');
 
 describe(transformModgrpToClassNo, () => {
   test('should remove activity string prefix from mod group', () => {
@@ -36,7 +36,7 @@ describe(GetSemesterTimetable, () => {
   function createTask(lessons: TimetableLesson[], semester: Semester = 1) {
     const task = new GetSemesterTimetable(semester, '2018/2019');
 
-    task.api.getSemesterTimetables = jest.fn((term, consumer) => {
+    task.api.getSemesterTimetables = vi.fn((term, consumer) => {
       lessons.forEach((lesson) => consumer(lesson));
       return Promise.resolve();
     });

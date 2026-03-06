@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { omit, sortBy, zip } from 'lodash';
 import httpStatus from 'http-status';
@@ -10,27 +11,27 @@ import { Logger } from '../services/logger';
 
 export const EVERY_WEEK: Weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-export function mockCache<T>(fileContent: T): jest.Mocked<Cache<T>> {
+export function mockCache<T>(fileContent: T): Mocked<Cache<T>> {
   // Annotating this as Cache<T> lets us make sure this function implements the interface
   const cache: Cache<T> = {
     path: './fake',
-    write: jest.fn().mockResolvedValue(undefined),
-    read: jest.fn().mockResolvedValue(fileContent),
+    write: vi.fn().mockResolvedValue(undefined),
+    read: vi.fn().mockResolvedValue(fileContent),
   };
 
-  // Returning this as jest.Mocked<Cache<T>> allows us to access .mock* functions
+  // Returning this as Mocked<Cache<T>> allows us to access .mock* functions
   return cache as any;
 }
 
 export function mockLogger(): Logger {
   return {
     // Mock all logged functions
-    fatal: jest.fn(),
-    error: jest.fn(),
-    warn: jest.fn(),
-    info: jest.fn(),
-    debug: jest.fn(),
-    trace: jest.fn(),
+    fatal: vi.fn(),
+    error: vi.fn(),
+    warn: vi.fn(),
+    info: vi.fn(),
+    debug: vi.fn(),
+    trace: vi.fn(),
 
     // Calling child simply creates another mock logger
     child: mockLogger,
