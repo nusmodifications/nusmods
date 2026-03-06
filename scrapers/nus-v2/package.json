@@ -14,7 +14,7 @@
     "lint": "oxlint -c oxlint.config.mjs src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --coverage",
-    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "check": "run-s lint typecheck test",
     "test:watch": "vitest",
     "antlr4ts": "antlr4ts -no-listener -visitor src/services/requisite-tree/antlr4/NusMods.g4 -o src/services/requisite-tree/antlr4/"
   },

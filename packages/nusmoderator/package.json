@@ -37,7 +37,7 @@
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
     "test": "vitest run --coverage",
-    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "check": "run-s lint typecheck test",
     "test:watch": "vitest",
     "prepublishOnly": "npm run clean && npm run test && npm run build && npm run docs --kill --print"
   },
