@@ -4,7 +4,7 @@ import { getModuleCondensed } from 'selectors/moduleBank';
 import { ModuleCondensed } from 'types/modules';
 import { ModuleTreeComponent } from './ModuleTree';
 
-jest.mock('views/components/LinkModuleCodes', () => 'mockedlink');
+vi.mock('views/components/LinkModuleCodes', () => ({ default: 'mockedlink' }));
 
 describe(ModuleTreeComponent, () => {
   test('should render requirements fulfilled tree of module', () => {

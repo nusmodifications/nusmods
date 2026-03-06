@@ -4,6 +4,7 @@ import { RefinementItem } from 'types/views';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
 import DropdownListFilters from './DropdownListFilters';
 
+const jest = vi;
 describe(DropdownListFilters, () => {
   beforeEach(() => {
     mockDom();

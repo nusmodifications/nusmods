@@ -95,10 +95,9 @@ jobs:
           name: Test code
           environment:
             NODE_ENV: test
-            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e
-            pnpm test --runInBand --reporters=default --reporters=jest-junit
+            pnpm test --reporter=default --reporter=junit --outputFile=reports/junit/js-test-results.xml
             if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "production" ]; then
               pnpm codecov --disable=gcov -f ./coverage/coverage-final.json
             fi
@@ -108,7 +107,7 @@ jobs:
             NODE_ENV: test
           command: |
             set -e
-            pnpm test:integration --runInBand
+            pnpm test:integration
       - run:
           name: Build
           command: pnpm build

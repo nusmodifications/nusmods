@@ -49,5 +49,6 @@
       "destination": "https://blog.nusmods.com$1",
       "permanent": false
     }
-  ]
+  ],
+  "ignoreCommand": "bash ./scripts/vercel_ignore_build.sh"
 }

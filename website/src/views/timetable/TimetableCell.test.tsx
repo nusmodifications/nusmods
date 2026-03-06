@@ -4,6 +4,7 @@ import { HoverLesson, InteractableLesson } from 'types/timetables';
 import { EVERY_WEEK } from 'test-utils/timetable';
 import TimetableCell from './TimetableCell';
 
+const jest = vi;
 const NON_TA_LESSON: InteractableLesson = {
   moduleCode: 'CS1010',
   title: 'Intro',

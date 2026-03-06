@@ -1,5 +1,6 @@
 import insertScript from './insertScript';
 
+const jest = vi;
 describe(insertScript, () => {
   test('insert a script tag', () => {
     window.document.createElement = jest.fn().mockReturnValue({});

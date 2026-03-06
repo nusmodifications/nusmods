@@ -5,6 +5,7 @@ import { breakpointUp } from 'utils/css';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
 import useMediaQuery, { getMedia } from './useMediaQuery';
 
+const jest = vi;
 type Props = {
   mediaQuery: MediaQuery;
 };

@@ -130,4 +130,13 @@ module.exports = {
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
   },
+
+  overrides: [
+    {
+      files: ['**/*.test.{js,ts,tsx}', 'scripts/vitest-setup.ts'],
+      globals: {
+        vi: 'readonly',
+      },
+    },
+  ],
 };

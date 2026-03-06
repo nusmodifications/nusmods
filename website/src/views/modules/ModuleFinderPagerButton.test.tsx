@@ -6,6 +6,7 @@ import Tooltip from 'views/components/Tooltip';
 import ModuleFinderPagerButton from './ModuleFinderPagerButton';
 import styles from './ModuleFinderPagerButton.scss';
 
+const jest = vi;
 describe(ModuleFinderPagerButton, () => {
   const defaultProps = {
     onClick: noop,

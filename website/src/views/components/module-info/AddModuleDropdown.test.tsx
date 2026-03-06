@@ -8,6 +8,7 @@ import { CS3216, CS1010S } from '__mocks__/modules';
 
 import { AddModuleDropdownComponent } from './AddModuleDropdown';
 
+const jest = vi;
 describe(AddModuleDropdownComponent, () => {
   function make(module: Module, timetables: TimetableConfig = {}) {
     const addModule = jest.fn();

@@ -2,7 +2,8 @@ import axios from 'axios';
 import { nextBus } from 'apis/nextbus';
 import arrival from './__mocks__/arrival.json';
 
-jest.mock('axios');
+const jest = vi;
+vi.mock('axios');
 
 describe(nextBus, () => {
   beforeEach(() => {
