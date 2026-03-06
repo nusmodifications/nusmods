@@ -330,21 +330,19 @@ LAUNCH_URL="http://localhost:5000" LOCAL_TEST=1 pnpm e2e
 
 ### Deployment
 
-**This section is outdated! We're overhauling our deployment processes at the moment. For more up-to-date (but which will also soon be outdated) deployment info, please refer to this [deployment guide](../DEPLOYMENT.md).**
+The NUSMods website is deployed on Vercel.
 
-Our staging is served from the `./dist` directory, which is generated using `pnpm build`. From there, it can be promoted to production using `pnpm promote-staging`. This flow is summarized below:
+- Deploy previews are created automatically for branches / pull requests.
+- Production deployment is managed via Vercel project settings.
+
+For a production-like local build:
 
 ```sh
-$ pnpm install          # Install dependencies
-$ pnpm test             # Ensure all unit tests pass
-$ pnpm build            # Build to staging ./dist directory
-# Open http://staging.nusmods.com and manually test to ensure it works
-$ pnpm promote-staging  # Promote ./dist to production
+$ pnpm build            # Build to ./dist directory
+$ npx serve -s dist     # Serve the production build locally
 ```
 
-- `pnpm build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.
-- `pnpm promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
-- `pnpm rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `pnpm promote-staging` but could be used to sync `./dist` to any folder.
+For service-level deployment details outside Vercel, see [../DEPLOYMENT.md](../DEPLOYMENT.md).
 
 ## Project Structure
 
