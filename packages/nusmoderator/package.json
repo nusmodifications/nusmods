@@ -32,7 +32,7 @@
   "jsnext:main": "dist/index.es.js",
   "scripts": {
     "clean": "rimraf dist coverage",
-    "lint": "documentation lint src && eslint --ext .ts src",
+    "lint": "documentation lint src && oxlint -c oxlint.config.mjs src",
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
     "test": "vitest run --coverage",
@@ -43,15 +43,15 @@
     "date-fns": "2.30.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "4.33.0",
-    "@typescript-eslint/parser": "4.33.0",
+    "@nkzw/eslint-plugin": "^2.0.0",
+    "@nkzw/oxlint-config": "^1.0.1",
     "@vitest/coverage-v8": "^4.0.18",
     "documentation": "14.0.3",
-    "eslint": "7.32.0",
-    "eslint-config-airbnb-base": "14.2.1",
-    "eslint-config-prettier": "7.2.0",
-    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-no-only-tests": "^3.3.0",
+    "eslint-plugin-perfectionist": "^5.6.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "microbundle": "0.15.1",
+    "oxlint": "^1.51.0",
     "rimraf": "3.0.2",
     "typescript": "5.9.3",
     "vitest": "^4.0.18"
