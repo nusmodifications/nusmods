@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import axios, { AxiosResponse } from 'axios';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Maximize2, Minimize2 } from 'react-feather';
@@ -7,7 +8,8 @@ import Modal from 'views/components/Modal';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ShareTimetable, { SHORT_URL_KEY } from './ShareTimetable';
 
-const mockAxios = axios as jest.Mocked<typeof axios>;
+const jest = vi;
+const mockAxios = axios as Mocked<typeof axios>;
 
 describe('ShareTimetable', () => {
   const MOCK_SHORTURL = 'https://shorten.nusmods.com';

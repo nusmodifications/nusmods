@@ -4,6 +4,7 @@ import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
 import ModuleFinderPager, { displayPageRange } from './ModuleFinderPager';
 
+const jest = vi;
 describe(displayPageRange, () => {
   test('calculate page range correctly', () => {
     // One page

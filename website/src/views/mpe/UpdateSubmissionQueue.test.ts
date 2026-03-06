@@ -1,6 +1,7 @@
 import type { MpeSubmission, MpePreference } from '../../types/mpe';
 import UpdateSubmissionQueue from './UpdateSubmissionQueue';
 
+const jest = vi;
 describe(UpdateSubmissionQueue, () => {
   const preference: MpePreference = {
     moduleTitle: 'Programming Methodology',

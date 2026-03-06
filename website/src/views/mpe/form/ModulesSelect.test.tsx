@@ -4,6 +4,7 @@ import Modal from 'views/components/Modal';
 import { waitForComponentToPaint } from 'test-utils/wait';
 import { ModulesSelectComponent } from './ModulesSelect';
 
+const jest = vi;
 const modules = [
   {
     moduleCode: 'Test1',

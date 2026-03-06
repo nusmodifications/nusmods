@@ -1,18 +1,18 @@
+import type { Mock } from 'vitest';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { captureException } from 'utils/error';
 import ErrorBoundary from './ErrorBoundary';
 
-const mockCaptureException = captureException as jest.Mock;
+const jest = vi;
+const mockCaptureException = captureException as Mock;
 
-jest.mock('utils/error');
-jest.mock(
-  'views/errors/ErrorPage',
-  () =>
-    function ErrorPage() {
-      return '<ErrorPage> component';
-    },
-);
+vi.mock('utils/error');
+vi.mock('views/errors/ErrorPage', () => ({
+  default: function ErrorPage() {
+    return '<ErrorPage> component';
+  },
+}));
 
 // To be used to compare with error caught by ErrorBoundary
 const error = new Error('Test error');

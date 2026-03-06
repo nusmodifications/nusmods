@@ -1,3 +1,4 @@
+import type { MockInstance } from 'vitest';
 import { act, screen, waitFor } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
@@ -24,6 +25,7 @@ import modulesList from '__mocks__/moduleList.json';
 
 import { TimetableContainerComponent } from './TimetableContainer';
 
+const jest = vi;
 /**
  * A module that exists in our mock `moduleList` but which is also *not*
  * pre-loaded into `moduleBank`. Intended to be used by tests that expect
@@ -82,7 +84,7 @@ function make(
 }
 
 describe(TimetableContainerComponent, () => {
-  let mockAxiosRequest: jest.SpiedFunction<typeof axios.request>;
+  let mockAxiosRequest: MockInstance<typeof axios.request>;
 
   beforeEach(() => {
     mockDom();
