@@ -28,7 +28,6 @@ function setUpSentry() {
     });
   } else {
     // TODO: Replace with Bunyan log?
-    // oxlint-disable-next-line no-console
     console.error('[WARNING] Sentry DSN is not specified - check config.ts');
   }
 }
@@ -79,7 +78,6 @@ export function makeExportHandler<T>(
     } catch (error) {
       const eventId = Sentry.captureException(error.original || error);
 
-      // oxlint-disable-next-line no-console
       console.error(error);
 
       if (error instanceof HttpError) {

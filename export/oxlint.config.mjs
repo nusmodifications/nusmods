@@ -18,6 +18,7 @@ export default defineConfig({
   extends: [config],
   rules: {
     'import-x/no-namespace': 'off',
+    'no-console': 'off',
     'unicorn/prefer-top-level-await': 'off',
   },
 });

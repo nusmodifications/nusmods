@@ -62,6 +62,7 @@ jobs:
           at: ~/nusmods
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
       - run:
           name: Build export service
           environment:

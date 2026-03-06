@@ -32,7 +32,6 @@ if (process.env.NODE_ENV === 'production') {
     });
   } else {
     // TODO: Replace with Bunyan log?
-    // oxlint-disable-next-line no-console
     console.error('[WARNING] Sentry DSN is not specified - check config.ts');
   }
 }
@@ -52,19 +51,15 @@ render
     }
 
     const server = app.listen(Number(process.env.PORT) || 3000, process.env.HOST);
-    // oxlint-disable-next-line no-console
     console.log('Export server started');
 
     gracefulShutdown(server);
   })
   .catch((error) => {
-    // oxlint-disable-next-line no-console
     console.error('Cannot start browser:');
-    // oxlint-disable-next-line no-console
     console.error(error);
 
     if (error.message.includes('ERR_CONNECTION_REFUSED')) {
-      // oxlint-disable-next-line no-console
       console.error('Check that the export page dev server has been started');
     }
 

@@ -64,7 +64,6 @@ const errorHandler: Koa.Middleware<State> = async (ctx, next) => {
   } catch (error) {
     const eventId = Sentry.captureException(error.original || error);
 
-    // oxlint-disable-next-line no-console
     console.error(error);
 
     ctx.status = error.status || 500;
