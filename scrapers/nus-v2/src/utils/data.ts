@@ -360,7 +360,7 @@ export function sortTimetableByLegacyOrder<
     RawLesson,
     'lessonType' | 'classNo' | 'day' | 'startTime' | 'endTime' | 'venue' | 'weeks'
   >,
->(lessons: Array<T>, legacyOrder: string[] | undefined): Array<T> {
+>(lessons: Array<T>, legacyOrder: Array<string> | undefined): Array<T> {
   if (!legacyOrder) {
     return lessons;
   }
