@@ -1,8 +1,22 @@
 import nkzw from '@nkzw/oxlint-config';
 import { defineConfig } from 'oxlint';
 
+// Filter out react-related config since this is not a React project
+const config = { ...nkzw };
+config.jsPlugins = config.jsPlugins?.filter(
+  (p) =>
+    !(typeof p === 'object' && p.name === 'react-hooks-js') &&
+    p !== 'eslint-plugin-react-hooks',
+);
+// Remove react-hooks-js/* and react-hooks/* rules
+config.rules = Object.fromEntries(
+  Object.entries(config.rules ?? {}).filter(
+    ([key]) => !key.startsWith('react-hooks-js/') && !key.startsWith('react-hooks/'),
+  ),
+);
+
 export default defineConfig({
-  extends: [nkzw],
+  extends: [config],
   ignorePatterns: ['**/antlr4/*'],
   overrides: [
     {
