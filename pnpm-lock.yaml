@@ -67,6 +67,12 @@ importers:
         specifier: 22.15.0
         version: 22.15.0
     devDependencies:
+      '@nkzw/eslint-plugin':
+        specifier: ^2.0.0
+        version: 2.0.0(eslint@8.57.1)
+      '@nkzw/oxlint-config':
+        specifier: ^1.0.1
+        version: 1.0.1(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(oxlint@1.51.0)(typescript@5.9.3)
       '@types/fs-extra':
         specifier: 9.0.13
         version: 9.0.13
@@ -97,9 +103,21 @@ importers:
       dotenv:
         specifier: 8.6.0
         version: 8.6.0
+      eslint-plugin-no-only-tests:
+        specifier: ^3.3.0
+        version: 3.3.0
+      eslint-plugin-perfectionist:
+        specifier: ^5.6.0
+        version: 5.6.0(eslint@8.57.1)(typescript@5.9.3)
+      eslint-plugin-unused-imports:
+        specifier: ^4.4.1
+        version: 4.4.1(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)
       npm-run-all:
         specifier: 4.1.5
         version: 4.1.5
+      oxlint:
+        specifier: ^1.51.0
+        version: 1.51.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3

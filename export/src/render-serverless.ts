@@ -9,16 +9,16 @@ import type { ExportData } from './types';
 const VIEWPORT_HEIGHT = 2000;
 
 export interface ViewportOptions {
+  height?: number;
   pixelRatio?: number;
   width?: number;
-  height?: number;
 }
 
 async function setViewport(page: Page, options: ViewportOptions = {}) {
   await page.setViewport({
     deviceScaleFactor: options.pixelRatio || 1,
-    width: options.width || config.pageWidth,
     height: options.height || VIEWPORT_HEIGHT,
+    width: options.width || config.pageWidth,
   });
 }
 
@@ -54,7 +54,9 @@ async function injectData(page: Page, data: ExportData) {
 
   // Calculate element height to get bounding box for screenshot
   const appEle = await page.$('#timetable-only');
-  if (!appEle) throw new Error('#timetable-only element not found');
+  if (!appEle) {
+    throw new Error('#timetable-only element not found');
+  }
 
   return (await appEle.boundingBox()) || undefined;
 }
@@ -75,8 +77,8 @@ export async function pdf(page: Page, data: ExportData) {
   await page.emulateMediaType('screen');
 
   return await page.pdf({
-    printBackground: true,
     format: 'a4',
     landscape: data.theme.timetableOrientation === 'HORIZONTAL',
+    printBackground: true,
   });
 }
