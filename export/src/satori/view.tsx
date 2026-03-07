@@ -779,12 +779,14 @@ function ModuleCardsList({
           {showActiveUnits && (
             <div style={{ display: 'flex', gap: 4 }}>
               <span>Active Units:</span>
-              <span style={{ color: surface.gray, fontWeight: 700 }}>{model.activeUnits}</span>
+              <span style={{ color: surface.gray, fontWeight: 700 }}>
+                {model.activeUnits} Units
+              </span>
             </div>
           )}
           <div style={{ display: 'flex', gap: 4 }}>
             <span>Total Units:</span>
-            <span style={{ color: surface.gray, fontWeight: 700 }}>{model.totalUnits}</span>
+            <span style={{ color: surface.gray, fontWeight: 700 }}>{model.totalUnits} Units</span>
           </div>
         </div>
       </div>
