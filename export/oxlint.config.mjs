@@ -5,8 +5,7 @@ import { defineConfig } from 'oxlint';
 const config = { ...nkzw };
 config.jsPlugins = config.jsPlugins?.filter(
   (p) =>
-    !(typeof p === 'object' && p.name === 'react-hooks-js') &&
-    p !== 'eslint-plugin-react-hooks',
+    !(typeof p === 'object' && p.name === 'react-hooks-js') && p !== 'eslint-plugin-react-hooks',
 );
 config.rules = Object.fromEntries(
   Object.entries(config.rules ?? {}).filter(

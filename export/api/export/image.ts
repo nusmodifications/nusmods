@@ -21,8 +21,8 @@ const handler = makeExportHandler<Data>(
     const height = Number(request.query.height);
     const width = Number(request.query.width);
     if (
-      typeof height !== 'undefined' &&
-      typeof width !== 'undefined' &&
+      height !== undefined &&
+      width !== undefined &&
       !Number.isNaN(height) && // accept floats
       !Number.isNaN(width) && // accept floats
       height > 0 &&

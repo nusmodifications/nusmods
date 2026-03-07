@@ -21,6 +21,7 @@
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:watch": "vitest",
     "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
+    "check": "run-s lint typecheck test",
     "ci": "cross-env NODE_ENV=production pnpm lint && pnpm typecheck && pnpm test && pnpm test:integration && pnpm build"
   },
   "dependencies": {

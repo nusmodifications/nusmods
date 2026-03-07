@@ -14,7 +14,9 @@
     "dev": "run-p nodemon watch",
     "devtools": "cross-env DEVTOOLS=1 pnpm dev",
     "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js",
-    "lint": "tsc --noEmit && oxlint -c oxlint.config.mjs src"
+    "lint": "oxlint -c oxlint.config.mjs src",
+    "typecheck": "tsc --noEmit",
+    "check": "run-s lint typecheck"
   },
   "dependencies": {
     "@sentry/node": "5.30.0",

@@ -30,6 +30,7 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
+      - run: pnpm typecheck
       - run: pnpm test
       - run:
           name: Build scraper
@@ -46,6 +47,7 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
+      - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
       - store_artifacts:
@@ -63,6 +65,7 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
+      - run: pnpm typecheck
       - run:
           name: Build export service
           environment:
@@ -79,9 +82,7 @@ jobs:
       - attach_workspace:
           at: ~/nusmods
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
-      - run:
-          name: Install dependencies
-          command: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
       - run:
           name: Lint code
           command: pnpm lint:code --cache --cache-location 'node_modules/.eslintcache/'
@@ -89,9 +90,7 @@ jobs:
       - run:
           name: Lint styles
           command: pnpm lint:styles
-      - run:
-          name: Typecheck Code
-          command: pnpm typecheck
+      - run: pnpm typecheck
       - run:
           name: Test code
           environment:

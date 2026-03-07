@@ -33,9 +33,11 @@
   "scripts": {
     "clean": "rimraf dist coverage",
     "lint": "documentation lint src && oxlint -c oxlint.config.mjs src",
+    "typecheck": "tsc --noEmit",
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
     "test": "vitest run --coverage",
+    "check": "run-s lint typecheck test",
     "test:watch": "vitest",
     "prepublishOnly": "npm run clean && npm run test && npm run build && npm run docs --kill --print"
   },
