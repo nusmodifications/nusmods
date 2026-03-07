@@ -16,7 +16,7 @@ const router = new Router();
 
 router
   .get('/image', async (ctx) => {
-    const { page, data } = ctx.state;
+    const { data, page } = ctx.state;
     const { height, width } = ctx.query;
 
     // Validate options
@@ -25,8 +25,8 @@ router
     };
 
     if (
-      typeof height !== 'undefined' &&
-      typeof width !== 'undefined' &&
+      height !== undefined &&
+      width !== undefined &&
       !Number.isNaN(height) && // accept floats
       !Number.isNaN(width) && // accept floats
       Number(height) > 0 &&
@@ -43,7 +43,7 @@ router
     ctx.attachment('My Timetable.png');
   })
   .get('/pdf', async (ctx) => {
-    const { page, data } = ctx.state;
+    const { data, page } = ctx.state;
 
     ctx.body = await render.pdf(page, data);
     ctx.attachment('My Timetable.pdf');
@@ -61,23 +61,23 @@ const errorHandler: Koa.Middleware<State> = async (ctx, next) => {
       await ctx.render('404');
       ctx.status = 404;
     }
-  } catch (e) {
-    const eventId = Sentry.captureException(e.original || e);
+  } catch (error) {
+    const eventId = Sentry.captureException(error.original || error);
 
-    console.error(e);
+    console.error(error);
 
-    ctx.status = e.status || 500;
+    ctx.status = error.status || 500;
 
     if (ctx.status === 422) {
       await ctx.render('422');
     } else {
       await ctx.render('500', {
-        eventId,
         dsn: config.sentryDsn,
+        eventId,
       });
     }
 
-    ctx.app.emit('error', e, ctx);
+    ctx.app.emit('error', error, ctx);
   }
 };
 
