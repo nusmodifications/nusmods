@@ -10,9 +10,8 @@
     "scrape": "node build/src/index.js",
     "dev": "pnpm build && node build/src/index.js",
     "build": "tsc",
+    "lint": "eslint --ext .js,.ts src",
     "typecheck": "tsc --noEmit",
-    "lint": "pnpm lint:code",
-    "lint:code": "eslint --ext .js,.ts src",
     "check": "run-s lint typecheck"
   },
   "dependencies": {
