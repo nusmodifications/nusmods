@@ -10,17 +10,19 @@
     "start": "pm2 start ecosystem.config.js",
     "build": "tsc",
     "nodemon": "nodemon --no-update-notifier -r dotenv/config ./build/src/index.js",
+    "test": "tsx --test src/**/*.test.ts",
     "watch": "tsc --watch",
     "dev": "run-p nodemon watch",
-    "devtools": "cross-env DEVTOOLS=1 pnpm dev",
+    "check": "run-s lint typecheck",
     "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js",
+    "devtools": "cross-env DEVTOOLS=1 pnpm dev",
     "lint": "oxlint -c oxlint.config.mjs src",
-    "typecheck": "tsc --noEmit",
-    "check": "run-s lint typecheck"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@resvg/resvg-js": "^2.6.2",
     "@sentry/node": "5.30.0",
-    "@sparticuz/chromium": "^123.0.0",
     "axios": "0.30.0",
     "bunyan": "1.8.15",
     "fs-extra": "9.1.0",
@@ -31,8 +33,10 @@
     "koa-views": "6.3.1",
     "lodash": "4.17.23",
     "nodemon": "2.0.22",
+    "pdfkit": "^0.17.2",
     "pug": "3.0.3",
-    "puppeteer-core": "22.15.0"
+    "react": "18.3.1",
+    "satori": "^0.25.0"
   },
   "devDependencies": {
     "@nkzw/eslint-plugin": "^2.0.0",
@@ -43,15 +47,17 @@
     "@types/koa-views": "2.0.4",
     "@types/lodash": "4.17.14",
     "@types/node": "22.13.5",
+    "@types/pdfkit": "^0.17.5",
     "@types/pug": "2.0.10",
+    "@types/react": "18.3.18",
     "@vercel/node": "1.15.4",
-    "cross-env": "7.0.3",
     "dotenv": "8.6.0",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "eslint-plugin-perfectionist": "^5.6.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "npm-run-all": "4.1.5",
     "oxlint": "^1.51.0",
+    "tsx": "^4.21.0",
     "typescript": "5.9.3"
   }
 }

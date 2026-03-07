@@ -1,8 +1,6 @@
 import * as Sentry from '@sentry/node';
 import type { VercelApiHandler, VercelRequest, VercelResponse } from '@vercel/node';
-import type { Page } from 'puppeteer-core';
 
-import * as render from './render-serverless';
 import config from './config';
 import { render422, render500 } from './views';
 import { HttpError } from './HttpError';
@@ -39,14 +37,14 @@ function setUpSentry() {
  */
 export function makeExportHandler<T>(
   parseExportData: (request: VercelRequest) => T,
-  performExport: (response: VercelResponse, page: Page, data: T) => void | Promise<void>,
+  performExport: (response: VercelResponse, data: T) => void | Promise<void>,
 ): VercelApiHandler {
   return async function handler(request, response) {
     try {
       throwIfAcademicYearNotSet();
       setUpSentry();
 
-      // Validate input before starting the browser (which is expensive)
+      // Validate input before rendering
       let data = undefined;
       try {
         data = parseExportData(request);
@@ -54,27 +52,7 @@ export function makeExportHandler<T>(
         throw new HttpError(422, 'Invalid timetable data', error);
       }
 
-      // Prepare browser for export
-      const url = config.page;
-      let page: Page;
-      try {
-        page = await render.open(url);
-      } catch (error) {
-        if (error.message.includes('ERR_CONNECTION_REFUSED')) {
-          throw new HttpError(
-            500,
-            `Could not open the page located at process.env.PAGE (${url}). Try opening it in your browser?`,
-            error,
-          );
-        }
-        throw new HttpError(500, 'Cannot start browser', error);
-      }
-
-      // Export
-      await performExport(response, page, data);
-
-      // Cleanup
-      await page.close();
+      await performExport(response, data);
     } catch (error) {
       const eventId = Sentry.captureException(error.original || error);
 

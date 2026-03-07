@@ -1,9 +1,8 @@
-import type { Page } from 'puppeteer-core';
+// These types are duplicated from `website/src/types`.
 
-// These types are duplicated from `website/`.
-// TODO: Move these types to a shared package.
 export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
 export type ColorIndex = number;
+export type LessonIndex = number;
 export type ColorMapping = { [moduleCode: string]: ColorIndex };
 export type ThemeState = Readonly<{
   id: string;
@@ -12,33 +11,74 @@ export type ThemeState = Readonly<{
 }>;
 export type ColorScheme = 'LIGHT_COLOR_SCHEME' | 'DARK_COLOR_SCHEME';
 export type Semester = number;
-export type ClassNo = string; // E.g. "1", "A"
-export type LessonType = string; // E.g. "Lecture", "Tutorial"
-export type ModuleCode = string; // E.g. "CS3216"
+export type ClassNo = string;
+export type DayText = string;
+export type LessonTime = string;
+export type LessonType = string;
+export type ModuleCode = string;
+export type ModuleTitle = string;
+export type Venue = string;
+
+export type WeekRange = {
+  start: string;
+  end: string;
+  weekInterval?: number;
+  weeks?: number[];
+};
+
+export type Weeks = number[] | WeekRange;
+
+export type RawLesson = Readonly<{
+  classNo: ClassNo;
+  day: DayText;
+  startTime: LessonTime;
+  endTime: LessonTime;
+  lessonType: LessonType;
+  venue: Venue;
+  weeks: Weeks;
+}>;
+
+export type SemesterData = {
+  semester: Semester;
+  timetable: readonly RawLesson[];
+  examDate?: string;
+  examDuration?: number;
+};
+
+export type Module = {
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+  moduleCredit: string;
+  semesterData: readonly SemesterData[];
+};
+
+export type ModuleLessonConfig = {
+  [lessonType: LessonType]: LessonIndex[];
+};
+
 export type SemTimetableConfig = {
   [moduleCode: ModuleCode]: ModuleLessonConfig;
-};
-export interface ModuleLessonConfig {
-  [lessonType: LessonType]: ClassNo;
-}
-export type TaModulesConfig = {
-  [moduleCode: ModuleCode]: Array<[lessonType: LessonType, classNo: ClassNo]>;
 };
 
 // `ExportData` is duplicated from `website/src/types/export.ts`.
 export type ExportData = {
   readonly colors: ColorMapping;
-  readonly hidden: Array<ModuleCode>;
+  readonly hidden: ModuleCode[];
   readonly semester: Semester;
   readonly settings: {
     colorScheme: ColorScheme;
   };
-  readonly ta: TaModulesConfig;
+  readonly ta: ModuleCode[];
   readonly theme: ThemeState;
   readonly timetable: SemTimetableConfig;
 };
 
+export type ViewportOptions = {
+  pixelRatio?: number;
+  width?: number;
+  height?: number;
+};
+
 export interface State {
   data: ExportData;
-  page: Page;
 }

@@ -4,7 +4,6 @@ import gracefulShutdown from 'http-graceful-shutdown';
 
 import config from './config';
 import app from './app';
-import * as render from './render';
 
 // Config check
 if (!config.academicYear || !/\d{4}-\d{4}/.test(config.academicYear)) {
@@ -36,32 +35,7 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-// Wait for the browser to finish launching before starting the server
-render
-  .launch()
-  .then(async (browser) => {
-    // Attach the page and browser objects to context
-    app.context.browser = browser;
+const server = app.listen(Number(process.env.PORT) || 3000, process.env.HOST);
+console.log('Export server started');
 
-    // Attach page content or URL
-    if (/^https?:\/\//.test(config.page)) {
-      app.context.pageUrl = config.page;
-    } else {
-      app.context.pageContent = await fs.readFile(config.page, 'utf8');
-    }
-
-    const server = app.listen(Number(process.env.PORT) || 3000, process.env.HOST);
-    console.log('Export server started');
-
-    gracefulShutdown(server);
-  })
-  .catch((error) => {
-    console.error('Cannot start browser:');
-    console.error(error);
-
-    if (error.message.includes('ERR_CONNECTION_REFUSED')) {
-      console.error('Check that the export page dev server has been started');
-    }
-
-    process.exit(1);
-  });
+gracefulShutdown(server);
