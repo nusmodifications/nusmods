@@ -5,7 +5,6 @@
  * can optionally be used to parameterize tasks, such as with acard year and
  * semester.
  */
-// eslint-disable-next-line import/prefer-default-export
 export interface Task<Input = void, Output = void> {
   // Name of the task
   readonly name: string;

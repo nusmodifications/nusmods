@@ -24,7 +24,7 @@ const logger = rootLogger.child({
 
 const GRADE_REQUIREMENT_SEPARATOR = ':';
 
-function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
+function parse(data: Array<ModuleWithoutTree>, subLogger: Logger): PrereqTreeMap {
   const results: PrereqTreeMap = {};
 
   for (const module of data) {
@@ -50,7 +50,10 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
 /**
  * Insert the PrereqTree and FulfillRequirements properties to Module objects
  */
-export function insertRequisiteTree(modules: Module[], prerequisites: PrereqTreeMap): Module[] {
+export function insertRequisiteTree(
+  modules: Array<Module>,
+  prerequisites: PrereqTreeMap,
+): Array<Module> {
   // Find modules which this module fulfill the requirements for
   const fulfillModulesMap: { [moduleCode: string]: Set<ModuleCode> } = {};
   for (const module of modules) {
@@ -86,8 +89,8 @@ export function insertRequisiteTree(modules: Module[], prerequisites: PrereqTree
 }
 
 export default async function generatePrereqTree(
-  allModules: ModuleWithoutTree[],
-): Promise<Module[]> {
+  allModules: Array<ModuleWithoutTree>,
+): Promise<Array<Module>> {
   const prerequisites = parse(allModules, logger);
   const modules = insertRequisiteTree(allModules, prerequisites);
 

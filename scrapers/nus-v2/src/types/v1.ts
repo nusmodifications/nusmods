@@ -29,17 +29,17 @@ export type V1RawLesson = {
 // Semester-specific information of a module.
 export type V1SemesterData = {
   readonly ExamDate?: string;
-  readonly LecturePeriods: string[];
+  readonly LecturePeriods: Array<string>;
   readonly Semester: Semester;
-  readonly Timetable: V1RawLesson[];
-  readonly TutorialPeriods?: string[];
+  readonly Timetable: Array<V1RawLesson>;
+  readonly TutorialPeriods?: Array<string>;
 };
 
 // Recursive definition for walking a module tree
 export type Tree = {
-  readonly name: string;
   // Tree[] will result in infinite loop
-  readonly children: Tree[];
+  readonly children: Array<Tree>;
+  readonly name: string;
 };
 
 // Information for a module for a particular academic year.
@@ -47,22 +47,22 @@ export type V1Module = {
   AcadYear: AcadYear;
   Corequisite?: string;
   Department: Department;
-  History: V1SemesterData[];
+  History: Array<V1SemesterData>;
+  LockedModules?: Array<ModuleCode>;
+  ModmavenTree: Tree;
   ModuleCode: ModuleCode;
   ModuleCredit: string;
   ModuleDescription?: string;
   ModuleTitle: ModuleTitle;
   Preclusion?: string;
   Prerequisite?: string;
-  Types: string[];
+  Types: Array<string>;
   Workload?: string;
-  ModmavenTree: Tree;
-  LockedModules?: ModuleCode[];
 };
 
 // This format is returned from the module list endpoint.
 export type V1ModuleCondensed = {
   readonly ModuleCode: ModuleCode;
   readonly ModuleTitle: ModuleTitle;
-  readonly Semesters: number[];
+  readonly Semesters: Array<number>;
 };

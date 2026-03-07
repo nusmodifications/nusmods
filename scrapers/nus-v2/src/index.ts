@@ -25,32 +25,31 @@ function handleFatalError(e: Error): void {
   process.exitCode = 1;
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-function run(fn: (...args: any[]) => Promise<any>) {
-  return (...args: any[]) => fn(...args).catch(handleFatalError);
+function run(fn: (...args: Array<any>) => Promise<any>) {
+  return (...args: Array<any>) => fn(...args).catch(handleFatalError);
 }
-/* eslint-enable */
 
 const parameters: Record<string, yargs.Options> = {
   sem: {
-    type: 'number',
     choices: Semesters,
+    type: 'number',
   },
   year: {
-    type: 'string',
-    default: config.academicYear,
     coerce: (value: string) => {
       // Handle year given in two or four number form
-      if (value.length === 2) return `20${value}/20${+value + 1}`;
-      if (value.length === 4) return `${value}-${+value + 1}`;
+      if (value.length === 2) {
+        return `20${value}/20${+value + 1}`;
+      }
+      if (value.length === 4) {
+        return `${value}-${+value + 1}`;
+      }
       return value.replace('-', '/');
     },
+    default: config.academicYear,
+    type: 'string',
   },
 };
 
-/* eslint-disable no-await-in-loop */
-
-// eslint-disable-next-line no-unused-expressions
 yargs
   .command({
     command: 'test',
@@ -58,21 +57,21 @@ yargs
     handler: run(() => new TestApi(config.academicYear).run()),
   })
   .command({
-    command: 'departments [year]',
     aliases: ['department', 'faculty', 'faculties'],
-    describe: 'download data for all active departments and faculties',
     builder: {
       year: parameters.year,
     },
+    command: 'departments [year]',
+    describe: 'download data for all active departments and faculties',
     handler: run(({ year }) => new GetFacultyDepartment(year).run()),
   })
   .command({
-    command: 'semester <sem> [year]',
-    describe: 'download all data for the given semester',
     builder: {
       sem: parameters.sem,
       year: parameters.year,
     },
+    command: 'semester <sem> [year]',
+    describe: 'download all data for the given semester',
     handler: run(async ({ sem, year }) => {
       const organizations = await new GetFacultyDepartment(year).run();
       const allModules = await new GetAllModules(year).run({
@@ -86,13 +85,13 @@ yargs
     }),
   })
   .command({
-    command: 'venue [year] <sem>',
     aliases: ['venues'],
-    describe: 'collate venue for given semester',
     builder: {
       sem: parameters.sem,
       year: parameters.year,
     },
+    command: 'venue [year] <sem>',
+    describe: 'collate venue for given semester',
     handler: run(async ({ sem, year }) => {
       const modules = await new GetSemesterData(sem, year).outputCache.read();
       const { venues } = await new CollateVenues(sem, year).run(modules);
@@ -100,11 +99,11 @@ yargs
     }),
   })
   .command({
-    command: 'combine [year]',
-    describe: 'combine semester data for modules',
     builder: {
       year: parameters.year,
     },
+    command: 'combine [year]',
+    describe: 'combine semester data for modules',
     handler: run(async ({ year }) => {
       const aliases = [];
       const semesterData = [];
@@ -112,36 +111,38 @@ yargs
       for (const semester of Semesters) {
         const semesterAliases = await new CollateVenues(semester, year).aliasCache
           .read()
-          .catch((e): Aliases => {
-            logger.warn(e, `No module alias info available for ${semester}`);
+          .catch((error): Aliases => {
+            logger.warn(error, `No module alias info available for ${semester}`);
             return {};
           });
         aliases.push(mapValues(semesterAliases, (moduleCodes) => new Set(moduleCodes)));
 
-        const modules = await new GetSemesterData(semester, year).outputCache.read().catch((e) => {
-          logger.warn(e, `No semester data available for ${semester}`);
-          return [];
-        });
+        const modules = await new GetSemesterData(semester, year).outputCache
+          .read()
+          .catch((error) => {
+            logger.warn(error, `No semester data available for ${semester}`);
+            return [];
+          });
         semesterData.push(modules);
       }
 
-      await new CollateModules().run({ semesterData, aliases });
+      await new CollateModules().run({ aliases, semesterData });
     }),
   })
   .command({
-    command: 'all [year]',
-    describe: 'run all tasks in a single pipeline',
     builder: {
       year: parameters.year,
     },
+    command: 'all [year]',
+    describe: 'run all tasks in a single pipeline',
     handler: run(({ year }) => new DataPipeline(year).run()),
   })
   .command({
-    command: 'migrate [year]',
-    describe: 'move v1 modules to v2 modules format',
     builder: {
       year: parameters.year,
     },
+    command: 'migrate [year]',
+    describe: 'move v1 modules to v2 modules format',
     handler: run(async ({ year }) => {
       // Always use current year because v2 API endpoint may not return data for past years
       const input = await new GetFacultyDepartment(config.academicYear).run();
@@ -151,4 +152,5 @@ yargs
   })
   .demandCommand()
   .strict()
-  .help().argv;
+  .help()
+  .parseAsync();
