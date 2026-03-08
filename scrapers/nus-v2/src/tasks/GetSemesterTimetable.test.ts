@@ -33,7 +33,7 @@ describe(transformModgrpToClassNo, () => {
 });
 
 describe(GetSemesterTimetable, () => {
-  function createTask(lessons: TimetableLesson[], semester: Semester = 1) {
+  function createTask(lessons: Array<TimetableLesson>, semester: Semester = 1) {
     const task = new GetSemesterTimetable(semester, '2018/2019');
 
     task.api.getSemesterTimetables = vi.fn((term, consumer) => {
@@ -1508,7 +1508,7 @@ describe(GetSemesterTimetable, () => {
 
   // CS1010X has lessons extending outside the normal semester week range
   test('should map CS1010X timetable lessons correctly', async () => {
-    const task = createTask(CS1010XTimetable as TimetableLesson[]);
+    const task = createTask(CS1010XTimetable as Array<TimetableLesson>);
     const output = await task.run();
 
     expect(output).toMatchInlineSnapshot(`

@@ -1,12 +1,12 @@
-/* eslint-disable import/prefer-default-export */
-
 /**
  * Get the difference between each consecutive array elements. If there are
  * less than 2 elements in the array, an empty array is returned
  */
-export function deltas(array: number[]): number[] {
+export function deltas(array: Array<number>): Array<number> {
   let previous = array[0];
-  if (typeof previous === 'undefined') return [];
+  if (previous === undefined) {
+    return [];
+  }
 
   const results = [];
   for (const next of array.slice(1)) {
@@ -17,8 +17,10 @@ export function deltas(array: number[]): number[] {
   return results;
 }
 
-export function allEqual<T>(array: T[]): boolean {
+export function allEqual<T>(array: Array<T>): boolean {
   const first = array[0];
-  if (typeof first === 'undefined') return true;
+  if (first === undefined) {
+    return true;
+  }
   return array.every((element) => element === first);
 }

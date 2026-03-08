@@ -151,12 +151,12 @@ const makeVenueLesson = (
 ): VenueLesson => ({
   classNo: '1',
   day: 'Monday',
-  lessonType: 'Lecture',
   endTime: '1000',
+  lessonType: 'Lecture',
+  moduleCode,
+  size: 30,
   startTime: '0900',
   weeks: EVERY_WEEK,
-  size: 30,
-  moduleCode,
   ...props,
 });
 
@@ -188,7 +188,7 @@ describe(getDuplicateModules, () => {
 
 describe(mergeDualCodedModules, () => {
   it('should merge modules with the same starting time', () => {
-    const { lessons, aliases } = mergeDualCodedModules([
+    const { aliases, lessons } = mergeDualCodedModules([
       makeVenueLesson('GEK1901'),
       makeVenueLesson('GET1001'),
     ]);
@@ -200,7 +200,7 @@ describe(mergeDualCodedModules, () => {
   });
 
   it('should merge module sets of modules with the same starting time', () => {
-    const { lessons, aliases } = mergeDualCodedModules([
+    const { aliases, lessons } = mergeDualCodedModules([
       // GEK1901 and GET1001 have the same lessons
       makeVenueLesson('GEK1901', { startTime: '1000' }),
       makeVenueLesson('GEK1901', { startTime: '1400' }),
@@ -219,14 +219,14 @@ describe(mergeDualCodedModules, () => {
 
     expect(aliases).toEqual({
       GEK1901: new Set(['GET1001']),
-      GET1001: new Set(['GEK1901']),
-      GES1001: new Set(['GEK1902']),
       GEK1902: new Set(['GES1001']),
+      GES1001: new Set(['GEK1902']),
+      GET1001: new Set(['GEK1901']),
     });
   });
 
   it('should not merge modules on different weeks', () => {
-    const { lessons, aliases } = mergeDualCodedModules([
+    const { aliases, lessons } = mergeDualCodedModules([
       makeVenueLesson('GEK1901', { weeks: ODD_WEEK }),
       makeVenueLesson('GET1001', { weeks: EVEN_WEEK }),
     ]);
@@ -280,9 +280,9 @@ describe(findEquivalentModules, () => {
     description: string,
   ) => ({
     Code: code,
+    CourseDesc: description,
     Title: title,
     UnitsMin: credits,
-    CourseDesc: description,
   });
 
   it('should find modules with matching title, credits, and description', () => {

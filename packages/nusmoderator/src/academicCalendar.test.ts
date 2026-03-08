@@ -58,14 +58,14 @@ describe('getAcadSem', () => {
 
 describe('getAcadWeekName', () => {
   it('determines the correct semester for supported weeks', () => {
-    expect(getAcadWeekName(1)).toEqual({ weekType: 'Instructional', weekNumber: 1 });
-    expect(getAcadWeekName(3)).toEqual({ weekType: 'Instructional', weekNumber: 3 });
-    expect(getAcadWeekName(7)).toEqual({ weekType: 'Recess', weekNumber: null });
-    expect(getAcadWeekName(8)).toEqual({ weekType: 'Instructional', weekNumber: 7 });
-    expect(getAcadWeekName(11)).toEqual({ weekType: 'Instructional', weekNumber: 10 });
-    expect(getAcadWeekName(15)).toEqual({ weekType: 'Reading', weekNumber: null });
-    expect(getAcadWeekName(16)).toEqual({ weekType: 'Examination', weekNumber: 1 });
-    expect(getAcadWeekName(17)).toEqual({ weekType: 'Examination', weekNumber: 2 });
+    expect(getAcadWeekName(1)).toEqual({ weekNumber: 1, weekType: 'Instructional' });
+    expect(getAcadWeekName(3)).toEqual({ weekNumber: 3, weekType: 'Instructional' });
+    expect(getAcadWeekName(7)).toEqual({ weekNumber: null, weekType: 'Recess' });
+    expect(getAcadWeekName(8)).toEqual({ weekNumber: 7, weekType: 'Instructional' });
+    expect(getAcadWeekName(11)).toEqual({ weekNumber: 10, weekType: 'Instructional' });
+    expect(getAcadWeekName(15)).toEqual({ weekNumber: null, weekType: 'Reading' });
+    expect(getAcadWeekName(16)).toEqual({ weekNumber: 1, weekType: 'Examination' });
+    expect(getAcadWeekName(17)).toEqual({ weekNumber: 2, weekType: 'Examination' });
   });
 
   it('gives null for unsupported weeks', () => {
@@ -80,217 +80,217 @@ describe('getAcadWeekName', () => {
 describe('getAcadWeekInfo', () => {
   it('determines the correct week info for supported weeks', () => {
     expect(getAcadWeekInfo(new Date('August 1, 2016'))).toEqual({
-      year: '16/17',
+      num: null,
       sem: 'Semester 1',
       type: 'Orientation',
-      num: null,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('August 8, 2016'))).toEqual({
-      year: '16/17',
+      num: 1,
       sem: 'Semester 1',
       type: 'Instructional',
-      num: 1,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('August 14, 2016'))).toEqual({
-      year: '16/17',
+      num: 1,
       sem: 'Semester 1',
       type: 'Instructional',
-      num: 1,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('September 12, 2016'))).toEqual({
-      year: '16/17',
+      num: 6,
       sem: 'Semester 1',
       type: 'Instructional',
-      num: 6,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('September 19, 2016'))).toEqual({
-      year: '16/17',
+      num: null,
       sem: 'Semester 1',
       type: 'Recess',
-      num: null,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('September 27, 2016'))).toEqual({
-      year: '16/17',
+      num: 7,
       sem: 'Semester 1',
       type: 'Instructional',
-      num: 7,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('November 11, 2016'))).toEqual({
-      year: '16/17',
+      num: 13,
       sem: 'Semester 1',
       type: 'Instructional',
-      num: 13,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('November 14, 2016'))).toEqual({
-      year: '16/17',
+      num: null,
       sem: 'Semester 1',
       type: 'Reading',
-      num: null,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('November 21, 2016'))).toEqual({
-      year: '16/17',
+      num: 1,
       sem: 'Semester 1',
       type: 'Examination',
-      num: 1,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('December 2, 2016'))).toEqual({
-      year: '16/17',
+      num: 2,
       sem: 'Semester 1',
       type: 'Examination',
-      num: 2,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('December 7, 2016'))).toEqual({
-      year: '16/17',
+      num: 1,
       sem: 'Semester 1',
       type: 'Vacation',
-      num: 1,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('December 28, 2016'))).toEqual({
-      year: '16/17',
+      num: 4,
       sem: 'Semester 1',
       type: 'Vacation',
-      num: 4,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('January 4, 2017'))).toEqual({
-      year: '16/17',
+      num: 5,
       sem: 'Semester 1',
       type: 'Vacation',
-      num: 5,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('January 9, 2017'))).toEqual({
-      year: '16/17',
+      num: 1,
       sem: 'Semester 2',
       type: 'Instructional',
-      num: 1,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('February 14, 2017'))).toEqual({
-      year: '16/17',
+      num: 6,
       sem: 'Semester 2',
       type: 'Instructional',
-      num: 6,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('February 21, 2017'))).toEqual({
-      year: '16/17',
+      num: null,
       sem: 'Semester 2',
       type: 'Recess',
-      num: null,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('February 28, 2017'))).toEqual({
-      year: '16/17',
+      num: 7,
       sem: 'Semester 2',
       type: 'Instructional',
-      num: 7,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('April 11, 2017'))).toEqual({
-      year: '16/17',
+      num: 13,
       sem: 'Semester 2',
       type: 'Instructional',
-      num: 13,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('April 18, 2017'))).toEqual({
-      year: '16/17',
+      num: null,
       sem: 'Semester 2',
       type: 'Reading',
-      num: null,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('April 25, 2017'))).toEqual({
-      year: '16/17',
+      num: 1,
       sem: 'Semester 2',
       type: 'Examination',
-      num: 1,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('May 2, 2017'))).toEqual({
-      year: '16/17',
+      num: 2,
       sem: 'Semester 2',
       type: 'Examination',
-      num: 2,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('May 9, 2017'))).toEqual({
-      year: '16/17',
+      num: 1,
       sem: 'Special Term I',
       type: 'Instructional',
-      num: 1,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('June 6, 2017'))).toEqual({
-      year: '16/17',
+      num: 5,
       sem: 'Special Term I',
       type: 'Instructional',
-      num: 5,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('June 13, 2017'))).toEqual({
-      year: '16/17',
+      num: 6,
       sem: 'Special Term I',
       type: 'Instructional',
-      num: 6,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('June 20, 2017'))).toEqual({
-      year: '16/17',
+      num: 1,
       sem: 'Special Term II',
       type: 'Instructional',
-      num: 1,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('July 25, 2017'))).toEqual({
-      year: '16/17',
+      num: 6,
       sem: 'Special Term II',
       type: 'Instructional',
-      num: 6,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('August 4, 2017'))).toEqual({
-      year: '16/17',
+      num: null,
       sem: null,
       type: 'Vacation',
-      num: null,
+      year: '16/17',
     });
     expect(getAcadWeekInfo(new Date('August 7, 2017'))).toEqual({
-      year: '17/18',
+      num: null,
       sem: 'Semester 1',
       type: 'Orientation',
-      num: null,
+      year: '17/18',
     });
     expect(getAcadWeekInfo(new Date('September 8, 2024'))).toEqual({
-      year: '24/25',
+      num: 4,
       sem: 'Semester 1',
       type: 'Instructional',
-      num: 4,
+      year: '24/25',
     });
   });
 
   it('correctly handles week types whose days include the preceding weekend', () => {
     expect(getAcadWeekInfo(new Date('September 21, 2024'))).toEqual({
-      year: '24/25',
+      num: null,
       sem: 'Semester 1',
       type: 'Recess',
-      num: null,
+      year: '24/25',
     });
     expect(getAcadWeekInfo(new Date('November 16, 2024'))).toEqual({
-      year: '24/25',
+      num: null,
       sem: 'Semester 1',
       type: 'Reading',
-      num: null,
+      year: '24/25',
     });
     expect(getAcadWeekInfo(new Date('November 23, 2024'))).toEqual({
-      year: '24/25',
+      num: 1,
       sem: 'Semester 1',
       type: 'Examination',
-      num: 1,
+      year: '24/25',
     });
     expect(getAcadWeekInfo(new Date('February 25, 2025'))).toEqual({
-      year: '24/25',
+      num: null,
       sem: 'Semester 2',
       type: 'Recess',
-      num: null,
+      year: '24/25',
     });
     expect(getAcadWeekInfo(new Date('April 19, 2025'))).toEqual({
-      year: '24/25',
+      num: null,
       sem: 'Semester 2',
       type: 'Reading',
-      num: null,
+      year: '24/25',
     });
     expect(getAcadWeekInfo(new Date('April 27, 2025'))).toEqual({
-      year: '24/25',
+      num: 1,
       sem: 'Semester 2',
       type: 'Examination',
-      num: 1,
+      year: '24/25',
     });
   });
 });

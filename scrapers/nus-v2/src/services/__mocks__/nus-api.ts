@@ -2,15 +2,15 @@
 import type { INusApi } from '../nus-api';
 
 const mockApi: INusApi = {
+  getDepartment: vi.fn(),
+  getDepartmentTimetables: vi.fn(),
+  getFaculty: vi.fn(),
+
   getFacultyModules: vi.fn(),
   getFacultyModulesForYear: vi.fn(),
+
   getModuleExam: vi.fn(),
-
-  getFaculty: vi.fn(),
-  getDepartment: vi.fn(),
-
   getModuleTimetable: vi.fn(),
-  getDepartmentTimetables: vi.fn(),
   getSemesterTimetables: vi.fn(),
 
   getTermExams: vi.fn(),
