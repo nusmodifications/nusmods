@@ -1,4 +1,4 @@
-import { isEmpty, sortBy, values, isEqual } from 'lodash';
+import { isEmpty, sortBy, values, isEqual } from 'lodash-es';
 import { differenceInCalendarDays } from 'date-fns';
 
 import { ModRegNotificationSettings, ModRegRoundKey } from 'types/reducers';

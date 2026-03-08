@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { sortBy } from 'lodash';
+import { sortBy } from 'lodash-es';
 import { produce } from 'immer';
 
 import { Book, BookOpen, Eye, EyeOff, Trash } from 'react-feather';

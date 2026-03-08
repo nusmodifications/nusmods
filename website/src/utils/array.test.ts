@@ -1,4 +1,4 @@
-import { range, stubTrue, stubFalse } from 'lodash';
+import { range, stubTrue, stubFalse } from 'lodash-es';
 import { deltas, firstNonNull, intersperse, takeUntil } from './array';
 
 test('intersperse should return array mixed with delimiter', () => {

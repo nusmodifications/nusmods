@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 
 import Tooltip from 'views/components/Tooltip';
 

@@ -418,6 +418,9 @@ importers:
       lodash:
         specifier: 4.17.23
         version: 4.17.23
+      lodash-es:
+        specifier: 4.17.23
+        version: 4.17.23
       mousetrap:
         specifier: 1.6.5
         version: 1.6.5
@@ -581,6 +584,9 @@ importers:
       '@types/lodash':
         specifier: 4.17.14
         version: 4.17.14
+      '@types/lodash-es':
+        specifier: 4.17.12
+        version: 4.17.12
       '@types/mousetrap':
         specifier: 1.6.15
         version: 1.6.15
@@ -647,9 +653,6 @@ importers:
       babel-plugin-dynamic-import-node:
         specifier: 2.3.3
         version: 2.3.3
-      babel-plugin-lodash:
-        specifier: 3.3.4
-        version: 3.3.4
       babel-plugin-transform-react-class-to-function:
         specifier: 1.2.2
         version: 1.2.2
@@ -3077,6 +3080,9 @@ packages:
   '@types/leaflet@1.9.15':
     resolution: {integrity: sha512-7UuggAuAs+mva66gtf2OTB1nEhzU/9JED93TIaOEgvFMvG/dIGQaukHE7izHo1Zd+Ko1L4ETUw7TBc8yUxevpg==}
 
+  '@types/lodash-es@4.17.12':
+    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
+
   '@types/lodash@4.17.14':
     resolution: {integrity: sha512-jsxagdikDiDBeIRaPYtArcT8my4tN1og7MtMRquFT3XNA6axxyHDRUemqDz/taRDdOUn0GnGHRCuff4q48sW9A==}
 
@@ -3912,9 +3918,6 @@ packages:
 
   babel-plugin-dynamic-import-node@2.3.3:
     resolution: {integrity: sha512-jZVI+s9Zg3IqA/kdi0i6UDCybUI3aSBLnglhYbSSjKlV7yF1F/5LWv8MakQmvYpnbJDS6fcBL2KzHSxNCMtWSQ==}
-
-  babel-plugin-lodash@3.3.4:
-    resolution: {integrity: sha512-yDZLjK7TCkWl1gpBeBGmuaDIFhZKmkoL+Cu2MUUjv5VxUZx/z7tBGBCBcQs5RI1Bkz5LLmNdjx7paOyQtMovyg==}
 
   babel-plugin-macros@3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
@@ -7042,6 +7045,9 @@ packages:
     resolution: {integrity: sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  lodash-es@4.17.23:
+    resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
+
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
 
@@ -8997,9 +9003,6 @@ packages:
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
-
-  require-package-name@2.0.1:
-    resolution: {integrity: sha512-uuoJ1hU/k6M0779t3VMVIYpb2VMJk05cehCaABFhXaibcbvfgR8wKiozLjVFSzJPmQMRqIcO0HMyTFqfV09V6Q==}
 
   requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
@@ -13151,6 +13154,10 @@ snapshots:
     dependencies:
       '@types/geojson': 7946.0.16
 
+  '@types/lodash-es@4.17.12':
+    dependencies:
+      '@types/lodash': 4.17.14
+
   '@types/lodash@4.17.14': {}
 
   '@types/mdast@3.0.15':
@@ -14159,16 +14166,6 @@ snapshots:
   babel-plugin-dynamic-import-node@2.3.3:
     dependencies:
       object.assign: 4.1.7
-
-  babel-plugin-lodash@3.3.4:
-    dependencies:
-      '@babel/helper-module-imports': 7.28.6
-      '@babel/types': 7.29.0
-      glob: 7.2.3
-      lodash: 4.17.23
-      require-package-name: 2.0.1
-    transitivePeerDependencies:
-      - supports-color
 
   babel-plugin-macros@3.1.0:
     dependencies:
@@ -17753,6 +17750,8 @@ snapshots:
     dependencies:
       p-locate: 6.0.0
 
+  lodash-es@4.17.23: {}
+
   lodash.camelcase@4.3.0: {}
 
   lodash.debounce@4.0.8: {}
@@ -20261,8 +20260,6 @@ snapshots:
   require-directory@2.1.1: {}
 
   require-from-string@2.0.2: {}
-
-  require-package-name@2.0.1: {}
 
   requires-port@1.0.0: {}
 

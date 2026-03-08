@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { addWeeks, format, parseISO } from 'date-fns';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 

@@ -1,4 +1,4 @@
-import { last, sortBy } from 'lodash';
+import { last, sortBy } from 'lodash-es';
 import * as React from 'react';
 import classnames from 'classnames';
 

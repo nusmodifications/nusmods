@@ -40,7 +40,7 @@ module.exports = (api) => {
     ],
   ];
 
-  const plugins = ['babel-plugin-lodash'];
+  const plugins = [];
 
   const assumptions = {
     // Assumes document.all doesn't exist to reduce the generated code size
