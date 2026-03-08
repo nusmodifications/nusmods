@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "build",
     "esModuleInterop": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@nusmods/types": ["../packages/types/src/index.ts"],
+      "@nusmods/types/*": ["../packages/types/src/*"]
+    },
     "strict": true,
     "useUnknownInCatchVariables": false,
     "skipLibCheck": true
