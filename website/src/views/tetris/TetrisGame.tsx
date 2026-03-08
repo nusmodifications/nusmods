@@ -1,6 +1,6 @@
 import { createRef, PureComponent } from 'react';
 import Mousetrap from 'mousetrap';
-import { debounce, noop, shuffle } from 'lodash';
+import { debounce, noop, shuffle } from 'lodash-es';
 import classnames from 'classnames';
 import { produce, current, Draft } from 'immer';
 

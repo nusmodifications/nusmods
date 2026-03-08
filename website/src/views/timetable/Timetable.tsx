@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { flattenDeep, noop, values } from 'lodash';
+import { flattenDeep, noop, values } from 'lodash-es';
 import classnames from 'classnames';
 
 import {

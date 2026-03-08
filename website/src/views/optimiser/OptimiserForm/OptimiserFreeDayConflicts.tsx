@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { FreeDayConflict } from 'types/optimiser';
 
 import { X } from 'react-feather';

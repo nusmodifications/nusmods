@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { each, max, min, pull } from 'lodash';
+import { each, max, min, pull } from 'lodash-es';
 import { createMigrate, PersistedState } from 'redux-persist';
 
 import { PlannerState } from 'types/reducers';

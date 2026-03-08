@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 
 import { ColorSchemePreference, ThemeId } from 'types/settings';
 import { Tracker } from 'types/vendor/piwik';
