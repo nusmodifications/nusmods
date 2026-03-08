@@ -1,9 +1,7 @@
 import { flatMap } from 'lodash';
 import { PrereqTree } from '../../types/modules';
 
-/* eslint-disable import/prefer-default-export */
-
-export function flattenTree(tree: PrereqTree | PrereqTree[]): string[] {
+export function flattenTree(tree: PrereqTree | PrereqTree[]): Array<string> {
   if (typeof tree === 'string') {
     return [tree];
   }

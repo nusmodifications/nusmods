@@ -13,7 +13,9 @@ import { cleanString } from './data';
  */
 export function getTermCode(semester: number | string, academicYear: string) {
   const year = /\d\d(\d\d)/.exec(academicYear);
-  if (!year) throw new RangeError('academicYear should be in the format of YYYY/YYYY or YYYY-YY');
+  if (!year) {
+    throw new RangeError('academicYear should be in the format of YYYY/YYYY or YYYY-YY');
+  }
   return `${year[1]}${semester}0`;
 }
 
@@ -21,8 +23,8 @@ export function getTermCode(semester: number | string, academicYear: string) {
  * Extract the academic year and semester from a term code
  */
 export function fromTermCode(term: string): [string, Semester] {
-  const year = parseInt(term.slice(0, 2), 10);
-  const semester = parseInt(term.charAt(2), 10);
+  const year = Number.parseInt(term.slice(0, 2), 10);
+  const semester = Number.parseInt(term.charAt(2), 10);
 
   return [`20${year}/20${year + 1}`, semester];
 }
@@ -56,8 +58,8 @@ export function mapTermToApiParams(term: string) {
   }
 
   return {
-    applicableInYear: shortYear,
     applicableInSem,
+    applicableInYear: shortYear,
   };
 }
 
@@ -70,21 +72,21 @@ export function sanitizeModuleInfo(module: ModuleInfo): ModuleInfo {
 
   return {
     ...module,
-    Code: cleanString(module.Code),
-    Title: cleanString(module.Title),
-    SubjectArea: cleanString(module.SubjectArea),
-    CatalogNumber: cleanString(module.CatalogNumber),
-    WorkloadHoursNUSMods: cleanOrNull(module.WorkloadHoursNUSMods),
-    CourseDesc: cleanString(module.CourseDesc),
-    PreRequisiteAdvisory: cleanOrNull(module.PreRequisiteAdvisory),
     AdditionalInformation: cleanOrNull(module.AdditionalInformation),
-    GradingBasisDesc: cleanOrNull(module.GradingBasisDesc),
-    PrerequisiteRule: cleanOrNull(module.PrerequisiteRule),
-    PrerequisiteSummary: cleanOrNull(module.PrerequisiteSummary),
+    CatalogNumber: cleanString(module.CatalogNumber),
+    Code: cleanString(module.Code),
     CorequisiteRule: cleanOrNull(module.CorequisiteRule),
     CorequisiteSummary: cleanOrNull(module.CorequisiteSummary),
+    CourseDesc: cleanString(module.CourseDesc),
+    GradingBasisDesc: cleanOrNull(module.GradingBasisDesc),
     PreclusionRule: cleanOrNull(module.PreclusionRule),
     PreclusionSummary: cleanOrNull(module.PreclusionSummary),
+    PreRequisiteAdvisory: cleanOrNull(module.PreRequisiteAdvisory),
+    PrerequisiteRule: cleanOrNull(module.PrerequisiteRule),
+    PrerequisiteSummary: cleanOrNull(module.PrerequisiteSummary),
+    SubjectArea: cleanString(module.SubjectArea),
+    Title: cleanString(module.Title),
+    WorkloadHoursNUSMods: cleanOrNull(module.WorkloadHoursNUSMods),
   };
 }
 
@@ -104,8 +106,8 @@ export async function cacheDownload<T>(
 
     try {
       await cache.write(data);
-    } catch (err) {
-      logger.warn({ err, path: cache.path }, 'Failed to cache data');
+    } catch (error) {
+      logger.warn({ error, path: cache.path }, 'Failed to cache data');
     }
 
     return data;
@@ -116,7 +118,7 @@ export async function cacheDownload<T>(
     try {
       // Deliberately awaiting on cache.read() to catch read errors
       return await cache.read();
-    } catch (cacheError) {
+    } catch {
       // Rethrow the download error if the cache is not available since an ENOTFOUND or
       // CacheExpiredError is usually not helpful
       throw downloadError;
@@ -134,10 +136,12 @@ export async function retry<T>(
 ): Promise<T> {
   try {
     return await promiseFactory();
-  } catch (e) {
+  } catch (error) {
     // If we run out of tries, or if the given condition is not fulfilled, we
     // don't retry
-    if (maxRetries <= 1 || !retryIf(e)) throw e;
+    if (maxRetries <= 1 || !retryIf(error)) {
+      throw error;
+    }
     return retry(promiseFactory, maxRetries - 1, retryIf);
   }
 }

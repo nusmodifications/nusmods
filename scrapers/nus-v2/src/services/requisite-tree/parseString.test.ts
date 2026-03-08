@@ -2,8 +2,6 @@ import parseString from './parseString';
 import { mockLogger } from '../../utils/test-utils';
 import { PrereqTree } from '../../types/modules';
 
-/* eslint-disable max-len */
-
 // integration tests, normalize + parse
 const logger = mockLogger();
 const parse = (string: string) => parseString(string, logger);

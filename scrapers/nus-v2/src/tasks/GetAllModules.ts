@@ -11,10 +11,10 @@ import { getTermCode, retry, containsNbsps } from '../utils/api';
 import { TaskError, UnknownApiError } from '../utils/errors';
 
 interface Input {
-  faculties: AcademicGrp[];
+  faculties: Array<AcademicGrp>;
 }
 
-type Output = ModuleInfo[];
+type Output = Array<ModuleInfo>;
 
 /**
  * Download module info for all faculties across the entire academic year.
@@ -50,7 +50,7 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
     this.logger.info(`Getting all modules for ${this.academicYear}`);
 
     // Try fetching without semester filter first (30 calls instead of 120)
-    let modules: ModuleInfo[];
+    let modules: Array<ModuleInfo>;
     try {
       modules = await this.fetchWithoutSemester(input);
       if (modules.length > 0) {
@@ -61,9 +61,9 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
       this.logger.warn(
         'No modules returned without semester filter, falling back to per-semester fetch',
       );
-    } catch (e) {
+    } catch (error) {
       this.logger.warn(
-        e,
+        error,
         'Failed to fetch without semester filter, falling back to per-semester fetch',
       );
     }
@@ -76,7 +76,7 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
     return modules;
   }
 
-  private async fetchWithoutSemester(input: Input): Promise<ModuleInfo[]> {
+  private async fetchWithoutSemester(input: Input): Promise<Array<ModuleInfo>> {
     let downloadedCount = 0;
     const totalFaculties = input.faculties.length;
 
@@ -98,16 +98,16 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
 
         this.logNbspWarnings(modules);
         return modules;
-      } catch (e) {
-        this.logger.error(e, `Cannot get modules from ${faculty.Description}`);
-        throw new TaskError(`Cannot get modules from ${faculty.Description}`, this, e);
+      } catch (error) {
+        this.logger.error(error, `Cannot get modules from ${faculty.Description}`);
+        throw new TaskError(`Cannot get modules from ${faculty.Description}`, this, error);
       }
     });
 
     return flatten<ModuleInfo>(await Promise.all(requests));
   }
 
-  private async fetchAllSemestersAndDeduplicate(input: Input): Promise<ModuleInfo[]> {
+  private async fetchAllSemestersAndDeduplicate(input: Input): Promise<Array<ModuleInfo>> {
     const semesterResults = await Promise.all(
       Semesters.map((semester) => this.fetchForSemester(semester, input)),
     );
@@ -124,7 +124,7 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
     return Array.from(moduleMap.values());
   }
 
-  private async fetchForSemester(semester: number, input: Input): Promise<ModuleInfo[]> {
+  private async fetchForSemester(semester: number, input: Input): Promise<Array<ModuleInfo>> {
     const term = getTermCode(semester, this.academicYear);
     let downloadedCount = 0;
     const totalFaculties = input.faculties.length;
@@ -147,19 +147,19 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
 
         this.logNbspWarnings(modules);
         return modules;
-      } catch (e) {
+      } catch (error) {
         this.logger.error(
-          e,
+          error,
           `Cannot get modules from ${faculty.Description} for semester ${semester}`,
         );
-        return [] as ModuleInfo[];
+        return [] as Array<ModuleInfo>;
       }
     });
 
     return flatten<ModuleInfo>(await Promise.all(requests));
   }
 
-  private logNbspWarnings(modules: ModuleInfo[]) {
+  private logNbspWarnings(modules: Array<ModuleInfo>) {
     modules.forEach(
       (module) =>
         !!containsNbsps(module.CourseDesc) &&

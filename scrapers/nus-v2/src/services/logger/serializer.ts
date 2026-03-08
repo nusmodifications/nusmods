@@ -1,12 +1,10 @@
 import bunyan from 'bunyan';
 import { ApiError } from '../../utils/errors';
 
-/* eslint-disable import/prefer-default-export, @typescript-eslint/no-explicit-any */
-
 const defaultErrorSerializer = bunyan.stdSerializers.err;
 
 function serializeApiError(error: ApiError) {
-  const { originalError, response, requestConfig } = error;
+  const { originalError, requestConfig, response } = error;
 
   const data: Record<string, any> = defaultErrorSerializer(error);
 
@@ -23,8 +21,8 @@ function serializeApiError(error: ApiError) {
 
   if (response) {
     data.response = {
-      status: response.status,
       data: response.data,
+      status: response.status,
     };
   }
 
@@ -32,7 +30,9 @@ function serializeApiError(error: ApiError) {
 }
 
 export function errorSerializer(error: Error) {
-  if (!error) return error;
+  if (!error) {
+    return error;
+  }
 
   if (error instanceof ApiError) {
     return serializeApiError(error);
