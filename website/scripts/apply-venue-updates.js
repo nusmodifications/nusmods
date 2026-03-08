@@ -2,7 +2,6 @@
 
 const path = require('path');
 const fs = require('fs');
-const last = require('lodash/last');
 
 const VENUES_PATH = path.join(__dirname, '../src/data/venues.json');
 
@@ -12,6 +11,7 @@ const VENUES_PATH = path.join(__dirname, '../src/data/venues.json');
  */
 
 const ISSUES_URL = 'https://api.github.com/repos/nusmodifications/nusmods/issues';
+let last;
 
 /**
  * Returns the last code block from the issue
@@ -45,6 +45,8 @@ function getCodeBlock(body) {
 }
 
 async function downloadIssues() {
+  ({ last } = await import('lodash-es'));
+
   // eslint-disable-next-line import/no-dynamic-require, global-require
   let venues = require(VENUES_PATH);
 

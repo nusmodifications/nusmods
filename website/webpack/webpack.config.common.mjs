@@ -1,6 +1,10 @@
-const path = require('path');
-const webpack = require('webpack');
-const parts = require('./webpack.parts');
+import path from 'node:path';
+
+import webpack from 'webpack';
+
+import * as parts from './webpack.parts.mjs';
+
+const { commitHash, versionStr } = parts.appVersion();
 
 const commonConfig = {
   // This tells Webpack where to look for modules. Remember to update the
@@ -45,8 +49,8 @@ const commonConfig = {
   plugins: [
     new webpack.DefinePlugin({
       NUSMODS_ENV: JSON.stringify(parts.env()),
-      DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
-      VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+      DISPLAY_COMMIT_HASH: JSON.stringify(commitHash),
+      VERSION_STR: JSON.stringify(versionStr),
       DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
       DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
       OPTIMISER_API_URL: JSON.stringify(process.env.OPTIMISER_API_URL || '/api/optimiser/optimise'),
@@ -75,4 +79,4 @@ const commonConfig = {
   },
 };
 
-module.exports = commonConfig;
+export default commonConfig;

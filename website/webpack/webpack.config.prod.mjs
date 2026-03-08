@@ -1,14 +1,17 @@
-const path = require('path');
-const { partition } = require('lodash');
+import path from 'node:path';
+import { createRequire } from 'node:module';
 
-const { merge } = require('webpack-merge');
-const TerserJsPlugin = require('terser-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const PacktrackerPlugin = require('@packtracker/webpack-plugin');
+import PacktrackerPlugin from '@packtracker/webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { partition } from 'lodash-es';
+import TerserJsPlugin from 'terser-webpack-plugin';
+import { merge } from 'webpack-merge';
 
-const commonConfig = require('./webpack.config.common');
-const parts = require('./webpack.parts');
+import commonConfig from './webpack.config.common.mjs';
+import * as parts from './webpack.parts.mjs';
+
+const require = createRequire(import.meta.url);
 const nusmods = require('../src/apis/nusmods');
 const config = require('../src/config/app-config.json');
 
@@ -119,4 +122,4 @@ const productionConfig = ({ browserWarningPath }) =>
     parts.productionCSS(),
   ]);
 
-module.exports = productionConfig;
+export default productionConfig;

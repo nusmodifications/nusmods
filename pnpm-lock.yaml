@@ -415,9 +415,6 @@ importers:
       leaflet-gesture-handling:
         specifier: 1.2.2
         version: 1.2.2
-      lodash:
-        specifier: 4.17.23
-        version: 4.17.23
       lodash-es:
         specifier: 4.17.23
         version: 4.17.23
@@ -581,9 +578,6 @@ importers:
       '@types/leaflet':
         specifier: 1.9.15
         version: 1.9.15
-      '@types/lodash':
-        specifier: 4.17.14
-        version: 4.17.14
       '@types/lodash-es':
         specifier: 4.17.12
         version: 4.17.12

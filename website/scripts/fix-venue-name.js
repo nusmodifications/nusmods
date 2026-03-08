@@ -11,7 +11,6 @@ const venueFile = '../src/data/venues.json';
 
 const venues = require(venueFile); // eslint-disable-line import/no-dynamic-require
 const path = require('path');
-const _ = require('lodash');
 const fs = require('fs-extra');
 
 if (process.platform === 'win32') {
@@ -55,6 +54,8 @@ const additionalWords = [
 
 // Do not capitalize articles
 const articles = new Set(['a', 'an', 'of', 'and', 'the', 'to', 'at']);
+let capitalize;
+let each;
 
 // Try to find the Unix words file
 const dictLocations = ['/usr/share/dict/words', '/usr/dict/words'];
@@ -72,30 +73,36 @@ if (!dict) throw new Error('Cannot find words file');
 // Supplement the dictionary with our own words
 additionalWords.forEach((word) => dict.add(word.toLowerCase()));
 
-_.each(venues, (venue) => {
-  if (!venue.roomName) return;
-  const newRoomName = venue.roomName.replace(/\b\w+\b/g, (word, index) => {
-    const lowercaseWord = word.toLowerCase();
+async function main() {
+  ({ capitalize, each } = await import('lodash-es'));
 
-    if (specialNames[lowercaseWord]) {
-      return specialNames[lowercaseWord];
-    }
+  each(venues, (venue) => {
+    if (!venue.roomName) return;
+    const newRoomName = venue.roomName.replace(/\b\w+\b/g, (word, index) => {
+      const lowercaseWord = word.toLowerCase();
 
-    if (
-      // Do not capitalize articles, unless it is the first word
-      (!articles.has(lowercaseWord) || index === 0) &&
-      // Use title case for words in the dictionary
-      dict.has(lowercaseWord)
-    ) {
-      return _.capitalize(word);
-    }
+      if (specialNames[lowercaseWord]) {
+        return specialNames[lowercaseWord];
+      }
 
-    return word;
+      if (
+        // Do not capitalize articles, unless it is the first word
+        (!articles.has(lowercaseWord) || index === 0) &&
+        // Use title case for words in the dictionary
+        dict.has(lowercaseWord)
+      ) {
+        return capitalize(word);
+      }
+
+      return word;
+    });
+
+    console.log(`${venue.roomName.padEnd(40)} -> ${newRoomName}`);
+    // eslint-disable-next-line no-param-reassign
+    venue.roomName = newRoomName;
   });
 
-  console.log(`${venue.roomName.padEnd(40)} -> ${newRoomName}`);
-  // eslint-disable-next-line no-param-reassign
-  venue.roomName = newRoomName;
-});
+  fs.writeFileSync(path.resolve(__dirname, venueFile), JSON.stringify(venues, null, 2));
+}
 
-fs.writeFileSync(path.resolve(__dirname, venueFile), JSON.stringify(venues, null, 2));
+main();
