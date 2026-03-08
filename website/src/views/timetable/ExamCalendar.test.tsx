@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import _ from 'lodash';
+import { cloneDeep, range } from 'lodash-es';
 import { Link, MemoryRouter } from 'react-router-dom';
 
 import { ModuleWithColor } from 'types/views';
@@ -61,7 +61,7 @@ describe(ExamCalendar, () => {
         expect(element.text()).toEqual('Dec 1');
       } else {
         // Expect it to be a valid numeric string from 1-31
-        expect(_.range(1, 32)).toContain(Number(element.text()));
+        expect(range(1, 32)).toContain(Number(element.text()));
       }
     });
   });
@@ -85,7 +85,7 @@ describe(ExamCalendar, () => {
   });
 
   test('should hide modules which are hidden in timetable', () => {
-    const modules = _.cloneDeep(modulesWithColor);
+    const modules = cloneDeep(modulesWithColor);
     modules[0].isHiddenInTimetable = true;
     const wrapper = make(modules);
 
@@ -99,7 +99,7 @@ describe(ExamCalendar, () => {
   });
 
   test('should hide modules which are TA modules in timetable', () => {
-    const modules = _.cloneDeep(modulesWithColor);
+    const modules = cloneDeep(modulesWithColor);
     modules[0].isTaInTimetable = true;
     const wrapper = make(modules);
 

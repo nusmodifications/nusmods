@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { map, sumBy } from 'lodash';
+import { map, sumBy } from 'lodash-es';
 import { connect } from 'react-redux';
 
 import { ModuleTableOrder } from 'types/reducers';

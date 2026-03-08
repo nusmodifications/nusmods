@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 import NUSModerator from 'nusmoderator';
-import { groupBy, range } from 'lodash';
+import { groupBy, range } from 'lodash-es';
 import classnames from 'classnames';
 import { addDays } from 'date-fns';
 

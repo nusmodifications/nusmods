@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import _ from 'lodash';
+import { capitalize } from 'lodash-es';
 
 import { Workload } from 'types/modules';
 import ModuleWorkload from './ModuleWorkload';
@@ -20,7 +20,7 @@ function extractComponent(node: ShallowWrapper): string {
   }
 
   const match = node.get(0).props.className.match(/workload-([^-]+)/);
-  return _.capitalize(match[1]);
+  return capitalize(match[1]);
 }
 
 test('it should render workload correctly', () => {

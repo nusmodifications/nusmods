@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { LessonOption } from 'types/optimiser';
 
 import { AlertTriangle } from 'react-feather';

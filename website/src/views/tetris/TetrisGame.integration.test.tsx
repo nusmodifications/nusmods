@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import _ from 'lodash';
+import { sample } from 'lodash-es';
 
 import TetrisGame from './TetrisGame';
 
@@ -29,7 +29,7 @@ describe(TetrisGame, () => {
       const currentMoves: string[] = [];
       try {
         for (let tick = 0; tick < 1000; tick++) {
-          const [moveLabel, move] = _.sample(moves)!;
+          const [moveLabel, move] = sample(moves)!;
           currentMoves.push(moveLabel);
           move();
           wrapper.render();

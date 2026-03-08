@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import classnames from 'classnames';
 import Downshift, { ChildrenFunction } from 'downshift';
-import _ from 'lodash';
+import { range } from 'lodash-es';
 
 import { ColorIndex } from 'types/timetables';
 import { NUM_DIFFERENT_COLORS, TRANSPARENT_COLOR_INDEX } from 'utils/colors';
@@ -57,7 +57,7 @@ const ColorPicker = memo<Props>((props) => {
           className={classnames(styles.palette, { [styles.isClosed]: !isOpen })}
           {...getMenuProps()}
         >
-          {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
+          {range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
             <button
               type="button"
               {...getItemProps({ item: index === color ? TRANSPARENT_COLOR_INDEX : index })}
