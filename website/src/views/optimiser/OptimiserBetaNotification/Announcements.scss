@@ -66,9 +66,38 @@
   display: flex;
   flex: 0 0 auto;
   align-items: center;
+  gap: 0.5rem;
+
 
   @include media-breakpoint-down(xs) {
     flex: 0 0;
+  }
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #28a745;
+  background: transparent;
+  border: 1.5px solid #28a745;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    color: #fff;
+    background: #28a745;
+    text-decoration: none;
   }
 }
 
