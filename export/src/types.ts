@@ -1,42 +1,7 @@
 import type { Page } from 'puppeteer-core';
+import type { ExportData } from '@nusmods/types';
 
-// These types are duplicated from `website/`.
-// TODO: Move these types to a shared package.
-export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
-export type ColorIndex = number;
-export type ColorMapping = { [moduleCode: string]: ColorIndex };
-export type ThemeState = Readonly<{
-  id: string;
-  showTitle: boolean;
-  timetableOrientation: TimetableOrientation;
-}>;
-export type ColorScheme = 'LIGHT_COLOR_SCHEME' | 'DARK_COLOR_SCHEME';
-export type Semester = number;
-export type ClassNo = string; // E.g. "1", "A"
-export type LessonType = string; // E.g. "Lecture", "Tutorial"
-export type ModuleCode = string; // E.g. "CS3216"
-export type SemTimetableConfig = {
-  [moduleCode: ModuleCode]: ModuleLessonConfig;
-};
-export interface ModuleLessonConfig {
-  [lessonType: LessonType]: ClassNo;
-}
-export type TaModulesConfig = {
-  [moduleCode: ModuleCode]: Array<[lessonType: LessonType, classNo: ClassNo]>;
-};
-
-// `ExportData` is duplicated from `website/src/types/export.ts`.
-export type ExportData = {
-  readonly colors: ColorMapping;
-  readonly hidden: Array<ModuleCode>;
-  readonly semester: Semester;
-  readonly settings: {
-    colorScheme: ColorScheme;
-  };
-  readonly ta: TaModulesConfig;
-  readonly theme: ThemeState;
-  readonly timetable: SemTimetableConfig;
-};
+export type { ExportData } from '@nusmods/types';
 
 export interface State {
   data: ExportData;

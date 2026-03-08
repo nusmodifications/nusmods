@@ -27,6 +27,9 @@ importers:
 
   export:
     dependencies:
+      '@nusmods/types':
+        specifier: workspace:*
+        version: link:../packages/types
       '@sentry/node':
         specifier: 5.30.0
         version: 5.30.0
@@ -182,6 +185,12 @@ importers:
       vitest:
         specifier: ^4.0.18
         version: 4.0.18(@types/node@22.13.5)(jiti@1.21.7)(jsdom@24.1.3)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)
+
+  packages/types:
+    devDependencies:
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   scrapers/cpex-scraper:
     dependencies:
@@ -358,6 +367,9 @@ importers:
       '@material/snackbar':
         specifier: 14.0.0
         version: 14.0.0
+      '@nusmods/types':
+        specifier: workspace:*
+        version: link:../packages/types
       '@sentry/browser':
         specifier: 7.119.1
         version: 7.119.1

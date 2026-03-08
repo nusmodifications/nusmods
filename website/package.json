@@ -29,6 +29,7 @@
     "@material/button": "14.0.0",
     "@material/fab": "14.0.0",
     "@material/snackbar": "14.0.0",
+    "@nusmods/types": "workspace:*",
     "@sentry/browser": "7.119.1",
     "@sentry/node": "6.19.7",
     "@sentry/tracing": "6.19.7",
