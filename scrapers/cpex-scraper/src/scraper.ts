@@ -1,87 +1,96 @@
 import axios from 'axios';
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from 'fs';
+import path from 'path';
 
-const ACADEMIC_YEAR = '2025/26';
+const FETCH_OK = '00000';
 
-// Sanity check to see if there are at least this many modules before overwriting cpexModules.json
-// The last time I ran this fully there were 3418 modules
-const threshold = 1500;
+export const MAX_ITEMS = 1000;
 
-type Env = {
+export type ScraperEnv = {
+  baseUrl: string;
   acadApiKey: string;
   acadAppKey: string;
-  baseUrl: string;
   courseApiKey: string;
 };
 
 type V1ApiResponse<T> = {
+  msg: string;
   code: string;
   data: T;
-  msg: string;
 };
 
 type AcademicGrp = {
-  AcademicGroup: string;
-  Description: string;
-  DescriptionShort: string;
-  EffectiveDate: string;
   EffectiveStatus: string;
+  AcademicGroup: string;
+  DescriptionShort: string;
+  Description: string;
+  EffectiveDate: string;
 };
 
-// Set everything to optional because we cannot trust the API to be consistent
 type Module = {
-  CatalogNumber?: string;
-  CourseAttributes?: Array<{
-    Code: string;
-    Value: string;
-  }>;
-  SubjectArea?: string;
   Title?: string;
   UnitsMin?: number | null;
-};
-
-type FetchError = {
-  message?: string;
-  response?: {
-    status?: number;
-  };
+  SubjectArea?: string;
+  CatalogNumber?: string;
+  CourseAttributes?: {
+    Code: string;
+    Value: string;
+  }[];
 };
 
 export type CPExModule = {
-  inS1CPEx?: boolean;
-  inS2CPEx?: boolean;
+  title: string;
   moduleCode: string;
   moduleCredit: string;
-  title: string;
+  inS1CPEx?: boolean;
+  inS2CPEx?: boolean;
 };
 
-function pad2(n: number): string {
-  return n < 10 ? '0' + n : String(n);
-}
+type Logger = Pick<Console, 'log'>;
 
-const envPath = path.join(__dirname, '../../env.json');
-const env = JSON.parse(fs.readFileSync(envPath, 'utf8')) as Env;
-const baseUrl = env.baseUrl.endsWith('/') ? env.baseUrl : `${env.baseUrl}/`;
+type HttpClient = Pick<typeof axios, 'get'>;
 
-const FETCH_OK = '00000';
+type FileSystem = Pick<typeof fs, 'existsSync' | 'mkdirSync' | 'writeFileSync'>;
 
-const MAX_ITEMS = 1000;
+type PathModule = Pick<typeof path, 'join'>;
 
-// Authentication headers matching the new NUS API
-const acadHeaders = {
-  'Content-Type': 'application/json',
-  'X-API-KEY': env.acadApiKey,
-  'X-APP-KEY': env.acadAppKey,
+export type ScrapeResult = {
+  modules: CPExModule[];
+  archiveFilename: string;
+  wroteCurrentFile: boolean;
+  summary: {
+    totalRawRows: number;
+    skippedIncomplete: number;
+    unknownMpeValues: number;
+    duplicatesMerged: number;
+  };
 };
 
-const courseHeaders = {
-  'Content-Type': 'application/json',
-  'X-API-KEY': env.courseApiKey,
+export type ScrapeOptions = {
+  env: ScraperEnv;
+  academicYear: string;
+  threshold: number;
+  outputDir?: string;
+  now?: Date;
+  axiosClient?: HttpClient;
+  fileSystem?: FileSystem;
+  pathModule?: PathModule;
+  logger?: Logger;
 };
 
-function getTimestampForFilename(): string {
-  const date = new Date();
+const mpeValueMap: Record<string, { inS1CPEx?: boolean; inS2CPEx?: boolean }> = {
+  'S1 - Sem 1': { inS1CPEx: true },
+  'S2 - Sem 2': { inS2CPEx: true },
+  'S1&S2 - Sem 1 & 2': { inS1CPEx: true, inS2CPEx: true },
+  S1: { inS1CPEx: true },
+  S2: { inS2CPEx: true },
+  'S1&S2': { inS1CPEx: true, inS2CPEx: true },
+};
+
+export function getTimestampForFilename(date: Date = new Date()): string {
+  function pad2(n: number): string {
+    return n < 10 ? `0${n}` : String(n);
+  }
 
   return (
     date.getFullYear().toString() +
@@ -93,52 +102,68 @@ function getTimestampForFilename(): string {
   );
 }
 
-// --- Normalization helpers (mirrors nus-v2 cleanString / sanitizeModuleInfo) ---
-
-/** Strip HTML tags, decode common HTML entities, remove NBSPs, collapse whitespace. */
-function cleanString(s: string): string {
+export function cleanString(s: string): string {
   return s
-    .replace(/<[^>]*>?/gm, ' ') // strip HTML tags
-    .replace(/&nbsp;/gi, ' ') // decode &nbsp;
-    .replace(/&amp;/gi, '&') // decode &amp;
-    .replace(/&lt;/gi, '<') // decode &lt;
-    .replace(/&gt;/gi, '>') // decode &gt;
-    .replace(/&quot;/gi, '"') // decode &quot;
-    .replace(/&#39;/gi, "'") // decode &#39;
-    .replace(/\u00A0/g, ' ') // replace NBSP unicode char
-    .replace(/\s+/g, ' ') // collapse whitespace
+    .replace(/<[^>]*>?/gm, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\u00A0/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
-/** Normalize a module code: clean HTML/entities, strip ALL whitespace, uppercase. */
-function normalizeModuleCode(subject: string, catalogNbr: string): string {
+export function normalizeModuleCode(subject: string, catalogNbr: string): string {
   const raw = cleanString(subject) + cleanString(catalogNbr);
   return raw.replace(/\s/g, '').toUpperCase();
 }
 
-/** Normalize title: collapse whitespace, trim. */
-function normalizeTitle(s: string): string {
+export function normalizeTitle(s: string): string {
   return cleanString(s);
 }
 
-/** Normalize credit: trim whitespace. */
-function normalizeCredit(n: number | null): string {
+export function normalizeCredit(n: number | null): string {
   return n === null ? '0' : String(n).trim();
 }
 
-// MPE attribute value → semester flag mapping (supports both old and new API formats)
-const mpeValueMap: Record<string, { inS1CPEx?: boolean; inS2CPEx?: boolean }> = {
-  S1: { inS1CPEx: true },
-  'S1 - Sem 1': { inS1CPEx: true },
-  'S1&S2': { inS1CPEx: true, inS2CPEx: true },
-  'S1&S2 - Sem 1 & 2': { inS1CPEx: true, inS2CPEx: true },
-  S2: { inS2CPEx: true },
-  'S2 - Sem 2': { inS2CPEx: true },
-};
+function getBaseUrl(baseUrl: string): string {
+  return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+}
 
-async function scraper() {
-  // Fetch faculties (academic groups) using the new edurec endpoint
-  const getFacultiesResponse = await axios.get<V1ApiResponse<Array<AcademicGrp>>>(
+function ensureDir(fileSystem: FileSystem, dirPath: string): void {
+  if (!fileSystem.existsSync(dirPath)) {
+    fileSystem.mkdirSync(dirPath);
+  }
+}
+
+export async function scraper({
+  env,
+  academicYear,
+  threshold,
+  outputDir = path.join(__dirname, '../../data'),
+  now = new Date(),
+  axiosClient = axios,
+  fileSystem = fs,
+  pathModule = path,
+  logger = console,
+}: ScrapeOptions): Promise<ScrapeResult> {
+  const baseUrl = getBaseUrl(env.baseUrl);
+
+  const acadHeaders = {
+    'Content-Type': 'application/json',
+    'X-API-KEY': env.acadApiKey,
+    'X-APP-KEY': env.acadAppKey,
+  };
+
+  const courseHeaders = {
+    'Content-Type': 'application/json',
+    'X-API-KEY': env.courseApiKey,
+  };
+
+  const getFacultiesResponse = await axiosClient.get<V1ApiResponse<AcademicGrp[]>>(
     `${baseUrl}edurec/config/v1/get-acadgroup`,
     { headers: acadHeaders },
   );
@@ -147,25 +172,22 @@ async function scraper() {
     throw new Error(`Failed to fetch faculties: ${getFacultiesResponse.data.msg}`);
   }
 
-  const facultiesData = getFacultiesResponse.data.data;
+  const facultiesData = [...getFacultiesResponse.data.data];
 
-  // Ensure faculty 099 (Non-Faculty-based Departments) is included, as it may
-  // be missing from the API response but is needed for modules like CS2101.
   if (!facultiesData.some((faculty) => faculty.AcademicGroup === '099')) {
     facultiesData.push({
       AcademicGroup: '099',
-      Description: 'Non-Faculty-based Departments',
       DescriptionShort: 'Non-Faculty-based Departments',
-      EffectiveDate: '1905-01-01',
+      Description: 'Non-Faculty-based Departments',
       EffectiveStatus: 'A',
+      EffectiveDate: '1905-01-01',
     });
   }
 
-  console.log(`Total faculties: ${facultiesData.length}`);
+  logger.log(`Total faculties: ${facultiesData.length}`);
 
   const collatedCPExModulesMap = new Map<string, CPExModule>();
 
-  // Summary counters
   let totalRawRows = 0;
   let skippedIncomplete = 0;
   let duplicatesMerged = 0;
@@ -174,33 +196,31 @@ async function scraper() {
   for (let i = 0; i < facultiesData.length; i++) {
     const faculty = facultiesData[i];
 
-    // Skip inactive faculties (mirrors old eff_status: 'A' filter)
     if (faculty.EffectiveStatus !== 'A') {
       continue;
     }
 
-    // CourseNUSMods API expects the first 3 characters of the AcademicGroup code
     const acadGroupCode =
       faculty.AcademicGroup.length >= 3 ? faculty.AcademicGroup.slice(0, 3) : faculty.AcademicGroup;
 
-    console.log(
+    logger.log(
       `[${i + 1}/${facultiesData.length}] Fetching modules for ${faculty.Description} (${acadGroupCode})...`,
     );
 
-    // Fetch modules with pagination
     let offset = 0;
     let hasMore = true;
 
     while (hasMore) {
-      let modules: Array<Module>;
+      let modules: Module[];
+
       try {
-        const getModulesResponse = await axios.get<{ data: Array<Module>; itemCount: number }>(
+        const getModulesResponse = await axiosClient.get<{ data: Module[]; itemCount: number }>(
           `${baseUrl}CourseNUSMods`,
           {
             headers: courseHeaders,
             params: {
               acadGroupCode,
-              applicableInYear: ACADEMIC_YEAR,
+              applicableInYear: academicYear,
               latestVersionOnly: 'True',
               maxItems: String(MAX_ITEMS),
               offset: String(offset),
@@ -210,13 +230,14 @@ async function scraper() {
 
         modules = getModulesResponse.data.data;
       } catch (error: unknown) {
-        const err = error as FetchError;
-        // The modules endpoint may return 404 for faculties with no modules
+        const err = error as { response?: { status?: number }; message?: string };
+
         if (err.response?.status === 404) {
-          console.log(`  No modules found for ${faculty.Description} (404)`);
+          logger.log(`  No modules found for ${faculty.Description} (404)`);
           break;
         }
-        console.log(
+
+        logger.log(
           `  Error fetching modules for ${faculty.Description} (${acadGroupCode}): ${err.message}`,
         );
         break;
@@ -253,30 +274,30 @@ async function scraper() {
 
         if (!semesterFlags) {
           if (!unknownMpeValues.has(value)) {
-            console.log(`Unknown CPEx attribute value: '${value}' (first seen at ${moduleCode})`);
+            logger.log(`Unknown CPEx attribute value: '${value}' (first seen at ${moduleCode})`);
             unknownMpeValues.add(value);
           }
+
           continue;
         }
 
-        // Merge duplicates with OR semantics for semester flags
         const existing = collatedCPExModulesMap.get(moduleCode);
+
         if (existing) {
           duplicatesMerged++;
 
-          // Warn on conflicting title or credit
           if (existing.title !== moduleTitle) {
-            console.log(
+            logger.log(
               `  Warning: conflicting title for ${moduleCode}: '${existing.title}' vs '${moduleTitle}'`,
             );
           }
+
           if (existing.moduleCredit !== moduleCredit) {
-            console.log(
+            logger.log(
               `  Warning: conflicting credit for ${moduleCode}: '${existing.moduleCredit}' vs '${moduleCredit}'`,
             );
           }
 
-          // Keep first non-empty title/credit, OR semester flags
           existing.title = existing.title || moduleTitle;
           existing.moduleCredit = existing.moduleCredit || moduleCredit;
           existing.inS1CPEx = existing.inS1CPEx || semesterFlags.inS1CPEx;
@@ -285,10 +306,10 @@ async function scraper() {
         }
 
         collatedCPExModulesMap.set(moduleCode, {
-          ...semesterFlags,
+          title: moduleTitle,
           moduleCode,
           moduleCredit,
-          title: moduleTitle,
+          ...semesterFlags,
         });
       }
 
@@ -300,43 +321,53 @@ async function scraper() {
     }
   }
 
-  // Sort by moduleCode for deterministic output (matches nus-v2 CollateModules sortBy)
-  const collatedCPExModules = Array.from(collatedCPExModulesMap.values()).sort((a, b) =>
+  const modules = Array.from(collatedCPExModulesMap.values()).sort((a, b) =>
     a.moduleCode.localeCompare(b.moduleCode),
   );
 
-  // Summary
-  console.log(`\n--- Scrape Summary ---`);
-  console.log(`Total raw rows:          ${totalRawRows}`);
-  console.log(`Skipped (incomplete):    ${skippedIncomplete}`);
-  console.log(`Unknown MPE values:      ${unknownMpeValues.size}`);
-  console.log(`Duplicate codes merged:  ${duplicatesMerged}`);
-  console.log(`Final module count:      ${collatedCPExModules.length}`);
+  logger.log('\n--- Scrape Summary ---');
+  logger.log(`Total raw rows:          ${totalRawRows}`);
+  logger.log(`Skipped (incomplete):    ${skippedIncomplete}`);
+  logger.log(`Unknown MPE values:      ${unknownMpeValues.size}`);
+  logger.log(`Duplicate codes merged:  ${duplicatesMerged}`);
+  logger.log(`Final module count:      ${modules.length}`);
 
-  const DATA_DIR = path.join(__dirname, '../../data');
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR);
-  }
-  const OLD_DATA_DIR = path.join(DATA_DIR, '/old');
-  if (!fs.existsSync(OLD_DATA_DIR)) {
-    fs.mkdirSync(OLD_DATA_DIR);
-  }
+  ensureDir(fileSystem, outputDir);
 
-  if (collatedCPExModules.length >= threshold) {
-    fs.writeFileSync(path.join(DATA_DIR, 'cpexModules.json'), JSON.stringify(collatedCPExModules));
-    console.log(`Wrote ${collatedCPExModules.length} modules to cpexModules.json.`);
+  const archiveDir = pathModule.join(outputDir, 'old');
+  ensureDir(fileSystem, archiveDir);
+
+  let wroteCurrentFile = false;
+
+  if (modules.length >= threshold) {
+    fileSystem.writeFileSync(
+      pathModule.join(outputDir, 'cpexModules.json'),
+      JSON.stringify(modules),
+    );
+    logger.log(`Wrote ${modules.length} modules to cpexModules.json.`);
+    wroteCurrentFile = true;
   } else {
-    console.log(
-      `Not writing to cpexModules.json because the number of modules ${collatedCPExModules.length} is less than the threshold of ${threshold}.`,
+    logger.log(
+      `Not writing to cpexModules.json because the number of modules ${modules.length} is less than the threshold of ${threshold}.`,
     );
   }
 
-  const archiveFilename = `cpexModules-${getTimestampForFilename()}.json`;
-  fs.writeFileSync(path.join(OLD_DATA_DIR, archiveFilename), JSON.stringify(collatedCPExModules));
-  console.log(`Wrote ${collatedCPExModules.length} modules to archive ${archiveFilename}.`);
-  console.log('Done!');
+  const archiveFilename = `cpexModules-${getTimestampForFilename(now)}.json`;
+  fileSystem.writeFileSync(pathModule.join(archiveDir, archiveFilename), JSON.stringify(modules));
+  logger.log(`Wrote ${modules.length} modules to archive ${archiveFilename}.`);
+  logger.log('Done!');
+
+  return {
+    modules,
+    archiveFilename,
+    wroteCurrentFile,
+    summary: {
+      totalRawRows,
+      skippedIncomplete,
+      unknownMpeValues: unknownMpeValues.size,
+      duplicatesMerged,
+    },
+  };
 }
 
-scraper().catch((error) => {
-  console.error(`Failed to scrape: ${error}`);
-});
+export const scrapeCPEx = scraper;

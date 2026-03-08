@@ -14,7 +14,7 @@ pnpm build
 
 # Run the scraper
 echo "Running CPEx scraper"
-node build/src/index.js
+node build/src/scraper.js
 
 # Sync with live data
 echo "Syncing data"
