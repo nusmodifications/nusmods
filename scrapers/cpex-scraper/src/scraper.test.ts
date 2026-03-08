@@ -10,7 +10,7 @@ import {
   normalizeModuleCode,
   normalizeTitle,
   scrapeCPEx,
-} from '../src/scraper';
+} from './scraper';
 
 describe('normalization helpers', () => {
   test('cleanString strips tags, decodes entities, and collapses whitespace', () => {
