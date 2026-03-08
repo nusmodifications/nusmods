@@ -139,6 +139,7 @@ describe(scrapeCPEx, () => {
       });
 
     const result = await scrapeCPEx({
+      academicYear: '2025/26',
       env: {
         acadApiKey: 'acad-key',
         acadAppKey: 'acad-app-key',
@@ -261,6 +262,7 @@ describe(scrapeCPEx, () => {
       });
 
     const result = await scrapeCPEx({
+      academicYear: '2025/26',
       env: {
         acadApiKey: 'acad-key',
         acadAppKey: 'acad-app-key',
