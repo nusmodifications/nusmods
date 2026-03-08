@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import OptimiserFreeDaySelect from './OptimiserFreeDaySelect';
 
-jest.mock('./OptimiserFormTooltip', () => ({
+vi.mock('./OptimiserFormTooltip', () => ({
   __esModule: true,
   default: () => <div />,
 }));

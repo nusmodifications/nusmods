@@ -1,5 +1,5 @@
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 
 import styles from './OptimiserMaxConsecutiveHoursSelect.scss';
 import OptimiserFormTooltip from './OptimiserFormTooltip';

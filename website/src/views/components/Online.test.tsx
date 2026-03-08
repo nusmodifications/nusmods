@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import { OnlineComponent } from './Online';
 
+const jest = vi;
 describe(OnlineComponent, () => {
   const testContent = <span>Test</span>;
 

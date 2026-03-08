@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 
 import { convertIndexToTime, NUM_INTERVALS_PER_HOUR } from 'utils/timify';
 import styles from './TimetableTimings.scss';

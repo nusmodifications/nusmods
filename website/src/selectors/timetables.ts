@@ -27,7 +27,7 @@ const EMPTY_OBJECT = {};
 export const getSemesterTimetableLessons = createSelector(
   ({ timetables }: State) => timetables.lessons,
   (lessons) => (semester: Semester | null) =>
-    semester === null ? EMPTY_OBJECT : lessons[semester] ?? EMPTY_OBJECT,
+    semester === null ? EMPTY_OBJECT : (lessons[semester] ?? EMPTY_OBJECT),
 );
 
 /**
@@ -36,7 +36,7 @@ export const getSemesterTimetableLessons = createSelector(
 export const getSemesterTimetableColors = createSelector(
   ({ timetables }: State) => timetables.colors,
   (colors) => (semester: Semester | null) =>
-    semester === null ? EMPTY_OBJECT : colors[semester] ?? EMPTY_OBJECT,
+    semester === null ? EMPTY_OBJECT : (colors[semester] ?? EMPTY_OBJECT),
 );
 
 /**
@@ -44,7 +44,7 @@ export const getSemesterTimetableColors = createSelector(
  */
 export const getSemesterTimetableHidden = createSelector(
   ({ timetables }: State) => timetables.hidden,
-  (hidden) => (semester: Semester | null) => semester === null ? [] : hidden[semester] ?? [],
+  (hidden) => (semester: Semester | null) => (semester === null ? [] : (hidden[semester] ?? [])),
 );
 
 /**
@@ -53,5 +53,5 @@ export const getSemesterTimetableHidden = createSelector(
 export const getSemesterTimetableTaLessons = createSelector(
   ({ timetables }: State) => timetables.ta,
   (ta) => (semester: Semester | null) =>
-    semester === null ? EMPTY_OBJECT : ta[semester] ?? EMPTY_OBJECT,
+    semester === null ? EMPTY_OBJECT : (ta[semester] ?? EMPTY_OBJECT),
 );

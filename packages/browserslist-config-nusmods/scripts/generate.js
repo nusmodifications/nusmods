@@ -2,9 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const browserslist = require('browserslist');
 const axios = require('axios');
-const prettier = require('prettier');
 const helpers = require('./helpers');
-const prettierConfig = require('../../../.prettierrc.js');
 
 const API_URL =
   'https://analytics.nusmods.com/?module=API&method=DevicesDetection.getBrowserVersions&idSite=1&period=year&date=today&format=JSON';
@@ -84,10 +82,7 @@ function process(rawData) {
 
 async function output(stats) {
   const browsers = browserslist('cover 98% in my stats', { stats });
-  const browserslistString = prettier.format(JSON.stringify(browsers), {
-    ...prettierConfig,
-    parser: 'babel',
-  });
+  const browserslistString = `${JSON.stringify(browsers, null, 2)}\n`;
   console.log(`\nSupported browsers:\n${browsers.join('\n')}`);
 
   const pathAtRoot = (filename) => path.resolve(__dirname, '..', filename);

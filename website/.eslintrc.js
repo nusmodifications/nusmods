@@ -11,7 +11,7 @@ module.exports = {
   root: true,
   extends: ['airbnb', 'prettier', 'prettier/react'],
 
-  plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react', 'react-hooks'],
+  plugins: ['@typescript-eslint', 'import', 'jsx-a11y', 'react', 'react-hooks'],
 
   settings: {
     'import/resolver': {
@@ -25,8 +25,6 @@ module.exports = {
   },
 
   rules: {
-    'prettier/prettier': warnInDevelopment,
-
     // Allow debugger and console statement in development
     'no-debugger': warnInDevelopment,
     'no-console': warnInDevelopment,
@@ -132,4 +130,13 @@ module.exports = {
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
   },
+
+  overrides: [
+    {
+      files: ['**/*.test.{js,ts,tsx}', 'scripts/vitest-setup.ts'],
+      globals: {
+        vi: 'readonly',
+      },
+    },
+  ],
 };

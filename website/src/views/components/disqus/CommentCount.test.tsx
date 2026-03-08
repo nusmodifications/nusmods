@@ -1,13 +1,12 @@
+import type { MockedFunction } from 'vitest';
 import { mount } from 'enzyme';
 import insertScript from 'utils/insertScript';
 import { CommentCountComponent } from './CommentCount';
 
-jest.mock('utils/insertScript', () => jest.fn());
+vi.mock('utils/insertScript', () => ({ default: vi.fn() }));
 // Return value is mocked outside of jest.mock's factory because JSDOM symbols
 // like Event are not available since module mocks are hoisted
-(insertScript as jest.MockedFunction<typeof insertScript>).mockResolvedValue(
-  new Event('mock event'),
-);
+(insertScript as MockedFunction<typeof insertScript>).mockResolvedValue(new Event('mock event'));
 
 const disqusConfig = {
   url: 'https://nusmods.com/courses/CS1010/reviews',

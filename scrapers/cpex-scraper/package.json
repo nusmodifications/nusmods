@@ -2,26 +2,33 @@
   "name": "nusmods-cpex-scraper",
   "version": "1.0.0",
   "description": "NUSMods scraper for NUS Course Planning Exercise (CPEx)",
-  "author": "Christopher Goh <chris@nusmods.com>",
   "license": "MIT",
-  "main": "src/index.ts",
+  "author": "Christopher Goh <chris@nusmods.com>",
   "repository": "https://github.com/nusmodifications/nusmods",
-  "devDependencies": {
-    "@types/node": "^18.14.4",
-    "@typescript-eslint/eslint-plugin": "^5.54.0",
-    "@typescript-eslint/parser": "^5.54.0",
-    "eslint": "^8.35.0",
-    "prettier": "^2.8.4",
-    "typescript": "^4.9.5"
-  },
+  "main": "src/index.ts",
   "scripts": {
     "scrape": "node build/src/index.js",
-    "dev": "yarn build && node build/src/index.js",
+    "dev": "pnpm build && node build/src/index.js",
     "build": "tsc",
-    "lint": "tsc && yarn lint:code",
-    "lint:code": "eslint --ext .js,.ts src"
+    "lint": "oxlint -c oxlint.config.mjs src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "check": "run-s lint typecheck test"
   },
   "dependencies": {
     "axios": "^1.3.4"
+  },
+  "devDependencies": {
+    "@nkzw/eslint-plugin": "^2.0.0",
+    "@nkzw/oxlint-config": "^1.0.1",
+    "@types/node": "22.13.5",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint-plugin-no-only-tests": "^3.3.0",
+    "eslint-plugin-perfectionist": "^5.6.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "oxlint": "^1.51.0",
+    "typescript": "5.9.3",
+    "vitest": "^4.0.18"
   }
 }

@@ -9,7 +9,7 @@ export function render422() {
 
 export function render500(eventId: string) {
   return pug.renderFile(`${viewsRoot}/500.pug`, {
-    eventId,
     dsn: config.sentryDsn,
+    eventId,
   });
 }

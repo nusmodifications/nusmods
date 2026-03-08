@@ -20,8 +20,8 @@ const commonConfig = {
     },
     // Importing modules from these files will not require the extension.
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-    // We don't use symlinks, so disable for performance
-    symlinks: false,
+    // pnpm uses symlinks for node_modules, so this must be true
+    symlinks: true,
   },
 
   entry: 'entry/main',

@@ -5,24 +5,11 @@ import PX2108 from './fixtures/nusmods-timetable/PX2108.json';
 import CollateVenues, { extractVenueAvailability } from './CollateVenues';
 import { EVERY_WEEK } from '../utils/test-utils';
 
-jest.mock('../services/io/elastic');
+vi.mock('../services/io/elastic');
 
 describe(extractVenueAvailability, () => {
   test('should map lessons to venues', () => {
     const expected: ReturnType<typeof extractVenueAvailability>[string][number] = {
-      day: 'Monday',
-      classes: [
-        {
-          moduleCode: 'CS3216',
-          classNo: '1',
-          startTime: '1830',
-          endTime: '2030',
-          weeks: EVERY_WEEK,
-          day: 'Monday',
-          lessonType: 'Lecture',
-          size: 30,
-        },
-      ],
       availability: {
         // '1000': 'vacant',
         // '1030': 'vacant',
@@ -61,21 +48,34 @@ describe(extractVenueAvailability, () => {
         // '0900': 'vacant',
         // '0930': 'vacant',
       },
+      classes: [
+        {
+          classNo: '1',
+          day: 'Monday',
+          endTime: '2030',
+          lessonType: 'Lecture',
+          moduleCode: 'CS3216',
+          size: 30,
+          startTime: '1830',
+          weeks: EVERY_WEEK,
+        },
+      ],
+      day: 'Monday',
     };
 
     expect(
       extractVenueAvailability([
         {
-          moduleCode: 'CS3216',
           classNo: '1',
-          startTime: '1830',
-          endTime: '2030',
-          weeks: EVERY_WEEK,
-          venue: 'COM1-VCRM',
-          day: 'Monday',
-          lessonType: 'Lecture',
-          size: 30,
           covidZone: 'A',
+          day: 'Monday',
+          endTime: '2030',
+          lessonType: 'Lecture',
+          moduleCode: 'CS3216',
+          size: 30,
+          startTime: '1830',
+          venue: 'COM1-VCRM',
+          weeks: EVERY_WEEK,
         },
       ]),
     ).toEqual({
@@ -87,48 +87,46 @@ describe(extractVenueAvailability, () => {
     expect(
       extractVenueAvailability([
         {
-          moduleCode: 'CS3216',
           classNo: '1',
-          startTime: '1830',
-          endTime: '2030',
-          weeks: EVERY_WEEK,
-          venue: '',
-          day: 'Monday',
-          lessonType: 'Lecture',
-          size: 30,
           covidZone: 'Unknown',
+          day: 'Monday',
+          endTime: '2030',
+          lessonType: 'Lecture',
+          moduleCode: 'CS3216',
+          size: 30,
+          startTime: '1830',
+          venue: '',
+          weeks: EVERY_WEEK,
         },
       ]),
     ).toEqual({});
   });
 });
-/* eslint-disable no-irregular-whitespace */
-
 describe(CollateVenues, () => {
   test('should merge dual coded modules', async () => {
     const data: any = [
       {
+        module: { title: 'Science Fiction and Philosophy' },
         moduleCode: 'GET1025',
         semesterData: {
           timetable: GET1025,
         },
-        module: { title: 'Science Fiction and Philosophy' },
       },
       {
+        module: { title: 'Science Fiction and Philosophy' },
         moduleCode: 'GEK2041',
         semesterData: {
           timetable: GEK2041,
         },
-        module: { title: 'Science Fiction and Philosophy' },
       },
     ];
 
     const task = new CollateVenues(1, '2018/2019');
-    const { venues, aliases } = await task.run(data);
+    const { aliases, venues } = await task.run(data);
 
     expect(aliases).toEqual({
-      GET1025: new Set(['GEK2041']),
       GEK2041: new Set(['GET1025']),
+      GET1025: new Set(['GEK2041']),
     });
 
     expect(venues).toMatchInlineSnapshot(`
@@ -342,9 +340,9 @@ describe(CollateVenues, () => {
   test('should not alias modules with itself', async () => {
     const task = new CollateVenues(1, '2018/2019');
     const input: any = {
+      module: { title: 'Basic Human Pathology' },
       moduleCode: 'PX2108',
       semesterData: { timetable: PX2108 },
-      module: { title: 'Basic Human Pathology' },
     };
     const { aliases, venues } = await task.run([input]);
 
@@ -545,42 +543,116 @@ describe(CollateVenues, () => {
     expect(aliases).toEqual({});
   });
 
+  test('should not alias modules when timetable was propagated', async () => {
+    const sharedTimetable = [
+      {
+        classNo: '1',
+        day: 'Monday',
+        endTime: '1200',
+        lessonType: 'Lecture',
+        startTime: '1000',
+        venue: 'COM1-0201',
+        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      },
+    ];
+
+    const task = new CollateVenues(1, '2018/2019');
+    const input: any = [
+      {
+        module: { title: 'Global Economy' },
+        moduleCode: 'GES1002',
+        semesterData: { timetable: sharedTimetable },
+      },
+      {
+        module: { title: 'Global Economy' },
+        moduleCode: 'GESS1000T',
+        semesterData: { timetable: sharedTimetable },
+        timetablePropagated: true,
+      },
+    ];
+
+    const { aliases, venues } = await task.run(input);
+
+    // Propagated module should be excluded — no false aliases
+    expect(aliases).toEqual({});
+
+    // Only the original module's lessons should appear in venues
+    expect(venues['COM1-0201'][0].classes).toHaveLength(1);
+    expect(venues['COM1-0201'][0].classes[0].moduleCode).toBe('GES1002');
+  });
+
+  test('should still alias non-propagated modules with identical timetables', async () => {
+    const sharedTimetable = [
+      {
+        classNo: '1',
+        day: 'Monday',
+        endTime: '1200',
+        lessonType: 'Lecture',
+        startTime: '1000',
+        venue: 'COM1-0201',
+        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      },
+    ];
+
+    const task = new CollateVenues(1, '2018/2019');
+    const input: any = [
+      {
+        module: { title: 'Global Economy' },
+        moduleCode: 'GES1002',
+        semesterData: { timetable: sharedTimetable },
+      },
+      {
+        module: { title: 'Global Economy' },
+        moduleCode: 'GESS1000',
+        semesterData: { timetable: sharedTimetable },
+      },
+    ];
+
+    const { aliases } = await task.run(input);
+
+    // Both modules have their own timetable (not propagated) — aliases should be detected
+    expect(aliases).toEqual({
+      GES1002: new Set(['GESS1000']),
+      GESS1000: new Set(['GES1002']),
+    });
+  });
+
   test('should not alias module with different names', async () => {
     const task = new CollateVenues(1, '2018/2019');
     const input: any = [
       {
+        module: { title: 'Approaches to Discourse' },
         moduleCode: 'EL5251',
         semesterData: {
           timetable: [
             {
               classNo: '1',
-              startTime: '1800',
-              endTime: '2100',
-              weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-              venue: 'AS3-0306',
               day: 'Friday',
+              endTime: '2100',
               lessonType: 'Seminar-Style Module Class',
+              startTime: '1800',
+              venue: 'AS3-0306',
+              weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
             },
           ],
         },
-        module: { title: 'Approaches to Discourse' },
       },
       {
+        module: { title: 'Topics in Applied Linguistics' },
         moduleCode: 'EL6884',
         semesterData: {
           timetable: [
             {
               classNo: '1',
-              startTime: '1800',
-              endTime: '2100',
-              weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-              venue: 'AS3-0306',
               day: 'Friday',
+              endTime: '2100',
               lessonType: 'Seminar-Style Module Class',
+              startTime: '1800',
+              venue: 'AS3-0306',
+              weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
             },
           ],
         },
-        module: { title: 'Topics in Applied Linguistics' },
       },
     ];
 

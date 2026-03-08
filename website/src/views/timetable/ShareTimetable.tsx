@@ -167,7 +167,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     isLoading: boolean,
   ) {
     const { semester } = this.props;
-    const url = isFullUrl ? fullUrl : shortUrl ?? fullUrl;
+    const url = isFullUrl ? fullUrl : (shortUrl ?? fullUrl);
     const toggleUrlButton = isFullUrl ? <Minimize2 /> : <Maximize2 />;
 
     return (

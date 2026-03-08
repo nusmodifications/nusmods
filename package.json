@@ -1,0 +1,28 @@
+{
+  "name": "nusmods-root",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
+    "npm-run-all2": "^8.0.4",
+    "oxfmt": "0.36.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md}": "oxfmt --write"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@10.30.3",
+  "pnpm": {
+    "overrides": {
+      "cheerio": "1.0.0-rc.12",
+      "@types/node": "22.13.5"
+    }
+  }
+}

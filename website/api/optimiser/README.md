@@ -79,56 +79,55 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
     "MA1521|Tutorial": "01"
   },
   "DaySlots": [
-    [ /* Monday slots */ 
+    [
+      /* Monday slots */
       {
-                "classNo": "05",
-                "day": "Monday",
-                "endTime": "1600",
-                "lessonType": "Laboratory",
-                "startTime": "1400",
-                "venue": "COM1-B108",
-                "coordinates": {
-                    "x": 103.773994,
-                    "y": 1.2948803
-                },
-                "weeks": [
-                    3,
-                    4,
-                    5,
-                    6,
-                    7,
-                    8,
-                    9,
-                    10,
-                    11,
-                    12,
-                    13
-                ],
-                "StartMin": 840,
-                "EndMin": 960,
-                "DayIndex": 0,
-                "LessonKey": "CS2040S|Laboratory",
-                "WeeksSet": {
-                    "10": true,
-                    "11": true,
-                    "12": true,
-                    "13": true,
-                    "3": true,
-                    "4": true,
-                    "5": true,
-                    "6": true,
-                    "7": true,
-                    "8": true,
-                    "9": true
-                },
-                "WeeksString": "3,4,5,6,7,8,9,10,11,12,13"
-      },
+        "classNo": "05",
+        "day": "Monday",
+        "endTime": "1600",
+        "lessonType": "Laboratory",
+        "startTime": "1400",
+        "venue": "COM1-B108",
+        "coordinates": {
+          "x": 103.773994,
+          "y": 1.2948803
+        },
+        "weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        "StartMin": 840,
+        "EndMin": 960,
+        "DayIndex": 0,
+        "LessonKey": "CS2040S|Laboratory",
+        "WeeksSet": {
+          "10": true,
+          "11": true,
+          "12": true,
+          "13": true,
+          "3": true,
+          "4": true,
+          "5": true,
+          "6": true,
+          "7": true,
+          "8": true,
+          "9": true
+        },
+        "WeeksString": "3,4,5,6,7,8,9,10,11,12,13"
+      }
     ],
-    [ /* Tuesday slots */ ],
-    [ /* Wednesday slots */ ],
-    [ /* Thursday slots */ ],
-    [ /* Friday slots */ ],
-    [ /* Saturday slots */ ]
+    [
+      /* Tuesday slots */
+    ],
+    [
+      /* Wednesday slots */
+    ],
+    [
+      /* Thursday slots */
+    ],
+    [
+      /* Friday slots */
+    ],
+    [
+      /* Saturday slots */
+    ]
   ],
   "DayDistance": [
     0, // Monday
@@ -167,30 +166,36 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 ### Local Development
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/nusmodifications/nusmods.git
    cd nusmods/website/api/optimiser
    ```
 
 2. **Install dependencies**
+
    ```bash
    go mod tidy
    ```
 
 3. **Run test server**
+
    ```bash
-   yarn start:optimiser
+   pnpm start:optimiser
    ```
 
 4. **Run frontend**(if needed)
+
    ```bash
-   yarn start:local
+   pnpm start:local
    ```
 
 5. **Test the API**
+
 - Send a POST request following the request body format above to `http://localhost:8020/optimise`
 
 ## Linting and Formatting
+
 - Lint the code using:
   ```bash
   golangci-lint run
@@ -199,7 +204,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
   ```bash
   golangci-lint run --fix
   ```
-- Format the code using: 
+- Format the code using:
   ```bash
   golangci-lint fmt
   ```
@@ -228,7 +233,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 - Once there is more concrete information on the building location for each venue, we can remove the current method of identifying building by taking the first few letters before the '-' in the venue name. This will improve the accuracy and reduce search space.
 - Tweak the scoring function to prioritise more important constraints found from user feedback. For instance:
   - Previously the scoring function was just for distance but it produced less ideal timetables where students had 4-5 hour gaps between classes. This was fixed by punishing gaps that are
-  larger than 2 hours between lessons linearly.
+    larger than 2 hours between lessons linearly.
 
 - Tweak the beam search parameters to improve performance (perhaps depending on the number of modules)
 - Create a more accurate heuristic for scoring distance between consecutive classes. (Currently, it just a random linear function that seems to work)

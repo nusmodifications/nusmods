@@ -8,7 +8,7 @@ const COVID_ZONE_URL =
 
 export type CovidZone = {
   color: string;
-  positions: [number, number][];
+  positions: Array<[number, number]>;
 };
 export type CovidZoneId = 'A' | 'B' | 'C' | 'D' | 'E' | 'Unknown';
 export type CovidZones = Record<Exclude<CovidZoneId, 'Unknown'>, CovidZone>;
@@ -25,7 +25,7 @@ const getCovidZones: () => Promise<CovidZones> = _.memoize(async () => {
  *
  * Source: https://www.algorithms-and-technologies.com/point_in_polygon/javascript
  */
-function pointInPolygon(polygon: [number, number][], point: [number, number]) {
+function pointInPolygon(polygon: Array<[number, number]>, point: [number, number]) {
   // A point is in a polygon if a line from the point to infinity crosses the polygon an odd number of times
   let odd = false;
   // For each edge (In this case for each point of the polygon and the previous one)
@@ -51,7 +51,7 @@ function pointInPolygon(polygon: [number, number][], point: [number, number]) {
 const getLocationCovidZone = _.memoize(
   (zones: CovidZones, location: { x: number; y: number }): CovidZoneId => {
     // Object.entries doesn't respect Record keys, so we need to cast here
-    const zoneEntries = Object.entries(zones) as [CovidZoneId, CovidZone][];
+    const zoneEntries = Object.entries(zones) as Array<[CovidZoneId, CovidZone]>;
     const zone = zoneEntries.find(([, { positions }]) =>
       pointInPolygon(positions, [location.y, location.x]),
     );

@@ -65,11 +65,14 @@ export default function registerServiceWorker(store: Store<any, any>) {
       // Browsers' default checking interval is 24 hours, which is too long.
       // Instead, we check for the new service worker hourly so that the user gets
       // the update notice if they leave the tab open for a while.
-      const updateIntervalId = window.setInterval(() => {
-        if (navigator.onLine) {
-          registration.update();
-        }
-      }, 60 * 60 * 1000);
+      const updateIntervalId = window.setInterval(
+        () => {
+          if (navigator.onLine) {
+            registration.update();
+          }
+        },
+        60 * 60 * 1000,
+      );
 
       onNewServiceWorkerWaiting(registration, () => {
         currentRegistration = registration;

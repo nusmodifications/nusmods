@@ -10,13 +10,13 @@ import V1DataReader from '../services/io/v1-io';
 import { Logger } from '../services/logger';
 
 interface Input {
-  departments: AcademicOrg[];
-  faculties: AcademicGrp[];
+  departments: Array<AcademicOrg>;
+  faculties: Array<AcademicGrp>;
 }
 
-type Output = Module[];
+type Output = Array<Module>;
 
-function buildFacultyMap(departments: AcademicOrg[], faculties: AcademicGrp[]) {
+function buildFacultyMap(departments: Array<AcademicOrg>, faculties: Array<AcademicGrp>) {
   const departmentFaculty: Record<string, string> = {};
 
   // Map departments to their corresponding faculty. This works because the first three chars of
@@ -48,7 +48,7 @@ export default class MigrateV1ToV2 extends BaseTask implements Task<Input, Outpu
     this.v1DataReader = new V1DataReader(academicYear);
   }
 
-  async run(input: Input): Promise<Module[]> {
+  async run(input: Input): Promise<Array<Module>> {
     const modules = await this.v1DataReader.listModules();
     const departmentFaculty = buildFacultyMap(input.departments, input.faculties);
 
@@ -70,7 +70,7 @@ export default class MigrateV1ToV2 extends BaseTask implements Task<Input, Outpu
 
   private convertWeekText = (weekText: string, semester: Semester, logger: Logger): Weeks => {
     // For some reason some week text contains NBSP
-    const cleanWeekText = weekText.replace(/\s+/g, ' ');
+    const cleanWeekText = weekText.replaceAll(/\s+/g, ' ');
     switch (cleanWeekText) {
       case 'Every Week':
         return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -89,13 +89,13 @@ export default class MigrateV1ToV2 extends BaseTask implements Task<Input, Outpu
 
         const date = NUSModerator.academicCalendar.getAcadYearStartDate(this.academicYear);
         return {
-          start: date.toISOString(),
           end: date.toISOString(),
+          start: date.toISOString(),
         };
       }
 
       default: {
-        const weeks = weekText.split(/,\s*/).map((week) => parseInt(week, 10));
+        const weeks = weekText.split(/,\s*/).map((week) => Number.parseInt(week, 10));
         const filteredWeeks = weeks.filter((week) => !Number.isNaN(week));
         if (filteredWeeks.length !== weeks.length) {
           logger.warn('Invalid week text found', { weekText });
@@ -106,19 +106,19 @@ export default class MigrateV1ToV2 extends BaseTask implements Task<Input, Outpu
   };
 
   private convertLesson = (
-    { ClassNo, LessonType, DayText, StartTime, EndTime, Venue, WeekText }: V1RawLesson,
+    { ClassNo, DayText, EndTime, LessonType, StartTime, Venue, WeekText }: V1RawLesson,
     semester: Semester,
     logger: Logger,
   ): RawLesson => ({
     classNo: ClassNo,
-    lessonType: LessonType,
-    day: DayText,
-    startTime: StartTime,
-    endTime: EndTime,
-    weeks: this.convertWeekText(WeekText, semester, logger),
-    venue: Venue,
-    size: 0,
     covidZone: 'Unknown', // Ah, a more innocent time
+    day: DayText,
+    endTime: EndTime,
+    lessonType: LessonType,
+    size: 0,
+    startTime: StartTime,
+    venue: Venue,
+    weeks: this.convertWeekText(WeekText, semester, logger),
   });
 
   private convertSemesterData = (
@@ -127,39 +127,39 @@ export default class MigrateV1ToV2 extends BaseTask implements Task<Input, Outpu
   ): SemesterData => {
     const timetable = Timetable.map((lesson) => this.convertLesson(lesson, semester, logger));
     return {
+      covidZones: getLessonCovidZones(timetable),
       examDate,
       semester,
       timetable,
-      covidZones: getLessonCovidZones(timetable),
     };
   };
 
   private convertModule = (
     {
       AcadYear,
+      Corequisite,
+      Department,
+      History = [],
       ModuleCode,
       ModuleCredit,
       ModuleTitle,
-      History = [],
-      Workload,
-      Department,
-      Prerequisite,
-      Corequisite,
       Preclusion,
+      Prerequisite,
+      Workload,
     }: V1Module,
     departmentFaculty: Record<string, string>,
     logger: Logger,
   ): Module => ({
     acadYear: AcadYear,
-    moduleCredit: ModuleCredit,
-    moduleCode: ModuleCode,
-    title: ModuleTitle,
+    corequisite: Corequisite,
     department: Department,
     faculty: departmentFaculty[Department] || '',
-    semesterData: History.map((semester) => this.convertSemesterData(semester, logger)),
-    corequisite: Corequisite,
-    prerequisite: Prerequisite,
+    moduleCode: ModuleCode,
+    moduleCredit: ModuleCredit,
     preclusion: Preclusion,
+    prerequisite: Prerequisite,
+    semesterData: History.map((semester) => this.convertSemesterData(semester, logger)),
+    title: ModuleTitle,
     workload: Workload ? parseWorkload(Workload) : undefined,
   });
 }

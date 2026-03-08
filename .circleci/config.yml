@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: cimg/node:18.20.5
+      - image: cimg/node:22.14.0
 
   go-executor:
     docker:
@@ -27,14 +27,33 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run: yarn --frozen-lockfile --non-interactive
-      - run: yarn lint
-      - run: yarn test --runInBand
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
       - run:
           name: Build scraper
           environment:
             NODE_ENV: production
-          command: yarn build
+          command: pnpm build
+
+  cpex-scraper:
+    executor: node-executor
+    working_directory: ~/nusmods/scrapers/cpex-scraper
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run:
+          name: Build scraper
+          environment:
+            NODE_ENV: production
+          command: pnpm build
 
   nusmoderator:
     executor: node-executor
@@ -42,13 +61,15 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run: yarn --frozen-lockfile --non-interactive
-      - run: yarn lint
-      - run: yarn test --runInBand
-      - run: yarn build
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
       - store_artifacts:
           path: dist
-      - run: yarn docs
+      - run: pnpm docs
       - store_artifacts:
           path: README.md
 
@@ -58,13 +79,15 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run: yarn --frozen-lockfile --non-interactive
-      - run: yarn prettier --check src
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
       - run:
           name: Build export service
           environment:
             NODE_ENV: production
-          command: yarn build
+          command: pnpm build
 
   website:
     executor: node-executor
@@ -75,29 +98,25 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - run:
-          name: Install dependencies
-          command: yarn --frozen-lockfile --non-interactive --production=false
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
+      - run: pnpm install --frozen-lockfile
       - run:
           name: Lint code
-          command: yarn lint:code --cache --cache-location 'node_modules/.eslintcache/'
+          command: pnpm lint:code --cache --cache-location 'node_modules/.eslintcache/'
             --format junit -o reports/junit/js-lint-results.xml
       - run:
           name: Lint styles
-          command: yarn lint:styles
-      - run:
-          name: Typecheck Code
-          command: yarn typecheck
+          command: pnpm lint:styles
+      - run: pnpm typecheck
       - run:
           name: Test code
           environment:
             NODE_ENV: test
-            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e
-            yarn test --runInBand --reporters=default --reporters=jest-junit
+            pnpm test --reporter=default --reporter=junit --outputFile=reports/junit/js-test-results.xml
             if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "production" ]; then
-              yarn codecov --disable=gcov -f ./coverage/coverage-final.json
+              pnpm codecov --disable=gcov -f ./coverage/coverage-final.json
             fi
       - run:
           name: Integration tests
@@ -105,10 +124,10 @@ jobs:
             NODE_ENV: test
           command: |
             set -e
-            yarn test:integration --runInBand
+            pnpm test:integration
       - run:
           name: Build
-          command: yarn build
+          command: pnpm build
       - store_test_results:
           path: reports/junit
       - store_artifacts:
@@ -125,7 +144,7 @@ jobs:
           command: cp ../../src/data/venues.json _constants/venues.json
       - run:
           name: Install golangci-lint
-          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.7.2 
+          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.7.2
       - run:
           name: Check linting
           command: $(go env GOPATH)/bin/golangci-lint run --timeout=5m
@@ -151,12 +170,14 @@ jobs:
 
             go test ./_test/. -v
 
-
 workflows:
   build_and_test:
     jobs:
       - checkout
       - nus-scrapers:
+          requires:
+            - checkout
+      - cpex-scraper:
           requires:
             - checkout
       - nusmoderator:

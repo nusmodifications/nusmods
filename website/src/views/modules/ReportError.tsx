@@ -1,5 +1,5 @@
 import { FC, FormEventHandler, memo, useCallback, useState } from 'react';
-import { castArray, groupBy } from 'lodash';
+import { castArray, groupBy } from 'lodash-es';
 import classnames from 'classnames';
 import { produce } from 'immer';
 import axios from 'axios';
@@ -110,9 +110,8 @@ function matchModule(module: Module) {
 }
 
 const roundOneStartDate = new Date(
-  modregData.Undergraduate.filter(
-    (data) => data.type === 'Select Courses' && data.name === '1',
-  )[0].start,
+  modregData.Undergraduate.filter((data) => data.type === 'Select Courses' && data.name === '1')[0]
+    .start,
 );
 const enhanceReportVisibility =
   isWithinInterval(new Date(), {

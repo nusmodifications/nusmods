@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { pick } from 'lodash';
+import { pick } from 'lodash-es';
 
 import { redo, undo } from 'actions/undoHistory';
 import undoHistory, {
@@ -13,7 +13,7 @@ import { Actions } from 'types/actions';
 const WATCHED_ACTION = 'WATCHED_ACTION';
 const IGNORED_ACTION = 'IGNORED_ACTION';
 
-const newFSA = (type: string, payload: Record<string, any> = {}) => ({ type, payload } as Actions);
+const newFSA = (type: string, payload: Record<string, any> = {}) => ({ type, payload }) as Actions;
 
 const emptyUndoHistory = { past: [], present: undefined, future: [] };
 

@@ -5,19 +5,17 @@ import { ModuleCode, ModuleInformation } from '../../types/modules';
 import config from '../../config';
 import logger from '../logger';
 
-/* eslint-disable camelcase, no-underscore-dangle */
-
 // Typings for the result from the all modules search. This is a partial typing
 type ModuleSearchBody = {
   hits: {
-    total: number;
-    hits: {
+    hits: Array<{
       _id: string;
       _score: number;
       _source: {
         moduleCode: ModuleCode;
       };
-    }[];
+    }>;
+    total: number;
   };
 };
 
@@ -25,27 +23,26 @@ const INDEX_NAME = 'modules_v2';
 
 // Tokenizes a string into an array of digits
 const first_digit_tokenizer = {
-  type: 'simple_pattern',
   pattern: '[1-9]{1}',
+  type: 'simple_pattern',
 };
 
 // Only pick the first token
 const first_token_limit_filter = {
-  type: 'limit',
   max_token_count: 1,
+  type: 'limit',
 };
 
 // Add 3 '0's to a number token
 const thousandizer_filter = {
-  type: 'pattern_replace',
   pattern: '(\\d+)',
   replacement: '$1000',
+  type: 'pattern_replace',
 };
 
 async function createIndex(client: Client): Promise<Client> {
   try {
     await client.indices.create({
-      index: INDEX_NAME,
       body: {
         settings: {
           analysis: {
@@ -53,62 +50,62 @@ async function createIndex(client: Client): Promise<Client> {
               // An analyzer that produces a level string from a modcode, i.e.
               // "CNS1010SX" => "1000", "CS2030" => "2000", etc.
               level_analyzer: {
-                type: 'custom',
-                tokenizer: 'first_digit_tokenizer',
                 filter: ['first_token_limit_filter', 'thousandizer_filter'],
+                tokenizer: 'first_digit_tokenizer',
+                type: 'custom',
               },
             },
-            tokenizer: { first_digit_tokenizer },
             filter: { first_token_limit_filter, thousandizer_filter },
+            tokenizer: { first_digit_tokenizer },
           },
           index: {
             max_result_window: 20_000, // Default limit is 10k, but we have >11k mods
           },
         },
       },
+      index: INDEX_NAME,
     });
-  } catch (e) {
+  } catch (error) {
     // Ignore resource exist exception as we will handle cases where the index
     // already exists.
     if (
-      e.name !== 'ResponseError' ||
-      e.meta.body.error.type !== 'resource_already_exists_exception'
+      error.name !== 'ResponseError' ||
+      error.meta.body.error.type !== 'resource_already_exists_exception'
     ) {
-      throw e;
+      throw error;
     }
   }
 
   await client.indices.putMapping({
-    index: INDEX_NAME,
     body: {
       properties: {
-        workload: { type: 'text' },
-        moduleCredit: { type: 'short' },
         moduleCode: {
-          type: 'text',
           fields: {
             keyword: {
-              type: 'keyword',
               ignore_above: 10,
+              type: 'keyword',
             },
             level: {
-              type: 'text',
               analyzer: 'level_analyzer',
               fielddata: true, // To allow usage in MultiList on the frontend
+              type: 'text',
             },
           },
+          type: 'text',
         },
+        moduleCredit: { type: 'short' },
         semesterData: {
           type: 'nested',
         },
+        workload: { type: 'text' },
       },
     },
+    index: INDEX_NAME,
   });
 
   return client;
 }
 
-/* eslint-disable class-methods-use-this */
 export default class ElasticPersist implements Persist {
   private readonly client: Promise<Client>;
 
@@ -124,14 +121,21 @@ export default class ElasticPersist implements Persist {
 
   deleteModule = async (moduleCode: ModuleCode) => {
     const client = await this.client;
-    await client.delete({
-      id: moduleCode,
-      index: INDEX_NAME,
-    });
+    try {
+      await client.delete({
+        id: moduleCode,
+        index: INDEX_NAME,
+      });
+    } catch (error) {
+      if (error.name !== 'ResponseError' || error.meta?.body?.result !== 'not_found') {
+        throw error;
+      }
+      logger.info(`Module ${moduleCode} not found in Elasticsearch index, skipping delete`);
+    }
   };
 
-  moduleInfo = async (moduleInfo: ModuleInformation[]) => {
-    const bulkBody: any[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
+  moduleInfo = async (moduleInfo: Array<ModuleInformation>) => {
+    const bulkBody: Array<any> = [];
 
     for (const module of moduleInfo) {
       bulkBody.push({
@@ -154,14 +158,13 @@ export default class ElasticPersist implements Persist {
 
     const client = await this.client;
     const res = await client.bulk({
-      index: INDEX_NAME,
       body: bulkBody,
+      index: INDEX_NAME,
     });
 
     const { items } = res.body;
 
     // Log errors
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const erroredItems = items.filter((i: any) => {
       const { status } = i.index;
       // Filter out status code 2xx
@@ -186,14 +189,14 @@ export default class ElasticPersist implements Persist {
   async getModuleCodes() {
     const client = await this.client;
     const { body } = await client.search({
-      index: INDEX_NAME,
       body: {
+        _source: 'moduleCode',
         query: {
           match_all: {},
         },
-        _source: 'moduleCode',
         size: 20_000, // Arbitrarily large number to force ES to return all results. Must be <= index.max_result_window
       },
+      index: INDEX_NAME,
     });
 
     return (body as ModuleSearchBody).hits.hits.map((hit) => hit._source.moduleCode);
