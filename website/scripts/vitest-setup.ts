@@ -2,6 +2,7 @@ import Adapter from '@cfaester/enzyme-adapter-react-18';
 import { configure as configureTestingLibrary } from '@testing-library/dom';
 import { configure } from 'enzyme';
 import { setAutoFreeze } from 'immer';
+import { afterEach } from 'vitest';
 
 import '@testing-library/jest-dom/vitest';
 
@@ -34,4 +35,12 @@ vi.mock('config', async () => {
       getSemesterKey: () => '2017/2018 Semester 1',
     },
   };
+});
+
+// Clear the DOM after each test to remove any mounted components.
+// This prevents timers or async work (e.g. from Downshift) from
+// accessing a torn-down jsdom document in later tests.
+afterEach(() => {
+  /* eslint-env browser */
+  document.body.innerHTML = '';
 });
