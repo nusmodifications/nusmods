@@ -1,28 +1,12 @@
 @import '~styles/utils/modules-entry';
 
-// Make the buttons move below the body on small screens and in vertical mode
-@mixin wrap-buttons {
-  flex-wrap: wrap;
-
-  .buttons {
-    flex: 1 0 auto;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 1rem;
-
-    :global(.btn) {
-      display: block;
-      width: 100%;
-      text-align: center;
-    }
-  }
-}
 
 .announcement {
   z-index: 1;
   display: flex;
   overflow: hidden;
   justify-content: space-between;
+  align-items: center;
   padding: 1.2rem 1rem 1.1rem 1.4rem;
   line-height: 1.3;
 
@@ -57,7 +41,9 @@
     margin-top: 0.5rem;
   }
 
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+    align-items: flex-start;
     padding: 1rem 0.75rem 0.75rem 1rem;
   }
 }
@@ -68,11 +54,14 @@
   align-items: center;
   gap: 0.5rem;
 
-
-  @include media-breakpoint-down(xs) {
-    flex: 0 0;
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0.75rem;
+    gap: 0.4rem;
   }
 }
+
 
 .actionButton {
   display: inline-flex;
@@ -82,9 +71,9 @@
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #28a745;
+  color: #d39e00;
   background: transparent;
-  border: 1.5px solid #28a745;
+  border: 1.5px solid #d39e00;
   border-radius: 4px;
   text-decoration: none;
   transition: background 0.15s ease, color 0.15s ease;
@@ -94,9 +83,14 @@
     flex-shrink: 0;
   }
 
+  @include media-breakpoint-down(sm) {
+    width: 100%;
+    justify-content: center;
+  }
+
   &:hover {
-    color: #fff;
-    background: #28a745;
+    color: var(--body-bg);
+    background: #d39e00;
     text-decoration: none;
   }
 }
@@ -111,14 +105,7 @@
   pointer-events: none;
 }
 
-.wrapButtons {
-  @include media-breakpoint-down(xs) {
-    @include wrap-buttons;
-  }
-}
 
-.hacktoberfest {
-  :global(.verticalMode) & {
-    @include wrap-buttons;
-  }
+.heading {
+  letter-spacing: 0.1rem;
 }

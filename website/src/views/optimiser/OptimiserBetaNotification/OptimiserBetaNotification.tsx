@@ -1,19 +1,17 @@
 import { memo } from 'react';
-import { Heart, GitHub, Send } from 'react-feather';
+import { Zap, GitHub, Send } from 'react-feather';
 
 import appConfig from 'config';
 import styles from './Announcements.scss';
 
 const OptimiserBetaNotification = memo(() => (
-  <div className={`alert alert-success no-export ${styles.announcement}`}>
-    <Heart className={styles.backgroundIcon} />
+  <div className={`alert alert-warning no-export ${styles.announcement}`}>
+    <Zap className={styles.backgroundIcon} />
 
     <div className={styles.body}>
-      <h3>Optimiser Beta</h3>
-      <p className={styles.bodyElement}>
-        The timetable optimiser is currently in beta. You may encounter bugs or unexpected
-        behaviour. Your feedback helps us improve!
-      </p>
+      <h3 className={styles.heading}>BETA</h3>
+      <p className={styles.bodyElement}>The Timetable Optimiser is currently in BETA.</p>
+      <p>You may encounter bugs or unexpected behaviour. Your feedback helps us improve!</p>
     </div>
 
     <div className={styles.buttons}>
