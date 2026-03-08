@@ -28,7 +28,7 @@ const PATHS = {
 };
 
 const sassOptions = {
-  // @material packages uses '@material' directly as part of their import paths.
+  // @material packages use '@material' directly as part of their import paths.
   // Without this those imports will not resolve properly.
   includePaths: [PATHS.node],
   // Bootstrap 4 and sass-loader 10 still emit a large amount of deprecation
