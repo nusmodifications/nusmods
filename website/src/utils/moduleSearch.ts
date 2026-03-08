@@ -1,4 +1,4 @@
-import { sortBy } from 'lodash';
+import { sortBy } from 'lodash-es';
 import { ModuleCode, ModuleTitle, SearchableModule } from 'types/modules';
 
 export function tokenize(str: string): string[] {

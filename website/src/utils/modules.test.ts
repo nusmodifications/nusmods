@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { Semester, SemesterData } from 'types/modules';
 
 import {
@@ -22,7 +22,7 @@ import { EVERY_WEEK } from 'test-utils/timetable';
 import { CS1010S, CS3216 } from '__mocks__/modules';
 import { LessonWithIndex } from 'types/timetables';
 
-const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as LessonWithIndex;
+const mockLesson = cloneDeep(CS1010S.semesterData[0].timetable[0]) as LessonWithIndex;
 mockLesson.moduleCode = 'CS1010S';
 mockLesson.title = 'Programming Methodology';
 

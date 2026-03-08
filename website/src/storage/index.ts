@@ -1,4 +1,4 @@
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 import { captureException } from 'utils/error';
 import getLocalStorage from './localStorage';
 

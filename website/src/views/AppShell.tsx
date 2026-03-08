@@ -8,7 +8,7 @@ import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import classnames from 'classnames';
-import { each } from 'lodash';
+import { each } from 'lodash-es';
 
 import weekText from 'utils/weekText';
 import { captureException } from 'utils/error';

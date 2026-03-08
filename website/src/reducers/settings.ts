@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { produce } from 'immer';
 import { REHYDRATE, createMigrate } from 'redux-persist';
 

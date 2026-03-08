@@ -2,7 +2,7 @@ import { FC, memo, useCallback, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 import classnames from 'classnames';
-import { flatMap } from 'lodash';
+import { flatMap } from 'lodash-es';
 
 import type { DayAvailability, TimePeriod, Venue } from 'types/venues';
 import type { Lesson } from 'types/timetables';

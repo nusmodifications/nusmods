@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import axios, { AxiosResponse } from 'axios';
 import { produce } from 'immer';
 import qs from 'query-string';
-import { isEqual, mapValues, pick, size } from 'lodash';
+import { isEqual, mapValues, pick, size } from 'lodash-es';
 
 import { Clock, Map } from 'react-feather';
 import type {

@@ -1,4 +1,4 @@
-import { get, last, pick, set, takeRight } from 'lodash';
+import { get, last, pick, set, takeRight } from 'lodash-es';
 
 import { REDO, UNDO } from 'actions/constants';
 import { UndoHistoryState } from 'types/reducers';

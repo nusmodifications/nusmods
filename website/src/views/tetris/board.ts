@@ -1,4 +1,4 @@
-import { findLastIndex, min, range, zip } from 'lodash';
+import { findLastIndex, min, range, zip } from 'lodash-es';
 import { produce } from 'immer';
 
 import { DaysOfWeek } from 'types/modules';

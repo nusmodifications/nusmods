@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { groupBy, toPairs, sortBy } from 'lodash';
+import { groupBy, toPairs, sortBy } from 'lodash-es';
 import { Link, LinkProps } from 'react-router-dom';
 
 import { Venue, VenueLocationMap } from 'types/venues';
