@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 
 import { Search, X } from 'react-feather';
 import LoadingSpinner from 'views/components/LoadingSpinner';

@@ -55,7 +55,8 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   background: transparent;
   cursor: pointer;
   transform: translate($input-width-open);
-  transition: transform $desktop-entering-duration $material-deceleration-curve,
+  transition:
+    transform $desktop-entering-duration $material-deceleration-curve,
     opacity $desktop-entering-duration $material-deceleration-curve 75ms;
 
   &:focus {

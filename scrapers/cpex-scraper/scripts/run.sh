@@ -10,7 +10,7 @@ cd ..
 
 # Build the scraper
 rm -rf build
-yarn build
+pnpm build
 
 # Run the scraper
 echo "Running CPEx scraper"

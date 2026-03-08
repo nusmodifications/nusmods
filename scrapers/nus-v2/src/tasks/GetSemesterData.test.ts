@@ -1,10 +1,13 @@
 import { RawLesson } from '../types/modules';
+import { ModuleAttributeEntry } from '../types/api';
+import { Logger } from '../services/logger';
 import departments from './fixtures/departments.json';
 import faculties from './fixtures/faculties.json';
 import {
   cleanModuleInfo,
   getDepartmentCodeMap,
   getFacultyCodeMap,
+  mapAttributes,
   parseWorkload,
   getLessonCovidZones,
 } from './GetSemesterData';
@@ -42,7 +45,7 @@ describe(getLessonCovidZones, () => {
       { covidZone: 'A' },
       { covidZone: 'B' },
       { covidZone: 'Unknown' },
-    ] as RawLesson[];
+    ] as Array<RawLesson>;
 
     expect(new Set(getLessonCovidZones(lessons))).toEqual(new Set(['A', 'B', 'Unknown']));
   });
@@ -53,44 +56,44 @@ describe(cleanModuleInfo, () => {
     expect(
       cleanModuleInfo({
         acadYear: '2018/2019',
-        preclusion: ' ',
-        description: 'Systems Architecture deals with principles...',
         department: 'Industrial Systems Eng & Mgmt',
+        description: 'Systems Architecture deals with principles...',
         faculty: 'Engineering',
+        moduleCode: 'SDM5001',
+        moduleCredit: '4',
+        preclusion: ' ',
         title: 'SYSTEMS ARCHITECTURE',
         workload: '3-0-0-5-2',
-        moduleCredit: '4',
-        moduleCode: 'SDM5001',
       }),
     ).not.toHaveProperty('Preclusion');
 
     expect(
       cleanModuleInfo({
         acadYear: '2018/2019',
-        description: 'This module will introduce the history...',
         department: "FoL Dean's Office",
+        description: 'This module will introduce the history...',
         faculty: 'Law',
+        moduleCode: 'LC1015',
+        moduleCredit: '4',
+        prerequisite: 'Nil.',
         title: 'Singapore Law in Context',
         workload: '3-0-0-0-7',
-        prerequisite: 'Nil.',
-        moduleCredit: '4',
-        moduleCode: 'LC1015',
       }),
     ).not.toHaveProperty('Prerequisite');
 
     const cleanedYID3216 = cleanModuleInfo({
       acadYear: '2018/2019',
-      preclusion: 'None.',
-      description: 'Asia is known for its fast-paced economic growth...',
+      corequisite: 'None.',
       department: 'Yale-NUS College',
+      description: 'Asia is known for its fast-paced economic growth...',
       faculty: 'Yale-NUS College',
-      title: 'Environment, Development and Mobilisation in Asia',
-      workload: '0-3-0-3-6.5',
+      moduleCode: 'YID3216',
+      moduleCredit: '5',
+      preclusion: 'None.',
       prerequisite:
         'YID1201 Introduction to Environmental Studies or with the permission of the instructor.',
-      corequisite: 'None.',
-      moduleCredit: '5',
-      moduleCode: 'YID3216',
+      title: 'Environment, Development and Mobilisation in Asia',
+      workload: '0-3-0-3-6.5',
     });
 
     expect(cleanedYID3216).not.toHaveProperty('Preclusion');
@@ -101,27 +104,27 @@ describe(cleanModuleInfo, () => {
     expect(
       cleanModuleInfo({
         acadYear: '2018/2019',
-        preclusion: ' ',
-        description: 'The objective is to expose students to the...',
         department: 'Mechanical Engineering',
+        description: 'The objective is to expose students to the...',
         faculty: 'Engineering',
-        title: 'FRACTURE AND FATIGUE OF MATERIALS',
-        moduleCredit: '4',
         moduleCode: 'ME5513',
+        moduleCredit: '4',
+        preclusion: ' ',
+        title: 'FRACTURE AND FATIGUE OF MATERIALS',
       }),
     ).toHaveProperty('title', 'Fracture and Fatigue of Materials');
 
     expect(
       cleanModuleInfo({
         acadYear: '2018/2019',
-        title: 'GRADUATE SEMINAR MODULE IN BIOLOGICAL SCIENCES',
         corequisite: 'NIL',
-        moduleCode: 'BL5198',
+        department: 'Life Sciences',
         description: 'This is a required module for all research Masters and PhD...',
+        faculty: 'Science',
+        moduleCode: 'BL5198',
         moduleCredit: '4',
         prerequisite: 'Basic knowledge in life sciences',
-        department: 'Life Sciences',
-        faculty: 'Science',
+        title: 'GRADUATE SEMINAR MODULE IN BIOLOGICAL SCIENCES',
       }),
     ).toHaveProperty('title', 'Graduate Seminar Module in Biological Sciences');
   });
@@ -130,25 +133,25 @@ describe(cleanModuleInfo, () => {
     expect(
       cleanModuleInfo({
         acadYear: '2018/2019',
-        description: 'The module covers the foundational knowledge of the sound...',
-        title: ' Phonetics and Phonology',
         department: 'English Language and Literature',
+        description: 'The module covers the foundational knowledge of the sound...',
         faculty: 'Arts and Social Science',
+        moduleCode: 'EL5102',
+        moduleCredit: '4',
         prerequisite:
           'Must be registered as a Graduate student in the university or with the approval of the Department.  ',
-        moduleCredit: '4',
-        moduleCode: 'EL5102',
+        title: ' Phonetics and Phonology',
       }),
     ).toEqual({
       acadYear: '2018/2019',
-      description: 'The module covers the foundational knowledge of the sound...',
-      title: 'Phonetics and Phonology',
       department: 'English Language and Literature',
+      description: 'The module covers the foundational knowledge of the sound...',
       faculty: 'Arts and Social Science',
+      moduleCode: 'EL5102',
+      moduleCredit: '4',
       prerequisite:
         'Must be registered as a Graduate student in the university or with the approval of the Department.',
-      moduleCredit: '4',
-      moduleCode: 'EL5102',
+      title: 'Phonetics and Phonology',
     });
   });
 
@@ -156,12 +159,12 @@ describe(cleanModuleInfo, () => {
     expect(
       cleanModuleInfo({
         acadYear: '2020/2021',
-        description: 'These concepts pertain to the structure of "ultimate reality"...',
-        title: 'Metaphysics',
         department: 'Philosophy',
+        description: 'These concepts pertain to the structure of "ultimate reality"...',
         faculty: 'Arts and Social Science',
-        moduleCredit: '4',
         moduleCode: 'PH2213',
+        moduleCredit: '4',
+        title: 'Metaphysics',
       }),
     ).toHaveProperty(
       'description',
@@ -221,5 +224,95 @@ describe(parseWorkload, () => {
     invalidInputs.forEach((input) => {
       expect(parseWorkload(input)).toEqual(input);
     });
+  });
+});
+
+describe(mapAttributes, () => {
+  const mockLogger: Logger = {
+    child: () => mockLogger,
+    debug: vi.fn(),
+    error: vi.fn(),
+    fatal: vi.fn(),
+    info: vi.fn(),
+    trace: vi.fn(),
+    warn: vi.fn(),
+  };
+
+  function attr(key: string, value: string): ModuleAttributeEntry {
+    return { CourseAttribute: key, CourseAttributeValue: value };
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  test('should return undefined for empty attributes', () => {
+    expect(mapAttributes([], mockLogger)).toBeUndefined();
+  });
+
+  test('should handle new-format truthy/falsy values', () => {
+    expect(mapAttributes([attr('PRQY', 'Yes')], mockLogger)).toEqual({ su: true });
+    expect(mapAttributes([attr('PRQY', 'No')], mockLogger)).toBeUndefined();
+  });
+
+  test('should handle old-format uppercase truthy/falsy values', () => {
+    expect(mapAttributes([attr('PRQY', 'YES')], mockLogger)).toEqual({ su: true });
+    expect(mapAttributes([attr('PRQY', 'NO')], mockLogger)).toBeUndefined();
+  });
+
+  test('should handle new-format HFYP value', () => {
+    expect(mapAttributes([attr('HFYP', 'HT - Honours Thesis/Rsh Project')], mockLogger)).toEqual({
+      fyp: true,
+    });
+  });
+
+  test('should handle old-format HFYP short code', () => {
+    expect(mapAttributes([attr('HFYP', 'HT')], mockLogger)).toEqual({ fyp: true });
+  });
+
+  test('should handle new-format MPE values', () => {
+    expect(mapAttributes([attr('MPE', 'S1 - Sem 1')], mockLogger)).toEqual({ mpes1: true });
+    expect(mapAttributes([attr('MPE', 'S2 - Sem 2')], mockLogger)).toEqual({ mpes2: true });
+    expect(mapAttributes([attr('MPE', 'S1&S2 - Sem 1 & 2')], mockLogger)).toEqual({
+      mpes1: true,
+      mpes2: true,
+    });
+  });
+
+  test('should handle old-format MPE short codes', () => {
+    expect(mapAttributes([attr('MPE', 'S1')], mockLogger)).toEqual({ mpes1: true });
+    expect(mapAttributes([attr('MPE', 'S2')], mockLogger)).toEqual({ mpes2: true });
+    expect(mapAttributes([attr('MPE', 'S1&S2')], mockLogger)).toEqual({
+      mpes1: true,
+      mpes2: true,
+    });
+  });
+
+  test('should handle SFS subcategory values', () => {
+    expect(mapAttributes([attr('SFS', 'DA - Data Analytics')], mockLogger)).toEqual({ sfs: true });
+    expect(mapAttributes([attr('SFS', 'DA')], mockLogger)).toEqual({ sfs: true });
+  });
+
+  test('should handle old-format SFS YES value', () => {
+    expect(mapAttributes([attr('SFS', 'YES')], mockLogger)).toEqual({ sfs: true });
+  });
+
+  test('should handle SFS falsy values', () => {
+    expect(mapAttributes([attr('SFS', 'No')], mockLogger)).toBeUndefined();
+    expect(mapAttributes([attr('SFS', 'NO')], mockLogger)).toBeUndefined();
+  });
+
+  test('should warn on unrecognized attribute values', () => {
+    mapAttributes([attr('PRQY', 'UNKNOWN')], mockLogger);
+    expect(mockLogger.warn).toHaveBeenCalledWith(
+      { key: 'PRQY', value: 'UNKNOWN' },
+      'Non-standard course attribute value',
+    );
+  });
+
+  test('should combine multiple attributes', () => {
+    expect(
+      mapAttributes([attr('PRQY', 'YES'), attr('YEAR', 'Yes'), attr('MPE', 'S1')], mockLogger),
+    ).toEqual({ mpes1: true, su: true, year: true });
   });
 });

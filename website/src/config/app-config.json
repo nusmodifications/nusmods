@@ -19,12 +19,7 @@
     "2023/2024",
     "2024/2025"
   ],
-  "examAvailability": [
-    1,
-    2,
-    3,
-    4
-  ],
+  "examAvailability": [1, 2, 3, 4],
   "semesterNames": {
     "1": "Semester 1",
     "2": "Semester 2",

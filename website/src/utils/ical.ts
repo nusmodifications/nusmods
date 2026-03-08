@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { difference, each } from 'lodash-es';
 import type { EventOption } from 'ical-generator';
 import { addDays, addMinutes, addWeeks, isValid } from 'date-fns';
 
@@ -90,7 +90,7 @@ export function calculateNumericWeek(
 ): EventOption {
   const lessonDay = addDays(firstDayOfSchool, dayIndex(lesson.day));
   const { start, end } = calculateStartEnd(lessonDay, lesson.startTime, lesson.endTime);
-  const excludedWeeks = _.difference([RECESS_WEEK, ...ALL_WEEKS], weeks);
+  const excludedWeeks = difference([RECESS_WEEK, ...ALL_WEEKS], weeks);
 
   return {
     start,
@@ -185,12 +185,12 @@ export default function iCalForTimetable(
   const firstDayOfSchool = new Date(Date.UTC(year, month - 1, day) - SG_UTC_TIME_DIFF_MS);
   const events: EventOption[] = [];
 
-  _.each(timetable, (lessonConfig, moduleCode) => {
+  each(timetable, (lessonConfig, moduleCode) => {
     if (hiddenModules.includes(moduleCode)) return;
 
     const isTa = taModules.includes(moduleCode);
 
-    _.each(lessonConfig, (lessons) => {
+    each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
         events.push(
           iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool, isTa),

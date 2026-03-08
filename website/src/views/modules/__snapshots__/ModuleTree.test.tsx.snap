@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ModuleTreeComponent should grey out modules that are not in module bank: CS4243 1`] = `
+exports[`ModuleTreeComponent > should grey out modules that are not in module bank > CS4243 1`] = `
 [
   <div
     class="container"
@@ -292,7 +292,7 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
 ]
 `;
 
-exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2130 1`] = `
+exports[`ModuleTreeComponent > should render prereq branch with nOf condition > PC2130 1`] = `
 [
   <div
     class="container"
@@ -562,7 +562,7 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
 ]
 `;
 
-exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
+exports[`ModuleTreeComponent > should render prereq tree of module > CS3244 1`] = `
 [
   <div
     class="container"
@@ -974,7 +974,7 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
 ]
 `;
 
-exports[`ModuleTreeComponent should render prereq tree to the right when tree direction is set to right: PC2193 1`] = `
+exports[`ModuleTreeComponent > should render prereq tree to the right when tree direction is set to right > PC2193 1`] = `
 [
   <div
     class="container"
@@ -1066,7 +1066,7 @@ exports[`ModuleTreeComponent should render prereq tree to the right when tree di
 ]
 `;
 
-exports[`ModuleTreeComponent should render requirements fulfilled tree of module: ACC1002 1`] = `
+exports[`ModuleTreeComponent > should render requirements fulfilled tree of module > ACC1002 1`] = `
 [
   <div
     class="container"

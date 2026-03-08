@@ -1,69 +1,65 @@
-import path from 'path';
+import path from 'node:path';
 import bunyan, { Stream } from 'bunyan';
 import { lightFormat } from 'date-fns';
 import getSentryStream from './SentryStream';
 import { errorSerializer } from './serializer';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 type LoggingFunction = {
-  (error: Error, message?: string, ...params: any[]): void;
-  (message: string, ...params: any[]): void;
-  (data: Record<string, any>, message: string, ...params: any[]): void;
+  (error: Error, message?: string, ...params: Array<any>): void;
+  (message: string, ...params: Array<any>): void;
+  (data: Record<string, any>, message: string, ...params: Array<any>): void;
 };
 
 export interface Logger {
-  trace: LoggingFunction;
+  child(options: Record<string, any>): Logger;
   debug: LoggingFunction;
-  info: LoggingFunction;
-  warn: LoggingFunction;
   error: LoggingFunction;
   fatal: LoggingFunction;
+  info: LoggingFunction;
+  trace: LoggingFunction;
 
-  child(options: Record<string, any>): Logger;
+  warn: LoggingFunction;
 }
-
-/* eslint-enable */
 
 const logRoot = path.join(__dirname, '../../../logs');
 
 // In production, create a new log for each run
 const logSuffix = lightFormat(new Date(), 'yyyy-MM-dd.HH-mm-ss');
 
-const streams: Stream[] =
+const streams: Array<Stream> =
   process.env.NODE_ENV === 'production'
     ? [
         // stdout is not used in production because we're running it in a cron job
         {
-          path: path.join(logRoot, `info-${logSuffix}.log`),
           level: 'info',
+          path: path.join(logRoot, `info-${logSuffix}.log`),
         },
         {
-          path: path.join(logRoot, `errors-${logSuffix}.log`),
           level: 'error',
+          path: path.join(logRoot, `errors-${logSuffix}.log`),
         },
         // Log errors to Sentry
         {
-          type: 'raw',
           level: 'error',
           stream: getSentryStream({
-            tags: ['service', 'task'],
             extra: ['moduleCode'],
+            tags: ['service', 'task'],
           }),
+          type: 'raw',
         },
       ]
     : [
         {
-          stream: process.stdout,
           level: 'info',
+          stream: process.stdout,
         },
         {
-          path: path.join(logRoot, 'info.log'),
           level: 'debug',
+          path: path.join(logRoot, 'info.log'),
         },
         {
-          path: path.join(logRoot, 'errors.log'),
           level: 'error',
+          path: path.join(logRoot, 'errors.log'),
         },
       ];
 

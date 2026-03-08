@@ -1,3 +1,4 @@
+import type { Mocked } from 'vitest';
 import { shallow, mount } from 'enzyme';
 
 /* @var {Module} */
@@ -6,8 +7,9 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 import { Module } from 'types/modules';
 import { DisconnectedModuleTombstone, Props } from './ModuleTombstone';
 
+const jest = vi;
 describe(DisconnectedModuleTombstone, () => {
-  let mockProps: jest.Mocked<Props>;
+  let mockProps: Mocked<Props>;
 
   beforeEach(() => {
     mockProps = {

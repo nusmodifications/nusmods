@@ -1,4 +1,4 @@
-import { escapeRegExp, escape } from 'lodash';
+import { escapeRegExp, escape } from 'lodash-es';
 
 const PRE_TAG = '<mark>';
 const POST_TAG = '</mark>';

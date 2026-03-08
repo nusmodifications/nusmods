@@ -29,7 +29,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import useScrollToTop from 'views/hooks/useScrollToTop';
 import qs from 'query-string';
 
-import { isArray, keys, last, omit } from 'lodash';
+import { isArray, keys, last, omit } from 'lodash-es';
 import { getModuleTimetable } from 'utils/modules';
 import styles from './TimetableContainer.scss';
 import TimetableContent from './TimetableContent';

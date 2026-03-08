@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { chunk } from 'lodash';
+import { chunk } from 'lodash-es';
 
 import useCurrentTime from 'views/hooks/useCurrentTime';
 import styles from './TetrisLogo.scss';
@@ -9,7 +9,7 @@ const INTERVAL = 1000 / FPS;
 
 const SEGMENT_WIDTH = 4;
 
-// prettier-ignore
+// oxfmt-ignore
 const logoText =
 `___  ______________ ___________ _____ _____
 |  \\/  |  _  |  _  \\_   _| ___ \\_   _/  ___|

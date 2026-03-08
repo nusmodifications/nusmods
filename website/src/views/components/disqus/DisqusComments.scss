@@ -10,7 +10,6 @@
 }
 
 // Quick hack to hide Disqus ads
-iframe[src^="//tempest.services.disqus.com/ads-iframe/"]
-{
+iframe[src^='//tempest.services.disqus.com/ads-iframe/'] {
   display: none !important;
 }

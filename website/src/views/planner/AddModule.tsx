@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { map } from 'lodash';
+import { map } from 'lodash-es';
 import { X as Close, Plus } from 'react-feather';
 
 import { ModuleCode, Semester } from 'types/modules';

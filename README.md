@@ -10,7 +10,7 @@ We are a passionate team of students and alumni dedicated to enhancing school li
 
 For users, you can access our website at [nusmods.com](https://nusmods.com). There's no mobile app, but our website is mobile-friendly and can be pinned to your home screen on Android and iOS.
 
-If you need to access NUSMods data programmatically, we provide a [public API](https://api.nusmods.com/v2/) for you to retrieve the necessary information. Additionally, if you wish to export your timetables, we offer  [timetable export service](https://export.nusmods.com/) that you can use. Please be considerate and use these services responsibly.
+If you need to access NUSMods data programmatically, we provide a [public API](https://api.nusmods.com/v2/) for you to retrieve the necessary information. Additionally, if you wish to export your timetables, we offer [timetable export service](https://export.nusmods.com/) that you can use. Please be considerate and use these services responsibly.
 
 ## Contributing
 

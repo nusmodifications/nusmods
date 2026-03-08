@@ -19,7 +19,7 @@ import config from 'config';
 
 const initialState = defaultTimetableState;
 
-jest.mock('config');
+vi.mock('config');
 
 /* eslint-disable no-useless-computed-key */
 describe('color reducers', () => {

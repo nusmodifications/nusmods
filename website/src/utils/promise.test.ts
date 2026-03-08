@@ -1,5 +1,6 @@
 import { retry } from './promise';
 
+const jest = vi;
 describe('#retry()', () => {
   const error = new Error('test error');
 
@@ -21,7 +22,7 @@ describe('#retry()', () => {
 
   test('should stop retrying if promise resolves', async () => {
     // Fail only once
-    const mockFailingFn = jest
+    const mockFailingFn = vi
       .fn()
       .mockReturnValueOnce(Promise.reject(error))
       .mockReturnValue(Promise.resolve());

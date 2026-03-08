@@ -1,4 +1,4 @@
-import { each, flatMap, get } from 'lodash';
+import { each, flatMap, get } from 'lodash-es';
 
 import type {
   ColorIndex,

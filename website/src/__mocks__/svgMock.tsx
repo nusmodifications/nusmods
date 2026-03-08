@@ -1,1 +1,1 @@
-module.exports = () => <svg />;
+export default () => <svg />;

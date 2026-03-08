@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { defaultLectureOption } from 'test-utils/optimiser';
 import OptimiserButton, { OptimiserButtonProps } from './OptimiserButton';
 
+const jest = vi;
 describe('OptimiserButton', () => {
   it('should be enabled when there are lesson options', () => {
     const props: OptimiserButtonProps = {

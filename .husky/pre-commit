@@ -1,2 +1,3 @@
 cp website/src/data/venues.json website/api/optimiser/_constants/venues.json
 git add website/api/optimiser/_constants/venues.json
+pnpm lint-staged

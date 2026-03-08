@@ -1,27 +1,27 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`theme should dispatch a cycle of theme 1`] = `
+exports[`theme > should dispatch a cycle of theme 1`] = `
 {
   "payload": 1,
   "type": "CYCLE_THEME",
 }
 `;
 
-exports[`theme should dispatch a cycle of theme 2`] = `
+exports[`theme > should dispatch a cycle of theme 2`] = `
 {
   "payload": -1,
   "type": "CYCLE_THEME",
 }
 `;
 
-exports[`theme should dispatch a select of theme 1`] = `
+exports[`theme > should dispatch a select of theme 1`] = `
 {
   "payload": "test",
   "type": "SELECT_THEME",
 }
 `;
 
-exports[`theme should dispatch a toggle of timetable orientation 1`] = `
+exports[`theme > should dispatch a toggle of timetable orientation 1`] = `
 {
   "payload": null,
   "type": "TOGGLE_TIMETABLE_ORIENTATION",

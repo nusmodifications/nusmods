@@ -1,4 +1,4 @@
-import { strict as assert } from 'assert';
+import { strict as assert } from 'node:assert';
 import { has, last, map, mapValues, values } from 'lodash';
 import NUSModerator, { Semester as SemesterName } from 'nusmoderator';
 import { compareAsc, differenceInDays, format, parseISO } from 'date-fns';
@@ -27,8 +27,6 @@ import legacyTimetableOrder from '../legacy-timetable-order.json';
 import { allEqual, deltas } from '../utils/arrays';
 import { ISO8601_DATE_FORMAT } from '../utils/time';
 
-/* eslint-disable camelcase */
-
 const SEMESTER_NAMES: Record<number, SemesterName> = {
   1: 'Semester 1',
   2: 'Semester 2',
@@ -38,7 +36,7 @@ const SEMESTER_NAMES: Record<number, SemesterName> = {
 
 // Intermediate shape with Weeks typed as string[]
 type TempRawLesson = Omit<RawLesson, 'weeks' | 'covidZone'> & {
-  weeks: string[];
+  weeks: Array<string>;
 };
 
 /**
@@ -65,7 +63,7 @@ const getLessonKey = (lesson: TimetableLesson) =>
  * Map date of lessons to either an array of numbers or an object representing
  * the range of date and the intervals between lessons
  */
-export function mapLessonWeeks(dates: string[], semester: number, logger: Logger): Weeks {
+export function mapLessonWeeks(dates: Array<string>, semester: number, logger: Logger): Weeks {
   // Sanity check for lessons occurring on duplicate days
   if (dates.length !== new Set(dates).size) {
     logger.error('Lesson has duplicate dates');
@@ -77,7 +75,6 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
 
   // Normal instructional week - return an array of weeks
   if (weekInfo.every((week) => week.type === 'Instructional' && week.sem === semesterName)) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return weekInfo.map((week) => week.num!);
   }
 
@@ -87,18 +84,21 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
 
   // WeekRange always includes the start and end dates
   const weekRange: WeekRange = {
-    start: format(lessonDates[0], ISO8601_DATE_FORMAT),
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     end: format(last(lessonDates)!, ISO8601_DATE_FORMAT),
+    start: format(lessonDates[0], ISO8601_DATE_FORMAT),
   };
 
   // Include interval only if there are more than one lessons
   // (otherwise weekInterval is Infinity), and the interval it is not 1
   const weekInterval = Math.min(...intervals);
-  if (intervals.length > 0 && weekInterval !== 1) weekRange.weekInterval = weekInterval;
+  if (intervals.length > 0 && weekInterval !== 1) {
+    weekRange.weekInterval = weekInterval;
+  }
 
   // Include all week numbers if the interval is uneven
-  if (!allEqual(intervals)) weekRange.weeks = weeks;
+  if (!allEqual(intervals)) {
+    weekRange.weeks = weeks;
+  }
 
   // Sanity check for lessons which do not occur on the same day each week
   if (intervals.some((interval) => interval % 1 !== 0)) {
@@ -115,17 +115,17 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
 export function transformModgrpToClassNo(modgrp: string, activity: string): string {
   const trimmedModgrp = modgrp.trim();
   if (trimmedModgrp.startsWith(activity) && trimmedModgrp !== activity) {
-    return trimmedModgrp.substring(activity.length);
+    return trimmedModgrp.slice(activity.length);
   }
   return trimmedModgrp;
 }
 
 export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
-  const { room, start_time, end_time, day, module, modgrp, activity, eventdate, csize } = lesson;
+  const { activity, csize, day, end_time, eventdate, modgrp, module, room, start_time } = lesson;
 
   if (has(unrecognizedLessonTypes, activity)) {
     logger.warn(
-      { moduleCode: module, activity },
+      { activity, moduleCode: module },
       'Lesson type not recognized by the frontend used',
     );
   }
@@ -133,22 +133,22 @@ export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): Tem
   return {
     classNo: transformModgrpToClassNo(modgrp, activity),
     // Start and end time don't have the ':' delimiter
-    startTime: start_time.replace(':', ''),
     endTime: end_time.replace(':', ''),
+    startTime: start_time.replace(':', ''),
     // For a single event, Weeks will always be one element
     weeks: [eventdate],
     // Room can be null
-    venue: room || '',
     day: dayTextMap[day],
     lessonType: activityLessonType[activity],
     size: csize,
+    venue: room || '',
   };
 }
 
 type Input = void;
 
 interface Output {
-  [moduleCode: string]: RawLesson[];
+  [moduleCode: string]: Array<RawLesson>;
 }
 
 /**
@@ -162,7 +162,7 @@ interface Output {
 export default class GetSemesterTimetable extends BaseTask implements Task<Input, Output> {
   semester: Semester;
   academicYear: string;
-  private readonly timetableCache: Cache<TimetableLesson[]>;
+  private readonly timetableCache: Cache<Array<TimetableLesson>>;
   private readonly covidZones = getCovidZones();
   private readonly venueLocations = getVenueLocations();
 
@@ -205,9 +205,9 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
 
         // Report serious error to Sentry
         if (!lesson.start_time || !lesson.end_time || lesson.start_time === lesson.end_time) {
-          const { start_time, end_time, module } = lesson;
+          const { end_time, module, start_time } = lesson;
           this.logger.error(
-            { moduleCode: module, end_time, start_time },
+            { end_time, moduleCode: module, start_time },
             'Lesson has no start and/or end time',
           );
         }
@@ -222,7 +222,9 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       const key = getLessonKey(lesson);
 
       // 3. Make sure timetable is always an object
-      if (!timetables[lesson.module]) timetables[lesson.module] = {};
+      if (!timetables[lesson.module]) {
+        timetables[lesson.module] = {};
+      }
       const timetable = timetables[lesson.module];
 
       // 4. If the lesson already exists, then we simply need to add one more date
@@ -235,12 +237,13 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       }
     });
 
-    this.logger.info({ valid, invalid }, 'Processed and removed invalid lessons');
+    this.logger.info({ invalid, valid }, 'Processed and removed invalid lessons');
 
     // TODO: TEMPORARY - Only apply legacy ordering for the academic year the mapping was generated from.
-    const semesterOrder = this.academicYear === config.academicYear
-      ? legacyTimetableOrder[String(this.semester) as keyof typeof legacyTimetableOrder]
-      : undefined;
+    const semesterOrder =
+      this.academicYear === config.academicYear
+        ? legacyTimetableOrder[String(this.semester) as keyof typeof legacyTimetableOrder]
+        : undefined;
 
     return mapValues(timetables, (timetableObject, moduleCode) => {
       // 5. Remove the lesson key inserted in (2) and remap the weeks to their correct shape
@@ -249,7 +252,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
         weeks: mapLessonWeeks(
           lesson.weeks,
           this.semester,
-          this.logger.child({ moduleCode, lesson }),
+          this.logger.child({ lesson, moduleCode }),
         ),
       }));
 

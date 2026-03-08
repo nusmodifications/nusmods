@@ -2,6 +2,7 @@ import { shallow } from 'enzyme';
 
 import SemesterSwitcher from './SemesterSwitcher';
 
+const jest = vi;
 describe('<SemesterSwitcher />', () => {
   test('simulates click events', () => {
     const onButtonClick = jest.fn();

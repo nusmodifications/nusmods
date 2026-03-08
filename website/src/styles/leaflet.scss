@@ -307,7 +307,11 @@
 
 /* general typography */
 .leaflet-container {
-  font: 12px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font:
+    12px/1.5 'Helvetica Neue',
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 /* general toolbar styles */
@@ -377,7 +381,10 @@ $button-bg: theme-color(secondary);
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-  font: bold 18px 'Lucida Console', Monaco, monospace;
+  font:
+    bold 18px 'Lucida Console',
+    Monaco,
+    monospace;
   text-indent: 1px;
 }
 
@@ -567,7 +574,10 @@ $button-bg: theme-color(secondary);
   height: 14px;
   padding: 4px 4px 0 0;
   border: none;
-  font: 16px/14px Tahoma, Verdana, sans-serif;
+  font:
+    16px/14px Tahoma,
+    Verdana,
+    sans-serif;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
