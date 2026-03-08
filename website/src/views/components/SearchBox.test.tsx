@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import SearchBox from './SearchBox';
 
+const jest = vi;
 describe(SearchBox, () => {
   test('should match snapshot', () => {
     expect(

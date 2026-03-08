@@ -17,8 +17,8 @@ export const ISO8601_DATE_FORMAT = 'yyyy-MM-dd';
  */
 const timeIndexMap: Record<string, number> = { '00': 0, '30': 1, '59': 2 };
 export function convertTimeToIndex(time: string) {
-  const hour = parseInt(time.substring(0, 2), 10);
-  const minute = time.substring(2);
+  const hour = Number.parseInt(time.slice(0, 2), 10);
+  const minute = time.slice(2);
   return hour * 2 + timeIndexMap[minute];
 }
 
@@ -41,7 +41,7 @@ export function convertIndexToTime(index: number) {
  * @example getTimeRange('0900', '2400') -> ['0900', '0930', ..., '2330']
  * @returns {Array} listOfTime - 24-hour format time each 30 minutes apart.
  */
-export function getTimeRange(startTime: string, endTime: string): string[] {
+export function getTimeRange(startTime: string, endTime: string): Array<string> {
   const timeRange = range(convertTimeToIndex(startTime), convertTimeToIndex(endTime));
   return timeRange.map(convertIndexToTime);
 }

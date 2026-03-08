@@ -1,7 +1,6 @@
 import type { Middleware } from 'redux';
 
-module.exports = {
-  createStateSyncMiddleware(): Middleware {
-    return () => (next) => (action) => next(action);
-  },
-};
+// eslint-disable-next-line import/prefer-default-export
+export function createStateSyncMiddleware(): Middleware {
+  return () => (next) => (action) => next(action);
+}

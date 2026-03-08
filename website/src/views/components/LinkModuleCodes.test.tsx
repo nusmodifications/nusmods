@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
-import { entries } from 'lodash';
+import { entries } from 'lodash-es';
 
 import { ModuleCodeMap } from 'types/reducers';
 import { getModuleCondensed } from 'selectors/moduleBank';

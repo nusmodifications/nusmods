@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 import { AlertTriangle } from 'react-feather';
 import { Module, ModuleCode, Semester } from 'types/modules';

@@ -30,7 +30,25 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-      - run: pnpm test --runInBand
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run:
+          name: Build scraper
+          environment:
+            NODE_ENV: production
+          command: pnpm build
+
+  cpex-scraper:
+    executor: node-executor
+    working_directory: ~/nusmods/scrapers/cpex-scraper
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
       - run:
           name: Build scraper
           environment:
@@ -46,7 +64,8 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-      - run: pnpm test --runInBand
+      - run: pnpm typecheck
+      - run: pnpm test
       - run: pnpm build
       - store_artifacts:
           path: dist
@@ -62,6 +81,8 @@ jobs:
           at: ~/nusmods
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
       - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
       - run:
           name: Build export service
           environment:
@@ -78,9 +99,7 @@ jobs:
       - attach_workspace:
           at: ~/nusmods
       - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
-      - run:
-          name: Install dependencies
-          command: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
       - run:
           name: Lint code
           command: pnpm lint:code --cache --cache-location 'node_modules/.eslintcache/'
@@ -88,17 +107,14 @@ jobs:
       - run:
           name: Lint styles
           command: pnpm lint:styles
-      - run:
-          name: Typecheck Code
-          command: pnpm typecheck
+      - run: pnpm typecheck
       - run:
           name: Test code
           environment:
             NODE_ENV: test
-            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
           command: |
             set -e
-            pnpm test --runInBand --reporters=default --reporters=jest-junit
+            pnpm test --reporter=default --reporter=junit --outputFile=reports/junit/js-test-results.xml
             if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "production" ]; then
               pnpm codecov --disable=gcov -f ./coverage/coverage-final.json
             fi
@@ -108,7 +124,7 @@ jobs:
             NODE_ENV: test
           command: |
             set -e
-            pnpm test:integration --runInBand
+            pnpm test:integration
       - run:
           name: Build
           command: pnpm build
@@ -159,6 +175,9 @@ workflows:
     jobs:
       - checkout
       - nus-scrapers:
+          requires:
+            - checkout
+      - cpex-scraper:
           requires:
             - checkout
       - nusmoderator:

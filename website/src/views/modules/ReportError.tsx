@@ -1,5 +1,5 @@
 import { FC, FormEventHandler, memo, useCallback, useState } from 'react';
-import { castArray, groupBy } from 'lodash';
+import { castArray, groupBy } from 'lodash-es';
 import classnames from 'classnames';
 import { produce } from 'immer';
 import axios from 'axios';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { flatten, values } from 'lodash';
+import { flatten, values } from 'lodash-es';
 import { connect } from 'react-redux';
 
 import { getModuleCondensed } from 'selectors/moduleBank';

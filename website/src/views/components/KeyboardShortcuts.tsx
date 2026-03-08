@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useStore } from 'react-redux';
 import Mousetrap from 'mousetrap';
-import { groupBy, map } from 'lodash';
+import { groupBy, map } from 'lodash-es';
 
 import { DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 import themes from 'data/themes.json';

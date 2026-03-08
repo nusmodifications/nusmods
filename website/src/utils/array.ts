@@ -1,4 +1,4 @@
-import { flatMap } from 'lodash';
+import { flatMap } from 'lodash-es';
 
 /**
  * Mixes the delimiter into the array between each element

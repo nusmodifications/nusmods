@@ -2,7 +2,7 @@ import { PureComponent } from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { TimetableConfig } from 'types/timetables';

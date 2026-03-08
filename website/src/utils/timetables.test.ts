@@ -1,5 +1,5 @@
 import NUSModerator from 'nusmoderator';
-import _, { filter, find, get, map, mapValues, some } from 'lodash';
+import { filter, find, get, map, mapValues, shuffle, some } from 'lodash-es';
 import { parseISO } from 'date-fns';
 import {
   TaModulesConfigV1,
@@ -254,7 +254,7 @@ test('arrangeLessonsWithinDay', () => {
 
   // Can fit within one row.
   const arrangement1: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
       createGenericColoredLesson('Monday', '1400', '1500'),
@@ -264,7 +264,7 @@ test('arrangeLessonsWithinDay', () => {
 
   // Two rows.
   const arrangement2: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
       createGenericColoredLesson('Monday', '1500', '1700'),
@@ -274,7 +274,7 @@ test('arrangeLessonsWithinDay', () => {
 
   // Three rows.
   const arrangement3: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1100', '1300'),
       createGenericColoredLesson('Monday', '1000', '1300'),
@@ -285,7 +285,7 @@ test('arrangeLessonsWithinDay', () => {
 
 test('arrangeLessonsForWeek', () => {
   const arrangement0: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
       createGenericColoredLesson('Monday', '1400', '1500'),
@@ -294,7 +294,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement0.Monday.length).toBe(1);
 
   const arrangement1: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
       createGenericColoredLesson('Monday', '1400', '1500'),
@@ -306,7 +306,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement1.Tuesday.length).toBe(2);
 
   const arrangement2: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
       createGenericColoredLesson('Monday', '1400', '1500'),
@@ -318,7 +318,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement2.Tuesday.length).toBe(1);
 
   const arrangement3: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Tuesday', '1100', '1300'),
       createGenericColoredLesson('Wednesday', '1000', '1300'),
@@ -329,7 +329,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement3.Wednesday.length).toBe(1);
 
   const arrangement4: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
       createGenericColoredLesson('Tuesday', '1100', '1300'),
@@ -341,7 +341,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement4.Wednesday.length).toBe(1);
 
   const arrangement5: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
-    _.shuffle([
+    shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
       createGenericColoredLesson('Tuesday', '1100', '1300'),
@@ -357,7 +357,7 @@ test('arrangeLessonsForWeek', () => {
 
 test('areOtherClassesAvailable', () => {
   // Lessons belong to different ClassNo.
-  const lessons1: RawLesson[] = _.shuffle([
+  const lessons1: RawLesson[] = shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '2'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '3'),
@@ -366,7 +366,7 @@ test('areOtherClassesAvailable', () => {
   expect(areOtherClassesAvailable(lessons1, 'Tutorial')).toBe(false);
 
   // Lessons belong to the same ClassNo.
-  const lessons2: RawLesson[] = _.shuffle([
+  const lessons2: RawLesson[] = shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '1'),
@@ -374,7 +374,7 @@ test('areOtherClassesAvailable', () => {
   expect(areOtherClassesAvailable(lessons2, 'Lecture')).toBe(false);
 
   // Lessons belong to different lessonType.
-  const lessons3: RawLesson[] = _.shuffle([
+  const lessons3: RawLesson[] = shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Tutorial', '1'),
@@ -813,7 +813,7 @@ describe('getInteractableLessons', () => {
 test('findExamClashes should return non-empty object if exams clash', () => {
   const sem: Semester = 1;
   const examClashes = findExamClashes([CS1010S, CS4243 as any, CS3216], sem);
-  const examDate = _.get(getModuleSemesterData(CS1010S, sem), 'examDate');
+  const examDate = get(getModuleSemesterData(CS1010S, sem), 'examDate');
   if (!examDate) throw new Error('Cannot find ExamDate');
   expect(examClashes).toEqual({ [examDate]: [CS1010S, CS4243] });
 });
@@ -827,7 +827,7 @@ test('findExamClashes should return empty object if exams do not clash', () => {
 test('findExamClashes should return non-empty object if exams starting at different times clash', () => {
   const sem: Semester = 1;
   const examClashes = findExamClashes([CS1010S, CS3216 as any, CS1010A], sem);
-  const examDate = _.get(getModuleSemesterData(CS1010A, sem), 'examDate');
+  const examDate = get(getModuleSemesterData(CS1010A, sem), 'examDate');
   if (!examDate) throw new Error('Cannot find ExamDate');
   expect(examClashes).toEqual({ [examDate]: [CS1010S, CS1010A] });
 });

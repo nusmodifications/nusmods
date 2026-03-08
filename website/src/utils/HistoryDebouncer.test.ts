@@ -1,12 +1,14 @@
+import type { Mocked } from 'vitest';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { History } from 'history';
 import createHistory from 'test-utils/createHistory';
 import HistoryDebouncer from './HistoryDebouncer';
 
+const jest = vi;
 describe(HistoryDebouncer, () => {
   const mockNow = jest.spyOn(Date, 'now');
 
-  function createHistoryMock(initialEntries = ['/']): jest.Mocked<History> {
+  function createHistoryMock(initialEntries = ['/']): Mocked<History> {
     const { history } = createHistory(initialEntries);
     jest.spyOn(history, 'push');
     jest.spyOn(history, 'replace');
