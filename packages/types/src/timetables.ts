@@ -13,7 +13,7 @@ export type ModuleLessonConfig = {
 };
 
 /**
- * ModuleLessonConfig is the v1 representation of module configs\
+ * ModuleLessonConfigV1 is the v1 representation of module configs\
  * It is a mapping of lessonType to classNo\
  * It is only used for type annotations in the migration logic
  */

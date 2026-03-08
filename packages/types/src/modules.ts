@@ -1,4 +1,6 @@
 // Components within a module:
+import type { Venue } from './venues';
+
 export type AcadYear = string;
 export type ClassNo = string;
 export type DayText = string;
@@ -12,7 +14,6 @@ export type ModuleTitle = string;
 export type Semester = number;
 export type Department = string;
 export type Workload = string | readonly number[];
-export type Venue = string;
 export type Weeks = NumericWeeks | WeekRange;
 export type NumericWeeks = readonly number[];
 export type WeekRange = {

@@ -10,7 +10,7 @@ const commonConfig = {
     // so that we can use absolute paths in our imports.
     // E.g. Importing our own module at `/website/src/path/to/module` will simply be:
     // `import module from 'path/to/module;`
-    modules: [parts.PATHS.src, parts.PATHS.node],
+    modules: [parts.PATHS.src, path.join(parts.PATHS.root, parts.PATHS.node), parts.PATHS.node],
     // Maps specific modules, similar to modules above, except in this case
     // we map the folders directly - for instance we only want __mocks__ and not
     // any of the other folders under root to be imported from root, so we use

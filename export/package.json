@@ -19,6 +19,7 @@
     "check": "run-s lint typecheck"
   },
   "dependencies": {
+    "@nusmods/types": "workspace:*",
     "@sentry/node": "5.30.0",
     "@sparticuz/chromium": "^123.0.0",
     "axios": "0.30.0",

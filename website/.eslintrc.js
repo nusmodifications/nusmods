@@ -1,3 +1,5 @@
+const path = require('path');
+
 const warnInDevelopment = process.env.NODE_ENV === 'production' ? 'error' : 'warn';
 
 module.exports = {
@@ -16,7 +18,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       webpack: {
-        config: 'webpack/webpack.config.common.js',
+        config: path.join(__dirname, 'webpack', 'webpack.config.common.js'),
       },
     },
     'import/parsers': {
