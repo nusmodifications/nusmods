@@ -16,6 +16,7 @@ const commonConfig = {
     // any of the other folders under root to be imported from root, so we use
     // this instead of modules
     alias: {
+      '@nusmods/types': parts.PATHS.sharedTypes,
       __mocks__: parts.PATHS.fixtures,
     },
     // Importing modules from these files will not require the extension.
@@ -59,6 +60,7 @@ const commonConfig = {
         test: /\.[j|t]sx?$/,
         include: [
           parts.PATHS.src,
+          parts.PATHS.sharedTypes,
           // React Leaflet's MapContainer and withPane destructures an object using the ...
           // operator, which isn't supported on Mobile Safari <= 11.2 and Microsoft Edge 18.
           // TODO: Remove after we drop support for iOS <= 11.2 and Microsoft Edge 18.

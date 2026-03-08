@@ -12,7 +12,7 @@
     // "sourceMap": true,                     /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
     // "outDir": "./build",                   /* Redirect output structure to the directory. */
-    "rootDir": "." /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
+    // "rootDir": "." /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
     // "composite": true,                     /* Enable project compilation */
     // "removeComments": true,                /* Do not emit comments to output. */
     "noEmit": true /* Do not emit outputs. */,
@@ -35,7 +35,10 @@
     /* Module Resolution Options */
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
     "baseUrl": "./src/" /* Base directory to resolve non-absolute module names. */,
-    // "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+    "paths": {
+      "@nusmods/types": ["../../packages/types/src/index.ts"],
+      "@nusmods/types/*": ["../../packages/types/src/*"]
+    },
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
     "types": [

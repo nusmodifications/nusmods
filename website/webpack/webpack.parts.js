@@ -20,6 +20,7 @@ const PATHS = {
   // version of the same module, so this is kept relative
   node: 'node_modules',
   src: path.join(ROOT, SRC),
+  sharedTypes: path.join(ROOT, '..', 'packages', 'types', 'src'),
   styles: [path.join(ROOT, SRC, 'styles'), path.join(ROOT, 'node_modules')],
   images: path.join(ROOT, SRC, 'img'),
   fixtures: path.join(ROOT, SRC, '__mocks__'),
