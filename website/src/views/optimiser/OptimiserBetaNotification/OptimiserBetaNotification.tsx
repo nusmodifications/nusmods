@@ -1,12 +1,12 @@
 import { memo } from 'react';
-import { Zap, GitHub, Send } from 'react-feather';
+import { Zap, GitHub, Send, Cpu, AlertCircle } from 'react-feather';
 
 import appConfig from 'config';
 import styles from './Announcements.scss';
 
 const OptimiserBetaNotification = memo(() => (
-  <div className={`alert alert-warning no-export ${styles.announcement}`}>
-    <Zap className={styles.backgroundIcon} />
+  <div className={`alert alert-success no-export ${styles.announcement}`}>
+    <AlertCircle className={styles.backgroundIcon} />
 
     <div className={styles.body}>
       <h3 className={styles.heading}>BETA</h3>

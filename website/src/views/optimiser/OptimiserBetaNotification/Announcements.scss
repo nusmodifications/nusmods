@@ -71,9 +71,9 @@
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #d39e00;
+  color: #28a745;
   background: transparent;
-  border: 1.5px solid #d39e00;
+  border: 1.5px solid #28a745;
   border-radius: 4px;
   text-decoration: none;
   transition: background 0.15s ease, color 0.15s ease;
@@ -90,7 +90,7 @@
 
   &:hover {
     color: var(--body-bg);
-    background: #d39e00;
+    background: #28a745;
     text-decoration: none;
   }
 }
