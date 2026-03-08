@@ -16,9 +16,20 @@ config.rules = Object.fromEntries(
 
 export default defineConfig({
   extends: [config],
+  ignorePatterns: ['**/*.test.ts'],
+  overrides: [
+    {
+      files: ['**/*.test.ts'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 'off',
+      },
+    },
+  ],
   rules: {
     'import-x/no-namespace': 'off',
     'no-console': 'off',
+    'perfectionist/sort-object-types': 'off',
+    'perfectionist/sort-objects': 'off',
     'unicorn/prefer-string-replace-all': 'off',
     'unicorn/prefer-top-level-await': 'off',
   },

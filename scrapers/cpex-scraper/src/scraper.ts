@@ -1,6 +1,6 @@
 import axios from 'axios';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const FETCH_OK = '00000';
 
@@ -32,10 +32,10 @@ type Module = {
   UnitsMin?: number | null;
   SubjectArea?: string;
   CatalogNumber?: string;
-  CourseAttributes?: {
+  CourseAttributes?: Array<{
     Code: string;
     Value: string;
-  }[];
+  }>;
 };
 
 export type CPExModule = {
@@ -55,7 +55,7 @@ type FileSystem = Pick<typeof fs, 'existsSync' | 'mkdirSync' | 'writeFileSync'>;
 type PathModule = Pick<typeof path, 'join'>;
 
 export type ScrapeResult = {
-  modules: CPExModule[];
+  modules: Array<CPExModule>;
   archiveFilename: string;
   wroteCurrentFile: boolean;
   summary: {
@@ -78,6 +78,10 @@ export type ScrapeOptions = {
   logger?: Logger;
 };
 
+function pad2(n: number): string {
+  return n < 10 ? `0${n}` : String(n);
+}
+
 const mpeValueMap: Record<string, { inS1CPEx?: boolean; inS2CPEx?: boolean }> = {
   'S1 - Sem 1': { inS1CPEx: true },
   'S2 - Sem 2': { inS2CPEx: true },
@@ -88,10 +92,6 @@ const mpeValueMap: Record<string, { inS1CPEx?: boolean; inS2CPEx?: boolean }> = 
 };
 
 export function getTimestampForFilename(date: Date = new Date()): string {
-  function pad2(n: number): string {
-    return n < 10 ? `0${n}` : String(n);
-  }
-
   return (
     date.getFullYear().toString() +
     pad2(date.getMonth() + 1) +
@@ -163,7 +163,7 @@ export async function scraper({
     'X-API-KEY': env.courseApiKey,
   };
 
-  const getFacultiesResponse = await axiosClient.get<V1ApiResponse<AcademicGrp[]>>(
+  const getFacultiesResponse = await axiosClient.get<V1ApiResponse<Array<AcademicGrp>>>(
     `${baseUrl}edurec/config/v1/get-acadgroup`,
     { headers: acadHeaders },
   );
@@ -211,22 +211,22 @@ export async function scraper({
     let hasMore = true;
 
     while (hasMore) {
-      let modules: Module[];
+      let modules: Array<Module>;
 
       try {
-        const getModulesResponse = await axiosClient.get<{ data: Module[]; itemCount: number }>(
-          `${baseUrl}CourseNUSMods`,
-          {
-            headers: courseHeaders,
-            params: {
-              acadGroupCode,
-              applicableInYear: academicYear,
-              latestVersionOnly: 'True',
-              maxItems: String(MAX_ITEMS),
-              offset: String(offset),
-            },
+        const getModulesResponse = await axiosClient.get<{
+          data: Array<Module>;
+          itemCount: number;
+        }>(`${baseUrl}CourseNUSMods`, {
+          headers: courseHeaders,
+          params: {
+            acadGroupCode,
+            applicableInYear: academicYear,
+            latestVersionOnly: 'True',
+            maxItems: String(MAX_ITEMS),
+            offset: String(offset),
           },
-        );
+        });
 
         modules = getModulesResponse.data.data;
       } catch (error: unknown) {
