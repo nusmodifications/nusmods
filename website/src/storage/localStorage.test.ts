@@ -16,7 +16,8 @@ function setWindowLocalStorage(localStorage?: Storage) {
     return;
   }
 
-  delete (window as Window & { localStorage?: Storage }).localStorage;
+  const mutableWindow = window as unknown as { localStorage?: Storage };
+  delete mutableWindow.localStorage;
 }
 
 let originalLocalStorage: Storage;
