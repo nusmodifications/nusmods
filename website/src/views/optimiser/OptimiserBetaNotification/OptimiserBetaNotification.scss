@@ -66,32 +66,32 @@
 .actionButton {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
   padding: 0.3rem 0.75rem;
-  font-size: 0.8rem;
+  border: 1.5px solid #28a745;
+  border-radius: 4px;
   font-weight: 600;
+  font-size: 0.8rem;
+  text-decoration: none;
+  white-space: nowrap;
   letter-spacing: 0.02em;
   color: #28a745;
   background: transparent;
-  border: 1.5px solid #28a745;
-  border-radius: 4px;
-  text-decoration: none;
   transition: background 0.15s ease, color 0.15s ease;
-  white-space: nowrap;
+  gap: 0.35rem;
 
   svg {
     flex-shrink: 0;
   }
 
-  @include media-breakpoint-down(sm) {
-    width: 100%;
-    justify-content: center;
-  }
-
   &:hover {
+    text-decoration: none;
     color: var(--body-bg);
     background: #28a745;
-    text-decoration: none;
+  }
+
+  @include media-breakpoint-down(sm) {
+    justify-content: center;
+    width: 100%;
   }
 }
 

@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { Zap, GitHub, Send, Cpu, AlertCircle } from 'react-feather';
+import { GitHub, Send, AlertCircle } from 'react-feather';
 
 import appConfig from 'config';
-import styles from './Announcements.scss';
+import styles from './OptimiserBetaNotification.scss';
 
 const OptimiserBetaNotification = memo(() => (
   <div className={`alert alert-success no-export ${styles.announcement}`}>
