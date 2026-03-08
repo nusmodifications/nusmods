@@ -176,14 +176,22 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 		prev := daySlots[i-1]
 		curr := daySlots[i]
 
-		// Skip if coordinates are invalid (0,0) or either lesson is recorded
-		if prev.Coordinates.X == 0 || prev.Coordinates.Y == 0 ||
-			curr.Coordinates.X == 0 || curr.Coordinates.Y == 0 ||
-			isLessonRecorded(prev.LessonKey, recordings) ||
+		// Skip if either lesson is recorded
+		if isLessonRecorded(prev.LessonKey, recordings) ||
 			isLessonRecorded(curr.LessonKey, recordings) {
 			continue
 		}
 
+		prevNoCoords := prev.Coordinates.X == 0 || prev.Coordinates.Y == 0
+		currNoCoords := curr.Coordinates.X == 0 || curr.Coordinates.Y == 0
+
+		if prevNoCoords || currNoCoords {
+			// Unknown venue - penalise appropriately
+			totalPenalty += constants.NO_VENUE_PENALTY
+			continue
+		}
+
+		// Both have valid coordinates — calculate actual distance
 		prevCoord := haversine.Coord{Lat: float64(prev.Coordinates.Y), Lon: float64(prev.Coordinates.X)}
 		currCoord := haversine.Coord{Lat: float64(curr.Coordinates.Y), Lon: float64(curr.Coordinates.X)}
 		_, km := haversine.Distance(prevCoord, currCoord)
