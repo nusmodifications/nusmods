@@ -43,7 +43,13 @@ export async function getModules(moduleCodes: Array<string>) {
   return modules.filter(Boolean);
 }
 
+const EXPORT_ROUTES = /\/api\/export\/(image|pdf)$/;
+
 export const parseExportData: Middleware<State> = (ctx, next) => {
+  if (EXPORT_ROUTES.test(ctx.path) && !ctx.query.data) {
+    ctx.throw(422, 'Missing timetable data');
+  }
+
   if (ctx.query.data) {
     try {
       if (typeof ctx.query.data !== 'string') {
