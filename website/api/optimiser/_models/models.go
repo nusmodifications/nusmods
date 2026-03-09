@@ -29,10 +29,10 @@ type OptimiserRequest struct {
 	LunchEnd            string   `json:"lunchEnd"`            // Format: "1500" (HHMM)
 
 	// Parsed fields
-	EarliestMin  int
-	LatestMin    int
+	EarliestMin   int
+	LatestMin     int
 	LunchStartMin int
-	LunchEndMin  int
+	LunchEndMin   int
 }
 
 // ParseOptimiserRequestFields validates and parses time fields into minutes.
@@ -75,9 +75,9 @@ type TimetableState struct {
 	DaySlots      [6][]ModuleSlot   // For each day, a time-sorted slice of slots
 	DayDistance   [6]float64        // Squared travel distance per day
 	TotalDistance float64           // Sum of all DayDistance
-	
+
 	// Calculated fields
-	Score 		   float64
+	Score float64
 }
 
 type ModuleSlot struct {

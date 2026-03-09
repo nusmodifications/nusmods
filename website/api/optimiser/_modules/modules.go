@@ -37,7 +37,7 @@ func GetAllModuleSlots(
 	}
 
 	moduleSlots := make(models.ModuleTimetableMap)
-	
+
 	// These are default or backup slots for the partial timetable so that we can display some random slot for unallocated lessons
 	defaultSlots := make(models.ModuleDefaultSlotsMap)
 	for _, module := range optimiserRequest.Modules {
