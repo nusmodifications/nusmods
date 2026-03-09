@@ -152,7 +152,7 @@ func mergeAndFilterModuleSlots(
 
 	for groupKey, slots := range classGroups {
 		lessonType := strings.Split(groupKey, "|")[0]
-		lessonKey := module + "|" + lessonType
+		lessonKey := strings.ToUpper(module) + "|" + lessonType
 		isRecorded := recordingsMap[lessonKey]
 		allValid := true
 		if defaultSlots[lessonType] == nil {
@@ -194,7 +194,7 @@ func mergeAndFilterModuleSlots(
 	for groupKey, slots := range validClassGroups {
 		lessonType := strings.Split(groupKey, "|")[0]
 		classNo := strings.Split(groupKey, "|")[1]
-		lessonKey := module + "|" + lessonType
+		lessonKey := strings.ToUpper(module) + "|" + lessonType
 
 		// Parse fields for each slot before sorting
 		for i := range slots {
