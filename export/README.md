@@ -52,7 +52,7 @@ Both export API endpoints accept GET requests and take a `data` query param that
 
 The endpoints use `content-disposition` header to get the browser to download the file.
 
-### GET `/pdf`
+### GET `/api/export/pdf`
 
 Download PDF of the timetable.
 
@@ -60,7 +60,7 @@ Download PDF of the timetable.
 
 - `data` - JSON encoded timetable data
 
-### GET `/image`
+### GET `/api/export/image`
 
 Download PNG image of the timetable.
 
@@ -77,8 +77,8 @@ Returns the HTML content of the page that Puppeteer renders.
 
 After running locally, you can test with the following URLs on `localhost:3000`:
 
-- [Example image export](http://localhost:3000/image?data=%7B%22semester%22%3A2%2C%22timetable%22%3A%7B%22CS3217%22%3A%7B%22Lecture%22%3A%5B0%2C3%5D%2C%22Tutorial%22%3A%5B1%5D%7D%2C%22CS1010%22%3A%7B%22Tutorial%22%3A%5B4%5D%2C%22Sectional%20Teaching%22%3A%5B3%5D%7D%2C%22CS1231S%22%3A%7B%22Tutorial%22%3A%5B2%5D%2C%22Lecture%22%3A%5B6%2C7%5D%7D%2C%22CS4218%22%3A%7B%22Lecture%22%3A%5B0%5D%2C%22Laboratory%22%3A%5B4%5D%7D%7D%2C%22colors%22%3A%7B%22CS3217%22%3A4%2C%22CS1010%22%3A6%2C%22CS1231S%22%3A5%2C%22CS4218%22%3A0%7D%2C%22hidden%22%3A%5B%5D%2C%22ta%22%3A%5B%5D%2C%22theme%22%3A%7B%22id%22%3A%22mocha%22%2C%22timetableOrientation%22%3A%22HORIZONTAL%22%2C%22showTitle%22%3Afalse%2C%22_persist%22%3A%7B%22version%22%3A-1%2C%22rehydrated%22%3Atrue%7D%7D%2C%22settings%22%3A%7B%22colorScheme%22%3A%22LIGHT_COLOR_SCHEME%22%7D%7D&pixelRatio=2)
-- [Example PDF export](http://localhost:3000/pdf?data=%7B%22semester%22%3A2%2C%22timetable%22%3A%7B%22CS3217%22%3A%7B%22Lecture%22%3A%5B0%2C3%5D%2C%22Tutorial%22%3A%5B1%5D%7D%2C%22CS1010%22%3A%7B%22Tutorial%22%3A%5B4%5D%2C%22Sectional%20Teaching%22%3A%5B3%5D%7D%2C%22CS1231S%22%3A%7B%22Tutorial%22%3A%5B2%5D%2C%22Lecture%22%3A%5B6%2C7%5D%7D%2C%22CS4218%22%3A%7B%22Lecture%22%3A%5B0%5D%2C%22Laboratory%22%3A%5B4%5D%7D%7D%2C%22colors%22%3A%7B%22CS3217%22%3A4%2C%22CS1010%22%3A6%2C%22CS1231S%22%3A5%2C%22CS4218%22%3A0%7D%2C%22hidden%22%3A%5B%5D%2C%22ta%22%3A%5B%5D%2C%22theme%22%3A%7B%22id%22%3A%22mocha%22%2C%22timetableOrientation%22%3A%22HORIZONTAL%22%2C%22showTitle%22%3Afalse%2C%22_persist%22%3A%7B%22version%22%3A-1%2C%22rehydrated%22%3Atrue%7D%7D%2C%22settings%22%3A%7B%22colorScheme%22%3A%22LIGHT_COLOR_SCHEME%22%7D%7D&pixelRatio=2)
+- [Example image export](http://localhost:3000/api/export/image?data=%7B%22semester%22%3A2%2C%22timetable%22%3A%7B%22CS3217%22%3A%7B%22Lecture%22%3A%5B0%2C3%5D%2C%22Tutorial%22%3A%5B1%5D%7D%2C%22CS1010%22%3A%7B%22Tutorial%22%3A%5B4%5D%2C%22Sectional%20Teaching%22%3A%5B3%5D%7D%2C%22CS1231S%22%3A%7B%22Tutorial%22%3A%5B2%5D%2C%22Lecture%22%3A%5B6%2C7%5D%7D%2C%22CS4218%22%3A%7B%22Lecture%22%3A%5B0%5D%2C%22Laboratory%22%3A%5B4%5D%7D%7D%2C%22colors%22%3A%7B%22CS3217%22%3A4%2C%22CS1010%22%3A6%2C%22CS1231S%22%3A5%2C%22CS4218%22%3A0%7D%2C%22hidden%22%3A%5B%5D%2C%22ta%22%3A%5B%5D%2C%22theme%22%3A%7B%22id%22%3A%22mocha%22%2C%22timetableOrientation%22%3A%22HORIZONTAL%22%2C%22showTitle%22%3Afalse%2C%22_persist%22%3A%7B%22version%22%3A-1%2C%22rehydrated%22%3Atrue%7D%7D%2C%22settings%22%3A%7B%22colorScheme%22%3A%22LIGHT_COLOR_SCHEME%22%7D%7D&pixelRatio=2)
+- [Example PDF export](http://localhost:3000/api/export/pdf?data=%7B%22semester%22%3A2%2C%22timetable%22%3A%7B%22CS3217%22%3A%7B%22Lecture%22%3A%5B0%2C3%5D%2C%22Tutorial%22%3A%5B1%5D%7D%2C%22CS1010%22%3A%7B%22Tutorial%22%3A%5B4%5D%2C%22Sectional%20Teaching%22%3A%5B3%5D%7D%2C%22CS1231S%22%3A%7B%22Tutorial%22%3A%5B2%5D%2C%22Lecture%22%3A%5B6%2C7%5D%7D%2C%22CS4218%22%3A%7B%22Lecture%22%3A%5B0%5D%2C%22Laboratory%22%3A%5B4%5D%7D%7D%2C%22colors%22%3A%7B%22CS3217%22%3A4%2C%22CS1010%22%3A6%2C%22CS1231S%22%3A5%2C%22CS4218%22%3A0%7D%2C%22hidden%22%3A%5B%5D%2C%22ta%22%3A%5B%5D%2C%22theme%22%3A%7B%22id%22%3A%22mocha%22%2C%22timetableOrientation%22%3A%22HORIZONTAL%22%2C%22showTitle%22%3Afalse%2C%22_persist%22%3A%7B%22version%22%3A-1%2C%22rehydrated%22%3Atrue%7D%7D%2C%22settings%22%3A%7B%22colorScheme%22%3A%22LIGHT_COLOR_SCHEME%22%7D%7D&pixelRatio=2)
 
 ## Deployment
 
