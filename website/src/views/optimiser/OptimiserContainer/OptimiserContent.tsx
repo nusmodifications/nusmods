@@ -24,7 +24,6 @@ import OptimiserForm from '../OptimiserForm/OptimiserForm';
 import OptimiserButton from '../OptimiserButton';
 import OptimiserResults from '../OptimiserResults';
 import OptimiserFAQContainer from '../OptimiserFAQ/OptimiserFAQContainer';
-import OptimiserBetaNotification from '../OptimiserBetaNotification/OptimiserBetaNotification';
 
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
@@ -119,7 +118,6 @@ const OptimiserContent: React.FC = () => {
   return (
     <div className={styles.container}>
       <Title>Optimiser</Title>
-      <OptimiserBetaNotification />
       <OptimiserHeader />
 
       <OptimiserForm

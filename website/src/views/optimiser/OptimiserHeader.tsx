@@ -3,6 +3,7 @@ import { Cpu } from 'react-feather';
 import useMediaQuery from 'views/hooks/useMediaQuery';
 import { breakpointDown } from 'utils/css';
 import styles from './OptimiserHeader.scss';
+import OptimiserBetaNotification from './OptimiserBetaNotification/OptimiserBetaNotification';
 
 const OptimiserHeader: React.FC = () => {
   const isMobile = useMediaQuery(breakpointDown('md'));
@@ -14,6 +15,7 @@ const OptimiserHeader: React.FC = () => {
           <Cpu size={isMobile ? 22 : 25} className={styles.titleIcon} />
           Timetable Optimiser
         </div>
+        <OptimiserBetaNotification />
       </div>
 
       <div className={styles.description}>
