@@ -39,14 +39,15 @@ const ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 
 const NUSModsTimetableBaseURL = "https://nusmods.com/timetable"
 
+// Heuristics for scoring function
 const (
-	MaxWalkDistance            = 0.250 // 250 meters
-	NoVenuePenalty             = 100.0
-	LunchBonus                 = -300.0
-	NoLunchPenalty             = 300.0
-	GapPenaltyThreshold        = 120 // 2 hours in minutes
-	GapPenaltyRate             = 100.0
-	LunchRequiredTime          = 60 // 1 hour in minutes
+	MaxWalkDistance             = 0.250 // 250 meters
+	NoVenuePenalty              = 100.0
+	LunchBonus                  = -300.0
+	NoLunchPenalty              = 300.0
+	GapPenaltyThreshold         = 120 // 2 hours in minutes
+	GapPenaltyRate              = 100.0
+	LunchRequiredTime           = 60 // 1 hour in minutes
 	ConsecutiveHoursPenaltyRate = 100
 )
 
