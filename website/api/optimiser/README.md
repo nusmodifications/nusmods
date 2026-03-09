@@ -47,6 +47,39 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
    - <= Maximum hours of consecutive live lessons
    - <= 2 hours max gap between classes (configurable)
 
+### Scoring Constants
+
+All constants live in `_constants/constants.go`. Lower scores are better — the beam search returns the state with the lowest score.
+
+#### Beam Search Parameters
+
+| Constant          | Value | Rationale                                                                                                                                                                          |
+| ----------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BeamWidth`       | 2500  | Number of partial timetables retained at each step. Higher = better quality but slower. 2500 was empirically chosen as a good quality/speed tradeoff for typical 5–6 module loads. |
+| `BranchingFactor` | 100   | Maximum class options explored per lesson type per beam step. Most modules have well under 100 sections, so this acts as a safety cap rather than an active constraint.            |
+
+#### Scoring Weights
+
+The scoring function combines four penalty/bonus terms. All values were empirically tuned — the relative magnitudes matter more than the absolute values.
+
+| Constant                      | Value    | Meaning                                                                                                                                                                                         |
+| ----------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `LunchBonus`                  | −300     | Applied when a ≥60 min gap exists within the lunch window. Negative because lower score = better.                                                                                               |
+| `NoLunchPenalty`              | +300     | Applied when no viable lunch break exists. Combined swing of 600 points makes lunch the **highest-priority** objective.                                                                         |
+| `LunchRequiredTime`           | 60 min   | Minimum gap (in minutes) that qualifies as a lunch break.                                                                                                                                       |
+| `GapPenaltyThreshold`         | 120 min  | Gaps up to 2 hours are acceptable downtime. Beyond this, students are effectively waiting on campus.                                                                                            |
+| `GapPenaltyRate`              | 100/hr   | Linear penalty per hour exceeding the gap threshold. A 3-hour gap costs 100 points; a 4-hour gap costs 200.                                                                                     |
+| `ConsecutiveHoursPenaltyRate` | 100/hr   | Linear penalty per hour exceeding `maxConsecutiveHours`. Each back-to-back hour over the limit costs 100 points.                                                                                |
+| `MaxWalkDistance`             | 0.250 km | Reference distance for the walking penalty formula: `(10.0 / MaxWalkDistance) × km`. A 250 m walk scores exactly 10 points. Distances beyond this scale linearly — e.g. a 500 m walk scores 20. |
+| `NoVenuePenalty`              | 100      | Applied when either venue has no known coordinates. Equivalent to a ~2.5 km walk, deliberately high to deprioritise unknown venues over known-nearby ones.                                      |
+
+**Priority order** (highest → lowest):
+
+1. Lunch break (±300 per day with classes)
+2. Consecutive hours (100 per excess hour)
+3. Large gaps (100 per excess hour beyond 2 h)
+4. Walking distance (~10 per 250 m transition)
+
 ## API Reference
 
 ### POST `/api/optimiser/optimise`
@@ -207,7 +240,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
   ```bash
   golangci-lint run
   ```
-  **Auto fix issues where possible:**
+  _Auto fix issues where possible:_
   ```bash
   golangci-lint run --fix
   ```
@@ -239,9 +272,6 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 
 - Once there is more concrete information on the building location for each venue, we can remove the current method of identifying building by taking the first few letters before the '-' in the venue name. This will improve the accuracy and reduce search space.
 - Tweak the scoring function to prioritise more important constraints found from user feedback. For instance:
-  - Previously the scoring function was just for distance but it produced less ideal timetables where students had 4-5 hour gaps between classes. This was fixed by punishing gaps that are
-    larger than 2 hours between lessons linearly.
-
 - Tweak the beam search parameters to improve performance (perhaps depending on the number of modules)
 - Create a more accurate heuristic for scoring distance between consecutive classes. (Currently, it just a random linear function that seems to work)
 - Add more constraints to optimisation proceess
