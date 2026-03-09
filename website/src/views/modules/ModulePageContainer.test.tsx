@@ -15,6 +15,9 @@ import { ModulePageContainerComponent } from './ModulePageContainer';
 const jest = vi;
 vi.mock('views/components/RandomKawaii');
 vi.mock('utils/error');
+vi.mock('views/modules/ModulePageContent', () => ({
+  default: ({ module }: { module: { description?: string } }) => <div>{module.description}</div>,
+}));
 
 const cs1010sResponse: AxiosResponse = {
   data: CS1010S,
