@@ -84,7 +84,11 @@ func GetAllModuleSlots(
 			weeksStrings := make([]string, len(weeks))
 
 			for j, week := range weeks {
-				weekInt := int(week.(float64))
+				weekFloat, ok := week.(float64)
+				if !ok {
+					continue
+				}
+				weekInt := int(weekFloat)
 				moduleTimetable[i].WeeksSet[weekInt] = struct{}{}
 				weeksStrings[j] = strconv.Itoa(weekInt)
 			}

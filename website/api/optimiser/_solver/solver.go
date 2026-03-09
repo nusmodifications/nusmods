@@ -190,8 +190,11 @@ func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool
 
 				// check if the weeks overlap
 				for _, week := range newSlot.Weeks.([]any) {
-					weekInt := int(week.(float64))
-					if _, exists := oldSlot.WeeksSet[weekInt]; exists {
+					weekFloat, ok := week.(float64)
+					if !ok {
+						continue
+					}
+					if _, exists := oldSlot.WeeksSet[int(weekFloat)]; exists {
 						return true
 					}
 				}
