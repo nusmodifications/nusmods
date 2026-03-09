@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@sentry/node": "5.30.0",
-    "@sparticuz/chromium": "^123.0.0",
+    "@sparticuz/chromium": "^143.0.4",
     "axios": "0.30.0",
     "bunyan": "1.8.15",
     "fs-extra": "9.1.0",
@@ -32,7 +32,7 @@
     "lodash": "4.17.23",
     "nodemon": "2.0.22",
     "pug": "3.0.3",
-    "puppeteer-core": "22.15.0"
+    "puppeteer-core": "^24.38.0"
   },
   "devDependencies": {
     "@nkzw/eslint-plugin": "^2.0.0",
