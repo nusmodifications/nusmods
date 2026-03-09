@@ -105,9 +105,9 @@ func beamSearch(
 	beam := []models.TimetableState{initial}
 
 	for _, lessonKey := range lessons {
-		var nextBeam []models.TimetableState
 		slotGroups := lessonToSlots[lessonKey]
 		limit := min(len(slotGroups), branchingFactor)
+		nextBeam := make([]models.TimetableState, 0, len(beam)*limit)
 
 		// iterate over all partial timetables in the beam
 		for _, state := range beam {
