@@ -30,7 +30,7 @@ export async function launch() {
     args: ['--disable-gpu'],
     devtools: !!process.env.DEVTOOLS,
     executablePath,
-    headless: true,
+    headless: 'shell',
   });
 
   const page = await browser.newPage();
