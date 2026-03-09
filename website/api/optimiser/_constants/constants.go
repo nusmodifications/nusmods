@@ -5,7 +5,7 @@ import (
 )
 
 // Ensure in sync with all E-Venues in NUSMods
-var E_Venues = map[string]bool{
+var EVenues = map[string]bool{
 	"E-Learn_A":  true,
 	"E-Learn_B":  true,
 	"E-Learn_C":  true,
@@ -40,15 +40,15 @@ const ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 const NUSModsTimetableBaseURL = "https://nusmods.com/timetable"
 
 const (
-	MAX_WALK_DISTANCE            = 0.250 // 250 meters
-	NO_VENUE_PENALTY             = 100.0
-	LUNCH_BONUS                  = -300.0
-	NO_LUNCH_PENALTY             = 300.0
-	GAP_PENALTY_THRESHOLD        = 120 // 2 hours in minutes
-	GAP_PENALTY_RATE             = 100.0
-	LUNCH_REQUIRED_TIME          = 60 // 1 hour in minutes
-	CONSECUTIVE_HOURS_PENALTY_RATE = 100
+	MaxWalkDistance            = 0.250 // 250 meters
+	NoVenuePenalty             = 100.0
+	LunchBonus                 = -300.0
+	NoLunchPenalty             = 300.0
+	GapPenaltyThreshold        = 120 // 2 hours in minutes
+	GapPenaltyRate             = 100.0
+	LunchRequiredTime          = 60 // 1 hour in minutes
+	ConsecutiveHoursPenaltyRate = 100
 )
 
 // This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client
-const MODULE_CODE_SEPARATOR = ";"
+const ModuleCodeSeparator = ";"

@@ -162,7 +162,7 @@ func isLessonRecorded(lessonKey string, recordings map[string]bool) bool {
 //
 // The penalty increases linearly with distance using the formula:
 //
-//	penalty = (10.0 / MAX_WALK_DISTANCE) * distance_in_km
+//	penalty = (10.0 / MaxWalkDistance) * distance_in_km
 //
 // This encourages timetables with classes in nearby venues.
 func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[string]bool) float64 {
@@ -187,7 +187,7 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 
 		if prevNoCoords || currNoCoords {
 			// Unknown venue - penalise appropriately
-			totalPenalty += constants.NO_VENUE_PENALTY
+			totalPenalty += constants.NoVenuePenalty
 			continue
 		}
 
@@ -198,7 +198,7 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 
 		// Apply walking penalty formula
 		// A linear penalty applied. Change if a better heuristic is found. Works as of 6/6/2025.
-		totalPenalty += (10.0 / constants.MAX_WALK_DISTANCE) * km
+		totalPenalty += (10.0 / constants.MaxWalkDistance) * km
 	}
 	return totalPenalty
 }
@@ -289,11 +289,11 @@ func getPhysicalSlots(daySlots []models.ModuleSlot, recordings map[string]bool) 
 // consecutive classes, and after the last class, but only counts time that falls within
 // the specified lunch window (lunchStart to lunchEnd).
 //
-// Returns the best available gap in minutes. If the gap is >= LUNCH_REQUIRED_TIME (60 min),
+// Returns the best available gap in minutes. If the gap is >= LunchRequiredTime (60 min),
 // the timetable receives a bonus; otherwise it's penalized.
 func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest models.OptimiserRequest) int {
 	if len(physicalSlots) == 0 {
-		return constants.LUNCH_REQUIRED_TIME
+		return constants.LunchRequiredTime
 	}
 
 	lunchStart, _ := models.ParseTimeToMinutes(optimiserRequest.LunchStart)
@@ -383,13 +383,13 @@ func scoreConsecutiveHoursofStudy(physicalSlots []models.ModuleSlot, maxConsecut
 
 // penaliseConsecutiveHoursofStudy returns a penalty score for a block of consecutive class time.
 // Returns 0 if within the allowed maximum, otherwise returns a penalty proportional to
-// how many hours over the limit (excess_hours * CONSECUTIVE_HOURS_PENALTY_RATE).
+// how many hours over the limit (excess_hours * ConsecutiveHoursPenaltyRate).
 func penaliseConsecutiveHoursofStudy(consecutiveMinutes int, maxConsecutiveHours int) int {
 	consecutiveHours := consecutiveMinutes / 60
 	if consecutiveHours <= maxConsecutiveHours {
 		return 0
 	}
-	return (consecutiveHours - maxConsecutiveHours) * constants.CONSECUTIVE_HOURS_PENALTY_RATE
+	return (consecutiveHours - maxConsecutiveHours) * constants.ConsecutiveHoursPenaltyRate
 }
 
 // scoreTimetableState assigns a heuristic score to a timetable state to determine its quality.
@@ -415,16 +415,16 @@ func scoreTimetableState(
 
 		// Apply lunch penalty/bonus
 		lunchGap := calculateLunchGap(physicalSlots, optimiserRequest)
-		if lunchGap >= constants.LUNCH_REQUIRED_TIME {
-			totalScore += constants.LUNCH_BONUS
+		if lunchGap >= constants.LunchRequiredTime {
+			totalScore += constants.LunchBonus
 		} else {
-			totalScore += constants.NO_LUNCH_PENALTY
+			totalScore += constants.NoLunchPenalty
 		}
 
 		// Apply gap penalty for large gaps of > 2 hours between classes
 		largestGap := calculateLargestGap(physicalSlots)
-		if largestGap > constants.GAP_PENALTY_THRESHOLD {
-			totalScore += constants.GAP_PENALTY_RATE * float64(largestGap-constants.GAP_PENALTY_THRESHOLD) / 60
+		if largestGap > constants.GapPenaltyThreshold {
+			totalScore += constants.GapPenaltyRate * float64(largestGap-constants.GapPenaltyThreshold) / 60
 		}
 
 		// Apply penalty for more than max consecutive hours of study

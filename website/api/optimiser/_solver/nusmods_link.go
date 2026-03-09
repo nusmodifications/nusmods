@@ -70,7 +70,7 @@ func SerializeConfig(config map[string]map[string][]models.LessonIndex) string {
 		if len(lessonParams) > 0 {
 			moduleParams = append(
 				moduleParams,
-				fmt.Sprintf("%s=%s", moduleCode, strings.Join(lessonParams, constants.MODULE_CODE_SEPARATOR)),
+				fmt.Sprintf("%s=%s", moduleCode, strings.Join(lessonParams, constants.ModuleCodeSeparator)),
 			)
 		}
 	}

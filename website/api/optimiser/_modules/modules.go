@@ -203,7 +203,7 @@ func mergeAndFilterModuleSlots(
 		var combinationParts []string
 		allEVenues := true
 		for _, slot := range slots {
-			if !constants.E_Venues[slot.Venue] {
+			if !constants.EVenues[slot.Venue] {
 				allEVenues = false
 				buildingName := extractBuildingName(slot.Venue)
 				part := slot.Day + "|" + slot.StartTime + "|" + buildingName + "|" + slot.WeeksString
