@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { castArray, last } from 'lodash';
+import { castArray, last } from 'lodash-es';
 import { format } from 'date-fns';
 
 import getWeatherIcon from 'views/components/icons/weather';

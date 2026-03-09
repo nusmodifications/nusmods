@@ -1,7 +1,7 @@
 import { CS1010S, CS3216, MA1521 } from '__mocks__/modules';
 import { LessonOption, TimeRange } from 'types/optimiser';
 import { Module, WorkingDays } from 'types/modules';
-import { shuffle } from 'lodash';
+import { shuffle } from 'lodash-es';
 import { OptimiseResponse } from 'apis/optimiser';
 import {
   defaultLectureOption,

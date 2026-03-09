@@ -1,5 +1,5 @@
 import { Middleware } from 'redux';
-import { size } from 'lodash';
+import { size } from 'lodash-es';
 import * as Sentry from '@sentry/browser';
 import { produce } from 'immer';
 import { State } from 'types/state';

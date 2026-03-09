@@ -1,5 +1,5 @@
 import { FC, useCallback, useState, useRef } from 'react';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 import Downshift, {
   ChildrenFunction,
   ControllerStateAndHelpers,

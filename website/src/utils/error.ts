@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { each, size } from 'lodash';
+import { each, size } from 'lodash-es';
 
 export function captureException(error: Error, extra: { [key: string]: unknown } = {}) {
   Sentry.withScope((scope) => {

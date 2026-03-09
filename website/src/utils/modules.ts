@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { get } from 'lodash-es';
 import { format } from 'date-fns';
 import type {
   Module,
@@ -33,7 +33,7 @@ export function getModuleTimetable(
   module: Module,
   semester: Semester,
 ): readonly RawLessonWithIndex[] {
-  return _.get(getModuleSemesterData(module, semester), 'timetable', []);
+  return get(getModuleSemesterData(module, semester), 'timetable', []);
 }
 
 /**
@@ -50,11 +50,11 @@ export function formatExamDate(examDate: string | null | undefined): string {
 }
 
 export function getExamDate(module: Module, semester: Semester): string | null {
-  return _.get(getModuleSemesterData(module, semester), 'examDate') || null;
+  return get(getModuleSemesterData(module, semester), 'examDate') || null;
 }
 
 export function getExamDuration(module: Module, semester: Semester): number | null {
-  return _.get(getModuleSemesterData(module, semester), 'examDuration') || null;
+  return get(getModuleSemesterData(module, semester), 'examDuration') || null;
 }
 
 export function getFormattedExamDate(module: Module, semester: Semester): string {

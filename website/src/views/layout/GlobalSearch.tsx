@@ -1,5 +1,5 @@
 import { Component, Fragment } from 'react';
-import { omit, stubString } from 'lodash';
+import { omit, stubString } from 'lodash-es';
 import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';

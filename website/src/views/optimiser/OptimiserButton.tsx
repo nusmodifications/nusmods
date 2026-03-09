@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import { Zap } from 'react-feather';
 import { FreeDayConflict, LessonOption } from 'types/optimiser';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import styles from './OptimiserButton.scss';
 
 export interface OptimiserButtonProps {

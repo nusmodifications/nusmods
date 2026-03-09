@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import { isSameDay, addDays } from 'date-fns';
 
 import { ModuleWithColor, ModuleWithExamTime, TIME_SEGMENTS } from 'types/views';

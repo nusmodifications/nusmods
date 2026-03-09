@@ -1,4 +1,4 @@
-import { sum } from 'lodash';
+import { sum } from 'lodash-es';
 import { ModuleCode, PrereqTree, Semester } from 'types/modules';
 import { PlannerModuleInfo, Conflict } from 'types/planner';
 import config from 'config';

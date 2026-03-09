@@ -1,7 +1,7 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { partition } from 'lodash';
+import { partition } from 'lodash-es';
 
 import { VenueList as Venues, VenueLocationMap } from 'types/venues';
 

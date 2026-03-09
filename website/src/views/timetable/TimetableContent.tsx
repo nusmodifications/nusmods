@@ -1,7 +1,17 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { sortBy, difference, values, flatten, isEmpty, map, filter, isArray, keys } from 'lodash';
+import {
+  sortBy,
+  difference,
+  values,
+  flatten,
+  isEmpty,
+  map,
+  filter,
+  isArray,
+  keys,
+} from 'lodash-es';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
 import { LessonIndex, LessonType, Module, ModuleCode, Semester } from 'types/modules';

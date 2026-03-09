@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { escapeRegExp, castArray } from 'lodash';
+import { escapeRegExp, castArray } from 'lodash-es';
 
 // Define some useful Unicode characters as constants
 export const NBSP = '\u00a0';

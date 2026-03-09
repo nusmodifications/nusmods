@@ -10,7 +10,7 @@ import {
   range,
   uniq,
   values,
-} from 'lodash';
+} from 'lodash-es';
 import {
   AcadYear,
   Day,
