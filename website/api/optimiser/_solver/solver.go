@@ -304,14 +304,9 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 // isLessonRecorded determines if a lesson is marked as recorded/online by the user.
 // Recorded lessons don't require physical attendance, so they're excluded from distance
 // calculations and free day constraints.
-// Converts lessonKey format from "MODULE|LessonType" to "MODULE LessonType" for lookup.
+// lessonKey is in "MODULE|LessonType" format, matching the recordings map keys.
 func isLessonRecorded(lessonKey string, recordings map[string]bool) bool {
-	// Convert lessonKey from "MODULE|LessonType" to "MODULE LessonType" format
-	parts := strings.Split(lessonKey, "|")
-	if len(parts) != 2 {
-		return false
-	}
-	return recordings[parts[0]+" "+parts[1]]
+	return recordings[lessonKey]
 }
 
 // isInvalidCoordinates checks if coordinates passed are valid

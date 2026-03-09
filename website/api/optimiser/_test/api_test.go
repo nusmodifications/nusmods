@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"strings"
 	"testing"
 	"time"
 
@@ -62,7 +61,7 @@ func TestOptimiser_SingleModule(t *testing.T) {
 func TestOptimiser_NoCollisionBetween2Lessons(t *testing.T) {
 	req := models.OptimiserRequest{
 		Modules:             []string{"CS2103T", "BN1112"},
-		Recordings:          []string{"CS2103T Lecture"},
+		Recordings:          []string{"CS2103T|Lecture"},
 		FreeDays:            []string{},
 		EarliestTime:        "0800",
 		LatestTime:          "1900",
@@ -105,7 +104,7 @@ func TestOptimiser_NoCollisionBetween2Lessons(t *testing.T) {
 func TestOptimiser_MultipleModulesWithFreeDays(t *testing.T) {
 	req := models.OptimiserRequest{
 		Modules:             []string{"CS2040S", "CS2030S", "ST2334", "IS1108", "GEA1000"},
-		Recordings:          []string{"CS2040S Lecture", "CS2030S Lecture", "ST2334 Lecture"},
+		Recordings:          []string{"CS2040S|Lecture", "CS2030S|Lecture", "ST2334|Lecture"},
 		FreeDays:            []string{"Monday", "Wednesday"},
 		EarliestTime:        "0900",
 		LatestTime:          "1900",
@@ -166,7 +165,7 @@ func validateTimetable(t *testing.T, result solver.SolveResponse, req models.Opt
 		}
 	}
 
-	// Build recordings set (format: "CS2040S Lecture")
+	// Build recordings set (format: "CS2040S|Lecture")
 	recordings := make(map[string]bool)
 	for _, rec := range req.Recordings {
 		recordings[rec] = true
@@ -176,13 +175,9 @@ func validateTimetable(t *testing.T, result solver.SolveResponse, req models.Opt
 		for i, slot := range slots {
 			// Free days should only have recorded lessons (if any)
 			if freeDays[dayIdx] {
-				parts := strings.Split(slot.LessonKey, "|")
-				if len(parts) == 2 {
-					recordingKey := parts[0] + " " + parts[1]
-					if !recordings[recordingKey] {
-						t.Errorf("%s: Non-recorded lesson %s should not appear on free day",
-							dayNames[dayIdx], recordingKey)
-					}
+				if !recordings[slot.LessonKey] {
+					t.Errorf("%s: Non-recorded lesson %s should not appear on free day",
+						dayNames[dayIdx], slot.LessonKey)
 				}
 				continue
 			}
