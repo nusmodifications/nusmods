@@ -7,13 +7,12 @@
   "author": "NUSModifications",
   "main": "build/src/index.js",
   "scripts": {
-    "start": "pm2 start ecosystem.config.js",
+    "start": "node -r dotenv/config ./build/src/index.js",
     "build": "tsc",
     "nodemon": "nodemon --no-update-notifier -r dotenv/config ./build/src/index.js",
     "watch": "tsc --watch",
     "dev": "run-p nodemon watch",
     "devtools": "cross-env DEVTOOLS=1 pnpm dev",
-    "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js",
     "lint": "oxlint -c oxlint.config.mjs src",
     "typecheck": "tsc --noEmit",
     "check": "run-s lint typecheck"

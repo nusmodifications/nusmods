@@ -1,7 +1,5 @@
 import fs from 'fs-extra';
 
-import config from './config';
-
 const CHROME_EXECUTABLE_CANDIDATES: Partial<Record<NodeJS.Platform, Array<string>>> = {
   darwin: [
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',

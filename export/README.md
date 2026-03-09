@@ -89,15 +89,13 @@ For deployment of website/export services, use Vercel project settings.
 ### Self-hosting (optional)
 
 If you need to run this service outside Vercel, you can still run the Node server
-manually (for example with PM2).
-
-In production the app runs behind pm2 in addition to nodemon, so the app will automatically restart when its files are changed or if the app crashes.
+manually.
 
 Export depends on build artifacts from `website`, including the timetable-only bundle.
 Use `pnpm rsync:export <target-dir>` from the `website` folder to sync the
 timetable-only build to your target environment.
 
-Here are the steps for deploying. We rsync everything over, including the `node_modules`, so it is not necessary to run `pnpm install` in the production folder.
+Here are the steps for deploying.
 
 ```bash
 # Update the files from the repo
@@ -107,11 +105,7 @@ $ git pull
 $ pnpm install
 $ pnpm build
 
-# Deploy the files to production - optionally add --dry-run to check which files are changed first
-$ pnpm deploy
-
-# Starting the app, if the app is not already running
-# Uses port 3300 for production and 3301 for staging
+# Start the app
 $ pnpm start
 ```
 
