@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { scrapeCPEx, type ScraperEnv } from './scraper';
 
-const ACADEMIC_YEAR = '2025/26';
+const ACADEMIC_YEAR = '2026/27';
 
 // Sanity check to see if there are at least this many modules before overwriting cpexModules.json
 // The last time I ran this fully there were 3418 modules
