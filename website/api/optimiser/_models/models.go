@@ -57,6 +57,10 @@ func (r *OptimiserRequest) ParseOptimiserRequestFields() error {
 	if err != nil {
 		return fmt.Errorf("invalid lunchEnd: %s", r.LunchEnd)
 	}
+
+	// TODO: Time range validation for earliest time, latest time, lunch start time, lunch end time
+	// Ensure earlier time <= later time. Currently not ensured in frontend yet. Once that is completed
+	// we can add this check for completion.
 	return nil
 }
 
