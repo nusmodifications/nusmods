@@ -182,10 +182,7 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 			continue
 		}
 
-		prevNoCoords := prev.Coordinates.X == 0 || prev.Coordinates.Y == 0
-		currNoCoords := curr.Coordinates.X == 0 || curr.Coordinates.Y == 0
-
-		if prevNoCoords || currNoCoords {
+		if isInvalidCoordinates(prev.Coordinates) || isInvalidCoordinates(curr.Coordinates) {
 			// Unknown venue - penalise appropriately
 			totalPenalty += constants.NoVenuePenalty
 			continue
@@ -201,6 +198,11 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 		totalPenalty += (10.0 / constants.MaxWalkDistance) * km
 	}
 	return totalPenalty
+}
+
+// isInvalidCoordinates checks if coordinates passed are valid
+func isInvalidCoordinates(coord models.Coordinates) bool {
+	return coord.X == 0 || coord.Y == 0
 }
 
 // hasConflict checks if adding newSlots would create a scheduling conflict with existing
