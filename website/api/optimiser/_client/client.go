@@ -18,6 +18,10 @@ func GetModuleData(acadYear string, module string) ([]byte, error) {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to fetch module %s: status %d", module, res.StatusCode)
+	}
+
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
