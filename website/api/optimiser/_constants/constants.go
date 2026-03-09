@@ -56,5 +56,12 @@ const (
 // This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client
 const ModuleCodeSeparator = ";"
 
+// Beam search parameters
+const (
+	BeamWidth       = 2500
+	BranchingFactor = 100
+	DaysPerWeek     = 6
+)
+
 // Indicates that a Coordinate was invalid
 var InvalidCoordinates = models.Coordinates{X: -1, Y: -1}

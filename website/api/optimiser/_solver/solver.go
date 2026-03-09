@@ -43,7 +43,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 		return len(lessonToSlots[lessons[i]]) < len(lessonToSlots[lessons[j]])
 	})
 
-	best := beamSearch(lessons, lessonToSlots, 2500, 100, recordings, req)
+	best := beamSearch(lessons, lessonToSlots, constants.BeamWidth, constants.BranchingFactor, recordings, req)
 	shareableLink, defaultShareableLink := GenerateNUSModsShareableLink(
 		best.Assignments,
 		defaultSlots,
@@ -94,7 +94,7 @@ func beamSearch(
 	initial := models.TimetableState{
 		Assignments: make(map[string]string),
 	}
-	for d := 0; d < 6; d++ {
+	for d := 0; d < constants.DaysPerWeek; d++ {
 		initial.DaySlots[d] = make([]models.ModuleSlot, 0)
 	}
 	beam := []models.TimetableState{initial}
@@ -114,9 +114,9 @@ func beamSearch(
 				// Filters out invalid slots by checking if
 				// DayIndex is not -1 which marks invalid slots when parsing in ParseModuleSlotFields func
 				validGroup := make([]models.ModuleSlot, 0, len(group))
-				for i := range group {
-					slot := &group[i]
-					if slot.DayIndex >= 0 && slot.DayIndex < 6 {
+				for slotIdx := range group {
+					slot := &group[slotIdx]
+					if slot.DayIndex >= 0 && slot.DayIndex < constants.DaysPerWeek {
 						validGroup = append(validGroup, *slot)
 					}
 				}
@@ -217,7 +217,7 @@ func copyState(src models.TimetableState) models.TimetableState {
 	}
 
 	// Copy day slots
-	for i := 0; i < 6; i++ {
+	for i := 0; i < constants.DaysPerWeek; i++ {
 		if len(src.DaySlots[i]) > 0 {
 			newState.DaySlots[i] = make([]models.ModuleSlot, len(src.DaySlots[i]))
 			copy(newState.DaySlots[i], src.DaySlots[i])
@@ -322,7 +322,7 @@ func scoreTimetableState(
 	optimiserRequest models.OptimiserRequest,
 ) float64 {
 	var totalScore float64
-	for d := 0; d < 6; d++ {
+	for d := 0; d < constants.DaysPerWeek; d++ {
 		if len(state.DaySlots[d]) == 0 {
 			continue
 		}
