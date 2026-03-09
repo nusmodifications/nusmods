@@ -140,58 +140,65 @@ export class ModulesSelectComponent extends Component<Props, State> {
         />
         {isModalOpen && <CloseButton className={styles.close} onClick={this.closeSelect} />}
         {showResults && (
-          <ol className={styles.selectList} {...getMenuProps()}>
-            {results.map((module, index) => (
-              <li
-                {...getItemProps({
-                  index,
-                  key: module.moduleCode,
-                  item: module.moduleCode,
-                  disabled: module.isAdded || module.isAdding,
-                })}
-                className={classnames(styles.option, {
-                  [styles.optionDisabled]: module.isAdded || module.isAdding,
-                  [styles.optionSelected]: highlightedIndex === index,
-                })}
-              >
-                {/* Using interpolated string instead of JSX because of iOS Safari
-                    bug that drops the whitespace between the module code and title */}
-                {`${module.moduleCode} ${module.title}`}
-                {module.isAdded && (
-                  <div className={styles.optionActions}>
-                    <Tooltip content={removeBtnLabel(module.moduleCode)} touch="hold">
-                      <button
-                        type="button"
-                        className={classnames('btn btn-svg btn-sm', styles.actionButton)}
-                        aria-label={removeBtnLabel(module.moduleCode)}
-                        onClick={() => {
-                          this.props.onRemoveModule(module.moduleCode);
-                        }}
-                      >
-                        <Trash className={styles.actionIcon} />{' '}
-                      </button>
-                    </Tooltip>
-                    <span className="badge badge-info">Added</span>
-                  </div>
-                )}
+          <ol className={styles.selectList} {...getMenuProps()} role="listbox">
+            {results.map((module, index) => {
+              const isDisabled = module.isAdded || module.isAdding;
+              const isSelected = highlightedIndex === index;
+              return (
+                <li
+                  {...getItemProps({
+                    index,
+                    key: module.moduleCode,
+                    item: module.moduleCode,
+                    disabled: module.isAdded || module.isAdding,
+                  })}
+                  className={classnames(styles.option, {
+                    [styles.optionDisabled]: isDisabled,
+                    [styles.optionSelected]: isSelected,
+                  })}
+                  role="option"
+                  aria-disabled={isDisabled}
+                  aria-selected={isSelected}
+                >
+                  {/* Using interpolated string instead of JSX because of iOS Safari
+                      bug that drops the whitespace between the module code and title */}
+                  {`${module.moduleCode} ${module.title}`}
+                  {module.isAdded && (
+                    <div className={styles.optionActions}>
+                      <Tooltip content={removeBtnLabel(module.moduleCode)} touch="hold">
+                        <button
+                          type="button"
+                          className={classnames('btn btn-svg btn-sm', styles.actionButton)}
+                          aria-label={removeBtnLabel(module.moduleCode)}
+                          onClick={() => {
+                            this.props.onRemoveModule(module.moduleCode);
+                          }}
+                        >
+                          <Trash className={styles.actionIcon} />{' '}
+                        </button>
+                      </Tooltip>
+                      <span className="badge badge-info">Added</span>
+                    </div>
+                  )}
 
-                {module.isAdding && (
-                  <div>
-                    <span className="badge badge-warning">Adding...</span>
-                  </div>
-                )}
-              </li>
-            ))}
+                  {module.isAdding && (
+                    <div>
+                      <span className="badge badge-warning">Adding...</span>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </ol>
         )}
         {showTip && (
-          <div className={styles.tip}>
-            Try &quot;GER1000&quot; or &quot;Quantitative Reasoning&quot;. Searching{' '}
+          <div id="search-tip" className={styles.tip} role="status">
+            Try &quot;GEA1000&quot; or &quot;Quantitative Reasoning&quot;. Searching{' '}
             <strong>{moduleCount}</strong> courses.
           </div>
         )}
         {showNoResultMessage && (
-          <div className={styles.tip}>
+          <div id="no-results-tip" className={styles.tip} role="status">
             No courses found for{' '}
             <strong>
               &quot;
