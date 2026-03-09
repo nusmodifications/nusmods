@@ -122,8 +122,13 @@ func mergeAndFilterModuleSlots(
 	classGroups := make(map[string][]models.ModuleSlot)
 	for i := range timetable {
 		slot := &timetable[i]
-		// Add coordinates to slot (will be (0,0) for venues not in venues.json)
-		slot.Coordinates = venues[slot.Venue].Location
+
+		// Add coordinates to slot if venue in venues.json or else use invalid coordinates
+		if venue, ok := venues[slot.Venue]; ok {
+			slot.Coordinates = venue.Location
+		} else {
+			slot.Coordinates = constants.InvalidCoordinates
+		}
 
 		groupKey := slot.LessonType + "|" + slot.ClassNo
 		classGroups[groupKey] = append(classGroups[groupKey], *slot)

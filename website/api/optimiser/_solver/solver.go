@@ -202,7 +202,7 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 
 // isInvalidCoordinates checks if coordinates passed are valid
 func isInvalidCoordinates(coord models.Coordinates) bool {
-	return coord.X == 0 || coord.Y == 0
+	return coord == constants.InvalidCoordinates
 }
 
 // hasConflict checks if adding newSlots would create a scheduling conflict with existing

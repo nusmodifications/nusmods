@@ -2,6 +2,8 @@ package constants
 
 import (
 	_ "embed"
+
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
 // Ensure in sync with all E-Venues in NUSMods
@@ -53,3 +55,6 @@ const (
 
 // This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client
 const ModuleCodeSeparator = ";"
+
+// Indicates that a Coordinate was invalid
+var InvalidCoordinates = models.Coordinates{X: -1, Y: -1}
