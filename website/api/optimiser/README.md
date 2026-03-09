@@ -34,6 +34,22 @@ website/api/optimiser/
 └── README.md                 # This documentation
 ```
 
+> **Why the `_` prefix?** Vercel treats any directory without a leading `_` as a potential serverless function entry point. Prefixing internal packages with `_` tells Vercel to ignore them and only deploy `optimise.go` as the function handler.
+
+### End-to-End Data Flow
+
+A single request moves through the following stages:
+
+1. **`optimise.go` — HTTP handler**: Decodes the JSON request body into `OptimiserRequest` and calls `solver.Solve`.
+
+2. **`_modules/GetAllModuleSlots`**: For each requested module, fetches timetable data from the NUSMods API (`_client`). Slots are then filtered (removing those outside the time window or on free days) and deduplicated — two class numbers that share the same day, start time, and building are treated as equivalent and merged to reduce the search space. Returns a map of `Module → LessonType → ClassNo → []Slot`.
+
+3. **`_solver/beamSearch`**: Lessons are first sorted by number of available options (fewest first — the **Minimum Remaining Values** heuristic). The beam search then assigns one lesson type at a time, expanding each partial timetable into up to `BranchingFactor` candidates, scoring them all, and keeping only the top `BeamWidth`. This repeats until all lessons are assigned.
+
+4. **`_solver/GenerateNUSModsShareableLink`**: Converts the final assignment map into two NUSMods timetable share URLs (see [Response fields](#response) below).
+
+5. **Response**: The best timetable state plus both share links is JSON-encoded and returned.
+
 ### Algorithm
 
 The optimiser uses a **Beam Search algorithm** to efficiently explore the vast search space of possible timetable combinations:
@@ -41,11 +57,28 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 1. **State Space**: Each state represents a partial timetable assignment
 2. **Beam Width**: Maintains the top 2500 most promising states at each step (configurable via `BeamWidth` constant)
 3. **Branching Factor**: Limits the number of options considered per lesson type to 100 (configurable via `BranchingFactor` constant)
-4. **Scoring Function**: Evaluates states based on:
+4. **MRV Heuristic**: Lessons with fewer class options are assigned first, pruning infeasible branches early
+5. **Scoring Function**: Evaluates states based on:
    - Total walking distance between consecutive classes using haversine formula
    - Having a one-hour break within provided lunch time window
    - <= Maximum hours of consecutive live lessons
    - <= 2 hours max gap between classes (configurable)
+
+### Hard vs Soft Constraints
+
+Understanding this distinction is essential before modifying the solver.
+
+**Hard constraints** are enforced during slot filtering in `_modules/mergeAndFilterModuleSlots` — slots that violate them are removed from the search space entirely and will never appear in any result:
+
+- `freeDays` — non-recorded lessons on a free day are filtered out
+- `earliestTime` / `latestTime` — slots outside this window are filtered out
+
+**Soft constraints** are penalties applied by the scoring function in `_solver/scoreTimetableState`. They influence which timetable is chosen but do not guarantee the result satisfies them (if no feasible option avoids the penalty, the least-bad option is returned):
+
+- Lunch break availability
+- Consecutive hours of study
+- Gaps between classes
+- Walking distance between venues
 
 ### Scoring Constants
 
@@ -178,6 +211,18 @@ The scoring function combines four penalty/bonus terms. All values were empirica
 }
 ```
 
+#### Response Fields
+
+| Field                  | Description                                                                                                                                                                                                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Assignments`          | Map of `"MODULE\|LessonType"` → chosen `classNo` for every lesson type that was successfully assigned.                                                                                                                                                                     |
+| `DaySlots`             | Array of 6 days (Mon–Sat), each containing time-sorted slots for that day. Mirrors `Assignments` but structured for rendering.                                                                                                                                             |
+| `DayDistance`          | Per-day walking penalty score (sum of haversine distances between consecutive physical lessons).                                                                                                                                                                           |
+| `TotalDistance`        | Sum of all `DayDistance` values.                                                                                                                                                                                                                                           |
+| `Score`                | Final score from the scoring function. Lower is better.                                                                                                                                                                                                                    |
+| `shareableLink`        | NUSMods timetable URL containing only the lessons that were assigned (hard-constraint-satisfying slots only). Some lesson types may be absent if they were impossible to schedule given the constraints.                                                                   |
+| `defaultShareableLink` | NUSMods timetable URL containing **all** lesson types for all modules. Lesson types absent from `Assignments` are filled with an arbitrary default class number. Use this to give the user a complete timetable view even when some constraints forced partial assignment. |
+
 #### Parameters
 
 | Field                 | Type       | Description                                                                              |
@@ -267,6 +312,15 @@ The scoring function combines four penalty/bonus terms. All values were empirica
 - **Venue Data Dependency**: Optimisation quality depends on accurate venue coordinate data from NUSMods
 - **Academic Year Coverage**: Limited to semesters with available NUSMods API data
 - **Lesson Type Support**: Optimises for standard NUS lesson types (may not handle special/custom lesson formats)
+- **Soft constraint results**: Lunch, consecutive hours, and gap preferences are not guaranteed — the solver returns the best available option even if it violates them
+
+## Venue Data
+
+Venue coordinates are stored in `_constants/venues.json` and embedded into the binary at compile time via `//go:embed`. The file maps venue codes (e.g. `"COM1-B108"`) to GPS coordinates.
+
+Venues without an entry in `venues.json` receive `InvalidCoordinates` and are penalised with `NoVenuePenalty` during scoring
+
+The slot merging step in `_modules/mergeAndFilterModuleSlots` uses the building prefix (the part of the venue code before the first `-`) to deduplicate class options. For example, `COM1-B108` and `COM1-0210` are treated as the same building. If a new venue uses a non-standard naming convention, verify the deduplication still behaves correctly.
 
 ## Potential Improvements
 
