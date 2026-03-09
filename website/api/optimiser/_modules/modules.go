@@ -17,10 +17,6 @@ import (
 func GetAllModuleSlots(
 	optimiserRequest *models.OptimiserRequest,
 ) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, map[string]struct{}, error) {
-	if err := optimiserRequest.ParseOptimiserRequestFields(); err != nil {
-		return nil, nil, nil, err
-	}
-
 	venues, err := getVenues()
 	if err != nil {
 		return nil, nil, nil, err
@@ -81,16 +77,16 @@ func GetAllModuleSlots(
 
 			moduleTimetable[i].WeeksSet = make(map[int]struct{})
 			weeks := moduleTimetable[i].Weeks.([]any)
-			weeksStrings := make([]string, len(weeks))
+			weeksStrings := make([]string, 0, len(weeks))
 
-			for j, week := range weeks {
+			for _, week := range weeks {
 				weekFloat, ok := week.(float64)
 				if !ok {
 					continue
 				}
 				weekInt := int(weekFloat)
 				moduleTimetable[i].WeeksSet[weekInt] = struct{}{}
-				weeksStrings[j] = strconv.Itoa(weekInt)
+				weeksStrings = append(weeksStrings, strconv.Itoa(weekInt))
 			}
 			moduleTimetable[i].WeeksString = strings.Join(weeksStrings, ",")
 		}
