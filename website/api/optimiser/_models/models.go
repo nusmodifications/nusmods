@@ -37,6 +37,9 @@ type OptimiserRequest struct {
 
 // ParseOptimiserRequestFields validates and parses time fields into minutes.
 func (r *OptimiserRequest) ParseOptimiserRequestFields() error {
+	if len(r.Modules) == 0 {
+		return fmt.Errorf("at least one module must be provided")
+	}
 	var err error
 	r.EarliestMin, err = ParseTimeToMinutes(r.EarliestTime)
 	if err != nil {
