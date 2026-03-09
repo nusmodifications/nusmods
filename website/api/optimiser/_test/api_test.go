@@ -182,13 +182,18 @@ func validateTimetable(t *testing.T, result models.SolveResponse, req models.Opt
 			}
 
 			// Check earliest time constraint
-			if slot.StartTime < req.EarliestTime {
+			slotStartMin, _ := models.ParseTimeToMinutes(slot.StartTime)
+			slotEndMin, _ := models.ParseTimeToMinutes(slot.EndTime)
+			earliestMin, _ := models.ParseTimeToMinutes(req.EarliestTime)
+			latestMin, _ := models.ParseTimeToMinutes(req.LatestTime)
+
+			if slotStartMin < earliestMin {
 				t.Errorf("%s: %s %s starts at %s, before earliest time %s",
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.StartTime, req.EarliestTime)
 			}
 
 			// Check latest time constraint
-			if slot.EndTime > req.LatestTime {
+			if slotEndMin > latestMin {
 				t.Errorf("%s: %s %s ends at %s, after latest time %s",
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.EndTime, req.LatestTime)
 			}
@@ -196,7 +201,9 @@ func validateTimetable(t *testing.T, result models.SolveResponse, req models.Opt
 			// Check for time collisions with subsequent lessons
 			for j := i + 1; j < len(slots); j++ {
 				other := slots[j]
-				if slot.StartTime < other.EndTime && other.StartTime < slot.EndTime {
+				otherStartMin, _ := models.ParseTimeToMinutes(other.StartTime)
+				otherEndMin, _ := models.ParseTimeToMinutes(other.EndTime)
+				if slotStartMin < otherEndMin && otherStartMin < slotEndMin {
 					t.Errorf("%s: Collision between %s %s (%s-%s) and %s %s (%s-%s)",
 						dayNames[dayIdx],
 						slot.LessonType, slot.ClassNo, slot.StartTime, slot.EndTime,
