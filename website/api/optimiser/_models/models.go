@@ -29,10 +29,10 @@ type OptimiserRequest struct {
 	LunchEnd            string   `json:"lunchEnd"`            // Format: "1500" (HHMM)
 
 	// Parsed fields
-	EarliestMin   int
-	LatestMin     int
-	LunchStartMin int
-	LunchEndMin   int
+	EarliestMin   int `json:"-"`
+	LatestMin     int `json:"-"`
+	LunchStartMin int `json:"-"`
+	LunchEndMin   int `json:"-"`
 }
 
 // ParseOptimiserRequestFields validates and parses time fields into minutes.

@@ -16,7 +16,7 @@ import (
 // Handler is the main entry point for the timetable optimiser API endpoint.
 // It accepts POST requests with module selection and preferences, runs the optimization
 // algorithm, and returns the best timetable as JSON.
-
+//
 // The handler:
 //   - Enables CORS to allow requests from the NUSMods frontend
 //   - Validates that only POST requests are accepted (OPTIONS for CORS preflight)
