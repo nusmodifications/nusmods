@@ -32,8 +32,8 @@ func GenerateNUSModsShareableLink(
 		}
 	}
 
-	default_config := createConfig(assignments, lessonToSlots)
-	default_serializedConfig := serializeConfig(default_config)
+	defaultConfig := createConfig(assignments, lessonToSlots)
+	defaultSerializedConfig := serializeConfig(defaultConfig)
 
 	semesterPath := ""
 	switch req.AcadSem {
@@ -55,7 +55,7 @@ func GenerateNUSModsShareableLink(
 		"%s/%s/share?%s",
 		constants.NUSModsTimetableBaseURL,
 		semesterPath,
-		default_serializedConfig,
+		defaultSerializedConfig,
 	)
 
 	return shareableURL, defaultShareableURL

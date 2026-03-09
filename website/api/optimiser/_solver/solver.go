@@ -350,7 +350,7 @@ func scoreTimetableState(
 		}
 
 		// Apply penalty for more than max consecutive hours of study
-		totalScore += float64(scoreConsecutiveHoursofStudy(physicalSlots, optimiserRequest.MaxConsecutiveHours))
+		totalScore += float64(scoreConsecutiveHoursOfStudy(physicalSlots, optimiserRequest.MaxConsecutiveHours))
 	}
 
 	// Add penalty for walking distance
@@ -439,7 +439,7 @@ func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
 	return largestGap
 }
 
-// scoreConsecutiveHoursofStudy calculates a penalty for having too many consecutive hours
+// scoreConsecutiveHoursOfStudy calculates a penalty for having too many consecutive hours
 // of classes without a break. It tracks blocks of back-to-back classes (where one class
 // ends exactly when the next begins) and penalizes any block exceeding maxConsecutiveHours.
 //
@@ -449,7 +449,7 @@ func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
 //  3. In the last iteration of the loop, check the final consecutive block
 //
 // This encourages timetables with breaks between classes to avoid student burnout.
-func scoreConsecutiveHoursofStudy(physicalSlots []models.ModuleSlot, maxConsecutiveHours int) int {
+func scoreConsecutiveHoursOfStudy(physicalSlots []models.ModuleSlot, maxConsecutiveHours int) int {
 	if len(physicalSlots) == 0 {
 		return 0
 	}
@@ -474,23 +474,23 @@ func scoreConsecutiveHoursofStudy(physicalSlots []models.ModuleSlot, maxConsecut
 			consecutiveMinutes += currentSlotEndMin - currentSlotStartMin
 		} else {
 			// Gap detected, score the consecutive hours so far
-			score += penaliseConsecutiveHoursofStudy(consecutiveMinutes, maxConsecutiveHours)
+			score += penaliseConsecutiveHoursOfStudy(consecutiveMinutes, maxConsecutiveHours)
 			consecutiveMinutes = currentSlotEndMin - currentSlotStartMin
 		}
 
 		// If it's the last slot, score the consecutive hours
 		if i == len(physicalSlots)-1 {
-			score += penaliseConsecutiveHoursofStudy(consecutiveMinutes, maxConsecutiveHours)
+			score += penaliseConsecutiveHoursOfStudy(consecutiveMinutes, maxConsecutiveHours)
 		}
 	}
 
 	return score
 }
 
-// penaliseConsecutiveHoursofStudy returns a penalty score for a block of consecutive class time.
+// penaliseConsecutiveHoursOfStudy returns a penalty score for a block of consecutive class time.
 // Returns 0 if within the allowed maximum, otherwise returns a penalty proportional to
 // how many hours over the limit (excess_hours * ConsecutiveHoursPenaltyRate).
-func penaliseConsecutiveHoursofStudy(consecutiveMinutes int, maxConsecutiveHours int) int {
+func penaliseConsecutiveHoursOfStudy(consecutiveMinutes int, maxConsecutiveHours int) int {
 	consecutiveHours := consecutiveMinutes / 60
 	if consecutiveHours <= maxConsecutiveHours {
 		return 0
