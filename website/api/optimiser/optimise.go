@@ -47,7 +47,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	var optimiserRequest models.OptimiserRequest
 	err := json.NewDecoder(r.Body).Decode(&optimiserRequest)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Invalid request format", http.StatusBadRequest)
 		return
 	}
 
