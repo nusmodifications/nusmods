@@ -16,7 +16,7 @@ import (
 // Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
 func GetAllModuleSlots(
 	optimiserRequest *models.OptimiserRequest,
-) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, map[string]bool, error) {
+) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, map[string]struct{}, error) {
 	if err := optimiserRequest.ParseOptimiserRequestFields(); err != nil {
 		return nil, nil, nil, err
 	}
@@ -26,14 +26,14 @@ func GetAllModuleSlots(
 		return nil, nil, nil, err
 	}
 
-	recordingsMap := make(map[string]bool, len(optimiserRequest.Recordings))
+	recordingsMap := make(map[string]struct{}, len(optimiserRequest.Recordings))
 	for _, recording := range optimiserRequest.Recordings {
-		recordingsMap[recording] = true
+		recordingsMap[recording] = struct{}{}
 	}
 
-	freeDaysMap := make(map[string]bool, len(optimiserRequest.FreeDays))
+	freeDaysMap := make(map[string]struct{}, len(optimiserRequest.FreeDays))
 	for _, freeDay := range optimiserRequest.FreeDays {
-		freeDaysMap[freeDay] = true
+		freeDaysMap[freeDay] = struct{}{}
 	}
 
 	moduleSlots := make(models.ModuleTimetableMap)
@@ -79,13 +79,13 @@ func GetAllModuleSlots(
 				continue
 			}
 
-			moduleTimetable[i].WeeksSet = make(map[int]bool)
+			moduleTimetable[i].WeeksSet = make(map[int]struct{})
 			weeks := moduleTimetable[i].Weeks.([]any)
 			weeksStrings := make([]string, len(weeks))
 
 			for j, week := range weeks {
 				weekInt := int(week.(float64))
-				moduleTimetable[i].WeeksSet[weekInt] = true
+				moduleTimetable[i].WeeksSet[weekInt] = struct{}{}
 				weeksStrings[j] = strconv.Itoa(weekInt)
 			}
 			moduleTimetable[i].WeeksString = strings.Join(weeksStrings, ",")
@@ -123,8 +123,8 @@ func mergeAndFilterModuleSlots(
 	timetable []models.ModuleSlot,
 	venues map[string]models.Location,
 	module string,
-	recordingsMap map[string]bool,
-	freeDaysMap map[string]bool,
+	recordingsMap map[string]struct{},
+	freeDaysMap map[string]struct{},
 	earliestMin int,
 	latestMin int,
 ) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot) {
@@ -155,7 +155,7 @@ func mergeAndFilterModuleSlots(
 	for groupKey, slots := range classGroups {
 		lessonType := strings.Split(groupKey, "|")[0]
 		lessonKey := strings.ToUpper(module) + "|" + lessonType
-		isRecorded := recordingsMap[lessonKey]
+		_, isRecorded := recordingsMap[lessonKey]
 		allValid := true
 		if defaultSlots[lessonType] == nil {
 			defaultSlots[lessonType] = slots
@@ -166,7 +166,7 @@ func mergeAndFilterModuleSlots(
 			for i := range slots {
 				slot := &slots[i]
 				// Check free days
-				if freeDaysMap[slot.Day] {
+				if _, ok := freeDaysMap[slot.Day]; ok {
 					allValid = false
 					break
 				}

@@ -88,7 +88,7 @@ func beamSearch(
 	lessonToSlots map[string][][]models.ModuleSlot,
 	beamWidth int,
 	branchingFactor int,
-	recordings map[string]bool,
+	recordings map[string]struct{},
 	optimiserRequest models.OptimiserRequest) models.TimetableState {
 
 	initial := models.TimetableState{
@@ -191,7 +191,7 @@ func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool
 				// check if the weeks overlap
 				for _, week := range newSlot.Weeks.([]any) {
 					weekInt := int(week.(float64))
-					if oldSlot.WeeksSet[weekInt] {
+					if _, exists := oldSlot.WeeksSet[weekInt]; exists {
 						return true
 					}
 				}
@@ -259,7 +259,7 @@ func insertSlotSorted(daySlots []models.ModuleSlot, newSlot models.ModuleSlot) [
 //	penalty = (10.0 / MaxWalkDistance) * distance_in_km
 //
 // This encourages timetables with classes in nearby venues.
-func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[string]bool) float64 {
+func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[string]struct{}) float64 {
 	if len(daySlots) <= 1 {
 		return 0
 	}
@@ -298,8 +298,9 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 // Recorded lessons don't require physical attendance, so they're excluded from distance
 // calculations and free day constraints.
 // lessonKey is in "MODULE|LessonType" format, matching the recordings map keys.
-func isLessonRecorded(lessonKey string, recordings map[string]bool) bool {
-	return recordings[lessonKey]
+func isLessonRecorded(lessonKey string, recordings map[string]struct{}) bool {
+	_, ok := recordings[lessonKey]
+	return ok
 }
 
 // isInvalidCoordinates checks if coordinates passed are valid
@@ -317,7 +318,7 @@ func isInvalidCoordinates(coord models.Coordinates) bool {
 //   - Walking distance: Accumulated distance penalties between physical lesson venues from all days
 func scoreTimetableState(
 	state models.TimetableState,
-	recordings map[string]bool,
+	recordings map[string]struct{},
 	optimiserRequest models.OptimiserRequest,
 ) float64 {
 	var totalScore float64
@@ -353,7 +354,7 @@ func scoreTimetableState(
 // getPhysicalSlots filters out recorded lessons from a day's schedule, returning
 // only lessons that require physical attendance. This is used when evaluating constraints
 // that only apply to in-person classes (e.g., lunch breaks, consecutive hours on campus).
-func getPhysicalSlots(daySlots []models.ModuleSlot, recordings map[string]bool) []models.ModuleSlot {
+func getPhysicalSlots(daySlots []models.ModuleSlot, recordings map[string]struct{}) []models.ModuleSlot {
 	if len(daySlots) == 0 {
 		return daySlots
 	}

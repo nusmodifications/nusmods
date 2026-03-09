@@ -88,7 +88,7 @@ type ModuleSlot struct {
 	EndMin      int    // Minutes from 00:00
 	DayIndex    int    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
 	LessonKey   string // "MODULE|LessonType"
-	WeeksSet    map[int]bool
+	WeeksSet    map[int]struct{}
 	WeeksString string
 	LessonIndex LessonIndex
 }
