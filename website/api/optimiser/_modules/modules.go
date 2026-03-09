@@ -12,10 +12,8 @@ import (
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
-/*
-- Get all module slots that pass conditions in optimiserRequest for all modules.
-- Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
-*/
+// GetAllModuleSlots gets all module slots that pass conditions in optimiserRequest for all modules.
+// Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
 func GetAllModuleSlots(
 	optimiserRequest models.OptimiserRequest,
 ) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, map[string]bool, error) {
@@ -129,11 +127,8 @@ func mergeAndFilterModuleSlots(
 	latestMin int,
 ) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot) {
 
-	/*
-		We group by classNo because some slots come as a pair, ie you have to attend both slots to complete the lesson
-
-		 Key: "lessonType|classNo", Value: []ModuleSlot
-	*/
+	// We group by classNo because some slots come as a pair, ie you have to attend both slots to complete the lesson
+	// Key: "lessonType|classNo", Value: []ModuleSlot
 
 	defaultSlots := make(map[models.LessonType][]models.ModuleSlot) // Lesson Type -> []Module Slot
 	classGroups := make(map[string][]models.ModuleSlot)
@@ -151,10 +146,8 @@ func mergeAndFilterModuleSlots(
 		classGroups[groupKey] = append(classGroups[groupKey], *slot)
 	}
 
-	/*
-		Now validate each classNo group, ie all the lessons for that slot must pass the conditions. For example,
-		MA1521 has 2 Lectures per week, so it must pass the conditions for both lectures.
-	*/
+	// Now validate each classNo group, ie all the lessons for that slot must pass the conditions. For example,
+	// MA1521 has 2 Lectures per week, so it must pass the conditions for both lectures.
 	validClassGroups := make(map[string][]models.ModuleSlot)
 
 	for groupKey, slots := range classGroups {
@@ -189,10 +182,8 @@ func mergeAndFilterModuleSlots(
 		}
 	}
 
-	/*
-		Now merge all slots of the same lessonType, slot, startTime, weeks and building
-		We are doing this to avoid unnecessary calculations & reduce search space
-	*/
+	// Now merge all slots of the same lessonType, slot, startTime, weeks and building
+	// We are doing this to avoid unnecessary calculations & reduce search space
 
 	mergedTimetable := make(
 		map[models.LessonType]map[models.ClassNo][]models.ModuleSlot,
@@ -251,9 +242,7 @@ func mergeAndFilterModuleSlots(
 	return mergedTimetable, defaultSlots
 }
 
-/*
-Check if the slot's timing falls outside the specified earliest and latest times
-*/
+// isSlotOutsideTimeRange checks if the slot's timing falls outside the specified earliest and latest times.
 func isSlotOutsideTimeRange(slot models.ModuleSlot, earliestMin, latestMin int) bool {
 	startMin, startErr := models.ParseTimeToMinutes(slot.StartTime)
 	endMin, endErr := models.ParseTimeToMinutes(slot.EndTime)
@@ -263,10 +252,8 @@ func isSlotOutsideTimeRange(slot models.ModuleSlot, earliestMin, latestMin int) 
 	return startMin < earliestMin || endMin > latestMin
 }
 
-/*
-Extract the building name from the venue name.
-Returns the part before '-' or the whole key if '-' is absent
-*/
+// extractBuildingName extracts the building name from the venue name.
+// Returns the part before '-' or the whole key if '-' is absent.
 func extractBuildingName(key string) string {
 	parts := strings.SplitN(key, "-", 2)
 	return parts[0]

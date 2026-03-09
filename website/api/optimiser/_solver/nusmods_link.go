@@ -18,9 +18,7 @@ func GenerateNUSModsShareableLink(
 	config := createConfig(assignments, lessonToSlots)
 	serializedConfig := serializeConfig(config)
 
-	/*
-		- Initialize assignments for skipped slots with default slots
-	*/
+	// Initialize assignments for skipped slots with default slots
 	for moduleCode, lessonTypeMap := range defaultSlots {
 		for lessonType, slots := range lessonTypeMap {
 			lessonKey := strings.ToUpper(moduleCode) + "|" + lessonType

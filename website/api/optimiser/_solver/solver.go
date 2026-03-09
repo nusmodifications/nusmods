@@ -38,9 +38,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 		}
 	}
 
-	/*
-		Sort lessons by Minimum Remaining Value (MRV) heuristic
-	*/
+	// Sort lessons by Minimum Remaining Value (MRV) heuristic
 	sort.Slice(lessons, func(i, j int) bool {
 		return len(lessonToSlots[lessons[i]]) < len(lessonToSlots[lessons[j]])
 	})
