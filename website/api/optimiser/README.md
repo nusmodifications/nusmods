@@ -27,7 +27,8 @@ website/api/optimiser/
 │   ├── solver.go             # Main solver logic
 │   └── nusmods_link.go       # Shareable NUSMods link generation
 ├── _test/
-│   └── main.go               # Test server for local development
+│   ├── api_test.go           # Integration tests
+│   └── server/main.go        # Test server for local development
 ├── go.mod                    # Go module dependencies
 ├── go.sum                    # Go dependency checksums
 └── README.md                 # This documentation
@@ -38,8 +39,8 @@ website/api/optimiser/
 The optimiser uses a **Beam Search algorithm** to efficiently explore the vast search space of possible timetable combinations:
 
 1. **State Space**: Each state represents a partial timetable assignment
-2. **Beam Width**: Maintains top N (=100) most promising states at each step (=2500) (configurable)
-3. **Branching Factor**: Limits the number of options considered per lesson type (=100) (configurable)
+2. **Beam Width**: Maintains the top 2500 most promising states at each step (configurable via `BeamWidth` constant)
+3. **Branching Factor**: Limits the number of options considered per lesson type to 100 (configurable via `BranchingFactor` constant)
 4. **Scoring Function**: Evaluates states based on:
    - Total walking distance between consecutive classes using haversine formula
    - Having a one-hour break within provided lunch time window
@@ -55,7 +56,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 ```json
 {
   "modules": ["CS1010S", "CS2030S", "MA1521"],
-  "recordings": ["CS1010S Lecture", "CS2030S Laboratory"],
+  "recordings": ["CS1010S|Lecture", "CS2030S|Laboratory"],
   "freeDays": ["Monday", "Friday"],
   "maxConsecutiveHours": 4,
   "earliestTime": "0900",
@@ -80,7 +81,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
   },
   "DaySlots": [
     [
-      /* Monday slots */
+      // Monday slots
       {
         "classNo": "05",
         "day": "Monday",
@@ -98,35 +99,35 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
         "DayIndex": 0,
         "LessonKey": "CS2040S|Laboratory",
         "WeeksSet": {
-          "10": true,
-          "11": true,
-          "12": true,
-          "13": true,
-          "3": true,
-          "4": true,
-          "5": true,
-          "6": true,
-          "7": true,
-          "8": true,
-          "9": true
+          "10": {},
+          "11": {},
+          "12": {},
+          "13": {},
+          "3": {},
+          "4": {},
+          "5": {},
+          "6": {},
+          "7": {},
+          "8": {},
+          "9": {}
         },
         "WeeksString": "3,4,5,6,7,8,9,10,11,12,13"
       }
     ],
     [
-      /* Tuesday slots */
+      // Tuesday slots
     ],
     [
-      /* Wednesday slots */
+      // Wednesday slots
     ],
     [
-      /* Thursday slots */
+      // Thursday slots
     ],
     [
-      /* Friday slots */
+      // Friday slots
     ],
     [
-      /* Saturday slots */
+      // Saturday slots
     ]
   ],
   "DayDistance": [
@@ -138,24 +139,26 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
     0 // Saturday
   ],
   "TotalDistance": 42.76332139153995,
-  "shareableLink": "https://nusmods.com/timetable/sem-1/share?CS1010S=LEC:1,REC:04&CS2030S=LEC:1&MA1521=LEC:1,TUT:01"
+  "Score": 150.5,
+  "shareableLink": "https://nusmods.com/timetable/sem-1/share?CS1010S=LEC:(1),REC:(04)&CS2030S=LEC:(1)&MA1521=LEC:(1),TUT:(01)",
+  "defaultShareableLink": "https://nusmods.com/timetable/sem-1/share?CS1010S=LEC:(1),REC:(04)&CS2030S=LEC:(1)&MA1521=LEC:(1),TUT:(01)"
 }
 ```
 
 #### Parameters
 
-| Field                 | Type       | Description                                                                            |
-| --------------------- | ---------- | -------------------------------------------------------------------------------------- |
-| `modules`             | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S")                 |
-| `recordings`          | `[]string` | Lessons marked as recorded/online (format: "MODULE LessonType") e.g. "CS1010S Lecture" |
-| `freeDays`            | `[]string` | Days to keep free of physical classes e.g. "Monday"                                    |
-| `earliestTime`        | `string`   | Earliest acceptable class time (HHMM format)                                           |
-| `latestTime`          | `string`   | Latest acceptable class time (HHMM format)                                             |
-| `acadYear`            | `string`   | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"                                   |
-| `acadSem`             | `int`      | Semester number (1 or 2)                                                               |
-| `lunchStart`          | `string`   | Preferred lunch break start time (HHMM)                                                |
-| `lunchEnd`            | `string`   | Preferred lunch break end time (HHMM)                                                  |
-| `maxConsecutiveHours` | `int`      | Maximum consecutive live lesson hours allowed                                          |
+| Field                 | Type       | Description                                                                              |
+| --------------------- | ---------- | ---------------------------------------------------------------------------------------- |
+| `modules`             | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S")                   |
+| `recordings`          | `[]string` | Lessons marked as recorded/online (format: "MODULE\|LessonType") e.g. "CS1010S\|Lecture" |
+| `freeDays`            | `[]string` | Days to keep free of physical classes e.g. "Monday"                                      |
+| `earliestTime`        | `string`   | Earliest acceptable class time (HHMM format)                                             |
+| `latestTime`          | `string`   | Latest acceptable class time (HHMM format)                                               |
+| `acadYear`            | `string`   | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"                                     |
+| `acadSem`             | `int`      | Semester number: 1 (Sem 1), 2 (Sem 2), 3 (Special Term I), 4 (Special Term II)           |
+| `lunchStart`          | `string`   | Preferred lunch break start time (HHMM)                                                  |
+| `lunchEnd`            | `string`   | Preferred lunch break end time (HHMM)                                                    |
+| `maxConsecutiveHours` | `int`      | Maximum consecutive live lesson hours allowed                                            |
 
 ## Getting Started
 
@@ -193,6 +196,10 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 5. **Test the API**
 
 - Send a POST request following the request body format above to `http://localhost:8020/optimise`
+- Or run the integration tests (requires the test server to be running):
+  ```bash
+  go test ./_test/... -v
+  ```
 
 ## Linting and Formatting
 
@@ -238,4 +245,3 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 - Tweak the beam search parameters to improve performance (perhaps depending on the number of modules)
 - Create a more accurate heuristic for scoring distance between consecutive classes. (Currently, it just a random linear function that seems to work)
 - Add more constraints to optimisation proceess
-- Clean up codebase to make it more maintainable
