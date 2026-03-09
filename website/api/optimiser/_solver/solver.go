@@ -13,6 +13,63 @@ import (
 	modules "github.com/nusmodifications/nusmods/website/api/optimiser/_modules"
 )
 
+// Solve is the main HTTP handler that orchestrates the timetable optimization process.
+// It fetches module data, prepares the search space, runs beam search, generates a
+// shareable NUSMods link, and returns the optimized timetable as JSON.
+//
+// The function applies the Minimum Remaining Values (MRV) heuristic by sorting lessons
+// with fewer class options first, which helps reduce the search space early.
+func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
+	slots, defaultSlots, err := modules.GetAllModuleSlots(req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	recordings := make(map[string]bool, len(req.Recordings))
+	for _, recording := range req.Recordings {
+		recordings[recording] = true
+	}
+
+	var lessons []string
+	lessonToSlots := make(map[string][][]models.ModuleSlot, len(slots))
+	for module, ltMap := range slots {
+		for lt, groups := range ltMap {
+			key := strings.ToUpper(module) + "|" + lt
+			lessons = append(lessons, key)
+			for _, grp := range groups {
+				lessonToSlots[key] = append(lessonToSlots[key], grp)
+			}
+		}
+	}
+
+	/*
+		Sort lessons by Minimum Remaining Value (MRV) heuristic
+	*/
+	sort.Slice(lessons, func(i, j int) bool {
+		return len(lessonToSlots[lessons[i]]) < len(lessonToSlots[lessons[j]])
+	})
+
+	best := beamSearch(lessons, lessonToSlots, 2500, 100, recordings, req)
+	shareableLink, defaultShareableLink := GenerateNUSModsShareableLink(
+		best.Assignments,
+		defaultSlots,
+		lessonToSlots,
+		req,
+	)
+	response := models.SolveResponse{
+		TimetableState:       best,
+		ShareableLink:        shareableLink,
+		DefaultShareableLink: defaultShareableLink,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "failed to encode response", http.StatusInternalServerError)
+		return
+	}
+}
+
 // BeamSearch explores the space of possible timetables to find the optimal assignment.
 // It uses a beam search algorithm to efficiently handle the exponentially large search space
 // by maintaining only the top beamWidth most promising partial timetables at each step.
@@ -33,7 +90,7 @@ import (
 //
 // Returns the best complete timetable found.
 // Reference: https://www.geeksforgeeks.org/introduction-to-beam-search-algorithm/
-func BeamSearch(
+func beamSearch(
 	lessons []string,
 	lessonToSlots map[string][][]models.ModuleSlot,
 	beamWidth int,
@@ -122,89 +179,6 @@ func BeamSearch(
 	return beam[0]
 }
 
-// insertSlotSorted maintains the time-sorted order of slots in a day by inserting newSlot
-// at the correct position based on start time. Uses binary search for O(log n) lookup,
-// though insertion itself is O(n) due to slice copying.
-// The daySlots must already be sorted by StartMin for this to work correctly.
-func insertSlotSorted(daySlots []models.ModuleSlot, newSlot models.ModuleSlot) []models.ModuleSlot {
-	left, right := 0, len(daySlots)
-	for left < right {
-		mid := (left + right) / 2
-		if daySlots[mid].StartMin <= newSlot.StartMin {
-			left = mid + 1
-		} else {
-			right = mid
-		}
-	}
-	daySlots = append(daySlots, models.ModuleSlot{})
-	copy(daySlots[left+1:], daySlots[left:])
-	daySlots[left] = newSlot
-	return daySlots
-}
-
-// isLessonRecorded determines if a lesson is marked as recorded/online by the user.
-// Recorded lessons don't require physical attendance, so they're excluded from distance
-// calculations and free day constraints.
-// Converts lessonKey format from "MODULE|LessonType" to "MODULE LessonType" for lookup.
-func isLessonRecorded(lessonKey string, recordings map[string]bool) bool {
-	// Convert lessonKey from "MODULE|LessonType" to "MODULE LessonType" format
-	parts := strings.Split(lessonKey, "|")
-	if len(parts) != 2 {
-		return false
-	}
-	return recordings[parts[0]+" "+parts[1]]
-}
-
-// calculateDayDistanceScore computes a penalty score based on walking distances between
-// consecutive classes in a day. Uses the haversine formula to calculate actual walking
-// distance between venue coordinates. Recorded/online lessons and venues without coordinates
-// are skipped since they don't require physical travel.
-//
-// The penalty increases linearly with distance using the formula:
-//
-//	penalty = (10.0 / MaxWalkDistance) * distance_in_km
-//
-// This encourages timetables with classes in nearby venues.
-func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[string]bool) float64 {
-	if len(daySlots) <= 1 {
-		return 0
-	}
-
-	var totalPenalty float64
-
-	for i := 1; i < len(daySlots); i++ {
-		prev := daySlots[i-1]
-		curr := daySlots[i]
-
-		// Skip if either lesson is recorded
-		if isLessonRecorded(prev.LessonKey, recordings) ||
-			isLessonRecorded(curr.LessonKey, recordings) {
-			continue
-		}
-
-		if isInvalidCoordinates(prev.Coordinates) || isInvalidCoordinates(curr.Coordinates) {
-			// Unknown venue - penalise appropriately
-			totalPenalty += constants.NoVenuePenalty
-			continue
-		}
-
-		// Both have valid coordinates — calculate actual distance
-		prevCoord := haversine.Coord{Lat: float64(prev.Coordinates.Y), Lon: float64(prev.Coordinates.X)}
-		currCoord := haversine.Coord{Lat: float64(curr.Coordinates.Y), Lon: float64(curr.Coordinates.X)}
-		_, km := haversine.Distance(prevCoord, currCoord)
-
-		// Apply walking penalty formula
-		// A linear penalty applied. Change if a better heuristic is found. Works as of 6/6/2025.
-		totalPenalty += (10.0 / constants.MaxWalkDistance) * km
-	}
-	return totalPenalty
-}
-
-// isInvalidCoordinates checks if coordinates passed are valid
-func isInvalidCoordinates(coord models.Coordinates) bool {
-	return coord == constants.InvalidCoordinates
-}
-
 // hasConflict checks if adding newSlots would create a scheduling conflict with existing
 // slots in the timetable state. A conflict occurs when:
 //  1. Slots overlap in time (same day, overlapping hours), AND
@@ -265,6 +239,132 @@ func copyState(src models.TimetableState) models.TimetableState {
 	}
 
 	return newState
+}
+
+// insertSlotSorted maintains the time-sorted order of slots in a day by inserting newSlot
+// at the correct position based on start time. Uses binary search for O(log n) lookup,
+// though insertion itself is O(n) due to slice copying.
+// The daySlots must already be sorted by StartMin for this to work correctly.
+func insertSlotSorted(daySlots []models.ModuleSlot, newSlot models.ModuleSlot) []models.ModuleSlot {
+	left, right := 0, len(daySlots)
+	for left < right {
+		mid := (left + right) / 2
+		if daySlots[mid].StartMin <= newSlot.StartMin {
+			left = mid + 1
+		} else {
+			right = mid
+		}
+	}
+	daySlots = append(daySlots, models.ModuleSlot{})
+	copy(daySlots[left+1:], daySlots[left:])
+	daySlots[left] = newSlot
+	return daySlots
+}
+
+// calculateDayDistanceScore computes a penalty score based on walking distances between
+// consecutive classes in a day. Uses the haversine formula to calculate actual walking
+// distance between venue coordinates. Recorded/online lessons and venues without coordinates
+// are skipped since they don't require physical travel.
+//
+// The penalty increases linearly with distance using the formula:
+//
+//	penalty = (10.0 / MaxWalkDistance) * distance_in_km
+//
+// This encourages timetables with classes in nearby venues.
+func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[string]bool) float64 {
+	if len(daySlots) <= 1 {
+		return 0
+	}
+
+	var totalPenalty float64
+
+	for i := 1; i < len(daySlots); i++ {
+		prev := daySlots[i-1]
+		curr := daySlots[i]
+
+		// Skip if either lesson is recorded
+		if isLessonRecorded(prev.LessonKey, recordings) ||
+			isLessonRecorded(curr.LessonKey, recordings) {
+			continue
+		}
+
+		if isInvalidCoordinates(prev.Coordinates) || isInvalidCoordinates(curr.Coordinates) {
+			// Unknown venue - penalise appropriately
+			totalPenalty += constants.NoVenuePenalty
+			continue
+		}
+
+		// Both have valid coordinates — calculate actual distance
+		prevCoord := haversine.Coord{Lat: float64(prev.Coordinates.Y), Lon: float64(prev.Coordinates.X)}
+		currCoord := haversine.Coord{Lat: float64(curr.Coordinates.Y), Lon: float64(curr.Coordinates.X)}
+		_, km := haversine.Distance(prevCoord, currCoord)
+
+		// Apply walking penalty formula
+		// A linear penalty applied. Change if a better heuristic is found. Works as of 6/6/2025.
+		totalPenalty += (10.0 / constants.MaxWalkDistance) * km
+	}
+	return totalPenalty
+}
+
+// isLessonRecorded determines if a lesson is marked as recorded/online by the user.
+// Recorded lessons don't require physical attendance, so they're excluded from distance
+// calculations and free day constraints.
+// Converts lessonKey format from "MODULE|LessonType" to "MODULE LessonType" for lookup.
+func isLessonRecorded(lessonKey string, recordings map[string]bool) bool {
+	// Convert lessonKey from "MODULE|LessonType" to "MODULE LessonType" format
+	parts := strings.Split(lessonKey, "|")
+	if len(parts) != 2 {
+		return false
+	}
+	return recordings[parts[0]+" "+parts[1]]
+}
+
+// isInvalidCoordinates checks if coordinates passed are valid
+func isInvalidCoordinates(coord models.Coordinates) bool {
+	return coord == constants.InvalidCoordinates
+}
+
+// scoreTimetableState assigns a heuristic score to a timetable state to determine its quality.
+// Lower scores indicate better (more preferred) timetables.
+//
+// The scoring function combines multiple factors:
+//   - Lunch break availability: Bonus if >= 60min gap in lunch window, penalty otherwise
+//   - Large gaps between classes: Penalizes gaps > 2 hours to avoid excessive downtime
+//   - Consecutive hours: Penalizes too many back-to-back classes without breaks
+//   - Walking distance: Accumulated distance penalties between physical lesson venues from all days
+func scoreTimetableState(
+	state models.TimetableState,
+	recordings map[string]bool,
+	optimiserRequest models.OptimiserRequest,
+) float64 {
+	var totalScore float64
+	for d := 0; d < 6; d++ {
+		if len(state.DaySlots[d]) == 0 {
+			continue
+		}
+
+		physicalSlots := getPhysicalSlots(state.DaySlots[d], recordings)
+
+		// Apply lunch penalty/bonus
+		lunchGap := calculateLunchGap(physicalSlots, optimiserRequest)
+		if lunchGap >= constants.LunchRequiredTime {
+			totalScore += constants.LunchBonus
+		} else {
+			totalScore += constants.NoLunchPenalty
+		}
+
+		// Apply gap penalty for large gaps of > 2 hours between classes
+		largestGap := calculateLargestGap(physicalSlots)
+		if largestGap > constants.GapPenaltyThreshold {
+			totalScore += constants.GapPenaltyRate * float64(largestGap-constants.GapPenaltyThreshold) / 60
+		}
+
+		// Apply penalty for more than max consecutive hours of study
+		totalScore += float64(scoreConsecutiveHoursofStudy(physicalSlots, optimiserRequest.MaxConsecutiveHours))
+	}
+
+	// Add penalty for walking distance
+	return totalScore + state.TotalDistance
 }
 
 // getPhysicalSlots filters out recorded lessons from a day's schedule, returning
@@ -335,6 +435,20 @@ func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest model
 	return bestGap
 }
 
+// calculateLargestGap finds the largest time gap (in minutes) between consecutive classes
+// in a day. Used to penalize timetables with excessively long breaks (> 2 hours) that
+// result in wasted time.
+func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
+	largestGap := 0
+	for i := 1; i < len(physicalSlots); i++ {
+		gap := physicalSlots[i].StartMin - physicalSlots[i-1].EndMin
+		if gap > largestGap {
+			largestGap = gap
+		}
+	}
+	return largestGap
+}
+
 // scoreConsecutiveHoursofStudy calculates a penalty for having too many consecutive hours
 // of classes without a break. It tracks blocks of back-to-back classes (where one class
 // ends exactly when the next begins) and penalizes any block exceeding maxConsecutiveHours.
@@ -392,115 +506,4 @@ func penaliseConsecutiveHoursofStudy(consecutiveMinutes int, maxConsecutiveHours
 		return 0
 	}
 	return (consecutiveHours - maxConsecutiveHours) * constants.ConsecutiveHoursPenaltyRate
-}
-
-// scoreTimetableState assigns a heuristic score to a timetable state to determine its quality.
-// Lower scores indicate better (more preferred) timetables.
-//
-// The scoring function combines multiple factors:
-//   - Lunch break availability: Bonus if >= 60min gap in lunch window, penalty otherwise
-//   - Large gaps between classes: Penalizes gaps > 2 hours to avoid excessive downtime
-//   - Consecutive hours: Penalizes too many back-to-back classes without breaks
-//   - Walking distance: Accumulated distance penalties between physical lesson venues from all days
-func scoreTimetableState(
-	state models.TimetableState,
-	recordings map[string]bool,
-	optimiserRequest models.OptimiserRequest,
-) float64 {
-	var totalScore float64
-	for d := 0; d < 6; d++ {
-		if len(state.DaySlots[d]) == 0 {
-			continue
-		}
-
-		physicalSlots := getPhysicalSlots(state.DaySlots[d], recordings)
-
-		// Apply lunch penalty/bonus
-		lunchGap := calculateLunchGap(physicalSlots, optimiserRequest)
-		if lunchGap >= constants.LunchRequiredTime {
-			totalScore += constants.LunchBonus
-		} else {
-			totalScore += constants.NoLunchPenalty
-		}
-
-		// Apply gap penalty for large gaps of > 2 hours between classes
-		largestGap := calculateLargestGap(physicalSlots)
-		if largestGap > constants.GapPenaltyThreshold {
-			totalScore += constants.GapPenaltyRate * float64(largestGap-constants.GapPenaltyThreshold) / 60
-		}
-
-		// Apply penalty for more than max consecutive hours of study
-		totalScore += float64(scoreConsecutiveHoursofStudy(physicalSlots, optimiserRequest.MaxConsecutiveHours))
-	}
-
-	// Add penalty for walking distance
-	return totalScore + state.TotalDistance
-}
-
-// calculateLargestGap finds the largest time gap (in minutes) between consecutive classes
-// in a day. Used to penalize timetables with excessively long breaks (> 2 hours) that
-// result in wasted time.
-func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
-	largestGap := 0
-	for i := 1; i < len(physicalSlots); i++ {
-		gap := physicalSlots[i].StartMin - physicalSlots[i-1].EndMin
-		if gap > largestGap {
-			largestGap = gap
-		}
-	}
-	return largestGap
-}
-
-// Solve is the main HTTP handler that orchestrates the timetable optimization process.
-// It fetches module data, prepares the search space, runs beam search, generates a
-// shareable NUSMods link, and returns the optimized timetable as JSON.
-//
-// The function applies the Minimum Remaining Values (MRV) heuristic by sorting lessons
-// with fewer class options first, which helps reduce the search space early.
-func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
-	slots, defaultSlots, err := modules.GetAllModuleSlots(req)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	recordings := make(map[string]bool, len(req.Recordings))
-	for _, recording := range req.Recordings {
-		recordings[recording] = true
-	}
-
-	var lessons []string
-	lessonToSlots := make(map[string][][]models.ModuleSlot, len(slots))
-	for module, ltMap := range slots {
-		for lt, groups := range ltMap {
-			key := strings.ToUpper(module) + "|" + lt
-			lessons = append(lessons, key)
-			for _, grp := range groups {
-				lessonToSlots[key] = append(lessonToSlots[key], grp)
-			}
-		}
-	}
-
-	/*
-		Sort lessons by Minimum Remaining Value (MRV) heuristic
-	*/
-	sort.Slice(lessons, func(i, j int) bool {
-		return len(lessonToSlots[lessons[i]]) < len(lessonToSlots[lessons[j]])
-	})
-
-	best := BeamSearch(lessons, lessonToSlots, 2500, 100, recordings, req)
-	shareableLink, defaultShareableLink := GenerateNUSModsShareableLink(
-		best.Assignments,
-		defaultSlots,
-		lessonToSlots,
-		req,
-	)
-	response := models.SolveResponse{
-		TimetableState:       best,
-		ShareableLink:        shareableLink,
-		DefaultShareableLink: defaultShareableLink,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
 }

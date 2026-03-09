@@ -2,6 +2,7 @@ package modules
 
 import (
 	"encoding/json"
+	"log"
 	"sort"
 	"strconv"
 	"strings"
@@ -18,7 +19,7 @@ import (
 func GetAllModuleSlots(
 	optimiserRequest models.OptimiserRequest,
 ) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, error) {
-	venues, err := client.GetVenues()
+	venues, err := getVenues()
 	if err != nil {
 		return nil, nil, err
 	}
@@ -90,6 +91,18 @@ func GetAllModuleSlots(
 	}
 
 	return moduleSlots, defaultSlots, nil
+}
+
+// Gets all venue information from venues.json
+func getVenues() (map[string]models.Location, error) {
+	venues := make(map[string]models.Location)
+	err := json.Unmarshal(constants.VenuesJson, &venues)
+	if err != nil {
+		log.Printf("unable to load venues.json: %v", err)
+		return nil, err
+	}
+
+	return venues, nil
 }
 
 func mergeAndFilterModuleSlots(
@@ -234,17 +247,6 @@ func mergeAndFilterModuleSlots(
 	return mergedTimetable, defaultSlots
 }
 
-// Helper functions
-
-/*
-Extract the building name from the venue name.
-Returns the part before '-' or the whole key if '-' is absent
-*/
-func extractBuildingName(key string) string {
-	parts := strings.SplitN(key, "-", 2)
-	return parts[0]
-}
-
 /*
 Check if the slot's timing falls outside the specified earliest and latest times
 */
@@ -255,4 +257,13 @@ func isSlotOutsideTimeRange(slot models.ModuleSlot, earliestMin, latestMin int) 
 		return false // If we can't parse the time, don't filter it out
 	}
 	return startMin < earliestMin || endMin > latestMin
+}
+
+/*
+Extract the building name from the venue name.
+Returns the part before '-' or the whole key if '-' is absent
+*/
+func extractBuildingName(key string) string {
+	parts := strings.SplitN(key, "-", 2)
+	return parts[0]
 }
