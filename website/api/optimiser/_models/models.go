@@ -40,6 +40,9 @@ type TimetableState struct {
 	DaySlots      [6][]ModuleSlot   // For each day, a time-sorted slice of slots
 	DayDistance   [6]float64        // Squared travel distance per day
 	TotalDistance float64           // Sum of all DayDistance
+	
+	// Calculated fields
+	Score 		   float64
 }
 
 type ModuleSlot struct {

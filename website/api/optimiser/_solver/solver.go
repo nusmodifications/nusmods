@@ -149,16 +149,11 @@ func beamSearch(
 			continue
 		}
 
+		for i := range nextBeam {
+			nextBeam[i].Score = scoreTimetableState(nextBeam[i], recordings, optimiserRequest)
+		}
 		sort.Slice(nextBeam, func(i, j int) bool {
-			return scoreTimetableState(
-				nextBeam[i],
-				recordings,
-				optimiserRequest,
-			) < scoreTimetableState(
-				nextBeam[j],
-				recordings,
-				optimiserRequest,
-			)
+			return nextBeam[i].Score < nextBeam[j].Score
 		})
 
 		// Prune to beamWidth
