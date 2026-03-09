@@ -451,12 +451,6 @@ func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
 	return largestGap
 }
 
-type SolveResponse struct {
-	models.TimetableState
-	ShareableLink        string `json:"shareableLink"`
-	DefaultShareableLink string `json:"defaultShareableLink"`
-}
-
 // Solve is the main HTTP handler that orchestrates the timetable optimization process.
 // It fetches module data, prepares the search space, runs beam search, generates a
 // shareable NUSMods link, and returns the optimized timetable as JSON.
@@ -501,7 +495,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 		lessonToSlots,
 		req,
 	)
-	response := SolveResponse{
+	response := models.SolveResponse{
 		TimetableState:       best,
 		ShareableLink:        shareableLink,
 		DefaultShareableLink: defaultShareableLink,

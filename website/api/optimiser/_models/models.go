@@ -29,6 +29,12 @@ type OptimiserRequest struct {
 	LunchEnd            string   `json:"lunchEnd"`            // Format: "1500" (HHMM)
 }
 
+type SolveResponse struct {
+	TimetableState
+	ShareableLink        string `json:"shareableLink"`
+	DefaultShareableLink string `json:"defaultShareableLink"`
+}
+
 type TimetableState struct {
 	Assignments   map[string]string // lessonKey -> chosen classNo
 	DaySlots      [6][]ModuleSlot   // For each day, a time-sorted slice of slots
