@@ -1,8 +1,13 @@
 import Adapter from '@cfaester/enzyme-adapter-react-18';
+import { configure as configureTestingLibrary } from '@testing-library/dom';
 import { configure } from 'enzyme';
 import { setAutoFreeze } from 'immer';
 
 import '@testing-library/jest-dom/vitest';
+
+// Increase async utility timeout to handle resource contention when running
+// tests in parallel across workspace packages (pnpm -r test)
+configureTestingLibrary({ asyncUtilTimeout: 5000 });
 
 configure({ adapter: new Adapter() });
 
