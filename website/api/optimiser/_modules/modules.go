@@ -15,8 +15,12 @@ import (
 // GetAllModuleSlots gets all module slots that pass conditions in optimiserRequest for all modules.
 // Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
 func GetAllModuleSlots(
-	optimiserRequest models.OptimiserRequest,
+	optimiserRequest *models.OptimiserRequest,
 ) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, map[string]bool, error) {
+	if err := optimiserRequest.ParseOptimiserRequestFields(); err != nil {
+		return nil, nil, nil, err
+	}
+
 	venues, err := getVenues()
 	if err != nil {
 		return nil, nil, nil, err
@@ -32,10 +36,8 @@ func GetAllModuleSlots(
 		freeDaysMap[freeDay] = true
 	}
 
-	earliestMin, _ := models.ParseTimeToMinutes(optimiserRequest.EarliestTime)
-	latestMin, _ := models.ParseTimeToMinutes(optimiserRequest.LatestTime)
-
 	moduleSlots := make(models.ModuleTimetableMap)
+	
 	// These are default or backup slots for the partial timetable so that we can display some random slot for unallocated lessons
 	defaultSlots := make(models.ModuleDefaultSlotsMap)
 	for _, module := range optimiserRequest.Modules {
@@ -96,8 +98,8 @@ func GetAllModuleSlots(
 			module,
 			recordingsMap,
 			freeDaysMap,
-			earliestMin,
-			latestMin,
+			optimiserRequest.EarliestMin,
+			optimiserRequest.LatestMin,
 		)
 
 	}

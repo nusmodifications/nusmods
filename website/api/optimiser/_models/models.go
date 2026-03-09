@@ -27,6 +27,34 @@ type OptimiserRequest struct {
 	MaxConsecutiveHours int      `json:"maxConsecutiveHours"` // Maximum consecutive hours of study
 	LunchStart          string   `json:"lunchStart"`          // Format: "1504" (HHMM)
 	LunchEnd            string   `json:"lunchEnd"`            // Format: "1500" (HHMM)
+
+	// Parsed fields
+	EarliestMin  int
+	LatestMin    int
+	LunchStartMin int
+	LunchEndMin  int
+}
+
+// ParseOptimiserRequestFields validates and parses time fields into minutes.
+func (r *OptimiserRequest) ParseOptimiserRequestFields() error {
+	var err error
+	r.EarliestMin, err = ParseTimeToMinutes(r.EarliestTime)
+	if err != nil {
+		return fmt.Errorf("invalid earliestTime: %s", r.EarliestTime)
+	}
+	r.LatestMin, err = ParseTimeToMinutes(r.LatestTime)
+	if err != nil {
+		return fmt.Errorf("invalid latestTime: %s", r.LatestTime)
+	}
+	r.LunchStartMin, err = ParseTimeToMinutes(r.LunchStart)
+	if err != nil {
+		return fmt.Errorf("invalid lunchStart: %s", r.LunchStart)
+	}
+	r.LunchEndMin, err = ParseTimeToMinutes(r.LunchEnd)
+	if err != nil {
+		return fmt.Errorf("invalid lunchEnd: %s", r.LunchEnd)
+	}
+	return nil
 }
 
 type SolveResponse struct {
