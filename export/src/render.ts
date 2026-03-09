@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import puppeteer, { Page } from 'puppeteer-core';
 import type { Middleware } from 'koa';
 
+import { resolveChromeExecutable } from './chrome-executable';
 import { getModules } from './data';
 import config from './config';
 import type { ExportData, State } from './types';
@@ -24,11 +25,12 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 }
 
 export async function launch() {
+  const executablePath = await resolveChromeExecutable();
   const browser = await puppeteer.launch({
     args: ['--disable-gpu'],
     devtools: !!process.env.DEVTOOLS,
-    executablePath: config.chromeExecutable,
-    headless: true,
+    executablePath,
+    headless: 'shell',
   });
 
   const page = await browser.newPage();
@@ -93,18 +95,23 @@ export async function image(page: Page, data: ExportData, options: ViewportOptio
   }
 
   const boundingBox = await injectData(page, data);
-  return await page.screenshot({
-    clip: boundingBox,
-  });
+  return Buffer.from(
+    await page.screenshot({
+      clip: boundingBox,
+    }),
+  );
 }
 
 export async function pdf(page: Page, data: ExportData) {
-  await injectData(page, data);
   await page.emulateMediaType('screen');
+  await injectData(page, data);
 
-  return await page.pdf({
-    format: 'a4',
-    landscape: data.theme.timetableOrientation === 'HORIZONTAL',
-    printBackground: true,
-  });
+  return Buffer.from(
+    await page.pdf({
+      format: 'a4',
+      landscape: data.theme.timetableOrientation === 'HORIZONTAL',
+      printBackground: true,
+      waitForFonts: true,
+    }),
+  );
 }
