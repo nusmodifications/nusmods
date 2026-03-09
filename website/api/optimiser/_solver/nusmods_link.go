@@ -2,6 +2,7 @@ package solver
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
@@ -124,7 +125,11 @@ func serializeConfig(config map[string]map[string][]models.LessonIndex) string {
 
 // Serializes an array of lesson indices into the format used in timetable share links
 //
-// Returns "1, 2, 3" with input [1, 2, 3]
+// Returns "1,2,3" with input [1, 2, 3]
 func serializeLessonIndices(lessonIndex []models.LessonIndex) string {
-	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(lessonIndex)), ","), "[]")
+	parts := make([]string, len(lessonIndex))
+	for i, idx := range lessonIndex {
+		parts[i] = strconv.Itoa(idx)
+	}
+	return strings.Join(parts, ",")
 }
