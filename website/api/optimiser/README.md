@@ -55,7 +55,7 @@ A single request moves through the following stages:
 The optimiser uses a **Beam Search algorithm** to efficiently explore the vast search space of possible timetable combinations:
 
 1. **State Space**: Each state represents a partial timetable assignment
-2. **Beam Width**: Maintains the top 2500 most promising states at each step (configurable via `BeamWidth` constant)
+2. **Beam Width**: Maintains the top 5000 most promising states at each step (configurable via `BeamWidth` constant)
 3. **Branching Factor**: Limits the number of options considered per lesson type to 100 (configurable via `BranchingFactor` constant)
 4. **MRV Heuristic**: Lessons with fewer class options are assigned first, pruning infeasible branches early
 5. **Scoring Function**: Evaluates states based on:
@@ -88,7 +88,7 @@ All constants live in `_constants/constants.go`. Lower scores are better — the
 
 | Constant          | Value | Rationale                                                                                                                                                                          |
 | ----------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `BeamWidth`       | 2500  | Number of partial timetables retained at each step. Higher = better quality but slower. 2500 was empirically chosen as a good quality/speed tradeoff for typical 5–6 module loads. |
+| `BeamWidth`       | 5000  | Number of partial timetables retained at each step. Higher = better quality but slower. 5000 was empirically chosen as a good quality/speed tradeoff for typical 7–8 module loads. |
 | `BranchingFactor` | 100   | Maximum class options explored per lesson type per beam step. Most modules have well under 100 sections, so this acts as a safety cap rather than an active constraint.            |
 
 #### Scoring Weights

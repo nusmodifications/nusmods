@@ -58,7 +58,7 @@ const ModuleCodeSeparator = ";"
 
 // Beam search parameters
 const (
-	BeamWidth       = 2500
+	BeamWidth       = 5000
 	BranchingFactor = 100
 	DaysPerWeek     = 6
 )
