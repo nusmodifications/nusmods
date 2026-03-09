@@ -109,24 +109,28 @@ func beamSearch(
 		limit := min(len(slotGroups), branchingFactor)
 		nextBeam := make([]models.TimetableState, 0, len(beam)*limit)
 
+		// Filter valid slot groups
+		validGroups := make([][]models.ModuleSlot, 0, limit)
+		for i := 0; i < limit; i++ {
+			group := slotGroups[i]
+			validGroup := make([]models.ModuleSlot, 0, len(group))
+			for slotIdx := range group {
+				slot := &group[slotIdx]
+				if slot.DayIndex >= 0 && slot.DayIndex < constants.DaysPerWeek {
+					validGroup = append(validGroup, *slot)
+				}
+			}
+			if len(validGroup) > 0 {
+				validGroups = append(validGroups, validGroup)
+			}
+		}
+
 		// iterate over all partial timetables in the beam
 		for _, state := range beam {
 
-			// iterate over all slot groups for the current lesson
-			for i := 0; i < limit; i++ {
-				group := slotGroups[i]
-
-				// Filters out invalid slots by checking if
-				// DayIndex is not -1 which marks invalid slots when parsing in ParseModuleSlotFields func
-				validGroup := make([]models.ModuleSlot, 0, len(group))
-				for slotIdx := range group {
-					slot := &group[slotIdx]
-					if slot.DayIndex >= 0 && slot.DayIndex < constants.DaysPerWeek {
-						validGroup = append(validGroup, *slot)
-					}
-				}
-
-				if len(validGroup) == 0 || hasConflict(state, validGroup) {
+			// iterate over all pre-filtered slot groups for the current lesson
+			for _, validGroup := range validGroups {
+				if hasConflict(state, validGroup) {
 					continue
 				}
 
