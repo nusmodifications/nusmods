@@ -5,15 +5,15 @@ import (
 )
 
 // Ensure in sync with all E-Venues in NUSMods
-var EVenues = map[string]bool{
-	"E-Learn_A":  true,
-	"E-Learn_B":  true,
-	"E-Learn_C":  true,
-	"E-Learn_D":  true,
-	"E-Hybrid_A": true,
-	"E-Hybrid_B": true,
-	"E-Hybrid_C": true,
-	"E-Hybrid_D": true,
+var EVenues = map[string]struct{}{
+	"E-Learn_A":  {},
+	"E-Learn_B":  {},
+	"E-Learn_C":  {},
+	"E-Learn_D":  {},
+	"E-Hybrid_A": {},
+	"E-Hybrid_B": {},
+	"E-Hybrid_C": {},
+	"E-Hybrid_D": {},
 }
 
 // Ensure this is in sync with website/src/utils/timtetables.ts
