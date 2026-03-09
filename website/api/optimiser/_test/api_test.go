@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -138,6 +139,168 @@ func TestOptimiser_MultipleModulesWithFreeDays(t *testing.T) {
 	validateTimetable(t, result, req)
 	t.Logf("✅ Multiple Modules Passed. Assignments: %v", result.Assignments)
 	t.Logf("   Shareable link: %s", result.ShareableLink)
+}
+
+// TestOptimiser_EmptyModules verifies that an empty modules list is rejected.
+func TestOptimiser_EmptyModules(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1800",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode == http.StatusOK {
+		t.Errorf("Expected non-200 status for empty modules, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_InvalidTimeFormat verifies that a malformed time string is rejected.
+func TestOptimiser_InvalidTimeFormat(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{"CS2040S"},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "ABCD",
+		LatestTime:          "1800",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode == http.StatusOK {
+		t.Errorf("Expected non-200 status for invalid time format, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_NonExistentModule verifies that an unknown module code is rejected.
+func TestOptimiser_NonExistentModule(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{"INVALID999"},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1800",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode == http.StatusOK {
+		t.Errorf("Expected non-200 status for non-existent module, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_MethodNotAllowed verifies that non-POST requests are rejected with 405.
+func TestOptimiser_MethodNotAllowed(t *testing.T) {
+	resp, err := client.Get(baseURL)
+	if err != nil {
+		t.Fatalf("Failed to send GET request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusMethodNotAllowed {
+		t.Errorf("Expected status 405 for GET request, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_ShareableLinks verifies that both shareable links are well-formed
+// and reference all requested module codes.
+func TestOptimiser_ShareableLinks(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{"CS2040S", "CS2030S"},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1900",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, body := makeRequest(t, req)
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
+	}
+
+	var result models.SolveResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		t.Fatalf("Failed to parse response: %v", err)
+	}
+
+	const linkPrefix = "https://nusmods.com/timetable/"
+
+	for _, link := range []string{result.ShareableLink, result.DefaultShareableLink} {
+		if !strings.HasPrefix(link, linkPrefix) {
+			t.Errorf("Link does not start with %q: %s", linkPrefix, link)
+		}
+		for _, module := range req.Modules {
+			if !strings.Contains(link, module) {
+				t.Errorf("Link missing module %q: %s", module, link)
+			}
+		}
+	}
+
+	t.Logf("✅ Shareable links valid. ShareableLink: %s", result.ShareableLink)
+	t.Logf("   DefaultShareableLink: %s", result.DefaultShareableLink)
+}
+
+// TestOptimiser_AllSlotsHaveAssignments verifies that every slot in DaySlots has
+// a corresponding entry in Assignments, ensuring internal result consistency.
+func TestOptimiser_AllSlotsHaveAssignments(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{"CS2040S", "CS2030S", "ST2334"},
+		Recordings:          []string{"CS2040S|Lecture"},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1900",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, body := makeRequest(t, req)
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
+	}
+
+	var result models.SolveResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		t.Fatalf("Failed to parse response: %v", err)
+	}
+
+	for dayIdx, slots := range result.DaySlots {
+		for _, slot := range slots {
+			if _, ok := result.Assignments[slot.LessonKey]; !ok {
+				t.Errorf("%s: slot with lessonKey %q has no corresponding assignment",
+					dayNames[dayIdx], slot.LessonKey)
+			}
+		}
+	}
+
+	t.Logf("✅ All slots have assignments. Assignments: %v", result.Assignments)
 }
 
 // helpers
