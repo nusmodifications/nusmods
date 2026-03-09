@@ -5,8 +5,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0;
   padding-bottom: 0.5rem;
+  gap: 0;
 
   @include media-breakpoint-down(md) {
     flex-direction: column;
