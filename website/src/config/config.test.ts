@@ -27,17 +27,24 @@ flatten(Object.values(config.modRegSchedule)).forEach((round) => {
 });
 
 test('getSemesterKey() should be unique for every acad year / semester', () => {
+  const originalAcademicYear = config.academicYear;
+  const originalSemester = config.semester;
   const keys = new Set();
 
-  range(0, 40).forEach((offset) => {
-    const year = 2010 + offset;
-    config.academicYear = `${year}/${year + 1}`;
+  try {
+    range(0, 40).forEach((offset) => {
+      const year = 2010 + offset;
+      config.academicYear = `${year}/${year + 1}`;
 
-    Semesters.forEach((semester) => {
-      config.semester = semester;
+      Semesters.forEach((semester) => {
+        config.semester = semester;
 
-      expect(keys.has(config.getSemesterKey())).toBe(false);
-      keys.add(config.getSemesterKey());
+        expect(keys.has(config.getSemesterKey())).toBe(false);
+        keys.add(config.getSemesterKey());
+      });
     });
-  });
+  } finally {
+    config.academicYear = originalAcademicYear;
+    config.semester = originalSemester;
+  }
 });

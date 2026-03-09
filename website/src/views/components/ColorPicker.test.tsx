@@ -3,6 +3,7 @@ import ColorPicker from 'views/components/ColorPicker';
 import { ColorIndex } from 'types/timetables';
 import { expectColor } from 'test-utils/theme';
 
+import { setupDownshiftTimers } from 'test-utils/downshiftTimers';
 import styles from './ColorPicker.scss';
 
 const jest = vi;
@@ -29,6 +30,8 @@ function findPopup(wrapper: ReactWrapper) {
 function isPopupClosed(wrapper: ReactWrapper) {
   return findPopup(wrapper).hasClass('isClosed');
 }
+
+setupDownshiftTimers();
 
 test('should show current color in button', () => {
   const { wrapper } = makeColorPicker(2);
