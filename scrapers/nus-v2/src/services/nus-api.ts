@@ -5,7 +5,7 @@
  * to enforce global concurrency limit on the number of requests made.
  */
 
-import { URL } from 'url';
+import { URL } from 'node:url';
 import axios from 'axios';
 import oboe from 'oboe';
 import Queue from 'promise-queue';
@@ -27,27 +27,47 @@ import config from '../config';
 // Interface extracted for easier mocking
 export interface INusApi {
   /**
-   * Obtain an array of faculties in the school (aka. academic groups)
-   */
-  getFaculty: () => Promise<AcademicGrp[]>;
-
-  /**
    * Obtain an array of departments in the school (aka. academic organizations)
    */
-  getDepartment: () => Promise<AcademicOrg[]>;
+  getDepartment: () => Promise<Array<AcademicOrg>>;
+
+  getDepartmentTimetables: (
+    term: string,
+    departmentCode: string,
+  ) => Promise<Array<TimetableLesson>>;
+
+  /**
+   * Obtain an array of faculties in the school (aka. academic groups)
+   */
+  getFaculty: () => Promise<Array<AcademicGrp>>;
 
   /**
    * Get all modules corresponding to a specific faculty during a specific term
    */
-  getFacultyModules: (term: string, facultyCode: FacultyCode) => Promise<ModuleInfo[]>;
+  getFacultyModules: (term: string, facultyCode: FacultyCode) => Promise<Array<ModuleInfo>>;
+
+  /**
+   * Get all modules for a faculty across the entire academic year (no semester filter).
+   * Falls back to empty array if the API does not support year-only queries.
+   */
+  getFacultyModulesForYear: (
+    academicYear: string,
+    facultyCode: FacultyCode,
+  ) => Promise<Array<ModuleInfo>>;
+
+  /**
+   * Get exam info for a specific module
+   *
+   * @throws {NotFoundError} If the module in question has no exam (or if the information
+   *    is not available yet - the API makes no distinction)
+   */
+  getModuleExam: (term: string, module: ModuleCode) => Promise<ModuleExam>;
 
   /**
    * Returns every lesson associated with a module in a specific term in one massive
    * array
    */
-  getModuleTimetable: (term: string, module: ModuleCode) => Promise<TimetableLesson[]>;
-
-  getDepartmentTimetables: (term: string, departmentCode: string) => Promise<TimetableLesson[]>;
+  getModuleTimetable: (term: string, module: ModuleCode) => Promise<Array<TimetableLesson>>;
 
   /**
    * Loads an entire semester's timetable from the API. Because the JSON returned
@@ -61,26 +81,9 @@ export interface INusApi {
   ) => Promise<void>;
 
   /**
-   * Get exam info for a specific module
-   *
-   * @throws {NotFoundError} If the module in question has no exam (or if the information
-   *    is not available yet - the API makes no distinction)
-   */
-  getModuleExam: (term: string, module: ModuleCode) => Promise<ModuleExam>;
-
-  /**
    * Get exam info on all modules in a semester
    */
-  getTermExams: (term: string) => Promise<ModuleExam[]>;
-
-  /**
-   * Get all modules for a faculty across the entire academic year (no semester filter).
-   * Falls back to empty array if the API does not support year-only queries.
-   */
-  getFacultyModulesForYear: (
-    academicYear: string,
-    facultyCode: FacultyCode,
-  ) => Promise<ModuleInfo[]>;
+  getTermExams: (term: string) => Promise<Array<ModuleExam>>;
 }
 
 type ApiParams = {
@@ -99,12 +102,10 @@ const RECORD_NOT_FOUND: StatusCode = '10001';
 
 // V1 API response format
 type V1ApiResponse<Data> = {
-  msg: string;
-  data: Data;
   code: StatusCode;
+  data: Data;
+  msg: string;
 };
-
-/* eslint-disable camelcase */
 
 type PagedV1ApiResponse<Data> = V1ApiResponse<Data> & {
   page: number;
@@ -179,23 +180,23 @@ async function callApi<ResponseData>(
         ...headers,
       },
     });
-  } catch (e) {
+  } catch (caughtError) {
     // 5. Handle network / request level errors, eg. server returning non-200
     //    status code
     let message;
-    if (e.response) {
-      const { status, statusText } = e.response;
+    if (caughtError.response) {
+      const { status, statusText } = caughtError.response;
       message = `Server returned status ${status} - ${statusText}`;
     } else {
       // If there is no response it usually means the client can't make the HTTP request,
       // possibly because the network is down
-      message = `Unknown error - ${e.message}`;
+      message = `Unknown error - ${caughtError.message}`;
     }
 
     const error = new UnknownApiError(message);
-    error.originalError = e;
-    error.response = e.response;
-    error.requestConfig = e.config;
+    error.originalError = caughtError;
+    error.response = caughtError.response;
+    error.requestConfig = caughtError.config;
     throw error;
   }
 
@@ -217,7 +218,7 @@ async function callV1Api<Data>(
     headers,
   );
 
-  const { msg, data, code } = responseData;
+  const { code, data, msg } = responseData;
 
   // Handle application level errors
   if (code !== OKAY) {
@@ -258,7 +259,7 @@ class NusApi implements INusApi {
    * Calls the modules endpoint. If params already contains applicableInYear,
    * term-based params are skipped (supports year-only queries without semester filter).
    */
-  callModulesEndpoint = async (term: string, params: ApiParams): Promise<ModuleInfo[]> => {
+  callModulesEndpoint = async (term: string, params: ApiParams): Promise<Array<ModuleInfo>> => {
     const maxItems = 1000;
 
     const termParams = params.applicableInYear ? {} : mapTermToApiParams(term);
@@ -269,14 +270,13 @@ class NusApi implements INusApi {
       maxItems: String(maxItems),
     };
 
-    const allModules: ModuleInfo[] = [];
+    const allModules: Array<ModuleInfo> = [];
     let offset = 0;
     let hasMore = true;
 
     try {
       while (hasMore) {
-        // eslint-disable-next-line no-await-in-loop
-        const response = await this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
+        const response = await this.callApi<{ data: Array<ModuleInfo>; itemCount: number }>(
           'CourseNUSMods',
           {
             ...baseParams,
@@ -296,29 +296,32 @@ class NusApi implements INusApi {
       }
 
       return allModules;
-    } catch (e) {
+    } catch (error) {
       // The modules endpoint will return NotFound even for valid inputs
       // that just happen to have no records, so we ignore this error
       // and just return an empty array
-      if (e instanceof UnknownApiError && e.response?.status === 404) {
+      if (error instanceof UnknownApiError && error.response?.status === 404) {
         rootLogger.warn(
-          { params, url: e.requestConfig?.url },
+          { params, url: error.requestConfig?.url },
           'Modules endpoint returned 404 - treating as empty result',
         );
         return [];
       }
 
-      throw e;
+      throw error;
     }
   };
 
-  getFaculty = async (): Promise<AcademicGrp[]> =>
+  getFaculty = async (): Promise<Array<AcademicGrp>> =>
     this.callV1Api('edurec/config/v1/get-acadgroup', {}, acadHeaders);
 
-  getDepartment = async (): Promise<AcademicOrg[]> =>
+  getDepartment = async (): Promise<Array<AcademicOrg>> =>
     this.callV1Api('edurec/config/v1/get-acadorg', {}, acadHeaders);
 
-  getFacultyModules = async (term: string, facultyCode: FacultyCode): Promise<ModuleInfo[]> => {
+  getFacultyModules = async (
+    term: string,
+    facultyCode: FacultyCode,
+  ): Promise<Array<ModuleInfo>> => {
     const acadGroupCode = facultyCode.length >= 3 ? facultyCode.slice(0, 3) : facultyCode;
     return this.callModulesEndpoint(term, { acadGroupCode });
   };
@@ -326,19 +329,19 @@ class NusApi implements INusApi {
   getFacultyModulesForYear = async (
     academicYear: string,
     facultyCode: FacultyCode,
-  ): Promise<ModuleInfo[]> => {
+  ): Promise<Array<ModuleInfo>> => {
     const yearParts = academicYear.split('/');
     const applicableInYear = `${yearParts[0]}/${yearParts[1].slice(2)}`;
     const acadGroupCode = facultyCode.length >= 3 ? facultyCode.slice(0, 3) : facultyCode;
-    return this.callModulesEndpoint('', { applicableInYear, acadGroupCode });
+    return this.callModulesEndpoint('', { acadGroupCode, applicableInYear });
   };
 
-  getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
+  getModuleTimetable = async (term: string, module: ModuleCode): Promise<Array<TimetableLesson>> =>
     this.callV1Api(
       'timetable/v1/published/class/withdate',
       {
-        term,
         module,
+        term,
       },
       ttHeaders,
     );
@@ -346,12 +349,12 @@ class NusApi implements INusApi {
   getDepartmentTimetables = async (
     term: string,
     departmentCode: string,
-  ): Promise<TimetableLesson[]> =>
+  ): Promise<Array<TimetableLesson>> =>
     this.callV1Api(
       'timetable/v1/published/class/withdate',
       {
-        term,
         deptfac: departmentCode,
+        term,
       },
       ttHeaders,
     );
@@ -360,7 +363,7 @@ class NusApi implements INusApi {
     term: string,
     lessonConsumer: (lesson: TimetableLesson) => void,
   ): Promise<void> => {
-    const recordsPerPage = 10000;
+    const recordsPerPage = 10_000;
     let page = 1;
 
     const fetchPage = async (pageToFetch: number): Promise<boolean> =>
@@ -372,12 +375,12 @@ class NusApi implements INusApi {
         url.searchParams.append('records_per_page', String(recordsPerPage));
 
         oboe({
-          url: url.href,
           headers: {
             ...commonHeaders,
             ...ttHeaders,
           },
           method: 'GET',
+          url: url.href,
         })
           .node('data[*]', (lesson: TimetableLesson) => {
             // Consume and discard each lesson
@@ -386,7 +389,7 @@ class NusApi implements INusApi {
           })
           .done((data: PagedV1ApiResponse<unknown>) => {
             // Handle application level errors
-            const { code, msg, page: responsePage, total_records, records_per_page } = data;
+            const { code, msg, page: responsePage, records_per_page, total_records } = data;
 
             if (code !== OKAY) {
               const error = mapErrorCode(code, msg);
@@ -412,28 +415,28 @@ class NusApi implements INusApi {
 
     let hasMorePages = true;
     while (hasMorePages) {
-      // eslint-disable-next-line no-await-in-loop
       hasMorePages = await fetchPage(page);
       page += 1;
     }
   };
 
   getModuleExam = async (term: string, module: ModuleCode): Promise<ModuleExam> => {
-    const exams = await this.callV1Api<ModuleExam[]>(
+    const exams = await this.callV1Api<Array<ModuleExam>>(
       'timetable/v1/published/exam',
       {
-        term,
         module,
+        term,
       },
       ttHeaders,
     );
 
-    if (exams.length === 0)
+    if (exams.length === 0) {
       throw new NotFoundError(`Exams for ${module} cannot be found, or the module has no exams`);
+    }
     return exams[0];
   };
 
-  getTermExams = async (term: string): Promise<ModuleExam[]> =>
+  getTermExams = async (term: string): Promise<Array<ModuleExam>> =>
     this.callV1Api('timetable/v1/published/exam', { term }, ttHeaders);
 }
 

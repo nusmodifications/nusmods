@@ -1,4 +1,4 @@
-import { flatMap, sortBy, get } from 'lodash';
+import { flatMap, sortBy, get } from 'lodash-es';
 
 import { ModulesMap } from 'types/reducers';
 import { TimetableConfig } from 'types/timetables';

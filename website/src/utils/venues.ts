@@ -1,4 +1,4 @@
-import { range, entries, padStart, clamp } from 'lodash';
+import { range, entries, padStart, clamp } from 'lodash-es';
 import { produce } from 'immer';
 import {
   VenueInfo,

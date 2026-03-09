@@ -50,5 +50,5 @@
       "permanent": false
     }
   ],
-  "ignoreCommand": "bash ./scripts/vercel_ignore_build.sh"
+  "ignoreCommand": "bash ../vercel_ignore_build.sh"
 }

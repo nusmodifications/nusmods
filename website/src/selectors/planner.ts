@@ -1,4 +1,4 @@
-import { flatMap, get, sortBy, values } from 'lodash';
+import { flatMap, get, sortBy, values } from 'lodash-es';
 import { ModuleCode, Semester, Semesters } from 'types/modules';
 import {
   PlannerState,

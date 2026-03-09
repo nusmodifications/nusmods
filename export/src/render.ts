@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import puppeteer, { Page } from 'puppeteer-core';
 import type { Middleware } from 'koa';
 
+import { resolveChromeExecutable } from './chrome-executable';
 import { getModules } from './data';
 import config from './config';
 import type { ExportData, State } from './types';
@@ -10,25 +11,26 @@ import type { ExportData, State } from './types';
 const VIEWPORT_HEIGHT = 2000;
 
 export interface ViewportOptions {
+  height?: number;
   pixelRatio?: number;
   width?: number;
-  height?: number;
 }
 
 async function setViewport(page: Page, options: ViewportOptions = {}) {
   await page.setViewport({
     deviceScaleFactor: options.pixelRatio || 1,
-    width: options.width || config.pageWidth,
     height: options.height || VIEWPORT_HEIGHT,
+    width: options.width || config.pageWidth,
   });
 }
 
 export async function launch() {
+  const executablePath = await resolveChromeExecutable();
   const browser = await puppeteer.launch({
-    headless: true,
-    executablePath: config.chromeExecutable,
-    devtools: !!process.env.DEVTOOLS,
     args: ['--disable-gpu'],
+    devtools: !!process.env.DEVTOOLS,
+    executablePath,
+    headless: 'shell',
   });
 
   const page = await browser.newPage();
@@ -37,7 +39,7 @@ export async function launch() {
   if (/^https?:\/\//.test(config.page)) {
     await page.goto(config.page);
   } else {
-    const content = await fs.readFile(config.page, 'utf-8');
+    const content = await fs.readFile(config.page, 'utf8');
     await page.setContent(content);
   }
 
@@ -48,7 +50,7 @@ export const openPage: Middleware<State> = async (ctx, next) => {
   let page: Page;
   try {
     page = await ctx.browser.newPage();
-  } catch (e) {
+  } catch {
     // Try launching a new browser object
     ctx.app.context.browser = await launch();
     page = await ctx.browser.newPage();
@@ -80,7 +82,9 @@ async function injectData(page: Page, data: ExportData) {
 
   // Calculate element height to get bounding box for screenshot
   const appEle = await page.$('#timetable-only');
-  if (!appEle) throw new Error('#timetable-only element not found');
+  if (!appEle) {
+    throw new Error('#timetable-only element not found');
+  }
 
   return (await appEle.boundingBox()) || undefined;
 }
@@ -91,18 +95,23 @@ export async function image(page: Page, data: ExportData, options: ViewportOptio
   }
 
   const boundingBox = await injectData(page, data);
-  return await page.screenshot({
-    clip: boundingBox,
-  });
+  return Buffer.from(
+    await page.screenshot({
+      clip: boundingBox,
+    }),
+  );
 }
 
 export async function pdf(page: Page, data: ExportData) {
-  await injectData(page, data);
   await page.emulateMediaType('screen');
+  await injectData(page, data);
 
-  return await page.pdf({
-    printBackground: true,
-    format: 'a4',
-    landscape: data.theme.timetableOrientation === 'HORIZONTAL',
-  });
+  return Buffer.from(
+    await page.pdf({
+      format: 'a4',
+      landscape: data.theme.timetableOrientation === 'HORIZONTAL',
+      printBackground: true,
+      waitForFonts: true,
+    }),
+  );
 }

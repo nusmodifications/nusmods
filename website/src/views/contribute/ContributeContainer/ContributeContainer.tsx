@@ -2,7 +2,7 @@ import { memo, Fragment, FC } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { flatten, map, mapValues, values } from 'lodash';
+import { flatten, map, mapValues, values } from 'lodash-es';
 
 import { DollarSign, Zap } from 'react-feather';
 import type { ModuleCondensed } from 'types/modules';

@@ -1,4 +1,4 @@
-import { clone } from 'lodash';
+import { clone } from 'lodash-es';
 import { getAcadYearModules, getPrereqModuleCode } from 'selectors/planner';
 import { PlannerState } from 'types/reducers';
 import { ModuleCode } from 'types/modules';

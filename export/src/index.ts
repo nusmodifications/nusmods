@@ -47,7 +47,7 @@ render
     if (/^https?:\/\//.test(config.page)) {
       app.context.pageUrl = config.page;
     } else {
-      app.context.pageContent = await fs.readFile(config.page, 'utf-8');
+      app.context.pageContent = await fs.readFile(config.page, 'utf8');
     }
 
     const server = app.listen(Number(process.env.PORT) || 3000, process.env.HOST);
@@ -55,11 +55,11 @@ render
 
     gracefulShutdown(server);
   })
-  .catch((e) => {
+  .catch((error) => {
     console.error('Cannot start browser:');
-    console.error(e);
+    console.error(error);
 
-    if (e.message.includes('ERR_CONNECTION_REFUSED')) {
+    if (error.message.includes('ERR_CONNECTION_REFUSED')) {
       console.error('Check that the export page dev server has been started');
     }
 

@@ -83,8 +83,8 @@ describe(retry, () => {
 
     try {
       await retry(fn, 3);
-    } catch (e) {
-      expect(e).toEqual(error);
+    } catch (error) {
+      expect(error).toEqual(error);
     }
 
     expect(fn).toBeCalledTimes(3);
@@ -97,8 +97,8 @@ describe(retry, () => {
 
     try {
       await retry(fn, 3, () => false);
-    } catch (e) {
-      expect(e).toEqual(error);
+    } catch (error) {
+      expect(error).toEqual(error);
     }
 
     expect(fn).toBeCalledTimes(1);

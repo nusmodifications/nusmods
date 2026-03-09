@@ -9,20 +9,20 @@ export type WeekType =
 export type Semester = 'Semester 1' | 'Semester 2' | 'Special Term I' | 'Special Term II';
 
 export interface AcadYear {
-  year: string;
   startDate: Date;
+  year: string;
 }
 
 export interface AcadWeek {
-  weekType: WeekType;
   weekNumber: number | null;
+  weekType: WeekType;
 }
 
 export interface AcadWeekInfo {
-  year: string;
+  num: number | null;
   sem: Semester | null;
   type: WeekType | null;
-  num: number | null;
+  year: string;
 }
 
 declare class AcademicCalendar {

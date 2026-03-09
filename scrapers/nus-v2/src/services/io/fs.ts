@@ -4,7 +4,7 @@
  * which is how Tasks primarily save their results to disk.
  */
 
-import path from 'path';
+import path from 'node:path';
 import * as fs from 'fs-extra';
 
 import type { MPEModule } from '../../types/mpe';
@@ -45,8 +45,6 @@ export function getCacheFactory(academicYear: string) {
     return {
       path: filepath,
 
-      write: (o: T) => fs.outputJSON(filepath, o, writeOptions),
-
       read: async () => {
         const [data, stat] = await Promise.all([fs.readJSON(filepath), fs.stat(filepath)]);
 
@@ -57,6 +55,8 @@ export function getCacheFactory(academicYear: string) {
 
         return data;
       },
+
+      write: (o: T) => fs.outputJSON(filepath, o, writeOptions),
     };
   };
 }
@@ -95,20 +95,20 @@ export function getFileSystemWriter(academicYear: string): Persist {
     // ///////////////////////////////////////////////////////////
 
     // List of ModuleCondensed for searching
-    moduleList: (data: ModuleCondensed[]) =>
+    moduleList: (data: Array<ModuleCondensed>) =>
       fs.outputJSON(path.join(yearRoot, 'moduleList.json'), data, writeOptions),
 
     // List of partial module info for module finder
-    moduleInfo: (data: ModuleInformation[]) =>
+    moduleInfo: (data: Array<ModuleInformation>) =>
       fs.outputJSON(path.join(yearRoot, 'moduleInfo.json'), data, writeOptions),
 
     // List of modules that are participating in NUS's module planning exercise (MPE)
-    mpeModules: (data: MPEModule[]) =>
+    mpeModules: (data: Array<MPEModule>) =>
       fs.outputJSON(path.join(yearRoot, 'mpeModules.json'), data, writeOptions),
 
     // DEPRECATED. TODO: Remove after AY19/20 starts.
     // List of partial module info for module finder
-    moduleInformation: (data: ModuleInformation[]) =>
+    moduleInformation: (data: Array<ModuleInformation>) =>
       fs.outputJSON(path.join(yearRoot, 'moduleInformation.json'), data, writeOptions),
 
     // Mapping modules to other dual coded modules
@@ -116,7 +116,7 @@ export function getFileSystemWriter(academicYear: string): Persist {
       fs.outputJSON(path.join(yearRoot, 'aliases.json'), data, writeOptions),
 
     // List of faculties and their departments
-    facultyDepartments: (data: { [faculty: string]: string[] }) =>
+    facultyDepartments: (data: { [faculty: string]: Array<string> }) =>
       fs.outputJSON(path.join(yearRoot, 'facultyDepartments.json'), data, writeOptions),
 
     // ///////////////////////////////////////////////////////////
@@ -124,38 +124,6 @@ export function getFileSystemWriter(academicYear: string): Persist {
     // ///////////////////////////////////////////////////////////
 
     // Output for a specific module's data
-    module: (moduleCode: ModuleCode, data: Module) =>
-      fs.outputJSON(path.join(yearRoot, 'modules', `${moduleCode}.json`), data, writeOptions),
-
-    timetable: (semester: Semester, moduleCode: ModuleCode, data: RawLesson[]) =>
-      fs.outputJSON(
-        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'timetable.json'),
-        data,
-        writeOptions,
-      ),
-
-    semesterData: (semester: Semester, moduleCode: ModuleCode, data: SemesterData) =>
-      fs.outputJSON(
-        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'semesterData.json'),
-        data,
-        writeOptions,
-      ),
-
-    getModuleCodes: async () => {
-      let files: ModuleCode[];
-      try {
-        files = await fs.readdir(path.join(yearRoot, 'modules'));
-      } catch (e) {
-        if (e.code === 'ENOENT') {
-          files = [];
-        } else {
-          throw e;
-        }
-      }
-
-      return files.map((filename) => path.basename(filename, '.json'));
-    },
-
     deleteModule: async (moduleCode: ModuleCode) => {
       await Promise.all([
         fs.remove(path.join(yearRoot, 'modules', `${moduleCode}.json`)),
@@ -166,12 +134,44 @@ export function getFileSystemWriter(academicYear: string): Persist {
       ]);
     },
 
+    getModuleCodes: async () => {
+      let files: Array<ModuleCode>;
+      try {
+        files = await fs.readdir(path.join(yearRoot, 'modules'));
+      } catch (error) {
+        if (error.code === 'ENOENT') {
+          files = [];
+        } else {
+          throw error;
+        }
+      }
+
+      return files.map((filename) => path.basename(filename, '.json'));
+    },
+
+    module: (moduleCode: ModuleCode, data: Module) =>
+      fs.outputJSON(path.join(yearRoot, 'modules', `${moduleCode}.json`), data, writeOptions),
+
+    semesterData: (semester: Semester, moduleCode: ModuleCode, data: SemesterData) =>
+      fs.outputJSON(
+        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'semesterData.json'),
+        data,
+        writeOptions,
+      ),
+
+    timetable: (semester: Semester, moduleCode: ModuleCode, data: Array<RawLesson>) =>
+      fs.outputJSON(
+        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'timetable.json'),
+        data,
+        writeOptions,
+      ),
+
     // ///////////////////////////////////////////////////////////
     // Per semester information
     // ///////////////////////////////////////////////////////////
 
     // List of venue codes used for searching
-    venueList: (semester: Semester, data: Venue[]) =>
+    venueList: (semester: Semester, data: Array<Venue>) =>
       fs.outputJSON(
         path.join(yearRoot, 'semesters', String(semester), 'venues.json'),
         data,

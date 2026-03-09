@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import classnames from 'classnames';
 import { Theme, ThemeId } from 'types/settings';
 

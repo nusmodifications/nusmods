@@ -1,7 +1,7 @@
 import { ComponentType, FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { match as Match, Redirect, useLocation, useRouteMatch } from 'react-router-dom';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 import type { AxiosError } from 'axios';
 import type { ModuleCode } from 'types/modules';

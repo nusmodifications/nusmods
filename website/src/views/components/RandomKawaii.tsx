@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes, memo, useState } from 'react';
-import { sample } from 'lodash';
+import { sample } from 'lodash-es';
 import { SpeechBubble, Mug, Browser, Ghost, KawaiiMood, KawaiiProps } from 'react-kawaii';
 
 type Props = HTMLAttributes<HTMLDivElement> & KawaiiProps;

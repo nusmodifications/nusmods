@@ -2,8 +2,6 @@
  * Defines custom error classes
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any, max-classes-per-file */
-
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Task } from '../types/tasks';
 

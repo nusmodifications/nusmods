@@ -1,5 +1,5 @@
 import { FC, memo } from 'react';
-import { each } from 'lodash';
+import { each } from 'lodash-es';
 
 import type { Semester } from 'types/modules';
 

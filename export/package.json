@@ -13,11 +13,14 @@
     "watch": "tsc --watch",
     "dev": "run-p nodemon watch",
     "devtools": "cross-env DEVTOOLS=1 pnpm dev",
-    "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js"
+    "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js",
+    "lint": "oxlint -c oxlint.config.mjs src",
+    "typecheck": "tsc --noEmit",
+    "check": "run-s lint typecheck"
   },
   "dependencies": {
     "@sentry/node": "5.30.0",
-    "@sparticuz/chromium": "^123.0.0",
+    "@sparticuz/chromium": "^143.0.4",
     "axios": "0.30.0",
     "bunyan": "1.8.15",
     "fs-extra": "9.1.0",
@@ -29,9 +32,11 @@
     "lodash": "4.17.23",
     "nodemon": "2.0.22",
     "pug": "3.0.3",
-    "puppeteer-core": "22.15.0"
+    "puppeteer-core": "^24.38.0"
   },
   "devDependencies": {
+    "@nkzw/eslint-plugin": "^2.0.0",
+    "@nkzw/oxlint-config": "^1.0.1",
     "@types/fs-extra": "9.0.13",
     "@types/koa": "2.15.0",
     "@types/koa-router": "7.4.8",
@@ -42,7 +47,11 @@
     "@vercel/node": "1.15.4",
     "cross-env": "7.0.3",
     "dotenv": "8.6.0",
+    "eslint-plugin-no-only-tests": "^3.3.0",
+    "eslint-plugin-perfectionist": "^5.6.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "npm-run-all": "4.1.5",
+    "oxlint": "^1.51.0",
     "typescript": "5.9.3"
   }
 }

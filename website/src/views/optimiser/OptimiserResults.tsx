@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import { AlertTriangle, Zap, ExternalLink } from 'react-feather';
 import { LessonOption } from 'types/optimiser';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import styles from './OptimiserResults.scss';
 
 export interface OptimiserResultsProps {
