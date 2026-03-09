@@ -2,6 +2,7 @@ import { mount, shallow } from 'enzyme';
 import Downshift from 'downshift';
 import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import Modal from 'views/components/Modal';
+import { setupDownshiftTimers } from 'test-utils/downshiftTimers';
 import ModulesSelect from './ModulesSelect';
 
 const jest = vi;
@@ -33,6 +34,8 @@ const commonProps = {
 };
 
 describe(ModulesSelect, () => {
+  setupDownshiftTimers();
+
   beforeAll(() => {
     mockWindowMatchMedia({ matches: true });
   });
