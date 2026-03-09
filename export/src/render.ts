@@ -95,18 +95,23 @@ export async function image(page: Page, data: ExportData, options: ViewportOptio
   }
 
   const boundingBox = await injectData(page, data);
-  return await page.screenshot({
-    clip: boundingBox,
-  });
+  return Buffer.from(
+    await page.screenshot({
+      clip: boundingBox,
+    }),
+  );
 }
 
 export async function pdf(page: Page, data: ExportData) {
-  await injectData(page, data);
   await page.emulateMediaType('screen');
+  await injectData(page, data);
 
-  return await page.pdf({
-    format: 'a4',
-    landscape: data.theme.timetableOrientation === 'HORIZONTAL',
-    printBackground: true,
-  });
+  return Buffer.from(
+    await page.pdf({
+      format: 'a4',
+      landscape: data.theme.timetableOrientation === 'HORIZONTAL',
+      printBackground: true,
+      waitForFonts: true,
+    }),
+  );
 }

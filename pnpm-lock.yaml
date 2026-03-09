@@ -31,8 +31,8 @@ importers:
         specifier: 5.30.0
         version: 5.30.0
       '@sparticuz/chromium':
-        specifier: ^141.0.0
-        version: 141.0.0
+        specifier: ^143.0.4
+        version: 143.0.4
       axios:
         specifier: 0.30.0
         version: 0.30.0
@@ -67,7 +67,7 @@ importers:
         specifier: 3.0.3
         version: 3.0.3
       puppeteer-core:
-        specifier: ^24.23.1
+        specifier: ^24.38.0
         version: 24.38.0
     devDependencies:
       '@nkzw/eslint-plugin':
@@ -2772,8 +2772,8 @@ packages:
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
     engines: {node: '>=18'}
 
-  '@sparticuz/chromium@141.0.0':
-    resolution: {integrity: sha512-JsTp4AqgStkqKki4dUpEM0GoisAjQhsqZ1lQTNMSKK5A9pw6BbIuIvv2HVYMYzSZGyDdQNJYBPPDg2eggCkezA==}
+  '@sparticuz/chromium@143.0.4':
+    resolution: {integrity: sha512-/6I7uQTRhRDD2/gGPQ1Gkf+Dqk0RYDACPJDZfSzz0OWk4JmUTonNHPXbrn6UIklOHlnDLf8xAAzkOZKB/cJpLA==}
     engines: {node: '>=20.11.0'}
 
   '@standard-schema/spec@1.1.0':
@@ -12770,7 +12770,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@2.3.0': {}
 
-  '@sparticuz/chromium@141.0.0':
+  '@sparticuz/chromium@143.0.4':
     dependencies:
       follow-redirects: 1.15.11
       tar-fs: 3.1.1
