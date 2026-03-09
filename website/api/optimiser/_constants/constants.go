@@ -18,7 +18,7 @@ var EVenues = map[string]struct{}{
 	"E-Hybrid_D": {},
 }
 
-// Ensure this is in sync with website/src/utils/timtetables.ts
+// Ensure this is in sync with website/src/utils/timetables.ts
 var LessonTypeAbbrev = map[string]string{
 	"DESIGN LECTURE":             "DLEC",
 	"LABORATORY":                 "LAB",

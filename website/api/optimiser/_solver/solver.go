@@ -20,15 +20,10 @@ import (
 // The function applies the Minimum Remaining Values (MRV) heuristic by sorting lessons
 // with fewer class options first, which helps reduce the search space early.
 func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
-	slots, defaultSlots, err := modules.GetAllModuleSlots(req)
+	slots, defaultSlots, recordings, err := modules.GetAllModuleSlots(req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	}
-
-	recordings := make(map[string]bool, len(req.Recordings))
-	for _, recording := range req.Recordings {
-		recordings[recording] = true
 	}
 
 	var lessons []string

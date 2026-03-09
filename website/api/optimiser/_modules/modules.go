@@ -18,22 +18,33 @@ import (
 */
 func GetAllModuleSlots(
 	optimiserRequest models.OptimiserRequest,
-) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, error) {
+) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, map[string]bool, error) {
 	venues, err := getVenues()
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
+	recordingsMap := make(map[string]bool, len(optimiserRequest.Recordings))
+	for _, recording := range optimiserRequest.Recordings {
+		recordingsMap[recording] = true
+	}
+
+	freeDaysMap := make(map[string]bool, len(optimiserRequest.FreeDays))
+	for _, freeDay := range optimiserRequest.FreeDays {
+		freeDaysMap[freeDay] = true
+	}
+
+	earliestMin, _ := models.ParseTimeToMinutes(optimiserRequest.EarliestTime)
+	latestMin, _ := models.ParseTimeToMinutes(optimiserRequest.LatestTime)
+
 	moduleSlots := make(models.ModuleTimetableMap)
-	/*
-		- These are default or backup slots for the partial timetable so that we can display some random slot for unallocated lessons
-	*/
+	// These are default or backup slots for the partial timetable so that we can display some random slot for unallocated lessons
 	defaultSlots := make(models.ModuleDefaultSlotsMap)
 	for _, module := range optimiserRequest.Modules {
 
 		body, err := client.GetModuleData(optimiserRequest.AcadYear, strings.ToUpper(module))
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, nil, err
 		}
 
 		var moduleData struct {
@@ -44,7 +55,7 @@ func GetAllModuleSlots(
 		}
 		err = json.Unmarshal(body, &moduleData)
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, nil, err
 		}
 
 		// Get the module timetable for the semester
@@ -84,13 +95,16 @@ func GetAllModuleSlots(
 		moduleSlots[module], defaultSlots[module] = mergeAndFilterModuleSlots(
 			moduleTimetable,
 			venues,
-			optimiserRequest,
 			module,
+			recordingsMap,
+			freeDaysMap,
+			earliestMin,
+			latestMin,
 		)
 
 	}
 
-	return moduleSlots, defaultSlots, nil
+	return moduleSlots, defaultSlots, recordingsMap, nil
 }
 
 // Gets all venue information from venues.json
@@ -108,22 +122,12 @@ func getVenues() (map[string]models.Location, error) {
 func mergeAndFilterModuleSlots(
 	timetable []models.ModuleSlot,
 	venues map[string]models.Location,
-	optimiserRequest models.OptimiserRequest,
 	module string,
+	recordingsMap map[string]bool,
+	freeDaysMap map[string]bool,
+	earliestMin int,
+	latestMin int,
 ) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot) {
-
-	recordingsMap := make(map[string]bool, len(optimiserRequest.Recordings))
-	for _, recording := range optimiserRequest.Recordings {
-		recordingsMap[recording] = true
-	}
-
-	freeDaysMap := make(map[string]bool, len(optimiserRequest.FreeDays))
-	for _, freeDay := range optimiserRequest.FreeDays {
-		freeDaysMap[freeDay] = true
-	}
-
-	earliestMin, _ := models.ParseTimeToMinutes(optimiserRequest.EarliestTime)
-	latestMin, _ := models.ParseTimeToMinutes(optimiserRequest.LatestTime)
 
 	/*
 		We group by classNo because some slots come as a pair, ie you have to attend both slots to complete the lesson
