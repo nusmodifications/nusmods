@@ -9,7 +9,6 @@ import (
 	"time"
 
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
-	solver "github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
 
 const baseURL = "http://localhost:8020/optimise"
@@ -36,7 +35,7 @@ func TestOptimiser_SingleModule(t *testing.T) {
 		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
 	}
 
-	var result solver.SolveResponse
+	var result models.SolveResponse
 	if err := json.Unmarshal(body, &result); err != nil {
 		t.Fatalf("Failed to parse response: %v", err)
 	}
@@ -78,7 +77,7 @@ func TestOptimiser_NoCollisionBetween2Lessons(t *testing.T) {
 		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
 	}
 
-	var result solver.SolveResponse
+	var result models.SolveResponse
 	if err := json.Unmarshal(body, &result); err != nil {
 		t.Fatalf("Failed to parse response: %v", err)
 	}
@@ -121,7 +120,7 @@ func TestOptimiser_MultipleModulesWithFreeDays(t *testing.T) {
 		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
 	}
 
-	var result solver.SolveResponse
+	var result models.SolveResponse
 	if err := json.Unmarshal(body, &result); err != nil {
 		t.Fatalf("Failed to parse response: %v", err)
 	}
@@ -151,7 +150,7 @@ var dayNames = []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 // - All lessons are within earliestTime and latestTime bounds
 // - Free days have no lessons scheduled
 // - Lessons marked as recordings should not appear in physical timetable
-func validateTimetable(t *testing.T, result solver.SolveResponse, req models.OptimiserRequest) {
+func validateTimetable(t *testing.T, result models.SolveResponse, req models.OptimiserRequest) {
 	t.Helper()
 
 	// Build free days set
