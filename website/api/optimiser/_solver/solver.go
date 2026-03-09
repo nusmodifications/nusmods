@@ -190,7 +190,8 @@ func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool
 			if newSlot.StartMin < oldSlot.EndMin && oldSlot.StartMin < newSlot.EndMin {
 
 				// if weeks is not a []int, then skip checking for week conflict
-				if _, ok := newSlot.Weeks.([]any); !ok {
+				newWeeks, ok := newSlot.Weeks.([]any)
+				if !ok {
 					return true
 				}
 				if _, ok := oldSlot.Weeks.([]any); !ok {
@@ -198,7 +199,7 @@ func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool
 				}
 
 				// check if the weeks overlap
-				for _, week := range newSlot.Weeks.([]any) {
+				for _, week := range newWeeks {
 					weekFloat, ok := week.(float64)
 					if !ok {
 						continue
@@ -367,7 +368,7 @@ func scoreTimetableState(
 // only lessons that require physical attendance. This is used when evaluating constraints
 // that only apply to in-person classes (e.g., lunch breaks, consecutive hours on campus).
 func getPhysicalSlots(daySlots []models.ModuleSlot, recordings map[string]struct{}) []models.ModuleSlot {
-	if len(daySlots) == 0 {
+	if len(daySlots) == 0 || len(recordings) == 0 {
 		return daySlots
 	}
 
