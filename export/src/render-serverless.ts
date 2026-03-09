@@ -1,6 +1,7 @@
 import chromium from '@sparticuz/chromium';
 import puppeteer, { Page } from 'puppeteer-core';
 
+import { resolveChromeExecutable } from './chrome-executable';
 import { getModules } from './data';
 import config from './config';
 import type { ExportData } from './types';
@@ -23,7 +24,7 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 }
 
 export async function open(url: string) {
-  const executablePath = await chromium.executablePath();
+  const executablePath = await resolveChromeExecutable(() => chromium.executablePath());
 
   chromium.setGraphicsMode = false;
 

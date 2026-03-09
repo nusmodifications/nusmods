@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import puppeteer, { Page } from 'puppeteer-core';
 import type { Middleware } from 'koa';
 
+import { resolveChromeExecutable } from './chrome-executable';
 import { getModules } from './data';
 import config from './config';
 import type { ExportData, State } from './types';
@@ -24,10 +25,11 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 }
 
 export async function launch() {
+  const executablePath = await resolveChromeExecutable();
   const browser = await puppeteer.launch({
     args: ['--disable-gpu'],
     devtools: !!process.env.DEVTOOLS,
-    executablePath: config.chromeExecutable,
+    executablePath,
     headless: true,
   });
 
