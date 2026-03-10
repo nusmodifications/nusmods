@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import Koa from 'koa';
 import Router from 'koa-router';
 import serve from 'koa-static';
