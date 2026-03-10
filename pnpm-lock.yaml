@@ -54,6 +54,9 @@ importers:
       koa-router:
         specifier: 10.1.1
         version: 10.1.1
+      koa-static:
+        specifier: ^5.0.0
+        version: 5.0.0
       koa-views:
         specifier: 6.3.1
         version: 6.3.1(ejs@3.1.10)(lodash@4.17.23)(pug@3.0.3)
@@ -85,6 +88,9 @@ importers:
       '@types/koa-router':
         specifier: 7.4.8
         version: 7.4.8
+      '@types/koa-static':
+        specifier: ^4.0.4
+        version: 4.0.4
       '@types/koa-views':
         specifier: 2.0.4
         version: 2.0.4
@@ -3076,6 +3082,12 @@ packages:
 
   '@types/koa-router@7.4.8':
     resolution: {integrity: sha512-SkWlv4F9f+l3WqYNQHnWjYnyTxYthqt8W9az2RTdQW7Ay8bc00iRZcrb8MC75iEfPqnGcg2csEl8tTG1NQPD4A==}
+
+  '@types/koa-send@4.1.6':
+    resolution: {integrity: sha512-vgnNGoOJkx7FrF0Jl6rbK1f8bBecqAchKpXtKuXzqIEdXTDO6dsSTjr+eZ5m7ltSjH4K/E7auNJEQCAd0McUPA==}
+
+  '@types/koa-static@4.0.4':
+    resolution: {integrity: sha512-j1AUzzl7eJYEk9g01hNTlhmipFh8RFbOQmaMNLvLcNNAkPw0bdTs3XTa3V045XFlrWN0QYnblbDJv2RzawTn6A==}
 
   '@types/koa-views@2.0.4':
     resolution: {integrity: sha512-aGFBVLiPC7FkXTqHLhnmjKhx3COV+GeJHO9OkLX/p/iAQTgDB5bbnsddx3XgrS6aACWyxR3BpQJVDdSqCNY1lw==}
@@ -6954,6 +6966,10 @@ packages:
   koa-send@5.0.1:
     resolution: {integrity: sha512-tmcyQ/wXXuxpDxyNXv5yNNkdAMdFRqwtegBXUaowiQzUKqJehttS0x2j0eOZDQAyloAth5w6wwBImnFzkUz3pQ==}
     engines: {node: '>= 8'}
+
+  koa-static@5.0.0:
+    resolution: {integrity: sha512-UqyYyH5YEXaJrf9S8E23GoJFQZXkBVJ9zYYMPGz919MSX1KuvAcycIuS0ci150HCoPf4XQVhQ84Qf8xRPWxFaQ==}
+    engines: {node: '>= 7.6.0'}
 
   koa-views@6.3.1:
     resolution: {integrity: sha512-weIaPs2cCHWT2qK8qHRmwlZ29xRCvUVy1v/z12AGavVV5j4QIU0W/Y7OVBBu1sTkcO9dDJ25ajGYHGZ/aY43IQ==}
@@ -13134,6 +13150,15 @@ snapshots:
     dependencies:
       '@types/koa': 2.15.0
 
+  '@types/koa-send@4.1.6':
+    dependencies:
+      '@types/koa': 2.15.0
+
+  '@types/koa-static@4.0.4':
+    dependencies:
+      '@types/koa': 2.15.0
+      '@types/koa-send': 4.1.6
+
   '@types/koa-views@2.0.4':
     dependencies:
       '@types/koa': 2.15.0
@@ -17548,6 +17573,13 @@ snapshots:
       debug: 4.4.3
       http-errors: 1.8.1
       resolve-path: 1.4.0
+    transitivePeerDependencies:
+      - supports-color
+
+  koa-static@5.0.0:
+    dependencies:
+      debug: 3.2.7(supports-color@5.5.0)
+      koa-send: 5.0.1
     transitivePeerDependencies:
       - supports-color
 
