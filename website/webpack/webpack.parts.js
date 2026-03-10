@@ -28,6 +28,17 @@ const PATHS = {
   buildTimetable: path.join(ROOT, DIST, exports.TIMETABLE_ONLY_PUBLIC_PATH),
 };
 
+const sassOptions = {
+  // @material packages use '@material' directly as part of their import paths.
+  // Without this those imports will not resolve properly.
+  includePaths: [PATHS.node],
+  // Bootstrap 4 and sass-loader 10 still emit a large amount of deprecation
+  // output under modern Dart Sass. Keep build logs readable until those
+  // dependencies are upgraded.
+  quietDeps: true,
+  silenceDeprecations: ['legacy-js-api', 'import', 'global-builtin', 'color-functions'],
+};
+
 const getCSSConfig = ({ options } = {}) => [
   {
     loader: 'css-loader',
@@ -41,11 +52,7 @@ const getCSSConfig = ({ options } = {}) => [
   {
     loader: 'sass-loader',
     options: {
-      sassOptions: {
-        // @material packages uses '@material' directly as part of their import paths.
-        // Without this those imports will not resolve properly
-        includePaths: [PATHS.node],
-      },
+      sassOptions,
     },
   },
 ];

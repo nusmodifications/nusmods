@@ -1,4 +1,4 @@
-import { each } from 'lodash';
+import { each } from 'lodash-es';
 
 import { PlannerPlaceholder } from 'types/planner';
 

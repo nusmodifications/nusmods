@@ -1,4 +1,4 @@
-import { each, isEmpty, kebabCase } from 'lodash';
+import { each, isEmpty, kebabCase } from 'lodash-es';
 import { ModuleTitle, Semester, ModuleCode } from 'types/modules';
 import { Venue } from 'types/venues';
 import { SemTimetableConfig } from 'types/timetables';

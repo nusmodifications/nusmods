@@ -14,5 +14,6 @@
     "api/export/pdf.ts": {
       "maxDuration": 15
     }
-  }
+  },
+  "ignoreCommand": "bash ../vercel_ignore_build.sh"
 }

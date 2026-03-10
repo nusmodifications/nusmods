@@ -1,4 +1,4 @@
-import { range, uniq, without } from 'lodash';
+import { range, uniq, without } from 'lodash-es';
 
 import { ColorMapping } from 'types/reducers';
 import { ColorIndex, Lesson, SemTimetableConfig } from 'types/timetables';

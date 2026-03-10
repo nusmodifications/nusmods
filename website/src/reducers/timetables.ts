@@ -1,4 +1,4 @@
-import { get, omit, uniq, values } from 'lodash';
+import { get, omit, uniq, values } from 'lodash-es';
 import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 

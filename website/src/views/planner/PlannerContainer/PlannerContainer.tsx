@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
+import { flatMap, flatten, sortBy, toPairs, values } from 'lodash-es';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 

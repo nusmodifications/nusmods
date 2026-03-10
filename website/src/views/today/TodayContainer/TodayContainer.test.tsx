@@ -1,5 +1,5 @@
 import type { Mock, Mocked } from 'vitest';
-import { flatten, size } from 'lodash';
+import { flatten, size } from 'lodash-es';
 import { shallow } from 'enzyme';
 
 import * as weather from 'apis/weather';

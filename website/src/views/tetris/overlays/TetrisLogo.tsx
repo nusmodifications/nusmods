@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { chunk } from 'lodash';
+import { chunk } from 'lodash-es';
 
 import useCurrentTime from 'views/hooks/useCurrentTime';
 import styles from './TetrisLogo.scss';

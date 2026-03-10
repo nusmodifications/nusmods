@@ -1,4 +1,4 @@
-import { size } from 'lodash';
+import { size } from 'lodash-es';
 
 import type { AcadYear, Module, ModuleCode, ModuleCondensed } from 'types/modules';
 import type { RequestActions } from 'middlewares/requests-middleware';
