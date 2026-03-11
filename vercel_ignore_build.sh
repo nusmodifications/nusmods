@@ -1,6 +1,6 @@
 #!/bin/bash
 
-yum install -y jq 
+dnf install jq
 PR_HEAD_REPO=$(curl -s "https://api.github.com/repos/nusmodifications/$VERCEL_GIT_REPO_SLUG/pulls/$VERCEL_GIT_PULL_REQUEST_ID" | jq -r '.head.repo.full_name')
 
 # 1. Allow core branches to build immediately
