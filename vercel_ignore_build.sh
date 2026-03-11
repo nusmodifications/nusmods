@@ -14,18 +14,28 @@ fi
 
 # 3. Check if this is a Pull Request
 if [[ -n "$VERCEL_GIT_PULL_REQUEST_ID" ]]; then
-    
-    # Query the GitHub API to find the origin of the PR branch.
-    PR_HEAD_REPO=$(curl -s "https://api.github.com/repos/nusmodifications/$VERCEL_GIT_REPO_SLUG/pulls/$VERCEL_GIT_PULL_REQUEST_ID" | jq -r '.head.repo.full_name')
 
-    if [[ -z "$PR_HEAD_REPO" ]]; then
-        echo "🛑 Failed to fetch PR info from GitHub API. Build cancelled."
+    # Query the GitHub API to find the origin of the PR branch.
+    PR_URL="https://api.github.com/repos/nusmodifications/$VERCEL_GIT_REPO_SLUG/pulls/$VERCEL_GIT_PULL_REQUEST_ID"
+    PR_DATA=$(curl -s -m 10 -H "Authorization: Bearer $GITHUB_API_TOKEN" "$PR_URL")
+
+    if [[ -z "$PR_DATA" ]]; then
+        echo "🛑 Failed to fetch PR info from GitHub. Build cancelled."
         exit 0
     fi
 
-    # Compare the PR origin to the base repository
-    if [[ "$PR_HEAD_REPO" != "nusmodifications/$VERCEL_GIT_REPO_SLUG" && "$PR_HEAD_REPO" != "null" ]]; then
-        echo "✅ Forked PR detected: $VERCEL_GIT_PULL_REQUEST_ID from $PR_HEAD_REPO"
+    # Response contains "head" and "base" branches, which each contain a nested "fork" field:
+    # { "head": { "repo": { "fork": true, ... }}, "base": { "repo": { "fork": false }}}
+    IS_FORK=$(
+        echo "$PR_DATA"                         |
+            sed 's/.*"head"://'                 | # get everything after "head"
+            grep '"fork":'                      | # get all lines with "fork"
+            head -n 1                           | # get the first line with "fork"
+            sed -E 's/.*: (true|false),?/\1/'     # extract the boolean value
+    )
+
+    if [[ "$IS_FORK" == "true" ]]; then
+        echo "✅ Fork PR detected: #$VERCEL_GIT_PULL_REQUEST_ID"
         # Exiting 1 here hands it off to Vercel's native fork protection for authorization
         exit 1
     else
