@@ -22,7 +22,7 @@ if [[ -n "$VERCEL_GIT_PULL_REQUEST_ID" ]]; then
         echo "🛑 Failed to fetch PR info from GitHub API. Build cancelled."
         exit 0
     fi
-    
+
     # Compare the PR origin to the base repository
     if [[ "$PR_HEAD_REPO" != "nusmodifications/$VERCEL_GIT_REPO_SLUG" && "$PR_HEAD_REPO" != "null" ]]; then
         echo "✅ Forked PR detected: $VERCEL_GIT_PULL_REQUEST_ID from $PR_HEAD_REPO"
