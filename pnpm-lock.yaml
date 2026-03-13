@@ -728,6 +728,9 @@ importers:
       enzyme-to-json:
         specifier: 3.6.2
         version: 3.6.2(enzyme@3.11.0)
+      eslint-plugin-react-hooks:
+        specifier: ^7.0.1
+        version: 7.0.1(eslint@8.57.1)
       fast-json-stable-stringify:
         specifier: 2.1.0
         version: 2.1.0
