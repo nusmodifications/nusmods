@@ -9,6 +9,7 @@ import BaseTask from './BaseTask';
 import GetFacultyDepartment from './GetFacultyDepartment';
 import GetAllModules from './GetAllModules';
 import GetSemesterData from './GetSemesterData';
+import GetSemesterTimetable from './GetSemesterTimetable';
 import CollateVenues from './CollateVenues';
 import CollateModules from './CollateModules';
 
@@ -45,16 +46,33 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
       faculties: organizations.faculties,
     });
 
-    // With module info fetched upfront, per-semester timetable and exam
+    // Fetch timetables for all semesters upfront so we can determine which
+    // modules have timetable data in any semester. This prevents false
+    // timetable propagation to modules that are offered in other semesters
+    // (e.g. GESS1000T offered in ST1 should not get Sem 2 timetable from GES1002).
+    const allTimetables = await Promise.all(
+      Semesters.map((semester) => new GetSemesterTimetable(semester, this.academicYear).run()),
+    );
+
+    const modulesWithAnyTimetable = new Set<string>();
+    for (const timetables of allTimetables) {
+      for (const moduleCode of Object.keys(timetables)) {
+        modulesWithAnyTimetable.add(moduleCode);
+      }
+    }
+
+    // With module info and timetables fetched upfront, per-semester exam
     // fetches can run in parallel across semesters
     const semesterResults = await Promise.all(
-      Semesters.map(async (semester) => {
+      Semesters.map(async (semester, index) => {
         this.logger.info(`Getting data for semester ${semester}`);
 
         const getSemesterData = new GetSemesterData(semester, this.academicYear);
         const modules = await getSemesterData.run({
           ...organizations,
           modules: allModules,
+          modulesWithAnyTimetable,
+          timetables: allTimetables[index],
         });
 
         const { aliases } = await new CollateVenues(semester, this.academicYear).run(modules);

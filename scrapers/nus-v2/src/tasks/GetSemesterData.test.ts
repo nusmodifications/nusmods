@@ -1,9 +1,11 @@
+import type { Mocked } from 'vitest';
 import { RawLesson } from '../types/modules';
-import { ModuleAttributeEntry } from '../types/api';
+import { ModuleAttributeEntry, ModuleInfo } from '../types/api';
 import { Logger } from '../services/logger';
+import api, { NusApi } from '../services/nus-api';
 import departments from './fixtures/departments.json';
 import faculties from './fixtures/faculties.json';
-import {
+import GetSemesterData, {
   cleanModuleInfo,
   getDepartmentCodeMap,
   getFacultyCodeMap,
@@ -11,6 +13,11 @@ import {
   parseWorkload,
   getLessonCovidZones,
 } from './GetSemesterData';
+import { EVERY_WEEK } from '../utils/test-utils';
+
+vi.mock('../services/io/elastic');
+vi.mock('../services/nus-api');
+const mockApi: Mocked<NusApi> = api as any;
 
 describe(getDepartmentCodeMap, () => {
   test('should map department codes to their description', () => {
@@ -314,5 +321,120 @@ describe(mapAttributes, () => {
     expect(
       mapAttributes([attr('PRQY', 'YES'), attr('YEAR', 'Yes'), attr('MPE', 'S1')], mockLogger),
     ).toEqual({ mpes1: true, su: true, year: true });
+  });
+});
+
+describe('GetSemesterData equivalent module propagation', () => {
+  // Helper to create a minimal ModuleInfo
+  function makeModuleInfo(
+    code: string,
+    title: string,
+    credits: number,
+    description: string,
+  ): ModuleInfo {
+    const [subjectArea, catalogNumber] = [code.replace(/\d.*/, ''), code.replace(/^[A-Z]+/, '')];
+    return {
+      AcademicGroup: '001',
+      AcademicGroupDesc: 'Faculty',
+      AdditionalInformation: null,
+      ApplicableFromSem: '1',
+      ApplicableFromYear: '2025',
+      CatalogNumber: catalogNumber,
+      Code: code,
+      CorequisiteRule: '',
+      CorequisiteSummary: null,
+      CourseAttributes: [],
+      CourseDesc: description,
+      CourseOfferNumber: '1',
+      EduRecCourseID: null,
+      EffectiveDate: null,
+      GradingBasisDesc: 'Graded',
+      OrganisationCode: '00100ACAD1',
+      OrganisationName: '',
+      PreclusionRule: null,
+      PreclusionSummary: null,
+      PreRequisiteAdvisory: null,
+      PrerequisiteRule: null,
+      PrerequisiteSummary: null,
+      SubjectArea: subjectArea,
+      Title: title,
+      UnitsMax: credits,
+      UnitsMin: credits,
+      WorkloadHoursNUSMods: null,
+      YearLong: 'N',
+    };
+  }
+
+  const sampleLesson: RawLesson = {
+    classNo: '1',
+    covidZone: 'Unknown',
+    day: 'Monday',
+    endTime: '1200',
+    lessonType: 'Lecture',
+    size: 50,
+    startTime: '1000',
+    venue: 'LT1',
+    weeks: EVERY_WEEK,
+  };
+
+  test('should not propagate timetable to module that has timetable in another semester', async () => {
+    // Setup: GES1002 has timetable in sem 2, GESS1000T does NOT have timetable in sem 2
+    // but DOES have timetable in sem 3. They share title/credits/description.
+    // GESS1000T should NOT receive propagated timetable because it has timetable elsewhere.
+    mockApi.getSemesterTimetables.mockImplementation(async (_term, consumer) => {
+      // No lessons - timetables are provided directly via input
+    });
+    mockApi.getTermExams.mockResolvedValue([]);
+
+    const sharedTitle = 'Global EC Dimensions of Singapore';
+    const sharedDesc = 'This course introduces students to the dynamics of the world economy.';
+    const modules = [
+      makeModuleInfo('GES1002', sharedTitle, 4, sharedDesc),
+      makeModuleInfo('GESS1000T', sharedTitle, 4, sharedDesc),
+    ];
+
+    const getSemesterData = new GetSemesterData(2);
+    const result = await getSemesterData.run({
+      departments,
+      faculties,
+      modules,
+      // GES1002 has timetable in sem 2
+      timetables: { GES1002: [sampleLesson] },
+      // GESS1000T has timetable in sem 3, so it's in the cross-semester set
+      modulesWithAnyTimetable: new Set(['GES1002', 'GESS1000T']),
+    });
+
+    const gess1000t = result.find((m) => m.moduleCode === 'GESS1000T');
+    expect(gess1000t).toBeDefined();
+    expect(gess1000t!.semesterData).toBeUndefined();
+  });
+
+  test('should propagate timetable to true shadow module with no timetable in any semester', async () => {
+    // Setup: CS2113 has timetable, CS2113T has no timetable in ANY semester.
+    // CS2113T should receive propagated timetable.
+    mockApi.getSemesterTimetables.mockImplementation(async (_term, consumer) => {});
+    mockApi.getTermExams.mockResolvedValue([]);
+
+    const sharedTitle = 'Software Engineering';
+    const sharedDesc = 'This module covers software engineering principles.';
+    const modules = [
+      makeModuleInfo('CS2113', sharedTitle, 4, sharedDesc),
+      makeModuleInfo('CS2113T', sharedTitle, 4, sharedDesc),
+    ];
+
+    const getSemesterData = new GetSemesterData(1);
+    const result = await getSemesterData.run({
+      departments,
+      faculties,
+      modules,
+      timetables: { CS2113: [sampleLesson] },
+      // Only CS2113 has timetable in any semester - CS2113T is a true shadow module
+      modulesWithAnyTimetable: new Set(['CS2113']),
+    });
+
+    const cs2113t = result.find((m) => m.moduleCode === 'CS2113T');
+    expect(cs2113t).toBeDefined();
+    expect(cs2113t!.semesterData).toBeDefined();
+    expect(cs2113t!.semesterData!.timetable).toEqual([sampleLesson]);
   });
 });

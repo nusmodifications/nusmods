@@ -27,6 +27,11 @@ interface Input {
   departments: Array<AcademicOrg>;
   faculties: Array<AcademicGrp>;
   modules: Array<ModuleInfo>;
+  /** Pre-fetched timetables for this semester. If provided, skips internal timetable fetch. */
+  timetables?: { [moduleCode: string]: Array<RawLesson> };
+  /** Module codes that have timetable data in any semester. Used to avoid propagating
+   *  timetable data to modules that are genuinely offered in other semesters. */
+  modulesWithAnyTimetable?: Set<string>;
 }
 
 type Output = Array<SemesterModuleData>;
@@ -319,9 +324,9 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
     this.logger.info(`Getting semester data for ${academicYear} semester ${semester}`);
 
-    // Fetch timetable and exams in parallel (module info is pre-fetched externally)
+    // Fetch timetable (if not pre-fetched) and exams in parallel
     const [timetables, exams] = await Promise.all([
-      new GetSemesterTimetable(semester, academicYear).run(),
+      input.timetables ?? new GetSemesterTimetable(semester, academicYear).run(),
       new GetSemesterExams(semester, academicYear).run(),
     ]);
 
@@ -378,11 +383,18 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // The new NUS API only returns timetable data for one code of dual-coded modules.
     // This step matches modules without timetable to those with timetable based on
     // title, credits, and description, then copies the timetable data.
+    //
+    // Only consider modules that have no timetable in ANY semester as propagation
+    // targets. Modules with timetable data in other semesters are genuinely offered
+    // there and should not receive propagated data here (e.g. GESS1000T is offered
+    // in ST1 and should not get Sem 2 timetable from GES1002).
     const modulesWithTimetable = semesterModuleData
       .filter((m) => m.semesterData !== undefined)
       .map((m) => modulesMap[m.moduleCode]);
     const modulesWithoutTimetable = semesterModuleData
-      .filter((m) => m.semesterData === undefined)
+      .filter(
+        (m) => m.semesterData === undefined && !input.modulesWithAnyTimetable?.has(m.moduleCode),
+      )
       .map((m) => modulesMap[m.moduleCode]);
 
     const equivalentModules = findEquivalentModules(modulesWithoutTimetable, modulesWithTimetable);
