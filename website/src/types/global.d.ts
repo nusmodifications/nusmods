@@ -16,6 +16,9 @@
  * - `test`: we are in a test environment, e.g. a jest test run.
  * - `development`: all other situations.
  */
+
+// NOTE: These globals are also duplicated in export/src/types.ts
+
 declare const NUSMODS_ENV: 'development' | 'production' | 'staging' | 'preview' | 'test';
 
 declare const DATA_API_BASE_URL: string | undefined;

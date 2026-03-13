@@ -1,13 +1,12 @@
-import _ from 'lodash';
-
 import { validateExportData } from '../../src/data';
 import { makeExportHandler } from '../../src/handler';
-import * as render from '../../src/render-serverless';
+import { parseViewportOptions } from '../../src/image-options';
+import { renderImage } from '../../src/render-image';
 import type { ExportData } from '../../src/types';
 
 type Data = {
   exportData: ExportData;
-  options: render.ViewportOptions;
+  options: import('../../src/types').ViewportOptions;
 };
 
 const handler = makeExportHandler<Data>(
@@ -15,29 +14,13 @@ const handler = makeExportHandler<Data>(
     const exportData = JSON.parse(request.query.data as never);
     validateExportData(exportData);
 
-    let options: render.ViewportOptions = {
-      pixelRatio: _.clamp(Number(request.query.pixelRatio) || 1, 1, 3),
-    };
-    const height = Number(request.query.height);
-    const width = Number(request.query.width);
-    if (
-      height !== undefined &&
-      width !== undefined &&
-      !Number.isNaN(height) && // accept floats
-      !Number.isNaN(width) && // accept floats
-      height > 0 &&
-      width > 0
-    ) {
-      options = { ...options, height, width };
-    }
-
     return {
       exportData,
-      options,
+      options: parseViewportOptions(request.query),
     };
   },
-  async (response, page, { exportData, options }) => {
-    const body = await render.image(page, exportData, options);
+  async (response, { exportData, options }) => {
+    const body = await renderImage(exportData, options);
     response.setHeader('Content-Disposition', 'attachment; filename="My Timetable.png"');
     response.setHeader('Content-Type', 'image/png');
     response.status(200).send(body);

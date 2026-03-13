@@ -39,16 +39,19 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 ## CPEx
 
 ### Before CPEx Testing
-  - [ ] Update `ACADEMIC_YEAR` in `scrapers/cpex-scraper/src/index.ts`. It should be for the **next** semester
-  - [ ] Create PR and merge to production
-  - [ ] Run scraper
+
+- [ ] Update `ACADEMIC_YEAR` in `scrapers/cpex-scraper/src/index.ts`. It should be for the **next** semester
+- [ ] Create PR and merge to production
+- [ ] Run scraper
 
 ### During CPEx Testing
+
 For `cpex-staging` deployment
-  - [ ] Update `MPE_SEMESTER` in `website/src/views/mpe/constants.ts` to be the semester you're configuring CPEx for (usually the next semester)
-  - [ ] Update dates in the ModReg schedule in `website/src/data/modreg-schedule.json`
-  - [ ] Enable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
-  - [ ] Push onto `cpex-staging` branch (Ensure synced with `master` branch first), then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
+
+- [ ] Update `MPE_SEMESTER` in `website/src/views/mpe/constants.ts` to be the semester you're configuring CPEx for (usually the next semester)
+- [ ] Update dates in the ModReg schedule in `website/src/data/modreg-schedule.json`
+- [ ] Enable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
+- [ ] Push onto `cpex-staging` branch (Ensure synced with `master` branch first), then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
 
 ```bash
 git checkout master
@@ -59,10 +62,12 @@ git push
 ```
 
 ### During CPEx
+
 - [ ] Merge `cpex-staging` into `master` via PR
 - [ ] Deploy latest `master` to `production`
 
 ### After CPEx
+
 - [ ] Disable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
 - [ ] Merge into `master`
 - [ ] Deploy latest `master` to `production`
