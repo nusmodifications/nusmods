@@ -1,5 +1,7 @@
+import path from 'node:path';
 import Koa from 'koa';
 import Router from 'koa-router';
+import serve from 'koa-static';
 import views from 'koa-views';
 import * as Sentry from '@sentry/node';
 
@@ -71,6 +73,7 @@ app
       extension: 'pug',
     }),
   )
+  .use(serve(path.join(__dirname, '..', '..', 'public')))
   .use(errorHandler)
   .use(data.parseExportData)
   .use(router.routes())
