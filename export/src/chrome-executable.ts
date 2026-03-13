@@ -1,7 +1,5 @@
 import fs from 'fs-extra';
 
-import config from './config';
-
 const CHROME_EXECUTABLE_CANDIDATES: Partial<Record<NodeJS.Platform, Array<string>>> = {
   darwin: [
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
@@ -20,10 +18,6 @@ const CHROME_EXECUTABLE_CANDIDATES: Partial<Record<NodeJS.Platform, Array<string
 };
 
 export async function resolveChromeExecutable(fallback?: () => Promise<string | undefined>) {
-  if (config.chromeExecutable) {
-    return config.chromeExecutable;
-  }
-
   const fallbackExecutablePath = await fallback?.();
   if (fallbackExecutablePath) {
     return fallbackExecutablePath;
@@ -35,8 +29,5 @@ export async function resolveChromeExecutable(fallback?: () => Promise<string | 
     }
   }
 
-  throw new Error(
-    'Could not find a Chrome/Chromium executable for puppeteer-core. ' +
-      'Set CHROME_EXECUTABLE in export/.env.',
-  );
+  throw new Error('Could not find a Chrome/Chromium executable for puppeteer-core.');
 }

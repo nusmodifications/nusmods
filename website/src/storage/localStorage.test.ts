@@ -1,4 +1,34 @@
-import getLocalStorage, { createLocalStorageShim, canUseBrowserLocalStorage } from './localStorage';
+import { createLocalStorageShim } from './localStorage';
+
+async function loadLocalStorageModule() {
+  vi.resetModules();
+  return import('./localStorage');
+}
+
+function setWindowLocalStorage(localStorage?: Storage) {
+  if (localStorage) {
+    Object.defineProperty(window, 'localStorage', {
+      configurable: true,
+      enumerable: true,
+      writable: true,
+      value: localStorage,
+    });
+    return;
+  }
+
+  const mutableWindow = window as unknown as { localStorage?: Storage };
+  delete mutableWindow.localStorage;
+}
+
+let originalLocalStorage: Storage;
+
+beforeEach(() => {
+  originalLocalStorage = window.localStorage;
+});
+
+afterEach(() => {
+  setWindowLocalStorage(originalLocalStorage);
+});
 
 describe(createLocalStorageShim, () => {
   test('should store and return data', () => {
@@ -36,47 +66,46 @@ describe(createLocalStorageShim, () => {
 });
 
 describe('#canUseBrowserLocalStorage', () => {
-  let localStorage: typeof window.localStorage;
-  beforeEach(() => {
-    localStorage = window.localStorage;
-    delete (window as any).localStorage;
-  });
-
-  afterEach(() => {
-    (window as any).localStorage = localStorage;
-  });
-
-  test('should return false if localStorage is undefined', () => {
+  test('should return false if localStorage is undefined', async () => {
+    const { canUseBrowserLocalStorage } = await loadLocalStorageModule();
+    setWindowLocalStorage();
     expect(canUseBrowserLocalStorage()).toEqual(false);
   });
 
-  test('should return false if localStorage throws when writing on iOS <=10 on private browsing', () => {
-    (window as any).localStorage = {
+  test('should return false if localStorage throws when writing on iOS <=10 on private browsing', async () => {
+    const { canUseBrowserLocalStorage } = await loadLocalStorageModule();
+    setWindowLocalStorage({
       ...createLocalStorageShim(),
       // the length is set here because canUseBrowserLocalStorage uses a hack to detect private browsing
       length: 0,
       setItem: () => {
         throw new Error();
       },
-    };
+    } as Storage);
     expect(canUseBrowserLocalStorage()).toEqual(false);
   });
 
-  test('should return true if localStorage is localStorage-like object', () => {
-    (window as any).localStorage = createLocalStorageShim();
+  test('should return true if localStorage is localStorage-like object', async () => {
+    const { canUseBrowserLocalStorage } = await loadLocalStorageModule();
+    setWindowLocalStorage(createLocalStorageShim());
 
     expect(canUseBrowserLocalStorage()).toEqual(true);
   });
 });
 
-describe(getLocalStorage, () => {
-  test("should return the actual browser's localStorage if the browser can use localStorage", () => {
+describe('getLocalStorage', () => {
+  test('should return window.localStorage if it can be used', async () => {
+    const { canUseBrowserLocalStorage, default: getLocalStorage } = await loadLocalStorageModule();
+    const localStorage = createLocalStorageShim();
+    setWindowLocalStorage(localStorage);
+
     expect(canUseBrowserLocalStorage()).toEqual(true);
     expect(getLocalStorage()).toBe(window.localStorage);
   });
 
-  test('should return a shim if browser cannot use localStorage', () => {
-    delete (window as any).localStorage;
+  test('should return a shim if browser cannot use localStorage', async () => {
+    const { canUseBrowserLocalStorage, default: getLocalStorage } = await loadLocalStorageModule();
+    setWindowLocalStorage();
 
     expect(canUseBrowserLocalStorage()).toEqual(false);
     expect(getLocalStorage()).toMatchObject(
