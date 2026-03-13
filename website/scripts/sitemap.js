@@ -1,6 +1,5 @@
 const path = require('path');
 const { URL } = require('url');
-const _ = require('lodash');
 const fs = require('graceful-fs');
 const axios = require('axios');
 const api = require('../src/apis/nusmods');
@@ -25,8 +24,12 @@ const relativeUrls = [
   'contributors',
   'apps',
 ];
+let kebabCase;
+let uniq;
 
 const addDynamicPages = async (urls) => {
+  ({ kebabCase, uniq } = await import('lodash-es'));
+
   const responses = await Promise.all([
     axios.get(api.moduleListUrl()),
     axios.get(api.venueListUrl(1)),
@@ -34,10 +37,10 @@ const addDynamicPages = async (urls) => {
   ]);
 
   const [modules, venues1, venues2] = responses.map((response) => response.data);
-  const venues = _.uniq([...venues1, ...venues2]);
+  const venues = uniq([...venues1, ...venues2]);
 
   modules.forEach((module) => {
-    urls.push(`courses/${module.moduleCode}/${_.kebabCase(module.title)}`);
+    urls.push(`courses/${module.moduleCode}/${kebabCase(module.title)}`);
   });
 
   venues.forEach((venue) => {

@@ -7,16 +7,37 @@ const {
   measureFileSizesBeforeBuild,
   printFileSizesAfterBuild,
 } = require('react-dev-utils/FileSizeReporter');
-const _ = require('lodash');
 
-const production = require('../webpack/webpack.config.prod');
-const timetableOnly = require('../webpack/webpack.config.timetable-only');
-const browserWarning = require('../webpack/webpack.config.browser-warning');
-const parts = require('../webpack/webpack.parts');
+let castArray;
 
 function runWebpack(config) {
   const compiler = webpack(config);
   return util.promisify(compiler.run).call(compiler);
+}
+
+async function loadWebpackModules() {
+  const [
+    { default: production },
+    { default: timetableOnly },
+    { default: browserWarning },
+    parts,
+    lodashEs,
+  ] = await Promise.all([
+    import('../webpack/webpack.config.prod.mjs'),
+    import('../webpack/webpack.config.timetable-only.mjs'),
+    import('../webpack/webpack.config.browser-warning.mjs'),
+    import('../webpack/webpack.parts.mjs'),
+    import('lodash-es'),
+  ]);
+
+  ({ castArray } = lodashEs);
+
+  return {
+    production,
+    timetableOnly,
+    browserWarning,
+    parts,
+  };
 }
 
 /**
@@ -28,7 +49,7 @@ function runWebpack(config) {
 function printErrors(log, summary, errorOrErrors) {
   log(chalk.red(summary));
   log();
-  const errors = _.castArray(errorOrErrors);
+  const errors = castArray(errorOrErrors);
   errors.forEach((err, i) => {
     log(err);
     if (i !== errors.length - 1) {
@@ -66,7 +87,7 @@ function handleErrors(log, stats) {
  * Write commit hash into `commit-hash.txt`, which are used by
  * scripts/promote-staging.sh and https://launch.nusmods.com.
  */
-async function writeCommitHash() {
+async function writeCommitHash(parts) {
   const { commitHash } = parts.appVersion();
   // Sync filename with `scripts/promote-staging.sh`.
   return fs.outputFile(
@@ -75,7 +96,7 @@ async function writeCommitHash() {
   );
 }
 
-async function buildProd(previousDistFileSizes) {
+async function buildProd(previousDistFileSizes, { production, browserWarning, parts }) {
   const log = (...args) => console.log('prod:', ...args);
   try {
     log(chalk.cyan('Creating build...'));
@@ -108,7 +129,7 @@ async function buildProd(previousDistFileSizes) {
 /**
  * Build the timetable-only build for the export service.
  */
-async function buildTimetableOnly() {
+async function buildTimetableOnly({ timetableOnly }) {
   const log = (...args) => console.log('timetable-only:', ...args);
   try {
     log(chalk.cyan('Creating build...'));
@@ -123,10 +144,10 @@ async function buildTimetableOnly() {
   }
 }
 
-async function buildAll(previousDistFileSizes) {
+async function buildAll(previousDistFileSizes, webpackModules) {
   const results = await Promise.allSettled([
-    buildProd(previousDistFileSizes),
-    buildTimetableOnly(),
+    buildProd(previousDistFileSizes, webpackModules),
+    buildTimetableOnly(webpackModules),
   ]);
   const errors = results.filter((r) => r.status === 'rejected').map((r) => r.reason);
   if (errors.length > 0) {
@@ -135,6 +156,9 @@ async function buildAll(previousDistFileSizes) {
 }
 
 async function main() {
+  const webpackModules = await loadWebpackModules();
+  const { parts } = webpackModules;
+
   console.log('Building version', chalk.cyan(parts.appVersion().versionStr));
 
   // First, read the current file sizes in build directory.
@@ -146,14 +170,14 @@ async function main() {
   console.log(`${parts.PATHS.build} has been removed`);
 
   try {
-    await buildAll(previousDistFileSizes);
+    await buildAll(previousDistFileSizes, webpackModules);
   } catch {
     // errors should've been logged by the respective build functions.
     console.log('Build failed.');
     process.exit(1);
   }
 
-  await writeCommitHash();
+  await writeCommitHash(parts);
 
   console.log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);
 }

@@ -1,18 +1,18 @@
-const childProcess = require('child_process');
-const path = require('path');
+import childProcess from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import { format } from 'date-fns';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const { format } = require('date-fns');
-
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = 'src';
 const DIST = 'dist';
 
 // Used by Webpack to resolve the path to assets on the client side
 // See: https://webpack.js.org/guides/public-path/
-exports.WEBSITE_PUBLIC_PATH = '/';
-exports.TIMETABLE_ONLY_PUBLIC_PATH = '/timetable-only/';
+export const WEBSITE_PUBLIC_PATH = '/';
+export const TIMETABLE_ONLY_PUBLIC_PATH = '/timetable-only/';
 
 const PATHS = {
   root: ROOT,
@@ -24,7 +24,7 @@ const PATHS = {
   images: path.join(ROOT, SRC, 'img'),
   fixtures: path.join(ROOT, SRC, '__mocks__'),
   build: path.join(ROOT, DIST),
-  buildTimetable: path.join(ROOT, DIST, exports.TIMETABLE_ONLY_PUBLIC_PATH),
+  buildTimetable: path.join(ROOT, DIST, TIMETABLE_ONLY_PUBLIC_PATH),
 };
 
 const sassOptions = {
@@ -61,7 +61,7 @@ const getCSSConfig = ({ options } = {}) => [
  *
  * @see https://survivejs.com/webpack/styling/loading/
  */
-exports.loadCSS = ({ include, exclude, options } = {}) => ({
+export const loadCSS = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
@@ -75,7 +75,7 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
   },
 });
 
-exports.productionCSS = ({ options } = {}) => ({
+export const productionCSS = ({ options } = {}) => ({
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'assets/[name].[contenthash:8].css',
@@ -91,7 +91,7 @@ exports.productionCSS = ({ options } = {}) => ({
       {
         test: /\.(css|scss)$/,
         include: PATHS.styles,
-        use: [MiniCssExtractPlugin.loader, ...getCSSConfig(options)],
+        use: [MiniCssExtractPlugin.loader, ...getCSSConfig({ options })],
       },
       {
         test: /\.(css|scss)$/,
@@ -118,7 +118,7 @@ exports.productionCSS = ({ options } = {}) => ({
  * @see https://webpack.js.org/guides/asset-management/#loading-images
  * @see https://survivejs.com/webpack/loading/images/
  */
-exports.loadImages = ({ include, exclude, options } = {}) => ({
+export const loadImages = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
@@ -163,7 +163,7 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
   },
 });
 
-exports.devServer = () => ({
+export const devServer = () => ({
   devServer: {
     client: {
       // Overlay compiler errors, useful when something breaks
@@ -197,7 +197,7 @@ function singaporeTime() {
  *
  * @returns Object with keys `commitHash` and `versionStr`.
  */
-exports.appVersion = () => {
+export const appVersion = () => {
   let commitHash;
   try {
     commitHash =
@@ -218,7 +218,7 @@ exports.appVersion = () => {
  * @returns {typeof NUSMODS_ENV} The NUSMods environment. For more information,
  * see the docstring for the `NUSMODS_ENV` global variable.
  */
-exports.env = () => {
+export const env = () => {
   if (process.env.NODE_ENV === 'test') return 'test';
 
   // Vercel deployments
@@ -235,4 +235,4 @@ exports.env = () => {
   return 'development';
 };
 
-exports.PATHS = PATHS;
+export { PATHS };

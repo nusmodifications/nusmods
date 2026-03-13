@@ -1,8 +1,8 @@
-const { merge } = require('webpack-merge');
+import { merge } from 'webpack-merge';
 
-const parts = require('./webpack.parts');
+import * as parts from './webpack.parts.mjs';
 
-module.exports = merge([
+const browserWarningConfig = merge([
   {
     // Don't attempt to continue if there are any errors.
     bail: true,
@@ -57,3 +57,5 @@ module.exports = merge([
     },
   }),
 ]);
+
+export default browserWarningConfig;

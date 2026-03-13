@@ -1,11 +1,15 @@
-const path = require('path');
-const { merge } = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+import path from 'node:path';
+import { createRequire } from 'node:module';
 
-const commonConfig = require('./webpack.config.common');
-const parts = require('./webpack.parts');
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { merge } from 'webpack-merge';
+
+import commonConfig from './webpack.config.common.mjs';
+import * as parts from './webpack.parts.mjs';
+
+const require = createRequire(import.meta.url);
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 
 const NUSMODS_ENV = parts.env();
 
@@ -50,4 +54,4 @@ const timetableOnlyConfig = merge([
   parts.devServer(),
 ]);
 
-module.exports = timetableOnlyConfig;
+export default timetableOnlyConfig;
