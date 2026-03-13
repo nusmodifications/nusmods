@@ -4,24 +4,22 @@
  * types used in modules.js
  */
 
-/* eslint-disable camelcase */
-
 // AcademicGrp and AcademicOrg use abbreviation to avoid clashing with the
 // name of the field when destructuring
 export type AcademicGrp = Readonly<{
-  EffectiveStatus: string;
   AcademicGroup: string;
-  DescriptionShort: string;
   Description: string;
+  DescriptionShort: string;
   EffectiveDate: string;
+  EffectiveStatus: string;
 }>;
 
 export type AcademicOrg = Readonly<{
-  EffectiveStatus: string;
-  DescriptionShort: string;
-  Description: string;
-  EffectiveDate: string;
   AcademicOrganisation: string;
+  Description: string;
+  DescriptionShort: string;
+  EffectiveDate: string;
+  EffectiveStatus: string;
 }>;
 
 export type ModuleAcademicOrganisation = Readonly<{
@@ -49,65 +47,65 @@ export type ModuleAcademicGroup = Readonly<{
 // GRDY - GD modules eligible for SU
 // MPE - Module is included in a particular semester's MPE. Value is 'S1' (sem 1), 'S2', or 'S1&2' (both sem 1 and 2)
 export type ModuleAttributeEntry = Readonly<{
-  CourseAttributeValue: string;
   CourseAttribute: string;
+  CourseAttributeValue: string;
 }>;
 
 export type ModuleInfo = Readonly<{
-  Code: string;
-  Title: string;
-  OrganisationCode: string;
-  OrganisationName: string;
   AcademicGroup: string;
   AcademicGroupDesc: string;
-  UnitsMin: number | null;
-  UnitsMax: number | null;
-  CourseDesc: string;
-  PreRequisiteAdvisory: string | null;
-  PrerequisiteSummary: string | null;
-  PrerequisiteRule: string | null;
-  CorequisiteSummary: string | null;
-  CorequisiteRule: string | null;
-  PreclusionSummary: string | null;
-  PreclusionRule: string | null;
-  CourseAttributes: { Code: string; Value: string }[];
-  YearLong: 'Y' | 'N';
-  EffectiveDate: string | null;
-  SubjectArea: string;
-  CatalogNumber: string;
-  WorkloadHoursNUSMods: string | null;
-  CourseOfferNumber: string;
-  ApplicableFromYear: string;
-  ApplicableFromSem: string;
   AdditionalInformation: string | null;
+  ApplicableFromSem: string;
+  ApplicableFromYear: string;
+  CatalogNumber: string;
+  Code: string;
+  CorequisiteRule: string | null;
+  CorequisiteSummary: string | null;
+  CourseAttributes: Array<{ Code: string; Value: string }>;
+  CourseDesc: string;
+  CourseOfferNumber: string;
   EduRecCourseID: string | null;
+  EffectiveDate: string | null;
   GradingBasisDesc: string | null;
+  OrganisationCode: string;
+  OrganisationName: string;
+  PreclusionRule: string | null;
+  PreclusionSummary: string | null;
+  PreRequisiteAdvisory: string | null;
+  PrerequisiteRule: string | null;
+  PrerequisiteSummary: string | null;
+  SubjectArea: string;
+  Title: string;
+  UnitsMax: number | null;
+  UnitsMin: number | null;
+  WorkloadHoursNUSMods: string | null;
+  YearLong: 'Y' | 'N';
   // TODO: Investigate why PrintCatalog was removed from the API response
   // PrintCatalog: 'Y' | 'N';
 }>;
 
 export type TimetableLesson = Readonly<{
-  term: string;
-  room: string | null;
-  numweeks: number;
-  start_time: string;
   activity: string;
   csize: number;
-  module: string;
-  eventdate: string;
-  session: string;
-  end_time: string;
-  modgrp: string;
-  deptfac: string;
   day: string;
+  deptfac: string;
+  end_time: string;
+  eventdate: string;
+  modgrp: string;
+  module: string;
+  numweeks: number;
+  room: string | null;
+  session: string;
+  start_time: string;
+  term: string;
 }>;
 
 export type ModuleExam = Readonly<{
-  term: string;
-  start_time: string;
   acad_org: string;
-  module: string;
-  end_time: string;
   duration: number;
+  end_time: string;
   exam_date: string;
+  module: string;
+  start_time: string;
+  term: string;
 }>;

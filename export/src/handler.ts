@@ -50,8 +50,8 @@ export function makeExportHandler<T>(
       let data = undefined;
       try {
         data = parseExportData(request);
-      } catch (e) {
-        throw new HttpError(422, 'Invalid timetable data', e);
+      } catch (error) {
+        throw new HttpError(422, 'Invalid timetable data', error);
       }
 
       // Prepare browser for export
@@ -59,15 +59,15 @@ export function makeExportHandler<T>(
       let page: Page;
       try {
         page = await render.open(url);
-      } catch (e) {
-        if (e.message.includes('ERR_CONNECTION_REFUSED')) {
+      } catch (error) {
+        if (error.message.includes('ERR_CONNECTION_REFUSED')) {
           throw new HttpError(
             500,
             `Could not open the page located at process.env.PAGE (${url}). Try opening it in your browser?`,
-            e,
+            error,
           );
         }
-        throw new HttpError(500, 'Cannot start browser', e);
+        throw new HttpError(500, 'Cannot start browser', error);
       }
 
       // Export
@@ -75,13 +75,13 @@ export function makeExportHandler<T>(
 
       // Cleanup
       await page.close();
-    } catch (e) {
-      const eventId = Sentry.captureException(e.original || e);
+    } catch (error) {
+      const eventId = Sentry.captureException(error.original || error);
 
-      console.error(e);
+      console.error(error);
 
-      if (e instanceof HttpError) {
-        if (e.code === 422) {
+      if (error instanceof HttpError) {
+        if (error.code === 422) {
           response.status(422).send(render422());
           return;
         }

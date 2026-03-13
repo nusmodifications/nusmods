@@ -1,30 +1,30 @@
-import path from 'path';
+import path from 'node:path';
 import * as fs from 'fs-extra';
 import { ClientOptions } from '@elastic/elasticsearch';
 
 export type Config = Readonly<{
-  appKey: string;
-  studentKey: string;
-  ttApiKey: string;
-  courseApiKey: string;
   acadApiKey: string;
   acadAppKey: string;
-
-  // Base URL for all API requests
-  baseUrl: string;
-
   // Current academic year in the format YYYY/YYYY
   academicYear: string;
-
   // The number of concurrent requests allowed by the API
   // Any additional requests will be queued
   apiConcurrency: number;
+  appKey: string;
+  // Base URL for all API requests
+  baseUrl: string;
+
+  courseApiKey: string;
 
   // Root folder for data
   dataPath: string;
 
   // Config to connect to elasticsearch
   elasticConfig?: ClientOptions;
+
+  studentKey: string;
+
+  ttApiKey: string;
 }>;
 
 const env = fs.readJSONSync(path.join(__dirname, '../env.json'));
@@ -41,15 +41,15 @@ const addTrailingSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);
 
 const config: Config = {
   // From env
-  appKey: env.appKey,
-  studentKey: env.studentKey,
-  ttApiKey: env.ttApiKey,
-  courseApiKey: env.courseApiKey,
   acadApiKey: env.acadApiKey,
   acadAppKey: env.acadAppKey,
-  elasticConfig: env.elasticConfig,
-  baseUrl: addTrailingSlash(env.baseUrl),
   apiConcurrency: env.apiConcurrency || 5,
+  appKey: env.appKey,
+  baseUrl: addTrailingSlash(env.baseUrl),
+  courseApiKey: env.courseApiKey,
+  elasticConfig: env.elasticConfig,
+  studentKey: env.studentKey,
+  ttApiKey: env.ttApiKey,
 
   // Other config
   academicYear: '2025/2026',

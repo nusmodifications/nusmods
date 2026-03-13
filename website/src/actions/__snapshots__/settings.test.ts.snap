@@ -1,27 +1,27 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`settings should dispatch a select of a faculty value 1`] = `
+exports[`settings > should dispatch a select of a faculty value 1`] = `
 {
   "payload": "Some faculty",
   "type": "SELECT_FACULTY",
 }
 `;
 
-exports[`settings should dispatch a select of a newStudent value 1`] = `
+exports[`settings > should dispatch a select of a newStudent value 1`] = `
 {
   "payload": false,
   "type": "SELECT_NEW_STUDENT",
 }
 `;
 
-exports[`settings should dispatch a select of a semester value 1`] = `
+exports[`settings > should dispatch a select of a semester value 1`] = `
 {
   "payload": 1,
   "type": "SELECT_SEMESTER",
 }
 `;
 
-exports[`settings should dispatch a selection of a color scheme preference 1`] = `
+exports[`settings > should dispatch a selection of a color scheme preference 1`] = `
 {
   "payload": "LIGHT_COLOR_SCHEME_PREFERENCE",
   "type": "SELECT_COLOR_SCHEME",

@@ -8,23 +8,23 @@ This folder contains the scraper which produces our [v2 API data][api-v2] from i
 
 Node LTS is required. We use Node 22 in production.
 
-Use `yarn` to install dependencies, then set up `env.json` with all the necessary keys and API base URL, then run the test script to check the setup is okay.
+Use `pnpm install` to install dependencies, then set up `env.json` with all the necessary keys and API base URL, then run the test script to check the setup is okay.
 
 ```sh
-yarn
+pnpm install
 
 cp env.example.json env.json
 vim env.json  # add your appKey, studentKey and the baseUrl here
 
-yarn dev help
-yarn dev test | yarn bunyan
+pnpm dev help
+pnpm dev test | pnpm bunyan
 ```
 
 ### Setting up ElasticSearch
 
 We use ElasticSearch for our module search page. For local development it is not necessary to set this up because the scraper will automatically fall back to storing all data on the file system. To set up the ElasticSearch config, simple specify the `elasticConfig` key in `env.json` with the necessary configuration options that will be passed into the ElasticSearch client.
 
-## Yarn Commands
+## pnpm Commands
 
 ### For production
 
@@ -37,16 +37,15 @@ We use ElasticSearch for our module search page. For local development it is not
 - `scrape` - run the scraper (see below for CLI commands). Note that the scraper has to be compiled through the `build` command first
 - `dev` - compile and run the scraper. This is the same as running `build` and `scrape`
 - `build` - compile the scraper using the TypeScript compiler
-- `bunyan` - pipe output from the scraper through this so they can be read on the CLI. This is an alias of `bunyan -L -o short --color` - use local timestamp, short output format and color formatting. Run `yarn bunyan --help` to see all options.
+- `bunyan` - pipe output from the scraper through this so they can be read on the CLI. This is an alias of `bunyan -L -o short --color` - use local timestamp, short output format and color formatting. Run `pnpm bunyan --help` to see all options.
 - `test` - run all unit and integration tests
   - `test:watch` - run tests in watch mode, which runs only when code is changed
 - `lint` - run both linter and type checker
   - `lint:code` - lint the code through ESLint
 
-
 ## CLI commands
 
-Run these through `yarn scrape` in production or `yarn dev` in development piped through `yarn bunyan` for formatting - eg. `yarn dev test | yarn bunyan`. You can also run `yarn dev help` to see a list of all commands.
+Run these through `pnpm scrape` in production or `pnpm dev` in development piped through `pnpm bunyan` for formatting - eg. `pnpm dev test | pnpm bunyan`. You can also run `pnpm dev help` to see a list of all commands.
 
 - `test` - run some simple API requests to check you have set everything up correctly
 - `departments` - download department and faculty codes
@@ -71,7 +70,7 @@ Logging is done via [Bunyan][bunyan]. When logging things, use the first paramet
 
 The application automatically streams `info` to `logs/info.log` and `logs/errors.log` as well as Sentry (for error and fatal events) and stdout. On production the logs are suffixed by the date and time of the run to make it easier to find the correct log.
 
-Use `yarn bunyan`, which comes with some presets to make things easier to work with in the CLI.
+Use `pnpm bunyan`, which comes with some presets to make things easier to work with in the CLI.
 
 Error handling is done through Sentry.
 

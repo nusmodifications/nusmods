@@ -7,7 +7,7 @@ import OptimiserLessonOptionSelect from './OptimiserLessonOptionSelect';
 
 import styles from './OptimiserLessonOptionSelect.scss';
 
-jest.mock('./OptimiserFormTooltip', () => ({
+vi.mock('./OptimiserFormTooltip', () => ({
   __esModule: true,
   default: () => <div />,
 }));

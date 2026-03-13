@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 
 import { VenueSearchOptions } from 'types/venues';
 import { SCHOOLDAYS, formatHour, getDayIndex, getCurrentHours } from 'utils/timify';

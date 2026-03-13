@@ -7,10 +7,12 @@ import { PlannerModuleInfo, Conflict } from 'types/planner';
 import configureStore from 'bootstrapping/configure-store';
 import createHistory from 'test-utils/createHistory';
 import config from 'config';
+import { setupDownshiftTimers } from 'test-utils/downshiftTimers';
 import PlannerSemester from './PlannerSemester';
 import plannerModuleStyles from './PlannerModule.scss';
 
-jest.mock('react-beautiful-dnd', () => ({
+const jest = vi;
+vi.mock('react-beautiful-dnd', () => ({
   Droppable: ({ children }: DroppableProps) => children({} as any, {} as any),
   Draggable: ({ children }: DraggableProps) => children({} as any, {} as any, {} as any),
   DragDropContext: ({ children }: DragDropContextProps) => children,
@@ -43,6 +45,8 @@ function makePlannerSemester(year: string, semester: number, modules: PlannerMod
     </Provider>,
   );
 }
+
+setupDownshiftTimers();
 
 test('should show conflicts for current year', () => {
   const conflicts: Conflict[] = [

@@ -1,0 +1,5 @@
+packages:
+  - 'website'
+  - 'export'
+  - 'packages/*'
+  - 'scrapers/*'

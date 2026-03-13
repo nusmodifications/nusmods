@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { pick } from 'lodash';
+import { pick } from 'lodash-es';
 
 import { redo, undo } from 'actions/undoHistory';
 import undoHistory, {

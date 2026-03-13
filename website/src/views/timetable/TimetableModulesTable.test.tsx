@@ -6,6 +6,7 @@ import { addColors } from 'test-utils/theme';
 import { TimetableModulesTableComponent, Props } from './TimetableModulesTable';
 import styles from './TimetableModulesTable.scss';
 
+const jest = vi;
 function make(props: Partial<Props> = {}) {
   const selectModuleColor = jest.fn();
   const hideLessonInTimetable = jest.fn();

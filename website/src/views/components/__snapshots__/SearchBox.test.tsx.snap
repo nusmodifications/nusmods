@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`SearchBox should match snapshot 1`] = `
+exports[`SearchBox > should match snapshot 1`] = `
 <div
   className=""
 >
@@ -33,7 +33,7 @@ exports[`SearchBox should match snapshot 1`] = `
 </div>
 `;
 
-exports[`SearchBox should match snapshot 2`] = `
+exports[`SearchBox > should match snapshot 2`] = `
 <div
   className=""
 >
@@ -71,7 +71,7 @@ exports[`SearchBox should match snapshot 2`] = `
 </div>
 `;
 
-exports[`SearchBox should match snapshot 3`] = `
+exports[`SearchBox > should match snapshot 3`] = `
 <div
   className=""
 >

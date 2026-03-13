@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
 import classnames from 'classnames';
-import { entries, sortBy } from 'lodash';
+import { entries, sortBy } from 'lodash-es';
 
 import { RefreshCw as Refresh } from 'react-feather';
 import { BusTiming, NextBus, NextBusTime } from 'types/venues';

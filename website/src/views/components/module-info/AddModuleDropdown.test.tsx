@@ -6,9 +6,13 @@ import { Module } from 'types/modules';
 /** @var {Module} */
 import { CS3216, CS1010S } from '__mocks__/modules';
 
+import { setupDownshiftTimers } from 'test-utils/downshiftTimers';
 import { AddModuleDropdownComponent } from './AddModuleDropdown';
 
+const jest = vi;
 describe(AddModuleDropdownComponent, () => {
+  setupDownshiftTimers();
+
   function make(module: Module, timetables: TimetableConfig = {}) {
     const addModule = jest.fn();
     const removeModule = jest.fn();

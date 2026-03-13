@@ -2,9 +2,13 @@ import { mount } from 'enzyme';
 
 import { RefinementItem } from 'types/views';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
+import { setupDownshiftTimers } from 'test-utils/downshiftTimers';
 import DropdownListFilters from './DropdownListFilters';
 
+const jest = vi;
 describe(DropdownListFilters, () => {
+  setupDownshiftTimers();
+
   beforeEach(() => {
     mockDom();
   });

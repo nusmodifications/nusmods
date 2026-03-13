@@ -21,8 +21,8 @@ export type ModuleInfoMapped = ModuleInfo & {
 export type SemesterModule = Omit<Module, 'semesterData' | 'prereqTree' | 'fulfillRequirements'>;
 
 export type WritableSemesterModuleData = {
-  moduleCode: ModuleCode;
   module: SemesterModule;
+  moduleCode: ModuleCode;
   semesterData?: SemesterData;
   timetablePropagated?: boolean;
 };

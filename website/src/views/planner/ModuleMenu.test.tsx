@@ -1,8 +1,10 @@
 import { mount, ReactWrapper } from 'enzyme';
+import { setupDownshiftTimers } from 'test-utils/downshiftTimers';
 import ModuleMenu from './ModuleMenu';
 
 import styles from './PlannerModule.scss';
 
+const jest = vi;
 function makeModuleMenu(isInTimetable: boolean) {
   const removeModule = jest.fn();
   const editCustomData = jest.fn();
@@ -35,6 +37,8 @@ function isExpanded(wrapper: ReactWrapper) {
 function isMenuRight(wrapper: ReactWrapper) {
   return wrapper.find(`.${styles.menuRight}`);
 }
+
+setupDownshiftTimers();
 
 test('should show button only on render', () => {
   const { wrapper } = makeModuleMenu(false);

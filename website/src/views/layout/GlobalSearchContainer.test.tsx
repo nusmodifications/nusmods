@@ -1,9 +1,10 @@
+import type { MockedFunction } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { produce } from 'immer';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import type { VenueList } from 'types/venues';
 import type { ModuleList } from 'types/reducers';
 import configureStore from 'bootstrapping/configure-store';
@@ -14,8 +15,8 @@ import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom'
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { fetchVenueList } from 'actions/venueBank';
 
-jest.mock('actions/venueBank');
-const mockedFetchVenueList = fetchVenueList as jest.MockedFunction<typeof fetchVenueList>;
+vi.mock('actions/venueBank');
+const mockedFetchVenueList = fetchVenueList as MockedFunction<typeof fetchVenueList>;
 
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 

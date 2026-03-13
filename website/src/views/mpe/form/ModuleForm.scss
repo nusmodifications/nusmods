@@ -1,5 +1,5 @@
 @import '~styles/utils/modules-entry.scss';
-@import "./constants";
+@import './constants';
 
 .headerTitle {
   display: flex;
@@ -63,7 +63,7 @@
   }
 
   .mcTextField input {
-    margin-top: 0.5rem
+    margin-top: 0.5rem;
   }
 
   .status {

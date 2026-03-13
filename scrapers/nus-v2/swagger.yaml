@@ -492,7 +492,7 @@ components:
                 - type: 'array'
                   items:
                     $ref: '#/components/schemas/PrereqTree'
-              example: [2, ["CS1010", "CS2100", "CS2103T"]]
+              example: [2, ['CS1010', 'CS2100', 'CS2103T']]
 
       example:
         and:

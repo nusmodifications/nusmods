@@ -5,7 +5,7 @@ import { subHours } from 'date-fns';
 import { getCacheFactory, getFileSystemWriter } from './fs';
 import { CacheExpiredError } from '../../utils/errors';
 
-jest.unmock('fs-extra');
+vi.unmock('fs-extra');
 
 beforeEach(() => {
   mockFs();

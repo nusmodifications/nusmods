@@ -2,7 +2,7 @@ import { FC, useRef, useState } from 'react';
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { ListProps } from 'searchkit';
 import classnames from 'classnames';
-import { uniq, omit } from 'lodash';
+import { uniq, omit } from 'lodash-es';
 
 import { Search, ChevronDown } from 'react-feather';
 import useMediaQuery from 'views/hooks/useMediaQuery';

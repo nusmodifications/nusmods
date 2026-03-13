@@ -12,7 +12,6 @@ import {
   RawLesson,
   SemesterData,
   SemesterDataCondensed,
-  WeekRange,
   Weeks,
 } from '../types/modules';
 import { ModuleAliases } from '../types/mapper';
@@ -35,11 +34,13 @@ export function titleize(string: string) {
   let capitalized = string
     .toLowerCase()
     // http://stackoverflow.com/a/7592235
-    .replace(/(?:^|\s\(?|-|\/)\S/g, (char) => char.toUpperCase());
+    .replaceAll(/(?:^|\s\(?|-|\/)\S/g, (char: string) => char.toUpperCase());
 
   // Minor words are lowercase unless they are the first word of the title
   minorWords.forEach(([word, regex]) => {
-    capitalized = capitalized.replace(regex, (match, index) => (index === 0 ? match : word));
+    capitalized = capitalized.replace(regex, (match: string, index: number) =>
+      index === 0 ? match : word,
+    );
   });
 
   // Abbreviations are uppercase regardless of where they are
@@ -60,8 +61,8 @@ export function decodeHTMLEntities(string: string) {
  */
 export function stripTags(string: string) {
   return string
-    .replace(/<[^>]*>?/gm, ' ')
-    .replace(/\s+/g, ' ')
+    .replaceAll(/<[^>]*>?/gm, ' ')
+    .replaceAll(/\s+/g, ' ')
     .trim();
 }
 
@@ -69,7 +70,9 @@ export function stripTags(string: string) {
  * Clean a string by removing HTML tags, decoding entities, and trimming whitespace.
  */
 export function cleanString(string: string | null | undefined): string {
-  if (!string) return '';
+  if (!string) {
+    return '';
+  }
   return stripTags(decode(string));
 }
 
@@ -79,17 +82,17 @@ export function cleanString(string: string | null | undefined): string {
  */
 const trimChars = ' \t\n.,!?/-_';
 const nullStrings = new Set(['', 'nil', 'na', 'n/a', 'null', 'none']);
-export function removeEmptyValues<T>(object: T, keys: (keyof T)[]) {
-  /* eslint-disable no-param-reassign */
+export function removeEmptyValues<T>(object: T, keys: Array<keyof T>) {
   keys.forEach((key) => {
     const value = object[key];
 
-    if (!value) delete object[key];
+    if (!value) {
+      delete object[key];
+    }
     if (typeof value === 'string' && nullStrings.has(trim(value, trimChars).toLowerCase())) {
       delete object[key];
     }
   });
-  /* eslint-enable */
 
   return object;
 }
@@ -99,13 +102,11 @@ export function removeEmptyValues<T>(object: T, keys: (keyof T)[]) {
  * Mutates the input object
  */
 // Can't properly type this in TS without the use of any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function trimValues<T extends Record<string, any>>(object: T, keys: (keyof T)[]): T {
+export function trimValues<T extends Record<string, any>>(object: T, keys: Array<keyof T>): T {
   for (const key of keys) {
     const value = object[key];
 
     if (typeof value === 'string') {
-      // eslint-disable-next-line no-param-reassign
       object[key] = value.trim();
     }
   }
@@ -116,8 +117,8 @@ export function trimValues<T extends Record<string, any>>(object: T, keys: (keyo
 /**
  * Find modules which have lessons that fall on the exact same times
  */
-export function getDuplicateModules(classes: VenueLesson[]): ModuleCode[] {
-  const lessonsByTime: VenueLesson[][] = values(
+export function getDuplicateModules(classes: Array<VenueLesson>): Array<ModuleCode> {
+  const lessonsByTime: Array<Array<VenueLesson>> = values(
     groupBy(classes, (lesson) => [lesson.startTime, lesson.endTime, lesson.weeks, lesson.day]),
   );
 
@@ -125,7 +126,9 @@ export function getDuplicateModules(classes: VenueLesson[]): ModuleCode[] {
     if (lessons.length > 1) {
       // Occasionally two classes share the same venue, so we don't count those
       const moduleCodes = uniq(lessons.map((lesson) => lesson.moduleCode));
-      if (uniq(moduleCodes).length > 1) return moduleCodes;
+      if (uniq(moduleCodes).length > 1) {
+        return moduleCodes;
+      }
     }
   }
 
@@ -136,7 +139,10 @@ export function getDuplicateModules(classes: VenueLesson[]): ModuleCode[] {
  * Remove duplicated lessons given by the modules array and merge their module
  * codes
  */
-export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): VenueLesson[] {
+export function mergeModules(
+  classes: Array<VenueLesson>,
+  modules: Array<ModuleCode>,
+): Array<VenueLesson> {
   const mergedModuleCode = modules.join(`/${ZWSP}`);
 
   // We only want to keep lessons from modules not in the list (index = -1) and
@@ -144,7 +150,9 @@ export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): Ven
   return classes
     .filter((lesson) => modules.indexOf(lesson.moduleCode) < 1)
     .map((lesson) => {
-      if (lesson.moduleCode !== modules[0]) return lesson;
+      if (lesson.moduleCode !== modules[0]) {
+        return lesson;
+      }
 
       return {
         ...lesson,
@@ -153,9 +161,9 @@ export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): Ven
     });
 }
 
-export function mergeDualCodedModules(classes: VenueLesson[]): {
-  lessons: VenueLesson[];
+export function mergeDualCodedModules(classes: Array<VenueLesson>): {
   aliases: ModuleAliases;
+  lessons: Array<VenueLesson>;
 } {
   // Repeatedly merge lessons that occupy the same space in the timetable
   let mergedModules = classes;
@@ -165,7 +173,9 @@ export function mergeDualCodedModules(classes: VenueLesson[]): {
   while (duplicateModules.length) {
     // Mark the current set of modules as aliases
     for (const moduleCode of duplicateModules) {
-      if (!aliases[moduleCode]) aliases[moduleCode] = new Set();
+      if (!aliases[moduleCode]) {
+        aliases[moduleCode] = new Set();
+      }
       duplicateModules
         .filter((moduleToAdd) => moduleToAdd !== moduleCode)
         .forEach((moduleToAdd) => aliases[moduleCode].add(moduleToAdd));
@@ -176,7 +186,7 @@ export function mergeDualCodedModules(classes: VenueLesson[]): {
     duplicateModules = getDuplicateModules(mergedModules);
   }
 
-  return { lessons: mergedModules, aliases };
+  return { aliases, lessons: mergedModules };
 }
 
 export const dayTextMap: Record<string, DayText> = {
@@ -198,29 +208,29 @@ export const unrecognizedLessonTypes: Record<string, LessonType> = {
   '8': 'Tutorial Type 8',
   '9': 'Tutorial Type 9',
   A: 'Supervision of Academic Exercise',
+  C: 'Bedside Tutorial',
+  I: 'Independent Study Module',
+  J: 'Mini-Project',
+  M: 'Ensemble Teaching',
   O: 'Others',
   V: 'Lecture On Demand',
-  I: 'Independent Study Module',
-  C: 'Bedside Tutorial',
-  M: 'Ensemble Teaching',
-  J: 'Mini-Project',
 };
 
 export const activityLessonType: Record<string, LessonType> = {
   // Recognized by frontend
-  B: 'Laboratory',
-  L: 'Lecture',
-  D: 'Design Lecture',
-  R: 'Recitation',
-  P: 'Packaged Lecture',
-  X: 'Packaged Tutorial',
-  W: 'Workshop',
-  E: 'Seminar-Style Module Class',
-  S: 'Sectional Teaching',
-  T: 'Tutorial',
-  Y: 'Packaged Laboratory',
   '2': 'Tutorial Type 2',
   '3': 'Tutorial Type 3',
+  B: 'Laboratory',
+  D: 'Design Lecture',
+  E: 'Seminar-Style Module Class',
+  L: 'Lecture',
+  P: 'Packaged Lecture',
+  R: 'Recitation',
+  S: 'Sectional Teaching',
+  T: 'Tutorial',
+  W: 'Workshop',
+  X: 'Packaged Tutorial',
+  Y: 'Packaged Laboratory',
 
   ...unrecognizedLessonTypes,
 };
@@ -247,8 +257,10 @@ export const modulesToAvoidMerging = new Set<string>([
  * Normalize a string for safe comparison by lowercasing, collapsing whitespace, and trimming.
  */
 export function normalizeForComparison(str: string | null | undefined): string {
-  if (!str) return '';
-  return str.toLowerCase().replace(/\s+/g, ' ').trim();
+  if (!str) {
+    return '';
+  }
+  return str.toLowerCase().replaceAll(/\s+/g, ' ').trim();
 }
 
 /**
@@ -260,12 +272,12 @@ export function normalizeForComparison(str: string | null | undefined): string {
  * NUS API doesn't return timetable data for.
  */
 export function findEquivalentModules<
-  T extends { Code: string; Title: string; UnitsMin: number | null; CourseDesc: string },
->(modulesWithoutTimetable: T[], modulesWithTimetable: T[]): Map<string, string> {
+  T extends { Code: string; CourseDesc: string; Title: string; UnitsMin: number | null },
+>(modulesWithoutTimetable: Array<T>, modulesWithTimetable: Array<T>): Map<string, string> {
   const equivalents = new Map<string, string>();
 
   // Build a lookup map: normalized title -> list of modules with that title (that have timetable)
-  const titleIndex = new Map<string, T[]>();
+  const titleIndex = new Map<string, Array<T>>();
   for (const module of modulesWithTimetable) {
     const normalizedTitle = normalizeForComparison(module.Title);
     if (!titleIndex.has(normalizedTitle)) {
@@ -279,17 +291,23 @@ export function findEquivalentModules<
     const normalizedTitle = normalizeForComparison(target.Title);
     const candidates = titleIndex.get(normalizedTitle);
 
-    if (!candidates) continue;
+    if (!candidates) {
+      continue;
+    }
 
     // Find a candidate that matches on credits and description
     const match = candidates.find((source) => {
       // Match on credits (UnitsMin)
-      if (target.UnitsMin !== source.UnitsMin) return false;
+      if (target.UnitsMin !== source.UnitsMin) {
+        return false;
+      }
 
       // Match on description (CourseDesc)
       const targetDesc = normalizeForComparison(target.CourseDesc);
       const sourceDesc = normalizeForComparison(source.CourseDesc);
-      if (targetDesc !== sourceDesc) return false;
+      if (targetDesc !== sourceDesc) {
+        return false;
+      }
 
       return true;
     });
@@ -308,14 +326,18 @@ export function findEquivalentModules<
  * Convert a Weeks value (number[] or WeekRange) to a number array for use as
  * a stable matching key that doesn't depend on absolute dates.
  */
-function weeksToNumbers(weeks: Weeks): number[] {
-  if (Array.isArray(weeks)) return weeks;
-  if (weeks.weeks) return weeks.weeks;
+function weeksToNumbers(weeks: Weeks): Array<number> {
+  if (Array.isArray(weeks)) {
+    return weeks;
+  }
+  if (weeks.weeks) {
+    return weeks.weeks;
+  }
   const start = new Date(weeks.start).getTime();
   const end = new Date(weeks.end).getTime();
   const totalWeeks = Math.round((end - start) / (7 * 24 * 60 * 60 * 1000)) + 1;
   const interval = weeks.weekInterval ?? 1;
-  const result: number[] = [];
+  const result: Array<number> = [];
   for (let i = 1; i <= totalWeeks; i += interval) {
     result.push(i);
   }
@@ -338,8 +360,10 @@ export function sortTimetableByLegacyOrder<
     RawLesson,
     'lessonType' | 'classNo' | 'day' | 'startTime' | 'endTime' | 'venue' | 'weeks'
   >,
->(lessons: T[], legacyOrder: string[] | undefined): T[] {
-  if (!legacyOrder) return lessons;
+>(lessons: Array<T>, legacyOrder: Array<string> | undefined): Array<T> {
+  if (!legacyOrder) {
+    return lessons;
+  }
 
   const keyIndex = new Map<string, number>();
   for (let i = 0; i < legacyOrder.length; i++) {
@@ -366,7 +390,7 @@ export function sortTimetableByLegacyOrder<
 }
 
 export function isModuleOffered(module: {
-  semesterData: (SemesterData | SemesterDataCondensed)[];
+  semesterData: Array<SemesterData | SemesterDataCondensed>;
 }): boolean {
   return module.semesterData && module.semesterData.length > 0;
 }

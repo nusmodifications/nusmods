@@ -22,26 +22,26 @@ export { getFileSystemWriter };
  * Call both file system and ElasticSearch persist backends
  */
 export class CombinedPersist implements Persist {
-  private readonly writers: Persist[] = [];
+  private readonly writers: Array<Persist> = [];
 
   constructor(acadYear: string) {
     this.writers.push(getFileSystemWriter(acadYear));
     this.writers.push(new ElasticPersist());
   }
 
-  async moduleList(data: ModuleCondensed[]) {
+  async moduleList(data: Array<ModuleCondensed>) {
     await Promise.all(this.writers.map((writer) => writer.moduleList(data)));
   }
 
-  async moduleInfo(data: ModuleInformation[]) {
+  async moduleInfo(data: Array<ModuleInformation>) {
     await Promise.all(this.writers.map((writer) => writer.moduleInfo(data)));
   }
 
-  async mpeModules(data: MPEModule[]) {
+  async mpeModules(data: Array<MPEModule>) {
     await Promise.all(this.writers.map((writer) => writer.mpeModules(data)));
   }
 
-  async moduleInformation(data: ModuleInformation[]) {
+  async moduleInformation(data: Array<ModuleInformation>) {
     await Promise.all(this.writers.map((writer) => writer.moduleInformation(data)));
   }
 
@@ -49,7 +49,7 @@ export class CombinedPersist implements Persist {
     await Promise.all(this.writers.map((writer) => writer.moduleAliases(data)));
   }
 
-  async facultyDepartments(data: { [faculty: string]: string[] }) {
+  async facultyDepartments(data: { [faculty: string]: Array<string> }) {
     await Promise.all(this.writers.map((writer) => writer.facultyDepartments(data)));
   }
 
@@ -66,7 +66,7 @@ export class CombinedPersist implements Persist {
     await Promise.all(this.writers.map((writer) => writer.deleteModule(moduleCode)));
   }
 
-  async venueList(semester: Semester, data: Venue[]) {
+  async venueList(semester: Semester, data: Array<Venue>) {
     await Promise.all(this.writers.map((writer) => writer.venueList(semester, data)));
   }
 
@@ -74,7 +74,7 @@ export class CombinedPersist implements Persist {
     await Promise.all(this.writers.map((writer) => writer.venueInformation(semester, data)));
   }
 
-  async timetable(semester: Semester, moduleCode: ModuleCode, data: RawLesson[]) {
+  async timetable(semester: Semester, moduleCode: ModuleCode, data: Array<RawLesson>) {
     await Promise.all(this.writers.map((writer) => writer.timetable(semester, moduleCode, data)));
   }
 

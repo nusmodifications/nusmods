@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "build",
     "target": "es2018",
-    "lib": ["es2020"],
+    "lib": ["es2021"],
     "module": "commonjs",
     "baseUrl": "./src",
     "resolveJsonModule": true,
@@ -11,6 +11,7 @@
     "strict": true,
     "useUnknownInCatchVariables": false,
     "skipLibCheck": true,
+    "types": ["vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", "vitest.config.ts"]
 }

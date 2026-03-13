@@ -1,8 +1,9 @@
 import { shallow } from 'enzyme';
-import _ from 'lodash';
+import { sample } from 'lodash-es';
 
 import TetrisGame from './TetrisGame';
 
+const jest = vi;
 describe(TetrisGame, () => {
   test('integration test', () => {
     // Randomly play the game for 1000 turns 100 times to check the game
@@ -28,7 +29,7 @@ describe(TetrisGame, () => {
       const currentMoves: string[] = [];
       try {
         for (let tick = 0; tick < 1000; tick++) {
-          const [moveLabel, move] = _.sample(moves)!;
+          const [moveLabel, move] = sample(moves)!;
           currentMoves.push(moveLabel);
           move();
           wrapper.render();

@@ -1,4 +1,4 @@
-import { strict as assert } from 'assert';
+import { strict as assert } from 'node:assert';
 
 import BaseTask from './BaseTask';
 import { Task } from '../types/tasks';
@@ -20,24 +20,26 @@ export default class TestApi extends BaseTask implements Task {
 
       this.logger.info('Got information from the API! Looks like everything is working a-okay!');
 
-      // eslint-disable-next-line no-console
+      // oxlint-disable-next-line no-console
       console.log(
         '\nIf the line above looks like raw JSON, remember to pipe your command through "yarn bunyan", eg. "yarn dev test | yarn bunyan"',
       );
-    } catch (e) {
-      if (e instanceof AuthError) {
+    } catch (error) {
+      // oxlint-disable-next-line @nkzw/no-instanceof -- error type checking
+      if (error instanceof AuthError) {
         this.logger.error(
-          e,
+          error,
           'Got an auth error when connecting to the API. Check your env.json file credentials (occasionally the API may also throw this even when the credentials are correct)',
         );
-      } else if (e instanceof assert.AssertionError) {
+        // oxlint-disable-next-line @nkzw/no-instanceof -- error type checking
+      } else if (error instanceof assert.AssertionError) {
         this.logger.error(
-          e,
+          error,
           'API did not return any data. Is the API down, or are you using the correct keys for the environment?',
         );
       } else {
         this.logger.error(
-          e,
+          error,
           'Unknown error. The API may be down, or the code is borked :(\n' +
             'Try running the unit tests using "yarn test" and open an issue on https://github.com/nusmodifications/nusmods',
         );

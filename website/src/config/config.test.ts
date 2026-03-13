@@ -1,4 +1,7 @@
-import _ from 'lodash';
+/* eslint-disable import/first -- vi.unmock must be before imports (hoisted by Vitest) */
+vi.unmock('config');
+
+import { flatten, range } from 'lodash-es';
 
 import { Semesters } from 'types/modules';
 import academicCalendar from 'data/academic-calendar.json';
@@ -17,24 +20,31 @@ test('Every ModReg round has unique keys', () => {
   });
 });
 
-_.flatten(Object.values(config.modRegSchedule)).forEach((round) => {
+flatten(Object.values(config.modRegSchedule)).forEach((round) => {
   test(`${round.type} ${round.name} should end after it starts`, () => {
     expect(round.startDate.getTime()).toBeLessThan(round.endDate.getTime());
   });
 });
 
 test('getSemesterKey() should be unique for every acad year / semester', () => {
+  const originalAcademicYear = config.academicYear;
+  const originalSemester = config.semester;
   const keys = new Set();
 
-  _.range(0, 40).forEach((offset) => {
-    const year = 2010 + offset;
-    config.academicYear = `${year}/${year + 1}`;
+  try {
+    range(0, 40).forEach((offset) => {
+      const year = 2010 + offset;
+      config.academicYear = `${year}/${year + 1}`;
 
-    Semesters.forEach((semester) => {
-      config.semester = semester;
+      Semesters.forEach((semester) => {
+        config.semester = semester;
 
-      expect(keys.has(config.getSemesterKey())).toBe(false);
-      keys.add(config.getSemesterKey());
+        expect(keys.has(config.getSemesterKey())).toBe(false);
+        keys.add(config.getSemesterKey());
+      });
     });
-  });
+  } finally {
+    config.academicYear = originalAcademicYear;
+    config.semester = originalSemester;
+  }
 });

@@ -33,9 +33,9 @@ describe(mapFacultyDepartments, () => {
         'Communications & New Media',
         'Economics',
       ],
+      'Faculty of Dentistry': [],
       'NUS Business School': ['Accounting', 'Strategy and Policy'],
       'School of Computing': ['Computer Science'],
-      'Faculty of Dentistry': [],
     });
   });
 
@@ -44,27 +44,27 @@ describe(mapFacultyDepartments, () => {
       mapFacultyDepartments(
         [
           {
-            EffectiveStatus: 'A',
             AcademicGroup: '001',
-            DescriptionShort: 'FASS',
             Description: 'Faculty of Arts & Social Sci',
+            DescriptionShort: 'FASS',
             EffectiveDate: '1905-01-01',
+            EffectiveStatus: 'A',
           },
         ],
         [
           {
-            EffectiveStatus: 'A',
-            DescriptionShort: 'CNM',
-            Description: 'Communications & New Media',
-            EffectiveDate: '1905-01-01',
             AcademicOrganisation: '00102ACAD1',
+            Description: 'Communications & New Media',
+            DescriptionShort: 'CNM',
+            EffectiveDate: '1905-01-01',
+            EffectiveStatus: 'A',
           },
           {
-            EffectiveStatus: 'A',
-            DescriptionShort: 'CNM',
-            Description: 'Communications & New Media',
-            EffectiveDate: '1905-01-01',
             AcademicOrganisation: '00102ACAD1',
+            Description: 'Communications & New Media',
+            DescriptionShort: 'CNM',
+            EffectiveDate: '1905-01-01',
+            EffectiveStatus: 'A',
           },
         ],
       ),

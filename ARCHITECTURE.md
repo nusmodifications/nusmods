@@ -5,8 +5,8 @@ NUSMods is a volunteer-run open source project. We don't work for NUS, and we do
 ## Principles
 
 1. Keep it pragmatically simple.
-3. Make it easy to contribute.
-2. Open source, open data, open community.
+2. Make it easy to contribute.
+3. Open source, open data, open community.
 4. Have fun and learn something new.
 
 These principles guide our decisions on what to build, how to build it, and how to work together. As such, we have landed on a stack that is entirely JavaScript-based, and we keep everything stateless and avoid servers and databases where possible. We do, however, encourage trying out new technologies and tools, as long as they don't violate our principles. In fact, many of our decisions are made to allow us to try out new technologies (e.g. React, serverless functions, etc.).
@@ -36,7 +36,7 @@ These principles guide our decisions on what to build, how to build it, and how 
 - [CircleCI](https://circleci.com/) for continuous integration.
 - [Sentry](https://sentry.io/) for error reporting.
 - [Webpack](https://webpack.js.org/) for bundling.
-- [Yarn](https://yarnpkg.com/) for package management.
+- [pnpm](https://pnpm.io/) for package management.
 
 ## Project Structure
 
@@ -49,7 +49,7 @@ These principles guide our decisions on what to build, how to build it, and how 
 
 Some of these folders have their own READMEs that go into more detail about their purpose and how they work. You can find them in the respective folders.
 
-Each folder is a separate project, with their own dependencies and build pipelines. Unfortunately, this means that we have to run `yarn install` in each folder, and we have to run `yarn build` in each folder to build the project. We wanted to use workspaces but installation times and complexity were too high.
+The repository is a pnpm workspace with a single `pnpm-lock.yaml` at the root. Run `pnpm install` once from the root to install all dependencies across all packages.
 
 Projects in the `/packages` folder are published to npm, and can be used by other projects outside of NUSMods. We use these packages to share code between our frontend and backend.
 

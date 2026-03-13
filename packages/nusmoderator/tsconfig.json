@@ -2,10 +2,13 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",
+    "moduleResolution": "bundler",
     "baseUrl": "./src",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true
+    "strict": true,
+    "types": ["vitest/globals"],
+    "skipLibCheck": true
   },
   "include": ["src"]
 }

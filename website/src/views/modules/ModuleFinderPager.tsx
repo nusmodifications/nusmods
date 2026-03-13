@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import classnames from 'classnames';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'react-feather';
 import { breakpointDown } from 'utils/css';

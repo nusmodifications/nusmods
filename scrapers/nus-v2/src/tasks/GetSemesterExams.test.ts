@@ -1,17 +1,15 @@
 import { mapExamInfo } from './GetSemesterExams';
 
-/* eslint-disable camelcase */
-
 describe(mapExamInfo, () => {
   test('should map module exam to date strings', () => {
     const actual = mapExamInfo({
-      term: '1810',
-      start_time: '17:00',
       acad_org: '00301ACAD1',
-      module: 'CS2100',
-      end_time: '19:00',
       duration: 120,
+      end_time: '19:00',
       exam_date: '2018-11-27',
+      module: 'CS2100',
+      start_time: '17:00',
+      term: '1810',
     });
 
     expect(actual).toEqual({

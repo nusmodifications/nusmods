@@ -50,10 +50,12 @@ $arrow-height: 1.5rem;
   // Remove last margin-bottom
   padding: $padding $padding ($padding - $margin-bottom);
   margin-top: $arrow-width;
-  margin-left: -$width*0.5 + $arrow-width*0.5 + 0.15rem;
+  margin-left: -$width * 0.5 + $arrow-width * 0.5 + 0.15rem;
   border-radius: 5px;
   background: $background-color;
-  box-shadow: 0 6px 18px rgba(#000, 0.14), 0 1px 2px rgba(#000, 0.24);
+  box-shadow:
+    0 6px 18px rgba(#000, 0.14),
+    0 1px 2px rgba(#000, 0.24);
 
   &.isClosed {
     display: none;
@@ -64,7 +66,7 @@ $arrow-height: 1.5rem;
     content: '';
     position: absolute;
     top: -($arrow-height * 0.9);
-    left: $width*0.5 - $arrow-width;
+    left: $width * 0.5 - $arrow-width;
     height: $arrow-height;
     border: $arrow-width solid $background-color;
     border-top-width: 0;
@@ -73,7 +75,7 @@ $arrow-height: 1.5rem;
   }
 
   @include media-breakpoint-down(sm) {
-    left: $width*0.5 - $arrow-width;
+    left: $width * 0.5 - $arrow-width;
 
     &::before {
       left: 0;
@@ -106,7 +108,6 @@ $arrow-height: 1.5rem;
   border-radius: 0;
 }
 
-
 .transparentColor {
   position: relative;
   border: 2px solid #ccc;
@@ -119,13 +120,7 @@ $arrow-height: 1.5rem;
     right: 1px;
     bottom: 1px;
     left: 1px;
-    background: repeating-linear-gradient(
-      45deg,
-      #ccc,
-      #ccc 2px,
-      transparent 2px,
-      transparent 6px
-    );
+    background: repeating-linear-gradient(45deg, #ccc, #ccc 2px, transparent 2px, transparent 6px);
   }
 
   &:hover::before {

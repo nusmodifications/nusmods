@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`fetchAllModuleArchive should return multiple request actions 1`] = `
 [
@@ -113,7 +113,7 @@ exports[`fetchAllModuleArchive should return multiple request actions 1`] = `
 ]
 `;
 
-exports[`fetchModule should remove LRU modules above limit 1`] = `
+exports[`fetchModule > should remove LRU modules above limit 1`] = `
 [
   [
     {
@@ -141,7 +141,7 @@ exports[`fetchModule should remove LRU modules above limit 1`] = `
 ]
 `;
 
-exports[`fetchModule should return a thunk 1`] = `
+exports[`fetchModule > should return a thunk 1`] = `
 [
   [
     {

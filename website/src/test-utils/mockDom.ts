@@ -4,7 +4,7 @@ const nativeScrollIntoView = Element.prototype.scrollIntoView;
 
 export function mockDom() {
   // Mock some of the DOM environment functions that are missing from JSDom
-  window.scrollTo = jest.fn();
+  window.scrollTo = vi.fn();
 
   if (!window.matchMedia) {
     mockWindowMatchMedia();
@@ -12,7 +12,7 @@ export function mockDom() {
 
   // JSDom does not stub scrollIntoView - https://github.com/jsdom/jsdom/issues/1695
   if (!Element.prototype.scrollIntoView) {
-    Element.prototype.scrollIntoView = jest.fn();
+    Element.prototype.scrollIntoView = vi.fn();
   }
 }
 
@@ -26,15 +26,15 @@ export function mockDomReset() {
 
 export function mockWindowMatchMedia(overrides: Partial<typeof window.matchMedia> = {}) {
   // Source: https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
-  window.matchMedia = jest.fn((query) => ({
+  window.matchMedia = vi.fn((query) => ({
     matches: true,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
     ...overrides,
   }));
 }

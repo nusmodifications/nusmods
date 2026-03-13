@@ -57,12 +57,11 @@
   padding: 0.1rem;
   font-weight: bolder;
   font-size: 8rem;
-  // prettier-ignore
   text-shadow:
-    3px  3px  0 theme-color(),
+    3px 3px 0 theme-color(),
     -1px -1px 0 theme-color(),
-    1px  -1px 0 theme-color(),
-    -1px 1px  0 theme-color(),
-    1px  1px  0 theme-color();
+    1px -1px 0 theme-color(),
+    -1px 1px 0 theme-color(),
+    1px 1px 0 theme-color();
   color: black;
 }

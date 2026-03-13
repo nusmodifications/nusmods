@@ -4,6 +4,6 @@
   "singleQuote": true,
   "trailingComma": "all",
   "bracketSpacing": true,
-  "sortPackageJson": false,
+  "sortPackageJson": true,
   "ignorePatterns": []
 }

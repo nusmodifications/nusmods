@@ -4,6 +4,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive } from 'views/routes/paths';
 import { ModuleNotFoundPageComponent } from './ModuleNotFoundPage';
 
+const jest = vi;
 test('should fetch archive pages if moduleCode looks like a module code', () => {
   const fetchModuleArchive = jest.fn();
   shallow(

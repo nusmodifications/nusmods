@@ -1,12 +1,13 @@
+import type { Mocked } from 'vitest';
 import axios from 'axios';
 import { NusApi, callApi, callV1Api } from './nus-api';
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
 import { mockResponse } from '../utils/test-utils';
 
-const mockedAxios: jest.Mocked<typeof axios> = axios as any;
+const mockedAxios: Mocked<typeof axios> = axios as any;
 
 beforeEach(() => {
-  jest.spyOn(axios, 'get');
+  vi.spyOn(axios, 'get');
 });
 
 afterEach(() => {
@@ -16,7 +17,7 @@ afterEach(() => {
 describe(callV1Api, () => {
   test('should return data if everything is okay', async () => {
     mockedAxios.get.mockResolvedValue(
-      mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
+      mockResponse({ code: '00000', data: 'Turn down for whaaaaat?', msg: '' }),
     );
 
     const result = callV1Api('test', {}, {});
@@ -25,7 +26,7 @@ describe(callV1Api, () => {
 
   test('should throw auth error', async () => {
     mockedAxios.get.mockResolvedValue(
-      mockResponse({ code: '10000', msg: 'Incorrect user key', data: [] }),
+      mockResponse({ code: '10000', data: [], msg: 'Incorrect user key' }),
     );
 
     const result = callV1Api('test', {}, {});
@@ -36,7 +37,7 @@ describe(callV1Api, () => {
 
   test('should throw not found error', async () => {
     mockedAxios.get.mockResolvedValue(
-      mockResponse({ code: '10001', msg: 'Record not found', data: [] }),
+      mockResponse({ code: '10001', data: [], msg: 'Record not found' }),
     );
 
     const result = callV1Api('test', {}, {});
@@ -47,7 +48,7 @@ describe(callV1Api, () => {
 
   test('should throw on unknown error', async () => {
     mockedAxios.get.mockResolvedValue(
-      mockResponse({ code: '20000', msg: 'The server is on fire', data: [] }),
+      mockResponse({ code: '20000', data: [], msg: 'The server is on fire' }),
     );
 
     const result = callV1Api('test', {}, {});
@@ -60,9 +61,9 @@ describe(callV1Api, () => {
 describe(callApi, () => {
   test('should throw if the server returns non-200 response', async () => {
     const config = {
-      url: 'http://api.example.com',
-      method: 'get',
       data: '{"hello": 200}',
+      method: 'get',
+      url: 'http://api.example.com',
     };
 
     mockedAxios.get.mockRejectedValue({
@@ -81,9 +82,9 @@ describe(callApi, () => {
 
   test('should throw if the request could not be made', async () => {
     const config = {
-      url: 'http://api.example.com',
-      method: 'get',
       data: '{"hello": 200}',
+      method: 'get',
+      url: 'http://api.example.com',
     };
 
     mockedAxios.get.mockRejectedValue({
@@ -101,7 +102,7 @@ describe(NusApi, () => {
     expect.assertions(7);
 
     mockedAxios.get.mockResolvedValue(
-      mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
+      mockResponse({ code: '00000', data: 'Turn down for whaaaaat?', msg: '' }),
     );
 
     const api = new NusApi(2);

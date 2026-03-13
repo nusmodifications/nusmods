@@ -1,3 +1,4 @@
+import type { MockInstance } from 'vitest';
 import { act, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
@@ -11,8 +12,12 @@ import { CS1010S } from '__mocks__/modules';
 
 import { ModulePageContainerComponent } from './ModulePageContainer';
 
-jest.mock('views/components/RandomKawaii');
-jest.mock('utils/error');
+const jest = vi;
+vi.mock('views/components/RandomKawaii');
+vi.mock('utils/error');
+vi.mock('views/modules/ModulePageContent', () => ({
+  default: ({ module }: { module: { description?: string } }) => <div>{module.description}</div>,
+}));
 
 const cs1010sResponse: AxiosResponse = {
   data: CS1010S,
@@ -67,7 +72,7 @@ function make(location: string = CANONICAL) {
 }
 
 describe(ModulePageContainerComponent, () => {
-  let mockAxiosRequest: jest.SpiedFunction<typeof axios.request>;
+  let mockAxiosRequest: MockInstance<typeof axios.request>;
 
   beforeEach(() => {
     mockDom();

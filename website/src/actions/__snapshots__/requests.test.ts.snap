@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`requestAction should use provided key if three params are provided 1`] = `
+exports[`requestAction > should use provided key if three params are provided 1`] = `
 {
   "meta": {
     "API_REQUEST": "TEST_KEY",
@@ -12,7 +12,7 @@ exports[`requestAction should use provided key if three params are provided 1`] 
 }
 `;
 
-exports[`requestAction should use type as key if two params are provided 1`] = `
+exports[`requestAction > should use type as key if two params are provided 1`] = `
 {
   "meta": {
     "API_REQUEST": "TEST_ACTION",

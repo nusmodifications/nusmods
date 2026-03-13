@@ -4,36 +4,13 @@ Uses [Puppeteer][puppeteer] to render a copy of the user's timetable on the serv
 
 ## Getting started
 
-### With Docker
-
-```bash
-# Configure. Comment out the `PAGE` line, as we'll set that in docker-compose.yml
-$ cp .env.example .env
-$ vim .env
-
-# Change back to the repository root
-$ cd ..
-
-# Start all NUSMods Docker services in development mode, including the main web
-# app and the standalone timetable page used by the export service
-$ docker-compose up
-```
-
-Access NUSMods at http://localhost:8080. The export server can be used in the normal way – simply export a timetable as an image or PDF.
-
-To update/rebuild:
-
-- If only code is changed: nothing needs to be done – in development, code is automatically rebuilt and reloaded using `tsc --watch` and `nodemon`.
-- If `package.json` dependencies are changed: `docker-compose restart export` – the container is configured to run `yarn install` on start.
-- If `Dockerfile.dev` is changed: `docker-compose build export`, `docker-compose restart export`
-
-### Without Docker
+### Local development
 
 ```bash
 # Install dependencies
 # To skip Puppeteer installing Chromium, set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 # See https://github.com/GoogleChrome/puppeteer/blob/v0.13.0/docs/api.md#environment-variables
-$ yarn
+$ pnpm install
 
 # Configure - the defaults are sufficient for development, but for
 # production these need to be updated
@@ -43,13 +20,13 @@ $ vim .env
 # Start the Webpack server for both the main web app and the standalone
 # timetable page used by the export service
 $ cd ../website
-$ yarn start
-$ yarn start:export
+$ pnpm start
+$ pnpm start:export
 
-# Start export server - use "yarn devtools" if need to see the graphical browser with
+# Start export server - use "pnpm devtools" if need to see the graphical browser with
 # developer tools. Note that PDF export does not work in devtools mode.
 $ cd ../export
-$ yarn dev
+$ pnpm dev
 ```
 
 ## Supported features
@@ -75,7 +52,7 @@ Both export API endpoints accept GET requests and take a `data` query param that
 
 The endpoints use `content-disposition` header to get the browser to download the file.
 
-### GET `/pdf`
+### GET `/api/export/pdf`
 
 Download PDF of the timetable.
 
@@ -83,7 +60,7 @@ Download PDF of the timetable.
 
 - `data` - JSON encoded timetable data
 
-### GET `/image`
+### GET `/api/export/image`
 
 Download PNG image of the timetable.
 
@@ -96,36 +73,40 @@ Download PNG image of the timetable.
 
 Returns the HTML content of the page that Puppeteer renders.
 
+## Testing
+
+After running locally, you can test with the following URLs on `localhost:3000`:
+
+- [Example image export](http://localhost:3000/api/export/image?data=%7B%22semester%22%3A2%2C%22timetable%22%3A%7B%22CS3217%22%3A%7B%22Lecture%22%3A%5B0%2C3%5D%2C%22Tutorial%22%3A%5B1%5D%7D%2C%22CS1010%22%3A%7B%22Tutorial%22%3A%5B4%5D%2C%22Sectional%20Teaching%22%3A%5B3%5D%7D%2C%22CS1231S%22%3A%7B%22Tutorial%22%3A%5B2%5D%2C%22Lecture%22%3A%5B6%2C7%5D%7D%2C%22CS4218%22%3A%7B%22Lecture%22%3A%5B0%5D%2C%22Laboratory%22%3A%5B4%5D%7D%7D%2C%22colors%22%3A%7B%22CS3217%22%3A4%2C%22CS1010%22%3A6%2C%22CS1231S%22%3A5%2C%22CS4218%22%3A0%7D%2C%22hidden%22%3A%5B%5D%2C%22ta%22%3A%5B%5D%2C%22theme%22%3A%7B%22id%22%3A%22mocha%22%2C%22timetableOrientation%22%3A%22HORIZONTAL%22%2C%22showTitle%22%3Afalse%2C%22_persist%22%3A%7B%22version%22%3A-1%2C%22rehydrated%22%3Atrue%7D%7D%2C%22settings%22%3A%7B%22colorScheme%22%3A%22LIGHT_COLOR_SCHEME%22%7D%7D&pixelRatio=2)
+- [Example PDF export](http://localhost:3000/api/export/pdf?data=%7B%22semester%22%3A2%2C%22timetable%22%3A%7B%22CS3217%22%3A%7B%22Lecture%22%3A%5B0%2C3%5D%2C%22Tutorial%22%3A%5B1%5D%7D%2C%22CS1010%22%3A%7B%22Tutorial%22%3A%5B4%5D%2C%22Sectional%20Teaching%22%3A%5B3%5D%7D%2C%22CS1231S%22%3A%7B%22Tutorial%22%3A%5B2%5D%2C%22Lecture%22%3A%5B6%2C7%5D%7D%2C%22CS4218%22%3A%7B%22Lecture%22%3A%5B0%5D%2C%22Laboratory%22%3A%5B4%5D%7D%7D%2C%22colors%22%3A%7B%22CS3217%22%3A4%2C%22CS1010%22%3A6%2C%22CS1231S%22%3A5%2C%22CS4218%22%3A0%7D%2C%22hidden%22%3A%5B%5D%2C%22ta%22%3A%5B%5D%2C%22theme%22%3A%7B%22id%22%3A%22mocha%22%2C%22timetableOrientation%22%3A%22HORIZONTAL%22%2C%22showTitle%22%3Afalse%2C%22_persist%22%3A%7B%22version%22%3A-1%2C%22rehydrated%22%3Atrue%7D%7D%2C%22settings%22%3A%7B%22colorScheme%22%3A%22LIGHT_COLOR_SCHEME%22%7D%7D&pixelRatio=2)
+
 ## Deployment
 
-The export service can be deployed in 2 ways: with or without Docker. We are currently using the Docker approach in production.
+The export service is deployed on Vercel for production.
 
-### With Docker
+For deployment of website/export services, use Vercel project settings.
 
-See NUSMods [deployment instructions](../DEPLOYMENT.md).
+### Self-hosting (optional)
 
-### Without Docker
+If you need to run this service outside Vercel, you can still run the Node server
+manually.
 
-In production the app runs behind pm2 in addition to nodemon, so the app will automatically restart when its files are changed or if the app crashes.
+Export depends on build artifacts from `website`, including the timetable-only bundle.
+Use `pnpm rsync:export <target-dir>` from the `website` folder to sync the
+timetable-only build to your target environment.
 
-Export depends on build artifacts from `website`. The deploy script for `website` will automatically push updated versions of the artifacts to the correct folder, but staging needs to be updated manually. Use `yarn rsync:export ../exports/dist-timetable` from the `website` folder in staging to do this.
-
-Here are the steps for deploying. We rsync everything over, including the `node_modules`, so it is not necessary to run `yarn` in the production folder.
+Here are the steps for deploying.
 
 ```bash
 # Update the files from the repo
 $ git pull
 
 # Install dependencies and build
-$ yarn
-$ yarn build
+$ pnpm install
+$ pnpm build
 
-# Deploy the files to production - optionally add --dry-run to check which files are changed first
-$ yarn deploy
-
-# Starting the app, if the app is not already running
-# Uses port 3300 for production and 3301 for staging
-$ yarn start
+# Start the app
+$ pnpm start
 ```
 
 [puppeteer]: https://github.com/GoogleChrome/puppeteer
