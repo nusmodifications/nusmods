@@ -1,6 +1,6 @@
 import { PureComponent, createRef } from 'react';
 import classnames from 'classnames';
-import { flatMap, size, sortBy, toPairs, values } from 'lodash';
+import { flatMap, size, sortBy, toPairs, values } from 'lodash-es';
 
 import { Minus, Plus } from 'react-feather';
 import { ModuleCode, Semester } from 'types/modules';

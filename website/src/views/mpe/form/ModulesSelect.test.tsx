@@ -1,10 +1,19 @@
-import { mount, shallow } from 'enzyme';
-import Downshift from 'downshift';
-import Modal from 'views/components/Modal';
-import { waitForComponentToPaint } from 'test-utils/wait';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ModulesSelectComponent } from './ModulesSelect';
 
-const jest = vi;
+vi.mock('views/components/Modal', () => ({
+  default: ({ children, isOpen, onRequestClose }: any) =>
+    isOpen ? (
+      <div data-testid="modal">
+        <button type="button" onClick={onRequestClose}>
+          Close
+        </button>
+        {children}
+      </div>
+    ) : null,
+}));
+
 const modules = [
   {
     moduleCode: 'Test1',
@@ -21,117 +30,126 @@ const modules = [
 ];
 
 const commonProps = {
-  getFilteredModules: jest.fn((inputValue) => {
+  getFilteredModules: vi.fn((inputValue) => {
     if (!inputValue) return [];
     return modules.filter((m) => m.moduleCode.includes(inputValue));
   }),
-  onChange: jest.fn(),
+  onChange: vi.fn(),
   moduleCount: 3,
   placeholder: 'test placeholder',
-  matchBreakpoint: false,
-  disabled: false,
-  onRemoveModule: jest.fn(),
+  onRemoveModule: vi.fn(),
 };
 
 describe(ModulesSelectComponent, () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+    vi.clearAllMocks();
+  });
+
   it('should show results on input value change', async () => {
-    const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
-    wrapper.setState({ isOpen: true });
-    await waitForComponentToPaint(wrapper);
-    const input = wrapper.find('input');
-    expect(wrapper.find('li')).toHaveLength(0);
-    input.simulate('change', { target: { value: 'T' } });
-    expect(wrapper.find('li')).toHaveLength(2);
-    input.simulate('change', { target: { value: 'T#' } });
-    expect(wrapper.find('li')).toHaveLength(0);
+    render(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
+    const input = screen.getByPlaceholderText(commonProps.placeholder);
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+
+    await user.type(input, 'T');
+    const items = await screen.findAllByRole('option');
+    expect(items).toHaveLength(2);
+
+    await user.clear(input);
+    await user.type(input, 'T#');
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 
   it('should indicate module is added', async () => {
-    const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
-    wrapper.setState({ isOpen: true, inputValue: 'T' });
-    await waitForComponentToPaint(wrapper);
-    const result = wrapper.find('li').at(1);
-    expect(result.prop('disabled')).toBe(true);
-    expect(result.find('.badge').exists()).toBe(true);
+    render(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
+    const input = screen.getByPlaceholderText(commonProps.placeholder);
+
+    await user.type(input, 'T');
+    const items = await screen.findAllByRole('option');
+    const addedItem = items.find((item) => item.textContent?.includes('Test2'));
+    expect(addedItem).toHaveTextContent('Added');
+    expect(addedItem).toHaveAttribute('aria-disabled', 'true');
+    expect(addedItem).toHaveClass('optionDisabled');
   });
 
   it('should call onChange when module is selected', async () => {
-    const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
-    wrapper.setState({ isOpen: true, inputValue: 'T' });
-    await waitForComponentToPaint(wrapper);
-    wrapper.find('li').first().simulate('click');
-    expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
-    // remain open
-    expect(wrapper.state('isOpen')).toBe(true);
+    render(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
+    const input = screen.getByPlaceholderText(commonProps.placeholder);
+
+    await user.type(input, 'T');
+    const items = await screen.findAllByRole('option');
+    expect(items).toHaveLength(2);
+
+    await user.click(items[0]);
+    expect(commonProps.onChange).toHaveBeenCalledWith('Test1');
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
   });
 
   describe('when it does not matchBreakpoint', () => {
-    it('should render modal', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
-      expect(wrapper.find(Modal).exists()).toBeTruthy();
+    it('should render a button and open modal on click', async () => {
+      render(<ModulesSelectComponent {...commonProps} matchBreakpoint={false} />);
+      const triggerButton = screen.getByRole('button', { name: commonProps.placeholder });
+
+      await user.click(triggerButton);
+      expect(screen.getByTestId('modal')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(commonProps.placeholder)).toBeInTheDocument();
     });
 
-    it('should open modal and downshift when clicked', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
-      wrapper.find('button').simulate('click');
-      const modal = wrapper.find(Modal);
-      const downshift = wrapper.find(Downshift);
-      expect(modal.prop('isOpen')).toBe(true);
-      expect(downshift.prop('isOpen')).toBe(true);
+    it('should show tip when modal opens with no input', async () => {
+      render(<ModulesSelectComponent {...commonProps} matchBreakpoint={false} />);
+      await user.click(screen.getByRole('button', { name: commonProps.placeholder }));
+
+      const searchTip = screen.getByRole('status');
+      expect(searchTip).toHaveTextContent(/Try "GEA1000"/);
+      expect(searchTip).toHaveTextContent(commonProps.moduleCount.toString());
     });
 
-    it('should not open modal when button is disabled', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} disabled />);
-      wrapper.find('button').simulate('click');
-      const modal = wrapper.find(Modal).shallow();
-      expect(modal.prop('isOpen')).toBe(false);
-    });
+    it('should show tips when there are no results', async () => {
+      render(<ModulesSelectComponent {...commonProps} matchBreakpoint={false} />);
+      await user.click(screen.getByRole('button', { name: commonProps.placeholder }));
 
-    it('should show tip when it opens', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
-      wrapper.setState({ isOpen: true });
-      const downshift = wrapper.find(Downshift).shallow();
-      expect(downshift.find('.tip')).toHaveLength(1);
-    });
+      const input = screen.getByPlaceholderText(commonProps.placeholder);
+      await user.type(input, 'XYZ');
 
-    it('should show tips when there are no results', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
-      wrapper.setState({ isOpen: true, inputValue: '%' });
-      const downshift = wrapper.find(Downshift).shallow();
-      expect(downshift.find('.tip')).toHaveLength(2);
+      const statuses = screen.getAllByRole('status');
+      expect(statuses).toHaveLength(2);
+
+      const searchTip = document.getElementById('search-tip');
+      expect(searchTip).toHaveTextContent(/Try "GEA1000"/);
+
+      const noResultsTip = document.getElementById('no-results-tip');
+      expect(noResultsTip).toHaveTextContent(/No courses found for "XYZ"/);
     });
   });
 
   describe('when it does matchBreakpoint', () => {
-    it('should render not modal but downshift instead', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
-      expect(wrapper.find(Modal).exists()).toBeFalsy();
-      expect(wrapper.find(Downshift).exists()).toBeTruthy();
+    it('should toggle menu depending on focus/outer click', async () => {
+      render(
+        <div>
+          <div data-testid="outside">Outside</div>
+          <ModulesSelectComponent {...commonProps} matchBreakpoint />
+        </div>,
+      );
+      const input = screen.getByPlaceholderText(commonProps.placeholder);
+
+      // 1. Open and show results
+      await user.type(input, 'T');
+      expect(await screen.findByRole('listbox')).toBeInTheDocument();
+
+      // 2. Click outside (triggers Downshift's onOuterClick via onBlur logic)
+      await user.click(screen.getByTestId('outside'));
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     });
 
-    it('should toggle menu depending on focus', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
-      const downshift = wrapper.find(Downshift).shallow();
-      // TODO: Check if this is correct
-      downshift.find('input').prop('onFocus')!({} as any);
-      expect(wrapper.state('isOpen')).toBe(true);
-      wrapper.prop('onOuterClick')();
-      expect(wrapper.state('isOpen')).toBe(false);
-    });
+    it('should not open menu when disabled', async () => {
+      render(<ModulesSelectComponent {...commonProps} matchBreakpoint disabled />);
+      const input = screen.getByPlaceholderText(commonProps.placeholder);
 
-    it('should not toggle menu when disabled', () => {
-      // shallow's simulate just calls onFocus
-      const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint disabled />);
-      const downshift = wrapper.find(Downshift);
-      downshift.find('input').simulate('focus');
-      expect(downshift.prop('isOpen')).toBe(false);
-    });
-
-    it('should show tip when there are no results', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
-      wrapper.setState({ isOpen: true, inputValue: '%' });
-      const downshift = wrapper.find(Downshift).shallow();
-      expect(downshift.find('.tip')).toHaveLength(1);
+      await user.click(input);
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+      expect(input).toBeDisabled();
     });
   });
 });

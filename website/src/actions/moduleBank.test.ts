@@ -1,5 +1,5 @@
 import type { Mocked } from 'vitest';
-import _ from 'lodash';
+import { range } from 'lodash-es';
 
 import { TimetableConfig } from 'types/timetables';
 import * as actions from 'actions/moduleBank';
@@ -40,7 +40,7 @@ describe(actions.fetchModule, () => {
     const thunk = actions.fetchModule('CS1010S');
 
     const modules: any = {};
-    _.range(105).forEach((i) => {
+    range(105).forEach((i) => {
       modules[`CS${i}`] = { timestamp: i };
     });
 

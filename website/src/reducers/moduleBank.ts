@@ -1,5 +1,5 @@
 import { produce, Draft } from 'immer';
-import { keyBy, map, omit, size, zipObject } from 'lodash';
+import { keyBy, map, omit, size, zipObject } from 'lodash-es';
 
 import { createMigrate, REHYDRATE } from 'redux-persist';
 import type { Actions } from 'types/actions';

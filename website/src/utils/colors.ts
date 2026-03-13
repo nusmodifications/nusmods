@@ -1,4 +1,4 @@
-import { range, sample, without } from 'lodash';
+import { range, sample, without } from 'lodash-es';
 
 import { ColorIndex, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping } from 'types/reducers';

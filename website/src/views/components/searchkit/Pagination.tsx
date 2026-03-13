@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PaginationAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
-import { clamp, get } from 'lodash';
+import { clamp, get } from 'lodash-es';
 
 export interface PagerProps {
   selectedPage: number;

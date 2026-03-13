@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
-import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
+import { kebabCase, map, mapValues, values, sortBy } from 'lodash-es';
 
 import { Archive, Check } from 'react-feather';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';

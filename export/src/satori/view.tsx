@@ -87,16 +87,23 @@ function ModuleColorMarker({
         height: 20,
         marginRight: 8,
         marginTop: 2,
+        overflow: 'hidden',
         padding: isHidden || isTa ? 1 : 0,
         width: 20,
       }}
     >
       <div
         style={{
-          background: isHidden ? 'transparent' : color,
+          background: isHidden
+            ? 'transparent'
+            : isTa
+              ? `linear-gradient(315deg, ${surface.grayLight} 50%, ${color} 50%)`
+              : color,
+          borderRadius: 3,
           height: 18,
+          marginLeft: -1,
+          marginTop: -1,
           width: 18,
-          ...(isTa ? { clipPath: 'polygon(0% 0%, 100% 0%, 0% 100%)' } : {}),
         }}
       />
     </div>

@@ -38,6 +38,23 @@ jobs:
             NODE_ENV: production
           command: pnpm build
 
+  cpex-scraper:
+    executor: node-executor
+    working_directory: ~/nusmods/scrapers/cpex-scraper
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run:
+          name: Build scraper
+          environment:
+            NODE_ENV: production
+          command: pnpm build
+
   nusmoderator:
     executor: node-executor
     working_directory: ~/nusmods/packages/nusmoderator
@@ -159,6 +176,9 @@ workflows:
     jobs:
       - checkout
       - nus-scrapers:
+          requires:
+            - checkout
+      - cpex-scraper:
           requires:
             - checkout
       - nusmoderator:
