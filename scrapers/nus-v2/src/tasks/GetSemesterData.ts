@@ -27,11 +27,11 @@ interface Input {
   departments: Array<AcademicOrg>;
   faculties: Array<AcademicGrp>;
   modules: Array<ModuleInfo>;
-  /** Pre-fetched timetables for this semester. If provided, skips internal timetable fetch. */
-  timetables?: { [moduleCode: string]: Array<RawLesson> };
   /** Module codes that have timetable data in any semester. Used to avoid propagating
    *  timetable data to modules that are genuinely offered in other semesters. */
   modulesWithAnyTimetable?: Set<string>;
+  /** Pre-fetched timetables for this semester. If provided, skips internal timetable fetch. */
+  timetables?: { [moduleCode: string]: Array<RawLesson> };
 }
 
 type Output = Array<SemesterModuleData>;
