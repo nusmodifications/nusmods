@@ -277,8 +277,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       yargs:
-        specifier: 16.2.0
-        version: 16.2.0
+        specifier: 17.7.2
+        version: 17.7.2
     devDependencies:
       '@nkzw/eslint-plugin':
         specifier: ^2.0.0
@@ -317,7 +317,7 @@ importers:
         specifier: 0.30.2
         version: 0.30.2
       '@types/yargs':
-        specifier: 17.0.33
+        specifier: '17'
         version: 17.0.33
       '@vitest/coverage-v8':
         specifier: ^4.0.18
