@@ -16,7 +16,9 @@ fi
 if [[ -n "$VERCEL_GIT_PULL_REQUEST_ID" ]]; then
     
     # Query the GitHub API to find the origin of the PR branch.
-    PR_HEAD_REPO=$(curl -s "https://api.github.com/repos/nusmodifications/$VERCEL_GIT_REPO_SLUG/pulls/$VERCEL_GIT_PULL_REQUEST_ID" | jq -r '.head.repo.full_name')
+    dnf install -y jq
+    PR_URL="https://api.github.com/repos/nusmodifications/$VERCEL_GIT_REPO_SLUG/pulls/$VERCEL_GIT_PULL_REQUEST_ID" 
+    PR_HEAD_REPO=$(curl -s -m 10 -H "Authorization: Bearer $GITHUB_API_TOKEN" "$PR_URL" | jq -r '.head.repo.full_name')
 
     if [[ -z "$PR_HEAD_REPO" ]]; then
         echo "🛑 Failed to fetch PR info from GitHub API. Build cancelled."
