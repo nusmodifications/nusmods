@@ -118,7 +118,6 @@ const OptimiserContent: React.FC = () => {
   return (
     <div className={styles.container}>
       <Title>Optimiser</Title>
-
       <OptimiserHeader />
 
       <OptimiserForm
