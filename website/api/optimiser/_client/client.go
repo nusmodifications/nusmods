@@ -1,27 +1,15 @@
+// HTTP Client to make requests to NUSMODS apis
 package client
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 
 	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
-	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
-func GetVenues() (map[string]models.Location, error) {
-	venues := make(map[string]models.Location)
-	err := json.Unmarshal(constants.VenuesJson, &venues)
-	if err != nil {
-		log.Printf("unable to load venues.json: %v", err)
-		return nil, err
-	}
-
-	return venues, nil
-}
-
+// HTTP request to get Module data
 func GetModuleData(acadYear string, module string) ([]byte, error) {
 	url := fmt.Sprintf(constants.ModulesURL, acadYear, module)
 	res, err := http.Get(url)
@@ -29,6 +17,10 @@ func GetModuleData(acadYear string, module string) ([]byte, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to fetch module %s: status %d", module, res.StatusCode)
+	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {

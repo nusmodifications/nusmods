@@ -2,21 +2,23 @@ package constants
 
 import (
 	_ "embed"
+
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
 // Ensure in sync with all E-Venues in NUSMods
-var E_Venues = map[string]bool{
-	"E-Learn_A":  true,
-	"E-Learn_B":  true,
-	"E-Learn_C":  true,
-	"E-Learn_D":  true,
-	"E-Hybrid_A": true,
-	"E-Hybrid_B": true,
-	"E-Hybrid_C": true,
-	"E-Hybrid_D": true,
+var EVenues = map[string]struct{}{
+	"E-Learn_A":  {},
+	"E-Learn_B":  {},
+	"E-Learn_C":  {},
+	"E-Learn_D":  {},
+	"E-Hybrid_A": {},
+	"E-Hybrid_B": {},
+	"E-Hybrid_C": {},
+	"E-Hybrid_D": {},
 }
 
-// Ensure this is in sync with website/src/utils/timtetables.ts
+// Ensure this is in sync with website/src/utils/timetables.ts
 var LessonTypeAbbrev = map[string]string{
 	"DESIGN LECTURE":             "DLEC",
 	"LABORATORY":                 "LAB",
@@ -35,17 +37,31 @@ var LessonTypeAbbrev = map[string]string{
 //go:embed venues.json
 var VenuesJson []byte
 
-var ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
+const ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 
-var NUSModsTimetableBaseURL = "https://nusmods.com/timetable"
+const NUSModsTimetableBaseURL = "https://nusmods.com/timetable"
 
-var MAX_WALK_DISTANCE = 0.250 // 250 meters
-var LUNCH_BONUS = -300.0
-var NO_LUNCH_PENALTY = 300.0
-var GAP_PENALTY_THRESHOLD = 120 // 2 hours in minutes
-var GAP_PENALTY_RATE = 100.0
-var LUNCH_REQUIRED_TIME = 60 // 1 hour in minutes
-var CONSECUTIVE_HOURS_PENALTY_RATE = 100
+// Heuristics for scoring function
+const (
+	MaxWalkDistance             = 0.250 // 250 meters
+	NoVenuePenalty              = 100.0
+	LunchBonus                  = -300.0
+	NoLunchPenalty              = 300.0
+	GapPenaltyThreshold         = 120 // 2 hours in minutes
+	GapPenaltyRate              = 100.0
+	LunchRequiredTime           = 60 // 1 hour in minutes
+	ConsecutiveHoursPenaltyRate = 100
+)
 
 // This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client
-var MODULE_CODE_SEPARATOR = ";"
+const ModuleCodeSeparator = ";"
+
+// Beam search parameters
+const (
+	BeamWidth       = 5000
+	BranchingFactor = 100
+	DaysPerWeek     = 6
+)
+
+// Indicates that a Coordinate was invalid
+var InvalidCoordinates = models.Coordinates{X: -1, Y: -1}

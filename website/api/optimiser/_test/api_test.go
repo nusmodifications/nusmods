@@ -10,7 +10,6 @@ import (
 	"time"
 
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
-	solver "github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
 
 const baseURL = "http://localhost:8020/optimise"
@@ -37,7 +36,7 @@ func TestOptimiser_SingleModule(t *testing.T) {
 		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
 	}
 
-	var result solver.SolveResponse
+	var result models.SolveResponse
 	if err := json.Unmarshal(body, &result); err != nil {
 		t.Fatalf("Failed to parse response: %v", err)
 	}
@@ -62,7 +61,7 @@ func TestOptimiser_SingleModule(t *testing.T) {
 func TestOptimiser_NoCollisionBetween2Lessons(t *testing.T) {
 	req := models.OptimiserRequest{
 		Modules:             []string{"CS2103T", "BN1112"},
-		Recordings:          []string{"CS2103T Lecture"},
+		Recordings:          []string{"CS2103T|Lecture"},
 		FreeDays:            []string{},
 		EarliestTime:        "0800",
 		LatestTime:          "1900",
@@ -79,7 +78,7 @@ func TestOptimiser_NoCollisionBetween2Lessons(t *testing.T) {
 		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
 	}
 
-	var result solver.SolveResponse
+	var result models.SolveResponse
 	if err := json.Unmarshal(body, &result); err != nil {
 		t.Fatalf("Failed to parse response: %v", err)
 	}
@@ -105,7 +104,7 @@ func TestOptimiser_NoCollisionBetween2Lessons(t *testing.T) {
 func TestOptimiser_MultipleModulesWithFreeDays(t *testing.T) {
 	req := models.OptimiserRequest{
 		Modules:             []string{"CS2040S", "CS2030S", "ST2334", "IS1108", "GEA1000"},
-		Recordings:          []string{"CS2040S Lecture", "CS2030S Lecture", "ST2334 Lecture"},
+		Recordings:          []string{"CS2040S|Lecture", "CS2030S|Lecture", "ST2334|Lecture"},
 		FreeDays:            []string{"Monday", "Wednesday"},
 		EarliestTime:        "0900",
 		LatestTime:          "1900",
@@ -122,7 +121,7 @@ func TestOptimiser_MultipleModulesWithFreeDays(t *testing.T) {
 		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
 	}
 
-	var result solver.SolveResponse
+	var result models.SolveResponse
 	if err := json.Unmarshal(body, &result); err != nil {
 		t.Fatalf("Failed to parse response: %v", err)
 	}
@@ -142,6 +141,168 @@ func TestOptimiser_MultipleModulesWithFreeDays(t *testing.T) {
 	t.Logf("   Shareable link: %s", result.ShareableLink)
 }
 
+// TestOptimiser_EmptyModules verifies that an empty modules list is rejected.
+func TestOptimiser_EmptyModules(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1800",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode == http.StatusOK {
+		t.Errorf("Expected non-200 status for empty modules, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_InvalidTimeFormat verifies that a malformed time string is rejected.
+func TestOptimiser_InvalidTimeFormat(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{"CS2040S"},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "ABCD",
+		LatestTime:          "1800",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode == http.StatusOK {
+		t.Errorf("Expected non-200 status for invalid time format, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_NonExistentModule verifies that an unknown module code is rejected.
+func TestOptimiser_NonExistentModule(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{"INVALID999"},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1800",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode == http.StatusOK {
+		t.Errorf("Expected non-200 status for non-existent module, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_MethodNotAllowed verifies that non-POST requests are rejected with 405.
+func TestOptimiser_MethodNotAllowed(t *testing.T) {
+	resp, err := client.Get(baseURL)
+	if err != nil {
+		t.Fatalf("Failed to send GET request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusMethodNotAllowed {
+		t.Errorf("Expected status 405 for GET request, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_ShareableLinks verifies that both shareable links are well-formed
+// and reference all requested module codes.
+func TestOptimiser_ShareableLinks(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{"CS2040S", "CS2030S"},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1900",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, body := makeRequest(t, req)
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
+	}
+
+	var result models.SolveResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		t.Fatalf("Failed to parse response: %v", err)
+	}
+
+	const linkPrefix = "https://nusmods.com/timetable/"
+
+	for _, link := range []string{result.ShareableLink, result.DefaultShareableLink} {
+		if !strings.HasPrefix(link, linkPrefix) {
+			t.Errorf("Link does not start with %q: %s", linkPrefix, link)
+		}
+		for _, module := range req.Modules {
+			if !strings.Contains(link, module) {
+				t.Errorf("Link missing module %q: %s", module, link)
+			}
+		}
+	}
+
+	t.Logf("✅ Shareable links valid. ShareableLink: %s", result.ShareableLink)
+	t.Logf("   DefaultShareableLink: %s", result.DefaultShareableLink)
+}
+
+// TestOptimiser_AllSlotsHaveAssignments verifies that every slot in DaySlots has
+// a corresponding entry in Assignments, ensuring internal result consistency.
+func TestOptimiser_AllSlotsHaveAssignments(t *testing.T) {
+	req := models.OptimiserRequest{
+		Modules:             []string{"CS2040S", "CS2030S", "ST2334"},
+		Recordings:          []string{"CS2040S|Lecture"},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1900",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+
+	resp, body := makeRequest(t, req)
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
+	}
+
+	var result models.SolveResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		t.Fatalf("Failed to parse response: %v", err)
+	}
+
+	for dayIdx, slots := range result.DaySlots {
+		for _, slot := range slots {
+			if _, ok := result.Assignments[slot.LessonKey]; !ok {
+				t.Errorf("%s: slot with lessonKey %q has no corresponding assignment",
+					dayNames[dayIdx], slot.LessonKey)
+			}
+		}
+	}
+
+	t.Logf("✅ All slots have assignments. Assignments: %v", result.Assignments)
+}
+
 // helpers
 
 // Day name constants for mapping
@@ -152,7 +313,7 @@ var dayNames = []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 // - All lessons are within earliestTime and latestTime bounds
 // - Free days have no lessons scheduled
 // - Lessons marked as recordings should not appear in physical timetable
-func validateTimetable(t *testing.T, result solver.SolveResponse, req models.OptimiserRequest) {
+func validateTimetable(t *testing.T, result models.SolveResponse, req models.OptimiserRequest) {
 	t.Helper()
 
 	// Build free days set
@@ -166,7 +327,7 @@ func validateTimetable(t *testing.T, result solver.SolveResponse, req models.Opt
 		}
 	}
 
-	// Build recordings set (format: "CS2040S Lecture")
+	// Build recordings set (format: "CS2040S|Lecture")
 	recordings := make(map[string]bool)
 	for _, rec := range req.Recordings {
 		recordings[rec] = true
@@ -176,25 +337,26 @@ func validateTimetable(t *testing.T, result solver.SolveResponse, req models.Opt
 		for i, slot := range slots {
 			// Free days should only have recorded lessons (if any)
 			if freeDays[dayIdx] {
-				parts := strings.Split(slot.LessonKey, "|")
-				if len(parts) == 2 {
-					recordingKey := parts[0] + " " + parts[1]
-					if !recordings[recordingKey] {
-						t.Errorf("%s: Non-recorded lesson %s should not appear on free day",
-							dayNames[dayIdx], recordingKey)
-					}
+				if !recordings[slot.LessonKey] {
+					t.Errorf("%s: Non-recorded lesson %s should not appear on free day",
+						dayNames[dayIdx], slot.LessonKey)
 				}
 				continue
 			}
 
 			// Check earliest time constraint
-			if slot.StartTime < req.EarliestTime {
+			slotStartMin, _ := models.ParseTimeToMinutes(slot.StartTime)
+			slotEndMin, _ := models.ParseTimeToMinutes(slot.EndTime)
+			earliestMin, _ := models.ParseTimeToMinutes(req.EarliestTime)
+			latestMin, _ := models.ParseTimeToMinutes(req.LatestTime)
+
+			if slotStartMin < earliestMin {
 				t.Errorf("%s: %s %s starts at %s, before earliest time %s",
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.StartTime, req.EarliestTime)
 			}
 
 			// Check latest time constraint
-			if slot.EndTime > req.LatestTime {
+			if slotEndMin > latestMin {
 				t.Errorf("%s: %s %s ends at %s, after latest time %s",
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.EndTime, req.LatestTime)
 			}
@@ -202,7 +364,9 @@ func validateTimetable(t *testing.T, result solver.SolveResponse, req models.Opt
 			// Check for time collisions with subsequent lessons
 			for j := i + 1; j < len(slots); j++ {
 				other := slots[j]
-				if slot.StartTime < other.EndTime && other.StartTime < slot.EndTime {
+				otherStartMin, _ := models.ParseTimeToMinutes(other.StartTime)
+				otherEndMin, _ := models.ParseTimeToMinutes(other.EndTime)
+				if slotStartMin < otherEndMin && otherStartMin < slotEndMin {
 					t.Errorf("%s: Collision between %s %s (%s-%s) and %s %s (%s-%s)",
 						dayNames[dayIdx],
 						slot.LessonType, slot.ClassNo, slot.StartTime, slot.EndTime,
