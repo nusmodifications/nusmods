@@ -3,3 +3,17 @@ packages:
   - 'export'
   - 'packages/*'
   - 'scrapers/*'
+
+catalog:
+  '@nkzw/eslint-plugin': ^2.0.0
+  '@nkzw/oxlint-config': ^1.0.1
+  '@types/node': 22.13.5
+  '@vitest/coverage-v8': ^4.0.18
+  cross-env: 7.0.3
+  eslint-plugin-no-only-tests: ^3.3.0
+  eslint-plugin-perfectionist: ^5.6.0
+  eslint-plugin-unused-imports: ^4.4.1
+  npm-run-all: 4.1.5
+  oxlint: ^1.51.0
+  typescript: 5.9.3
+  vitest: ^4.0.18

@@ -1,5 +1,7 @@
+import path from 'node:path';
 import Koa from 'koa';
 import Router from 'koa-router';
+import serve from 'koa-static';
 import views from 'koa-views';
 import * as Sentry from '@sentry/node';
 
@@ -15,7 +17,7 @@ const app = new Koa<State>();
 const router = new Router();
 
 router
-  .get('/image', async (ctx) => {
+  .get('/api/export/image', async (ctx) => {
     const { data, page } = ctx.state;
     const { height, width } = ctx.query;
 
@@ -42,7 +44,7 @@ router
     ctx.body = await render.image(page, data, options);
     ctx.attachment('My Timetable.png');
   })
-  .get('/pdf', async (ctx) => {
+  .get('/api/export/pdf', async (ctx) => {
     const { data, page } = ctx.state;
 
     ctx.body = await render.pdf(page, data);
@@ -87,6 +89,7 @@ app
       extension: 'pug',
     }),
   )
+  .use(serve(path.join(__dirname, '..', '..', 'public')))
   .use(errorHandler)
   .use(data.parseExportData)
   .use(render.openPage)
