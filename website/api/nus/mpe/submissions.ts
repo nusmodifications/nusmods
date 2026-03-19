@@ -37,16 +37,11 @@ const handleGet: Handler = async (req, res) => {
 
 const handlePost: Handler = async (req, res) => {
   // TODO: Identify error type in the catch block and throw relevant error.
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const user = (req as any).user as User;
-    await createSubmission(user.accountName, req.body);
-    res.json({
-      message: 'Your MPE preferences are successfully recorded',
-    });
-  } catch (err) {
-    throw err;
-  }
+  const user = (req as any).user as User;
+  await createSubmission(user.accountName, req.body);
+  res.json({
+    message: 'Your MPE preferences are successfully recorded',
+  });
 };
 
 const methodHandlers: MethodHandlers = {

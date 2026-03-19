@@ -1,7 +1,9 @@
+// This file runs directly in Node.js on Vercel serverless (not bundled by webpack).
+// Vercel's runtime disables require(esm), so ESM-only packages like lodash-es
+// must be loaded via dynamic import() rather than static import statements.
 import * as fs from 'fs';
 import * as path from 'path';
 import * as validator from '@authenio/samlify-node-xmllint';
-import { mapValues } from 'lodash';
 import * as samlify from 'samlify';
 import type { ESamlHttpRequest } from 'samlify/types/src/entity';
 import type { Handler, Request } from './handler';
@@ -99,6 +101,8 @@ export const authenticate = async (req: Request) => {
     extract: { attributes },
   } = await sp.parseLoginResponse(idp, 'post', requestToProcess);
 
+  // Dynamic import because this file runs on Vercel serverless (see top-of-file comment).
+  const { mapValues } = await import('lodash-es');
   const user: User = mapValues(
     samlRespAttributes,
     (samlAttributeKey) => attributes[samlAttributeKey],
