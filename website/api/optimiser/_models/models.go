@@ -18,7 +18,7 @@ type ModuleDefaultSlotsMap = map[string]map[LessonType][]ModuleSlot
 
 type OptimiserRequest struct {
 	Modules             []string `json:"modules"`             // Format: ["CS1010S", "CS2030S"]
-	Recordings          []string `json:"recordings"`          // Format: ["CS1010S Lecture", "CS2030S Laboratory"]
+	Recordings          []string `json:"recordings"`          // Format: ["CS1010S|Lecture", "CS2030S|Laboratory"]
 	FreeDays            []string `json:"freeDays"`            // Format: ["Monday", "Tuesday"]
 	EarliestTime        string   `json:"earliestTime"`        // Format: "1504" (HHMM)
 	LatestTime          string   `json:"latestTime"`          // Format: "1504" (HHMM)
@@ -27,6 +27,47 @@ type OptimiserRequest struct {
 	MaxConsecutiveHours int      `json:"maxConsecutiveHours"` // Maximum consecutive hours of study
 	LunchStart          string   `json:"lunchStart"`          // Format: "1504" (HHMM)
 	LunchEnd            string   `json:"lunchEnd"`            // Format: "1500" (HHMM)
+
+	// Parsed fields
+	EarliestMin   int `json:"-"`
+	LatestMin     int `json:"-"`
+	LunchStartMin int `json:"-"`
+	LunchEndMin   int `json:"-"`
+}
+
+// ParseOptimiserRequestFields validates and parses time fields into minutes.
+func (r *OptimiserRequest) ParseOptimiserRequestFields() error {
+	if len(r.Modules) == 0 {
+		return fmt.Errorf("at least one module must be provided")
+	}
+	var err error
+	r.EarliestMin, err = ParseTimeToMinutes(r.EarliestTime)
+	if err != nil {
+		return fmt.Errorf("invalid earliestTime: %s", r.EarliestTime)
+	}
+	r.LatestMin, err = ParseTimeToMinutes(r.LatestTime)
+	if err != nil {
+		return fmt.Errorf("invalid latestTime: %s", r.LatestTime)
+	}
+	r.LunchStartMin, err = ParseTimeToMinutes(r.LunchStart)
+	if err != nil {
+		return fmt.Errorf("invalid lunchStart: %s", r.LunchStart)
+	}
+	r.LunchEndMin, err = ParseTimeToMinutes(r.LunchEnd)
+	if err != nil {
+		return fmt.Errorf("invalid lunchEnd: %s", r.LunchEnd)
+	}
+
+	// TODO: Time range validation for earliest time, latest time, lunch start time, lunch end time
+	// Ensure earlier time <= later time. Currently not ensured in frontend yet. Once that is completed
+	// we can add this check for completion.
+	return nil
+}
+
+type SolveResponse struct {
+	TimetableState
+	ShareableLink        string `json:"shareableLink"`
+	DefaultShareableLink string `json:"defaultShareableLink"`
 }
 
 type TimetableState struct {
@@ -34,6 +75,9 @@ type TimetableState struct {
 	DaySlots      [6][]ModuleSlot   // For each day, a time-sorted slice of slots
 	DayDistance   [6]float64        // Squared travel distance per day
 	TotalDistance float64           // Sum of all DayDistance
+
+	// Calculated fields
+	Score float64
 }
 
 type ModuleSlot struct {
@@ -51,7 +95,7 @@ type ModuleSlot struct {
 	EndMin      int    // Minutes from 00:00
 	DayIndex    int    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
 	LessonKey   string // "MODULE|LessonType"
-	WeeksSet    map[int]bool
+	WeeksSet    map[int]struct{}
 	WeeksString string
 	LessonIndex LessonIndex
 }
