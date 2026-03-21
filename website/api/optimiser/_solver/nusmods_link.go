@@ -2,14 +2,66 @@ package solver
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
+// GenerateNUSModsShareableLink creates a shareable NUSMods link from the assignments
+func GenerateNUSModsShareableLink(
+	assignments map[string]string,
+	defaultSlots map[string]map[string][]models.ModuleSlot,
+	lessonToSlots map[string][][]models.ModuleSlot,
+	req models.OptimiserRequest,
+) (string, string) {
+	config := createConfig(assignments, lessonToSlots)
+	serializedConfig := serializeConfig(config)
+
+	// Initialize assignments for skipped slots with default slots
+	for moduleCode, lessonTypeMap := range defaultSlots {
+		for lessonType, slots := range lessonTypeMap {
+			lessonKey := strings.ToUpper(moduleCode) + "|" + lessonType
+			if assignments[lessonKey] == "" {
+				classNo := slots[0].ClassNo
+				assignments[lessonKey] = classNo
+				lessonToSlots[lessonKey] = append(lessonToSlots[lessonKey], slots)
+			}
+		}
+	}
+
+	defaultConfig := createConfig(assignments, lessonToSlots)
+	defaultSerializedConfig := serializeConfig(defaultConfig)
+
+	semesterPath := ""
+	switch req.AcadSem {
+	case 1:
+		semesterPath = "sem-1"
+	case 2:
+		semesterPath = "sem-2"
+	case 3:
+		semesterPath = "st-i"
+	case 4:
+		semesterPath = "st-ii"
+	default:
+		semesterPath = "sem-1"
+	}
+
+	// Construct final URL
+	shareableURL := fmt.Sprintf("%s/%s/share?%s", constants.NUSModsTimetableBaseURL, semesterPath, serializedConfig)
+	defaultShareableURL := fmt.Sprintf(
+		"%s/%s/share?%s",
+		constants.NUSModsTimetableBaseURL,
+		semesterPath,
+		defaultSerializedConfig,
+	)
+
+	return shareableURL, defaultShareableURL
+}
+
 // Parses the assignments into a map of module codes to lesson types to class numbers
-func CreateConfig(
+func createConfig(
 	assignments map[string]string,
 	lessonToSlots map[string][][]models.ModuleSlot,
 ) map[string]map[string][]models.LessonIndex {
@@ -45,15 +97,8 @@ func CreateConfig(
 	return config
 }
 
-// Serializes an array of lesson indices into the format used in timetable share links
-//
-// Returns "1, 2, 3" with input [1, 2, 3]
-func SerializeLessonIndices(lessonIndex []models.LessonIndex) string {
-	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(lessonIndex)), ","), "[]")
-}
-
 // Constructs the URL
-func SerializeConfig(config map[string]map[string][]models.LessonIndex) string {
+func serializeConfig(config map[string]map[string][]models.LessonIndex) string {
 	var moduleParams []string
 
 	for moduleCode, lessons := range config {
@@ -64,13 +109,13 @@ func SerializeConfig(config map[string]map[string][]models.LessonIndex) string {
 
 			lessonParams = append(
 				lessonParams,
-				fmt.Sprintf("%s:%s", abbrev, "("+SerializeLessonIndices(lessonIndex)+")"),
+				fmt.Sprintf("%s:%s", abbrev, "("+serializeLessonIndices(lessonIndex)+")"),
 			)
 		}
 		if len(lessonParams) > 0 {
 			moduleParams = append(
 				moduleParams,
-				fmt.Sprintf("%s=%s", moduleCode, strings.Join(lessonParams, constants.MODULE_CODE_SEPARATOR)),
+				fmt.Sprintf("%s=%s", moduleCode, strings.Join(lessonParams, constants.ModuleCodeSeparator)),
 			)
 		}
 	}
@@ -78,55 +123,13 @@ func SerializeConfig(config map[string]map[string][]models.LessonIndex) string {
 	return strings.Join(moduleParams, "&")
 }
 
-// GenerateNUSModsShareableLink creates a shareable NUSMods link from the assignments
-func GenerateNUSModsShareableLink(
-	assignments map[string]string,
-	defaultSlots map[string]map[string][]models.ModuleSlot,
-	lessonToSlots map[string][][]models.ModuleSlot,
-	req models.OptimiserRequest,
-) (string, string) {
-	config := CreateConfig(assignments, lessonToSlots)
-	serializedConfig := SerializeConfig(config)
-
-	/*
-		- Initialize assignments for skipped slots with default slots
-	*/
-	for moduleCode, lessonTypeMap := range defaultSlots {
-		for lessonType, slots := range lessonTypeMap {
-			lessonKey := strings.ToUpper(moduleCode) + "|" + lessonType
-			if assignments[lessonKey] == "" {
-				classNo := slots[0].ClassNo
-				assignments[lessonKey] = classNo
-				lessonToSlots[lessonKey] = append(lessonToSlots[lessonKey], slots)
-			}
-		}
+// Serializes an array of lesson indices into the format used in timetable share links
+//
+// Returns "1,2,3" with input [1, 2, 3]
+func serializeLessonIndices(lessonIndex []models.LessonIndex) string {
+	parts := make([]string, len(lessonIndex))
+	for i, idx := range lessonIndex {
+		parts[i] = strconv.Itoa(idx)
 	}
-
-	default_config := CreateConfig(assignments, lessonToSlots)
-	default_serializedConfig := SerializeConfig(default_config)
-
-	semesterPath := ""
-	switch req.AcadSem {
-	case 1:
-		semesterPath = "sem-1"
-	case 2:
-		semesterPath = "sem-2"
-	case 3:
-		semesterPath = "st-i"
-	case 4:
-		semesterPath = "st-ii"
-	default:
-		semesterPath = "sem-1"
-	}
-
-	// Construct final URL
-	shareableURL := fmt.Sprintf("%s/%s/share?%s", constants.NUSModsTimetableBaseURL, semesterPath, serializedConfig)
-	defaultShareableURL := fmt.Sprintf(
-		"%s/%s/share?%s",
-		constants.NUSModsTimetableBaseURL,
-		semesterPath,
-		default_serializedConfig,
-	)
-
-	return shareableURL, defaultShareableURL
+	return strings.Join(parts, ",")
 }

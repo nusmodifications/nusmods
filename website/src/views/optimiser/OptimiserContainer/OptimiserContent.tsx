@@ -84,7 +84,7 @@ const OptimiserContent: React.FC = () => {
       freeDays: Array.from(freeDays),
       earliestTime: lessonTimeRange.earliest,
       latestTime: lessonTimeRange.latest,
-      recordings: recordedLessonOptions.map((lessonOption) => lessonOption.displayText),
+      recordings: recordedLessonOptions.map((lessonOption) => lessonOption.lessonKey),
       lunchStart: lunchTimeRange.earliest,
       lunchEnd: lunchTimeRange.latest,
       maxConsecutiveHours,
@@ -118,7 +118,6 @@ const OptimiserContent: React.FC = () => {
   return (
     <div className={styles.container}>
       <Title>Optimiser</Title>
-
       <OptimiserHeader />
 
       <OptimiserForm
