@@ -10,7 +10,7 @@ import (
 )
 
 // FillDefaultsAndGenerateShareableLinks fills in default class assignments for any unassigned
-// lessons and returns two NUSMods shareable links. 
+// lessons and returns two NUSMods shareable links.
 func FillDefaultsAndGenerateShareableLinks(
 	assignments map[string]string,
 	defaultSlots map[string]map[string][]models.ModuleSlot,

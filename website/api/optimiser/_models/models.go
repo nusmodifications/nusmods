@@ -100,10 +100,10 @@ type ModuleSlot struct {
 	Weeks       any         `json:"weeks"`
 
 	// Parsed fields
-	StartMin    int              `json:"StartMin"`    // Minutes from 00:00 (e.g., 540 for 09:00)
-	EndMin      int              `json:"EndMin"`      // Minutes from 00:00
-	DayIndex    int              `json:"DayIndex"`    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
-	LessonKey   string           `json:"LessonKey"`   // "MODULE|LessonType"
+	StartMin    int              `json:"StartMin"`  // Minutes from 00:00 (e.g., 540 for 09:00)
+	EndMin      int              `json:"EndMin"`    // Minutes from 00:00
+	DayIndex    int              `json:"DayIndex"`  // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
+	LessonKey   string           `json:"LessonKey"` // "MODULE|LessonType"
 	WeeksSet    map[int]struct{} `json:"WeeksSet"`
 	WeeksString string           `json:"WeeksString"`
 	LessonIndex LessonIndex      `json:"LessonIndex"`
