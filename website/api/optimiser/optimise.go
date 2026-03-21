@@ -7,6 +7,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
@@ -52,7 +53,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	response, err := solver.Solve(optimiserRequest)
 	if err != nil {
-		if solveErr, ok := err.(*models.SolveError); ok {
+		var solveErr *models.SolveError
+		if errors.As(err, &solveErr) {
 			http.Error(w, solveErr.Message, solveErr.Code)
 		} else {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
