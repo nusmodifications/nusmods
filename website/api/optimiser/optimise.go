@@ -50,13 +50,17 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	var response models.SolveResponse;
-	response, err = solver.Solve(optimiserRequest)
+	response, err := solver.Solve(optimiserRequest)
 	if err != nil {
-		json.NewEncoder(w).Encode(err)		
+		if solveErr, ok := err.(*models.SolveError); ok {
+			http.Error(w, solveErr.Message, solveErr.Code)
+		} else {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+		}
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
 
 	err = json.NewEncoder(w).Encode(response)
 	if err != nil {

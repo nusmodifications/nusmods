@@ -1,6 +1,7 @@
 package solver
 
 import (
+	"net/http"
 	"sort"
 	"strings"
 
@@ -19,12 +20,12 @@ import (
 // with fewer class options first, which helps reduce the search space early.
 func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 	if err := req.ParseOptimiserRequestFields(); err != nil {
-		return models.SolveResponse{}, err
+		return models.SolveResponse{}, &models.SolveError{Code: http.StatusBadRequest, Message: err.Error()}
 	}
 
 	slots, defaultSlots, recordings, err := modules.GetAllModuleSlots(&req)
 	if err != nil {
-		return models.SolveResponse{}, err
+		return models.SolveResponse{}, &models.SolveError{Code: http.StatusInternalServerError, Message: err.Error()}
 	}
 
 	var lessons []string

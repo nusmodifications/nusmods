@@ -64,6 +64,15 @@ func (r *OptimiserRequest) ParseOptimiserRequestFields() error {
 	return nil
 }
 
+// SolveError is returned by Solve to communicate both the error message and the
+// appropriate HTTP status code to the handler
+type SolveError struct {
+	Code    int
+	Message string
+}
+
+func (e *SolveError) Error() string { return e.Message }
+
 type SolveResponse struct {
 	TimetableState
 	ShareableLink        string `json:"shareableLink"`
