@@ -194,8 +194,9 @@ func mergeAndFilterModuleSlots(
 
 	// iterate over lessonType|classNo
 	for groupKey, slots := range validClassGroups {
-		lessonType := strings.Split(groupKey, "|")[0]
-		classNo := strings.Split(groupKey, "|")[1]
+		parts := strings.SplitN(groupKey, "|", 2)
+		lessonType := parts[0]
+		classNo := parts[1]
 		lessonKey := strings.ToUpper(module) + "|" + lessonType
 
 		// Parse fields for each slot before sorting
