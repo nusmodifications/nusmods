@@ -46,7 +46,7 @@ func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 	})
 
 	best := beamSearch(lessons, lessonToSlots, constants.BeamWidth, constants.BranchingFactor, recordings, req)
-	shareableLink, defaultShareableLink := GenerateNUSModsShareableLink(
+	shareableLink, defaultShareableLink := FillDefaultsAndGenerateShareableLinks(
 		best.Assignments,
 		defaultSlots,
 		lessonToSlots,
