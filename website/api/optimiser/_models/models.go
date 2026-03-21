@@ -80,13 +80,13 @@ type SolveResponse struct {
 }
 
 type TimetableState struct {
-	Assignments   map[string]string // lessonKey -> chosen classNo
-	DaySlots      [6][]ModuleSlot   // For each day, a time-sorted slice of slots
-	DayDistance   [6]float64        // Per-day walking penalty score (sum of haversine distances between consecutive physical lessons)
-	TotalDistance float64           // Sum of all DayDistance
+	Assignments   map[string]string `json:"Assignments"`   // lessonKey -> chosen classNo
+	DaySlots      [6][]ModuleSlot   `json:"DaySlots"`      // For each day, a time-sorted slice of slots
+	DayDistance   [6]float64        `json:"DayDistance"`   // Per-day walking penalty score (sum of haversine distances between consecutive physical lessons)
+	TotalDistance float64           `json:"TotalDistance"` // Sum of all DayDistance
 
 	// Calculated fields
-	Score float64
+	Score float64 `json:"Score"`
 }
 
 type ModuleSlot struct {
@@ -100,13 +100,13 @@ type ModuleSlot struct {
 	Weeks       any         `json:"weeks"`
 
 	// Parsed fields
-	StartMin    int    // Minutes from 00:00 (e.g., 540 for 09:00)
-	EndMin      int    // Minutes from 00:00
-	DayIndex    int    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
-	LessonKey   string // "MODULE|LessonType"
-	WeeksSet    map[int]struct{}
-	WeeksString string
-	LessonIndex LessonIndex
+	StartMin    int              `json:"StartMin"`    // Minutes from 00:00 (e.g., 540 for 09:00)
+	EndMin      int              `json:"EndMin"`      // Minutes from 00:00
+	DayIndex    int              `json:"DayIndex"`    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
+	LessonKey   string           `json:"LessonKey"`   // "MODULE|LessonType"
+	WeeksSet    map[int]struct{} `json:"WeeksSet"`
+	WeeksString string           `json:"WeeksString"`
+	LessonIndex LessonIndex      `json:"LessonIndex"`
 }
 
 // ParseModuleSlotFields parses and populates the parsed fields in ModuleSlot for faster computation
