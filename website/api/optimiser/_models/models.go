@@ -82,7 +82,7 @@ type SolveResponse struct {
 type TimetableState struct {
 	Assignments   map[string]string // lessonKey -> chosen classNo
 	DaySlots      [6][]ModuleSlot   // For each day, a time-sorted slice of slots
-	DayDistance   [6]float64        // Squared travel distance per day
+	DayDistance   [6]float64        // Per-day walking penalty score (sum of haversine distances between consecutive physical lessons)
 	TotalDistance float64           // Sum of all DayDistance
 
 	// Calculated fields
