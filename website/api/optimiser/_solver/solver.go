@@ -1,8 +1,6 @@
 package solver
 
 import (
-	"encoding/json"
-	"net/http"
 	"sort"
 	"strings"
 
@@ -19,16 +17,14 @@ import (
 //
 // The function applies the Minimum Remaining Values (MRV) heuristic by sorting lessons
 // with fewer class options first, which helps reduce the search space early.
-func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
+func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 	if err := req.ParseOptimiserRequestFields(); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		return models.SolveResponse{}, err
 	}
 
 	slots, defaultSlots, recordings, err := modules.GetAllModuleSlots(&req)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		return models.SolveResponse{}, err
 	}
 
 	var lessons []string
@@ -60,12 +56,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 		ShareableLink:        shareableLink,
 		DefaultShareableLink: defaultShareableLink,
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		http.Error(w, "failed to encode response", http.StatusInternalServerError)
-		return
-	}
+	return response, nil
 }
 
 // BeamSearch explores the space of possible timetables to find the optimal assignment.

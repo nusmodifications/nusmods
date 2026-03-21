@@ -50,5 +50,16 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	solver.Solve(w, optimiserRequest)
+	w.Header().Set("Content-Type", "application/json")
+	var response models.SolveResponse;
+	response, err = solver.Solve(optimiserRequest)
+	if err != nil {
+		json.NewEncoder(w).Encode(err)		
+		return
+	}
+
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+	}
 }
