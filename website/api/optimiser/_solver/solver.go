@@ -280,8 +280,8 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 		}
 
 		// Both have valid coordinates — calculate actual distance
-		prevCoord := haversine.Coord{Lat: float64(prev.Coordinates.Y), Lon: float64(prev.Coordinates.X)}
-		currCoord := haversine.Coord{Lat: float64(curr.Coordinates.Y), Lon: float64(curr.Coordinates.X)}
+		prevCoord := haversine.Coord{Lat: prev.Coordinates.Y, Lon: prev.Coordinates.X}
+		currCoord := haversine.Coord{Lat: curr.Coordinates.Y, Lon: curr.Coordinates.X}
 		_, km := haversine.Distance(prevCoord, currCoord)
 
 		// Apply walking penalty formula
