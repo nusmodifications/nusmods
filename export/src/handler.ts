@@ -75,7 +75,7 @@ export function makeExportHandler<T>(
         // Export
         await performExport(response, page, data);
       } finally {
-        await browser?.close();
+        await browser.close();
       }
     } catch (error) {
       const eventId = Sentry.captureException(error.original || error);
