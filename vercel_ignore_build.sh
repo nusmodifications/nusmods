@@ -12,6 +12,6 @@ if [[ "$VERCEL_GIT_COMMIT_MESSAGE" == *"[build]"* ]]; then
     exit 1
 fi
 
-# 4. Catch-all for anything else (e.g., maintainer pushing to a local feature branch without opening a PR)
+# 3. Catch-all for anything else (e.g., maintainer pushing to a local feature branch without opening a PR)
 echo "🛑 Build cancelled"
 exit 0
