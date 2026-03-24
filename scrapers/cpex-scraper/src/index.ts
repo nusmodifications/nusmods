@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { createFileLogger } from './logger';
 import { scrapeCPEx, type ScraperEnv } from './scraper';
 
 const ACADEMIC_YEAR = '2026/27';
@@ -12,10 +13,17 @@ const threshold = 1500;
 const envPath = path.join(__dirname, '../../env.json');
 const env = JSON.parse(fs.readFileSync(envPath, 'utf8')) as ScraperEnv;
 
+const logger = createFileLogger();
+
 scrapeCPEx({
   academicYear: ACADEMIC_YEAR,
   env,
+  logger,
   threshold,
+}).then(() => {
+  logger.close();
 }).catch((error) => {
-  console.error(`Failed to scrape: ${error}`);
+  logger.log(`Failed to scrape: ${error}`);
+  logger.close();
+  process.exitCode = 1;
 });
