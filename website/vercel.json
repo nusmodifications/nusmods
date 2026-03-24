@@ -1,4 +1,6 @@
 {
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm build",
   "functions": {
     "api/**/*.ts": {
       "excludeFiles": "./tsconfig.json",
