@@ -1,5 +1,5 @@
 {
-  "installCommand": "pnpm install",
+  "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm build",
   "functions": {
     "api/**/*.ts": {
