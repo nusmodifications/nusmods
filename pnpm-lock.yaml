@@ -196,7 +196,7 @@ importers:
         version: 1.0.1(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(oxlint@1.55.0)(typescript@5.9.3)
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
+        version: 4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
       documentation:
         specifier: 14.0.3
         version: 14.0.3
@@ -223,7 +223,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
 
   scrapers/cpex-scraper:
     dependencies:
@@ -242,7 +242,7 @@ importers:
         version: 22.13.5
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
+        version: 4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
       eslint-plugin-no-only-tests:
         specifier: 'catalog:'
         version: 3.3.0
@@ -260,7 +260,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
 
   scrapers/nus-v2:
     dependencies:
@@ -357,7 +357,7 @@ importers:
         version: 17.0.33
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
+        version: 4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
       antlr4ts-cli:
         specifier: ^0.5.0-alpha.4
         version: 0.5.0-alpha.4
@@ -390,7 +390,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
 
   website:
     dependencies:
@@ -406,6 +406,9 @@ importers:
       '@material/snackbar':
         specifier: 14.0.0
         version: 14.0.0
+      '@reduxjs/toolkit':
+        specifier: ^2.11.2
+        version: 2.11.2(react-redux@7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@sentry/browser':
         specifier: 7.119.1
         version: 7.119.1
@@ -523,9 +526,12 @@ importers:
       redux:
         specifier: 4.2.1
         version: 4.2.1
-      redux-persist:
-        specifier: 6.0.0
-        version: 6.0.0(react@18.3.1)(redux@4.2.1)
+      redux-remember:
+        specifier: ^6.0.2
+        version: 6.0.2(redux@4.2.1)
+      redux-remigrate:
+        specifier: ^6.0.6
+        version: 6.0.6(redux-remember@6.0.2(redux@4.2.1))(redux@4.2.1)(typescript@5.9.3)
       redux-state-sync:
         specifier: 3.1.4
         version: 3.1.4
@@ -691,7 +697,7 @@ importers:
         version: 1.15.4
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
+        version: 4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
       babel-loader:
         specifier: 9.2.1
         version: 9.2.1(@babel/core@7.26.0)(webpack@5.104.1)
@@ -811,10 +817,10 @@ importers:
         version: 4.1.1(webpack@5.104.1)
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
+        version: 5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
       vitest:
         specifier: 'catalog:'
-        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
+        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
       webpack:
         specifier: 5.104.1
         version: 5.104.1(webpack-cli@5.1.4)
@@ -2487,6 +2493,17 @@ packages:
       react: ^17.0.1
       react-dom: ^17.0.1
 
+  '@reduxjs/toolkit@2.11.2':
+    resolution: {integrity: sha512-Kd6kAHTA6/nUpp8mySPqj3en3dm0tdMIgbttnQ1xFMVpufoj+ADi8pXLBsd4xzTRHQa7t/Jv8W5UnCuW4kuWMQ==}
+    peerDependencies:
+      react: ^16.9.0 || ^17.0.0 || ^18 || ^19
+      react-redux: ^7.2.1 || ^8.1.3 || ^9.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-redux:
+        optional: true
+
   '@rollup/plugin-alias@3.1.9':
     resolution: {integrity: sha512-QI5fsEvm9bDzt32k39wpOwZhVzRcL5ydcffUHMyLVaVaLeC70I8TJZ17F1z1eMoLu4E/UOcH9BWVkKpIKdrfiw==}
     engines: {node: '>=8.0.0'}
@@ -2780,6 +2797,9 @@ packages:
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@standard-schema/utils@0.3.0':
+    resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
 
   '@stylelint/postcss-css-in-js@0.37.3':
     resolution: {integrity: sha512-scLk3cSH1H9KggSniseb2KNAU5D9FWc3H7BxCSAIdtU9OWIyw0zkEZ9qEKHryRM+SExYXRKNb7tOOVNAsQ3iwg==}
@@ -6135,6 +6155,9 @@ packages:
   immer@10.1.1:
     resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
 
+  immer@11.1.4:
+    resolution: {integrity: sha512-XREFCPo6ksxVzP4E0ekD5aMdf8WMwmdNaz6vuvxgI40UaEiu6q3p8X52aU6GdyvLY3XXX/8R7JOTXStz/nBbRw==}
+
   immer@8.0.1:
     resolution: {integrity: sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA==}
 
@@ -6572,6 +6595,10 @@ packages:
 
   jiti@1.21.7:
     resolution: {integrity: sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==}
+    hasBin: true
+
+  jiti@2.6.1:
+    resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
   joi@17.13.3:
@@ -8262,6 +8289,11 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
+  prettier@3.8.1:
+    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   pretty-bytes@3.0.1:
     resolution: {integrity: sha512-eb7ZAeUTgfh294cElcu51w+OTRp/6ItW758LjwJSK72LDevcuJn0P4eD71PLMDGPwwatXmAmYHTkzvpKlJE3ow==}
     engines: {node: '>=0.10.0'}
@@ -8647,14 +8679,18 @@ packages:
     peerDependencies:
       redux: '*'
 
-  redux-persist@6.0.0:
-    resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
+  redux-remember@6.0.2:
+    resolution: {integrity: sha512-Y5zvPujEEGYQMSJmODp3NjSj4BiXTHflhRs82btK/cHOwrJNh2CEVIBGlPTMRG6Pos3+Eea7M3vzhegEBFd0Lg==}
     peerDependencies:
-      react: '>=16'
-      redux: '>4.0.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
+      redux: '>=5.0.0'
+
+  redux-remigrate@6.0.6:
+    resolution: {integrity: sha512-DRGmq0LjuY7s/ocYVYbajChkPrSPlxwEwSqzAhPUEHAq7BO0b2WnWCKID4k10/E60F/YEt/a77oLZ7jmN4n1mw==}
+    hasBin: true
+    peerDependencies:
+      redux: '>=5.0.0'
+      redux-remember: '>=6.0.0'
+      typescript: '>=5.0.0'
 
   redux-state-sync@3.1.4:
     resolution: {integrity: sha512-nhJBzaXVXPXvUhQJ7m0LdoXBnrcw+cTYQ8bzW9DeJKdq6UNYynXwQWAlVUvsbT/hDV+vB6BC4DMLXkUVGpF2yQ==}
@@ -8664,8 +8700,16 @@ packages:
     peerDependencies:
       redux: ^4
 
+  redux-thunk@3.1.0:
+    resolution: {integrity: sha512-NW2r5T6ksUKXCabzhL9z+h206HQw/NJkcLm1GPImRQ8IzfXwRGqjVhKJGauHirT0DAuyy6hjdnMZaRoAcy0Klw==}
+    peerDependencies:
+      redux: ^5.0.0
+
   redux@4.2.1:
     resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
+
+  redux@5.0.1:
+    resolution: {integrity: sha512-M9/ELqF6fy8FwmkpnF0S3YKOqMyoWJ4+CS5Efg2ct3oY9daQvd/Pc71FpGZsVsbl3Cpb+IIcjBDUnnyBdQbq4w==}
 
   reflect.getprototypeof@1.0.10:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
@@ -8758,6 +8802,9 @@ packages:
 
   reselect@4.1.8:
     resolution: {integrity: sha512-ab9EmR80F/zQTMNeneUr4cv+jSwPJgIlvEmVwLerwrWVbpLlBuls9XHzIeTFy4cegU2NHBp3va0LKOzU5qFEYQ==}
+
+  reselect@5.1.1:
+    resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
 
   resolve-cwd@3.0.0:
     resolution: {integrity: sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==}
@@ -12174,6 +12221,18 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@reduxjs/toolkit@2.11.2(react-redux@7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      '@standard-schema/utils': 0.3.0
+      immer: 11.1.4
+      redux: 5.0.1
+      redux-thunk: 3.1.0(redux@5.0.1)
+      reselect: 5.1.1
+    optionalDependencies:
+      react: 18.3.1
+      react-redux: 7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+
   '@rollup/plugin-alias@3.1.9(rollup@2.80.0)':
     dependencies:
       rollup: 2.80.0
@@ -12476,6 +12535,8 @@ snapshots:
       - react-native-b4a
 
   '@standard-schema/spec@1.1.0': {}
+
+  '@standard-schema/utils@0.3.0': {}
 
   '@stylelint/postcss-css-in-js@0.37.3(postcss-syntax@0.36.2)(postcss@7.0.39)':
     dependencies:
@@ -13226,7 +13287,7 @@ snapshots:
       ts-node: 8.9.1(typescript@4.3.4)
       typescript: 4.3.4
 
-  '@vitest/coverage-v8@4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))':
+  '@vitest/coverage-v8@4.1.0(vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))':
     dependencies:
       '@bcoe/v8-coverage': 1.0.2
       '@vitest/utils': 4.1.0
@@ -13238,7 +13299,7 @@ snapshots:
       obug: 2.1.1
       std-env: 4.0.0
       tinyrainbow: 3.0.3
-      vitest: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
+      vitest: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
 
   '@vitest/expect@4.1.0':
     dependencies:
@@ -13249,13 +13310,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.1.0(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))':
+  '@vitest/mocker@4.1.0(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))':
     dependencies:
       '@vitest/spy': 4.1.0
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)
 
   '@vitest/pretty-format@4.1.0':
     dependencies:
@@ -16310,6 +16371,8 @@ snapshots:
 
   immer@10.1.1: {}
 
+  immer@11.1.4: {}
+
   immer@8.0.1: {}
 
   immutability-helper@2.9.1:
@@ -16701,6 +16764,8 @@ snapshots:
       supports-color: 8.1.1
 
   jiti@1.21.7: {}
+
+  jiti@2.6.1: {}
 
   joi@17.13.3:
     dependencies:
@@ -18863,6 +18928,8 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
+  prettier@3.8.1: {}
+
   pretty-bytes@3.0.1:
     dependencies:
       number-is-nan: 1.0.1
@@ -19400,11 +19467,18 @@ snapshots:
       lodash.isplainobject: 4.0.6
       redux: 4.2.1
 
-  redux-persist@6.0.0(react@18.3.1)(redux@4.2.1):
+  redux-remember@6.0.2(redux@4.2.1):
     dependencies:
       redux: 4.2.1
-    optionalDependencies:
-      react: 18.3.1
+
+  redux-remigrate@6.0.6(redux-remember@6.0.2(redux@4.2.1))(redux@4.2.1)(typescript@5.9.3):
+    dependencies:
+      jiti: 2.6.1
+      picocolors: 1.1.1
+      prettier: 3.8.1
+      redux: 4.2.1
+      redux-remember: 6.0.2(redux@4.2.1)
+      typescript: 5.9.3
 
   redux-state-sync@3.1.4:
     dependencies:
@@ -19414,9 +19488,15 @@ snapshots:
     dependencies:
       redux: 4.2.1
 
+  redux-thunk@3.1.0(redux@5.0.1):
+    dependencies:
+      redux: 5.0.1
+
   redux@4.2.1:
     dependencies:
       '@babel/runtime': 7.28.6
+
+  redux@5.0.1: {}
 
   reflect.getprototypeof@1.0.10:
     dependencies:
@@ -19557,6 +19637,8 @@ snapshots:
   requires-port@1.0.0: {}
 
   reselect@4.1.8: {}
+
+  reselect@5.1.1: {}
 
   resolve-cwd@3.0.0:
     dependencies:
@@ -21059,18 +21141,18 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)):
+  vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)):
     dependencies:
       debug: 4.4.3
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@5.9.3)
     optionalDependencies:
-      vite: 7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2):
+  vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2):
     dependencies:
       esbuild: 0.27.3
       fdir: 6.5.0(picomatch@4.0.3)
@@ -21081,15 +21163,15 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.13.5
       fsevents: 2.3.3
-      jiti: 1.21.7
+      jiti: 2.6.1
       sass: 1.83.1
       terser: 5.46.0
       yaml: 2.8.2
 
-  vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)):
+  vitest@4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)):
     dependencies:
       '@vitest/expect': 4.1.0
-      '@vitest/mocker': 4.1.0(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
+      '@vitest/mocker': 4.1.0(vite@7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
       '@vitest/pretty-format': 4.1.0
       '@vitest/runner': 4.1.0
       '@vitest/snapshot': 4.1.0
@@ -21106,7 +21188,7 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@22.13.5)(jiti@2.6.1)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.13.5

@@ -105,7 +105,10 @@ describe('modRegNotification settings', () => {
   test('clear out dismissed notifications when semester changes', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
 
-    const nextState: SettingsState = reducer(settingsWithDismissedNotifications, rehydrateAction());
+    const nextState: SettingsState = reducer(
+      settingsWithDismissedNotifications,
+      rehydrateAction({ settings: settingsWithDismissedNotifications }),
+    );
     expect(nextState.modRegNotification).toMatchObject({
       semesterKey: '2017/2018 Semester 2',
       dismissed: [],
@@ -123,7 +126,10 @@ describe('modRegNotification settings', () => {
       },
     };
 
-    const nextState: SettingsState = reducer(settingsState, rehydrateAction());
+    const nextState: SettingsState = reducer(
+      settingsState,
+      rehydrateAction({ settings: settingsState }),
+    );
     expect(nextState.modRegNotification).toHaveProperty('enabled', false);
   });
 

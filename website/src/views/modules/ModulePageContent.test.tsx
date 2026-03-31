@@ -14,7 +14,7 @@ import ModulePageContent from './ModulePageContent';
 describe('ModulePageContent', () => {
   function make(module: Module = CS1010S) {
     const initialState = reducers(undefined, initAction());
-    const { store } = configureStore(initialState);
+    const store = configureStore(initialState);
     return renderWithRouterMatch(
       <Provider store={store}>
         <ModulePageContent module={module} />

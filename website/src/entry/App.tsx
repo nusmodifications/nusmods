@@ -3,9 +3,7 @@ import { Store } from 'redux';
 import * as React from 'react';
 import type { FC, PropsWithChildren } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { Persistor } from 'storage/persistReducer';
+import { Provider, useSelector } from 'react-redux';
 import { State } from 'types/state';
 
 import AppShell from 'views/AppShell';
@@ -16,10 +14,9 @@ import ErrorPage from 'views/errors/ErrorPage';
 
 type Props = {
   store: Store<State>;
-  persistor: Persistor;
 };
 
-const App: FC<PropsWithChildren<Props>> = ({ store, persistor }) => {
+const App: FC<PropsWithChildren<Props>> = ({ store }) => {
   const onBeforeLift = () => {
     const { theme, settings } = store.getState();
 
@@ -29,16 +26,25 @@ const App: FC<PropsWithChildren<Props>> = ({ store, persistor }) => {
     });
   };
 
+  const RehydrateGate: FC<PropsWithChildren> = ({ children }) => {
+    const isRehydrated = useSelector<State>((state) => state.reduxRemember.isRehydrated);
+
+    if (!isRehydrated) return;
+
+    onBeforeLift();
+    return children;
+  };
+
   return (
     <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
       <Provider store={store}>
-        <PersistGate persistor={persistor} onBeforeLift={onBeforeLift}>
+        <RehydrateGate>
           <Router>
             <AppShell>
               <Routes />
             </AppShell>
           </Router>
-        </PersistGate>
+        </RehydrateGate>
       </Provider>
     </ErrorBoundary>
   );
