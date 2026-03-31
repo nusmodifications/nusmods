@@ -289,7 +289,7 @@ function timetables(
     case REMEMBER_REHYDRATED: {
       const inbound = action.payload.timetables;
 
-      if (inbound.academicYear === state.academicYear) {
+      if (inbound.academicYear === config.academicYear) {
         return inbound;
       }
 
@@ -301,7 +301,7 @@ function timetables(
       }
 
       return {
-        ...state,
+        ...defaultTimetableState,
         archive: {
           ...inbound.archive,
           [inbound.academicYear]: inbound.lessons,
