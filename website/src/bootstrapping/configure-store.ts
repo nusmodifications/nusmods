@@ -54,7 +54,6 @@ export default function configureStore(defaultState?: State, usePersistence: boo
       getDefaultEnhancers().concat(
         (usePersistence
           ? composeEnhancers(
-              storeEnhancer,
               rememberEnhancer(
                 storage,
                 ['moduleBank', 'venueBank', 'timetables', 'theme', 'settings', 'planner'],
@@ -64,6 +63,7 @@ export default function configureStore(defaultState?: State, usePersistence: boo
                   unserialize: (state, _key) => state,
                 },
               ),
+              storeEnhancer,
             )
           : storeEnhancer) as StoreEnhancer,
       ),
