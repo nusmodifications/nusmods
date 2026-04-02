@@ -138,7 +138,7 @@ func mergeAndFilterModuleSlots(
 		slot := &timetable[i]
 
 		// Add coordinates to slot if venue in venues.json or else use invalid coordinates
-		if venue, ok := venues[slot.Venue]; ok {
+		if venue, ok := venues[slot.Venue]; ok && !isMissingVenueCoordinates(venue.Location) {
 			slot.Coordinates = venue.Location
 		} else {
 			slot.Coordinates = constants.InvalidCoordinates
@@ -259,4 +259,9 @@ func isSlotOutsideTimeRange(slot models.ModuleSlot, earliestMin, latestMin int) 
 func extractBuildingName(key string) string {
 	parts := strings.SplitN(key, "-", 2)
 	return parts[0]
+}
+
+// Checks if a venue inside venue.json has missing location
+func isMissingVenueCoordinates(coord models.Coordinates) bool {
+	return coord.X == 0 || coord.Y == 0
 }
