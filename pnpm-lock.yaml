@@ -95,10 +95,10 @@ importers:
         version: 5.0.0
       koa-views:
         specifier: 6.3.1
-        version: 6.3.1(ejs@3.1.10)(lodash@4.17.23)(pug@3.0.3)
+        version: 6.3.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.3)
       lodash:
-        specifier: 4.17.23
-        version: 4.17.23
+        specifier: 4.18.1
+        version: 4.18.1
       nodemon:
         specifier: 2.0.22
         version: 2.0.22
@@ -179,8 +179,8 @@ importers:
         specifier: 9.1.0
         version: 9.1.0
       lodash:
-        specifier: 4.17.23
-        version: 4.17.23
+        specifier: 4.18.1
+        version: 4.18.1
 
   packages/nusmoderator:
     dependencies:
@@ -295,8 +295,8 @@ importers:
         specifier: 17.13.3
         version: 17.13.3
       lodash:
-        specifier: 4.17.23
-        version: 4.17.23
+        specifier: 4.18.1
+        version: 4.18.1
       nusmoderator:
         specifier: 3.0.0
         version: 3.0.0
@@ -464,8 +464,8 @@ importers:
         specifier: 1.2.2
         version: 1.2.2
       lodash:
-        specifier: 4.17.23
-        version: 4.17.23
+        specifier: 4.18.1
+        version: 4.18.1
       lodash-es:
         specifier: 4.18.1
         version: 4.18.1
@@ -6859,8 +6859,8 @@ packages:
   lodash.uniq@4.5.0:
     resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==}
 
-  lodash@4.17.23:
-    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -12063,7 +12063,7 @@ snapshots:
 
   '@packtracker/webpack-plugin@2.3.0(webpack@5.104.1)':
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.1
       minimist: 1.2.8
       omit-deep: 0.3.0
       tiny-json-http: 7.5.1
@@ -14391,12 +14391,12 @@ snapshots:
 
   connect-history-api-fallback@2.0.0: {}
 
-  consolidate@0.15.1(ejs@3.1.10)(lodash@4.17.23)(pug@3.0.3):
+  consolidate@0.15.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.3):
     dependencies:
       bluebird: 3.7.2
     optionalDependencies:
       ejs: 3.1.10
-      lodash: 4.17.23
+      lodash: 4.18.1
       pug: 3.0.3
 
   constantinople@4.0.1:
@@ -14939,7 +14939,7 @@ snapshots:
       ini: 3.0.1
       js-yaml: 4.1.1
       konan: 2.1.1
-      lodash: 4.17.23
+      lodash: 4.18.1
       mdast-util-find-and-replace: 2.2.2
       mdast-util-inject: 1.1.0
       micromark-util-character: 1.2.0
@@ -15130,7 +15130,7 @@ snapshots:
     dependencies:
       '@types/cheerio': 0.22.35
       enzyme: 3.11.0
-      lodash: 4.17.23
+      lodash: 4.18.1
       react-is: 16.13.1
 
   enzyme@3.11.0:
@@ -16153,7 +16153,7 @@ snapshots:
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0
-      lodash: 4.17.23
+      lodash: 4.18.1
       pretty-error: 4.0.0
       tapable: 2.3.0
     optionalDependencies:
@@ -16875,9 +16875,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  koa-views@6.3.1(ejs@3.1.10)(lodash@4.17.23)(pug@3.0.3):
+  koa-views@6.3.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.3):
     dependencies:
-      consolidate: 0.15.1(ejs@3.1.10)(lodash@4.17.23)(pug@3.0.3)
+      consolidate: 0.15.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.3)
       debug: 4.4.3
       get-paths: 0.0.7
       koa-send: 5.0.1
@@ -17096,7 +17096,7 @@ snapshots:
 
   lodash.uniq@4.5.0: {}
 
-  lodash@4.17.23: {}
+  lodash@4.18.1: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -17884,7 +17884,7 @@ snapshots:
       envinfo: 7.11.0
       glob: 7.2.3
       jsdom: 24.1.3
-      lodash: 4.17.23
+      lodash: 4.18.1
       minimatch: 3.1.2
       minimist: 1.2.6
       mocha: 10.3.0
@@ -18811,7 +18811,7 @@ snapshots:
 
   postcss-sorting@5.0.1:
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.1
       postcss: 7.0.39
 
   postcss-svgo@4.0.3:
@@ -18872,7 +18872,7 @@ snapshots:
 
   pretty-error@4.0.0:
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.1
       renderkid: 3.0.0
 
   pretty-format@27.5.1:
@@ -19544,7 +19544,7 @@ snapshots:
       css-select: 4.3.0
       dom-converter: 0.2.0
       htmlparser2: 6.1.0
-      lodash: 4.17.23
+      lodash: 4.18.1
       strip-ansi: 6.0.1
 
   repeat-element@1.1.4: {}
@@ -19829,7 +19829,7 @@ snapshots:
       axios: 0.18.1
       history: 4.7.2
       immutability-helper: 2.9.1
-      lodash: 4.17.23
+      lodash: 4.18.1
       prop-types: 15.8.1
       qs: 6.4.0
       rc-slider: 8.7.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -20360,7 +20360,7 @@ snapshots:
 
   stylelint-order@4.1.0(stylelint@13.13.1):
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.1
       postcss: 7.0.39
       postcss-sorting: 5.0.1
       stylelint: 13.13.1
@@ -20387,7 +20387,7 @@ snapshots:
       import-lazy: 4.0.0
       imurmurhash: 0.1.4
       known-css-properties: 0.21.0
-      lodash: 4.17.23
+      lodash: 4.18.1
       log-symbols: 4.1.0
       mathml-tag-names: 2.1.3
       meow: 9.0.0
@@ -21167,7 +21167,7 @@ snapshots:
       express: 4.22.1
       filesize: 3.6.1
       gzip-size: 5.1.1
-      lodash: 4.17.23
+      lodash: 4.18.1
       mkdirp: 0.5.6
       opener: 1.5.2
       ws: 6.2.3
