@@ -46,7 +46,7 @@ A single request moves through the following stages:
 
 3. **`_solver/beamSearch`**: Lessons are first sorted by number of available options (fewest first — the **Minimum Remaining Values** heuristic). The beam search then assigns one lesson type at a time, expanding each partial timetable into up to `BranchingFactor` candidates, scoring them all, and keeping only the top `BeamWidth`. This repeats until all lessons are assigned.
 
-4. **`_solver/GenerateNUSModsShareableLink`**: Converts the final assignment map into two NUSMods timetable share URLs (see [Response fields](#response) below).
+4. **`_solver/FillDefaultsAndGenerateShareableLinks`**: Converts the final assignment map into 2 shareable URLs (one without default slots and one with default slots). (see [Response fields](#response) below).
 
 5. **Response**: The best timetable state plus both share links is JSON-encoded and returned.
 

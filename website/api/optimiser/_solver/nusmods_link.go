@@ -9,8 +9,9 @@ import (
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
-// GenerateNUSModsShareableLink creates a shareable NUSMods link from the assignments
-func GenerateNUSModsShareableLink(
+// FillDefaultsAndGenerateShareableLinks fills in default class assignments for any unassigned
+// lessons and returns two NUSMods shareable links.
+func FillDefaultsAndGenerateShareableLinks(
 	assignments map[string]string,
 	defaultSlots map[string]map[string][]models.ModuleSlot,
 	lessonToSlots map[string][][]models.ModuleSlot,
