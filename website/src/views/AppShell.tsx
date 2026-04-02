@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { FC, PropsWithChildren } from 'react';
 import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester } from 'types/modules';
+import type { ModuleCode, Semester } from 'types/modules';
 import { DARK_COLOR_SCHEME } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
@@ -31,6 +31,7 @@ import Logo from 'img/nusmods-logo.svg';
 import type { Dispatch } from 'types/redux';
 import type { State } from 'types/state';
 import type { Actions } from 'types/actions';
+import { getModuleTimetable } from 'utils/modules';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
@@ -62,8 +63,12 @@ function useFetchModuleListAndTimetableModules(): {
 
   const fetchTimetableModules = useCallback(
     function fetchTimetableModulesImpl(timetable: SemTimetableConfig, semester: Semester) {
+      const storedModules = { ...store.getState().moduleBank.modules };
+      const getStoredModuleSemesterTimetable = (moduleCode: ModuleCode) =>
+        storedModules[moduleCode] ? getModuleTimetable(storedModules[moduleCode], semester) : [];
+
       dispatch(fetchTimetableModulesAction([timetable]))
-        .then(() => dispatch(validateTimetable(semester)))
+        .then(() => dispatch(validateTimetable(semester, getStoredModuleSemesterTimetable)))
         .catch((error) => {
           captureException(error);
           dispatch(
@@ -76,7 +81,7 @@ function useFetchModuleListAndTimetableModules(): {
           );
         });
     },
-    [dispatch],
+    [dispatch, store],
   );
 
   const fetchModuleListAndTimetableModules = useCallback(() => {
