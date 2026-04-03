@@ -10,16 +10,18 @@ export type UndoHistoryConfig = {
   storedKeyPaths: string[];
 };
 
+export const defaultUndoHistoryState = {
+  past: [],
+  present: undefined, // Don't pretend to know the present
+  future: [],
+};
+
 // Update undo history using the action and app states
 // Basically a reducer but not really, as it needs to know the previous state.
 // Passing state in even though state === presentAppState[config.reducerName] as the "reducer"
 // doesn't need to know that.
 export function computeUndoStacks<T extends { undoHistory: UndoHistoryState<T> }>(
-  state: UndoHistoryState<T> = {
-    past: [],
-    present: undefined, // Don't pretend to know the present
-    future: [],
-  },
+  state: UndoHistoryState<T> = defaultUndoHistoryState,
   action: Actions,
   previousAppState: Partial<T>,
   presentAppState: Partial<T>,

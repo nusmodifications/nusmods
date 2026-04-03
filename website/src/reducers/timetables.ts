@@ -1,8 +1,6 @@
 import { get, omit, uniq, values } from 'lodash-es';
 import { produce } from 'immer';
-import { createMigrate } from 'redux-persist';
 
-import { PersistConfig } from 'storage/persistReducer';
 import { LessonIndex, ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
@@ -28,59 +26,29 @@ import {
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { Actions } from '../types/actions';
+import { REMEMBER_REHYDRATED } from 'redux-remember';
 
-export const persistConfig = {
-  /* eslint-disable no-useless-computed-key */
-  migrate: createMigrate({
-    1: (state) => ({
-      ...state,
-      archive: {},
-      // FIXME: Remove the next line when _persist is optional again.
-      // Cause: https://github.com/rt2zz/redux-persist/pull/919
-      // Issue: https://github.com/rt2zz/redux-persist/pull/1170
-      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-      _persist: state?._persist!,
-    }),
-    2: (state) => ({
-      ...state,
-      ta: {},
-      // FIXME: Remove the next line when _persist is optional again.
-      // Cause: https://github.com/rt2zz/redux-persist/pull/919
-      // Issue: https://github.com/rt2zz/redux-persist/pull/1170
-      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-      _persist: state?._persist!,
-    }),
-  }),
-  /* eslint-enable */
-  version: 2,
+export const stateReconciler = (
+  inbound: TimetablesState,
+  original: TimetablesState,
+  debug: boolean,
+): TimetablesState => {
+  if (inbound.academicYear === original.academicYear) {
+    return inbound;
+  }
 
-  // Our own state reconciler archives old timetables if the acad year is different,
-  // otherwise use the persisted timetable state
-  stateReconciler: (
-    inbound: TimetablesState,
-    original: TimetablesState,
-    _reduced: TimetablesState,
-    { debug }: PersistConfig<TimetablesState>,
-  ): TimetablesState => {
-    if (inbound.academicYear === original.academicYear) {
-      return inbound;
-    }
+  if (debug) {
+    // eslint-disable-next-line no-console
+    console.log('New academic year detected - resetting timetable and adding timetable to archive');
+  }
 
-    if (debug) {
-      // eslint-disable-next-line no-console
-      console.log(
-        'New academic year detected - resetting timetable and adding timetable to archive',
-      );
-    }
-
-    return {
-      ...original,
-      archive: {
-        ...inbound.archive,
-        [inbound.academicYear]: inbound.lessons,
-      },
-    };
-  },
+  return {
+    ...original,
+    archive: {
+      ...inbound.archive,
+      [inbound.academicYear]: inbound.lessons,
+    },
+  };
 };
 
 // Map of lessonType to ClassNo.
@@ -316,6 +284,29 @@ function timetables(
       return produce(state, (draft) => {
         draft.ta[semester] = taModules;
       });
+    }
+
+    case REMEMBER_REHYDRATED: {
+      const inbound = action.payload.timetables;
+
+      if (inbound.academicYear === config.academicYear) {
+        return inbound;
+      }
+
+      if (NUSMODS_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log(
+          'New academic year detected - resetting timetable and adding timetable to archive',
+        );
+      }
+
+      return {
+        ...defaultTimetableState,
+        archive: {
+          ...inbound.archive,
+          [inbound.academicYear]: inbound.lessons,
+        },
+      };
     }
 
     default:

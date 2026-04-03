@@ -19,7 +19,7 @@ vi.mock('react-beautiful-dnd', () => ({
 }));
 
 function makePlannerSemester(year: string, semester: number, modules: PlannerModuleInfo[]) {
-  const { store } = configureStore();
+  const store = configureStore();
   const { history } = createHistory();
 
   const addModule = jest.fn();

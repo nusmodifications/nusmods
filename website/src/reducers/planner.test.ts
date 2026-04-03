@@ -19,7 +19,7 @@ import {
   clearPlanner,
 } from 'actions/planner';
 import { PlannerState } from 'types/reducers';
-import reducer, { defaultPlannerState, migrateV0toV1, nextId } from './planner';
+import reducer, { defaultPlannerState, nextId } from './planner';
 
 const defaultState: PlannerState = {
   ...defaultPlannerState,
@@ -237,25 +237,5 @@ describe(CLEAR_PLANNER, () => {
 
   test('should clear the planner', () => {
     expect(reducer(initial, clearPlanner())).toEqual(defaultPlannerState);
-  });
-});
-
-describe(migrateV0toV1, () => {
-  test('should migrate old modules state to new modules state', () => {
-    expect(
-      migrateV0toV1({
-        _persist: {} as any,
-        ...defaultState,
-        modules: {
-          CS1010S: ['2018/2019', 1, 0],
-          MA1101R: ['2018/2019', 1, 1],
-          CS1231: ['2018/2019', 2, 0],
-        },
-      }),
-    ).toHaveProperty('modules', {
-      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
-      1: { id: '1', moduleCode: 'MA1101R', year: '2018/2019', semester: 1, index: 1 },
-      2: { id: '2', moduleCode: 'CS1231', year: '2018/2019', semester: 2, index: 0 },
-    });
   });
 });

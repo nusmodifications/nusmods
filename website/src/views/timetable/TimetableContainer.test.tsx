@@ -58,7 +58,7 @@ function make(
     renderOptions?: Omit<RenderOptions, 'queries'> | undefined;
   } = {},
 ) {
-  const { store } = configureStore(
+  const store = configureStore(
     produce(initialState, (draft) => {
       draft.app.activeSemester =
         options.storeOverrides?.app?.activeSemester ?? relevantStoreContents.app.activeSemester;
