@@ -1,5 +1,5 @@
 import chromium from '@sparticuz/chromium';
-import puppeteer, { Page } from 'puppeteer-core';
+import puppeteer, { Browser, Page } from 'puppeteer-core';
 
 import { resolveChromeExecutable } from './chrome-executable';
 import { getModules } from './data';
@@ -23,7 +23,7 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
   });
 }
 
-export async function open(url: string) {
+export async function open(url: string): Promise<{ browser: Browser; page: Page }> {
   const executablePath = await resolveChromeExecutable(() => chromium.executablePath());
 
   chromium.setGraphicsMode = false;
@@ -35,11 +35,16 @@ export async function open(url: string) {
     headless: 'shell',
   });
 
-  const page = await browser.newPage();
-  await page.goto(url, { waitUntil: 'load' });
-  await setViewport(page);
+  try {
+    const page = await browser.newPage();
+    await page.goto(url, { waitUntil: 'load' });
+    await setViewport(page);
 
-  return page;
+    return { browser, page };
+  } catch (error) {
+    await browser.close();
+    throw error;
+  }
 }
 
 async function injectData(page: Page, data: ExportData) {
