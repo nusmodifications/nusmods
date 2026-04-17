@@ -1,5 +1,4 @@
 import { filter, groupBy, map, mapValues, partition } from 'lodash-es';
-
 import { LessonIndex, LessonType, ModuleCode, RawLesson, Semester } from 'types/modules';
 
 import { ColoredLesson, InteractableLesson, LessonWithIndex } from 'types/timetables';
