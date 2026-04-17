@@ -1,7 +1,7 @@
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
 import type { Dispatch, GetState } from 'types/redux';
-import { hydrateSemTimetableWithLessons } from 'utils/timetables';
+import { hydrateSemTimetableWithLessons } from 'utils/timetables/lessonHydration';
 import { captureException } from 'utils/error';
 import retryImport from 'utils/retryImport';
 import { getSemesterTimetableLessons } from 'selectors/timetables';

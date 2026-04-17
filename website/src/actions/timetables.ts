@@ -18,11 +18,10 @@ import { getModuleCondensed } from 'selectors/moduleBank';
 import {
   getClosestLessonConfig,
   makeLessonIndicesMap,
-  migrateSemTimetableConfig,
   randomModuleLessonConfig,
-  validateModuleLessons,
-  validateTimetableModules,
 } from 'utils/timetables';
+import { migrateSemTimetableConfig } from 'utils/timetables/migration';
+import { validateModuleLessons, validateTimetableModules } from 'utils/timetables/validation';
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
 // Actions that should not be used directly outside of thunks

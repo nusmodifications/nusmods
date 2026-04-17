@@ -6,7 +6,7 @@ import type { ColoredLesson, InteractableLesson, TimetableArrangement } from 'ty
 
 import Timetable from 'views/timetable/Timetable';
 import SemesterPicker from 'views/components/module-info/SemesterPicker';
-import { arrangeLessonsForWeek } from 'utils/timetables';
+import { arrangeLessonsForWeek } from 'utils/timetables/lessonsArrangement';
 import { colorLessonsByKey } from 'utils/colors';
 import { getFirstAvailableSemester } from 'utils/modules';
 import { venuePage } from 'views/routes/paths';

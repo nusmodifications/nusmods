@@ -17,7 +17,7 @@ import {
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
-import { findExamClashes } from 'utils/timetables';
+import { findExamClashes } from 'utils/timetables/exams';
 import { Conflict, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/planner';
 import placeholders from 'utils/placeholders';
 import { notNull } from 'types/utils';

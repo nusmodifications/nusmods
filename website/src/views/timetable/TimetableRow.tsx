@@ -4,7 +4,7 @@ import { HoverLesson, ColoredLesson, InteractableLesson } from 'types/timetables
 import { OnHoverCell, OnModifyCell } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
-import { isInteractable } from 'utils/timetables';
+import { isInteractable } from 'utils/timetables/interactabilityHydration';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
 

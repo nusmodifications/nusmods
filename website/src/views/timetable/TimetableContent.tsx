@@ -34,15 +34,11 @@ import {
   resetTimetable,
 } from 'actions/timetables';
 import { formatExamDate, getExamDate } from 'utils/modules';
-import {
-  arrangeLessonsForWeek,
-  findExamClashes,
-  getInteractableLessons,
-  getLessonIdentifier,
-  getSemesterModules,
-  hydrateSemTimetableWithLessons,
-  timetableLessonsArray,
-} from 'utils/timetables';
+import { getLessonIdentifier, getSemesterModules, timetableLessonsArray } from 'utils/timetables';
+import { arrangeLessonsForWeek } from 'utils/timetables/lessonsArrangement';
+import { findExamClashes } from 'utils/timetables/exams';
+import { getInteractableLessons } from 'utils/timetables/interactabilityHydration';
+import { hydrateSemTimetableWithLessons } from 'utils/timetables/lessonHydration';
 import { resetScrollPosition } from 'utils/react';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';

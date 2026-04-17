@@ -12,9 +12,9 @@ import {
   formatNumericWeeks,
   getHoverLesson,
   getLessonIdentifier,
-  isInteractable,
   LESSON_TYPE_ABBREV,
 } from 'utils/timetables';
+import { isInteractable } from 'utils/timetables/interactabilityHydration';
 import { TRANSPARENT_COLOR_INDEX } from 'utils/colors';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';

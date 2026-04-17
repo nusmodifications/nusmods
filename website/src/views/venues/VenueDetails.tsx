@@ -8,7 +8,7 @@ import type { DayAvailability, TimePeriod, Venue } from 'types/venues';
 import type { Lesson } from 'types/timetables';
 
 import { colorLessonsByKey } from 'utils/colors';
-import { arrangeLessonsForWeek } from 'utils/timetables';
+import { arrangeLessonsForWeek } from 'utils/timetables/lessonsArrangement';
 import Title from 'views/components/Title';
 import useMediaQuery from 'views/hooks/useMediaQuery';
 import { modulePage, venuePage } from 'views/routes/paths';

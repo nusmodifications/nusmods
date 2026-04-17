@@ -2,7 +2,7 @@ import { each, isEmpty, kebabCase } from 'lodash-es';
 import { ModuleTitle, Semester, ModuleCode } from 'types/modules';
 import { Venue } from 'types/venues';
 import { SemTimetableConfig } from 'types/timetables';
-import { serializeModuleList, serializeTimetable } from 'utils/timetables';
+import { serializeModuleList, serializeTimetable } from 'utils/timetables/shareLinks';
 import config from 'config';
 
 // IMPORTANT: Remember to update any route changes on the sitemap

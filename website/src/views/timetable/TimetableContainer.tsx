@@ -20,7 +20,7 @@ import {
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeTimetable, parseTaModuleCodes } from 'utils/timetables';
+import { deserializeTimetable, parseTaModuleCodes } from 'utils/timetables/shareLinks';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';

@@ -19,13 +19,9 @@ import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/time
 import { ColorMapping } from 'types/reducers';
 import { EmptyGroupType, SelectedLesson } from 'types/views';
 
-import {
-  groupLessonsByDay,
-  hydrateSemTimetableWithLessons,
-  isLessonAvailable,
-  isLessonOngoing,
-  timetableLessonsArray,
-} from 'utils/timetables';
+import { isLessonAvailable, isLessonOngoing, timetableLessonsArray } from 'utils/timetables';
+import { groupLessonsByDay } from 'utils/timetables/lessonsArrangement';
+import { hydrateSemTimetableWithLessons } from 'utils/timetables/lessonHydration';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
 import {
