@@ -45,7 +45,7 @@
     "@types/lodash": "4.17.14",
     "@types/node": "catalog:",
     "@types/pug": "2.0.10",
-    "@vercel/node": "1.15.4",
+    "@vercel/node": "5.7.15",
     "cross-env": "catalog:",
     "dotenv": "8.6.0",
     "eslint-plugin-no-only-tests": "catalog:",
