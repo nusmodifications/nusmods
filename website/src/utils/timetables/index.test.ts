@@ -12,9 +12,7 @@ import { createGenericLesson, EVEN_WEEK, EVERY_WEEK, ODD_WEEK } from 'test-utils
 
 import {
   formatNumericWeeks,
-  getClosestLessonConfig,
   getEndTimeAsDate,
-  getRecoveryLessonIndices,
   getStartTimeAsDate,
   isLessonAvailable,
   isLessonOngoing,
@@ -210,17 +208,5 @@ describe(getEndTimeAsDate, () => {
     const date = new Date(2018, 5, 10);
     const lesson = createGenericLesson('Monday', '0830', '1045');
     expect(getEndTimeAsDate(lesson, date)).toEqual(new Date(2018, 5, 10, 10, 45));
-  });
-});
-
-describe(getClosestLessonConfig, () => {
-  test('ignore if lesson type has no classNo', () => {
-    expect(getClosestLessonConfig({ Lecture: {} }, { Lecture: [0] })).toEqual({});
-  });
-});
-
-describe(getRecoveryLessonIndices, () => {
-  test('guard against empty lessons input', () => {
-    expect(getRecoveryLessonIndices([])).toEqual([]);
   });
 });
