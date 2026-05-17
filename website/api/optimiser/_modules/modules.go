@@ -261,7 +261,7 @@ func extractBuildingName(key string) string {
 	return parts[0]
 }
 
-// Checks if a venue inside venue.json has missing location
+// Checks if a venue inside venues.json has missing location
 func isMissingVenueCoordinates(coord models.Coordinates) bool {
 	return coord.X == 0 || coord.Y == 0
 }
