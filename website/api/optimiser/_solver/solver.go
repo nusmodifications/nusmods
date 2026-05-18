@@ -1,7 +1,6 @@
 package solver
 
 import (
-	"encoding/json"
 	"net/http"
 	"sort"
 	"strings"
@@ -13,22 +12,29 @@ import (
 	modules "github.com/nusmodifications/nusmods/website/api/optimiser/_modules"
 )
 
-// Solve is the main HTTP handler that orchestrates the timetable optimization process.
-// It fetches module data, prepares the search space, runs beam search, generates a
-// shareable NUSMods link, and returns the optimized timetable as JSON.
+// Solve orchestrates the timetable optimization workflow.
 //
-// The function applies the Minimum Remaining Values (MRV) heuristic by sorting lessons
-// with fewer class options first, which helps reduce the search space early.
-func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
+// The function:
+//
+//   - validates and normalizes the optimiser request
+//   - fetches all candidate module slots and default timetable data
+//   - transforms module lessons into a search space representation
+//   - applies the Minimum Remaining Values (MRV) heuristic by sorting
+//     lessons with fewer class-group options first
+//   - runs beam search to find an optimized timetable assignment
+//   - generates shareable NUSMods links for both the optimized and
+//     default timetables
+//
+// It returns a SolveResponse containing the optimized timetable state
+// and generated shareable links.
+func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 	if err := req.ParseOptimiserRequestFields(); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		return models.SolveResponse{}, &models.SolveError{Code: http.StatusBadRequest, Message: err.Error()}
 	}
 
 	slots, defaultSlots, recordings, err := modules.GetAllModuleSlots(&req)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		return models.SolveResponse{}, &models.SolveError{Code: http.StatusInternalServerError, Message: err.Error()}
 	}
 
 	var lessons []string
@@ -49,7 +55,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	})
 
 	best := beamSearch(lessons, lessonToSlots, constants.BeamWidth, constants.BranchingFactor, recordings, req)
-	shareableLink, defaultShareableLink := GenerateNUSModsShareableLink(
+	shareableLink, defaultShareableLink := FillDefaultsAndGenerateShareableLinks(
 		best.Assignments,
 		defaultSlots,
 		lessonToSlots,
@@ -60,12 +66,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 		ShareableLink:        shareableLink,
 		DefaultShareableLink: defaultShareableLink,
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		http.Error(w, "failed to encode response", http.StatusInternalServerError)
-		return
-	}
+	return response, nil
 }
 
 // BeamSearch explores the space of possible timetables to find the optimal assignment.
@@ -190,21 +191,13 @@ func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool
 			if newSlot.StartMin < oldSlot.EndMin && oldSlot.StartMin < newSlot.EndMin {
 
 				// if weeks is not a []int, then skip checking for week conflict
-				newWeeks, ok := newSlot.Weeks.([]any)
-				if !ok {
-					return true
-				}
-				if _, ok := oldSlot.Weeks.([]any); !ok {
+				if newSlot.WeeksSet == nil || oldSlot.WeeksSet == nil {
 					return true
 				}
 
 				// check if the weeks overlap
-				for _, week := range newWeeks {
-					weekFloat, ok := week.(float64)
-					if !ok {
-						continue
-					}
-					if _, exists := oldSlot.WeeksSet[int(weekFloat)]; exists {
+				for week := range newSlot.WeeksSet {
+					if _, exists := oldSlot.WeeksSet[week]; exists {
 						return true
 					}
 				}
@@ -296,8 +289,8 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 		}
 
 		// Both have valid coordinates — calculate actual distance
-		prevCoord := haversine.Coord{Lat: float64(prev.Coordinates.Y), Lon: float64(prev.Coordinates.X)}
-		currCoord := haversine.Coord{Lat: float64(curr.Coordinates.Y), Lon: float64(curr.Coordinates.X)}
+		prevCoord := haversine.Coord{Lat: prev.Coordinates.Y, Lon: prev.Coordinates.X}
+		currCoord := haversine.Coord{Lat: curr.Coordinates.Y, Lon: curr.Coordinates.X}
 		_, km := haversine.Distance(prevCoord, currCoord)
 
 		// Apply walking penalty formula
