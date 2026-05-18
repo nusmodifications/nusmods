@@ -16,6 +16,7 @@ import { RefinementItem } from 'types/views';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
+import DateTimeRangeFilter from 'views/components/filters/DateTimeRangeFilter';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import RandomPicker from 'views/components/searchkit/RandomPicker';
 
@@ -143,6 +144,16 @@ const ModuleFinderSidebar: React.FC = () => {
         />
 
         <ChecklistFilter title="Exams" items={examFilters} />
+
+        <DateTimeRangeFilter
+          id="examDate"
+          title="Exam Date"
+          field="semesterData.examDate"
+          fieldOptions={{
+            type: 'nested',
+            options: { path: 'semesterData' },
+          }}
+        />
 
         <RefinementListFilter
           id="level"
