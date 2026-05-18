@@ -2,7 +2,7 @@ package modules
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -112,8 +112,7 @@ func getVenues() (map[string]models.Location, error) {
 	venues := make(map[string]models.Location)
 	err := json.Unmarshal(constants.VenuesJson, &venues)
 	if err != nil {
-		log.Printf("unable to load venues.json: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("Unable to load venues.json: %v", err)
 	}
 
 	return venues, nil
@@ -194,8 +193,9 @@ func mergeAndFilterModuleSlots(
 
 	// iterate over lessonType|classNo
 	for groupKey, slots := range validClassGroups {
-		lessonType := strings.Split(groupKey, "|")[0]
-		classNo := strings.Split(groupKey, "|")[1]
+		parts := strings.SplitN(groupKey, "|", 2)
+		lessonType := parts[0]
+		classNo := parts[1]
 		lessonKey := strings.ToUpper(module) + "|" + lessonType
 
 		// Parse fields for each slot before sorting

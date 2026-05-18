@@ -361,20 +361,37 @@ func validateTimetable(t *testing.T, result models.SolveResponse, req models.Opt
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.EndTime, req.LatestTime)
 			}
 
-			// Check for time collisions with subsequent lessons
+			// Check for time collisions with subsequent lessons, accounting for weeks
 			for j := i + 1; j < len(slots); j++ {
 				other := slots[j]
 				otherStartMin, _ := models.ParseTimeToMinutes(other.StartTime)
 				otherEndMin, _ := models.ParseTimeToMinutes(other.EndTime)
 				if slotStartMin < otherEndMin && otherStartMin < slotEndMin {
-					t.Errorf("%s: Collision between %s %s (%s-%s) and %s %s (%s-%s)",
-						dayNames[dayIdx],
-						slot.LessonType, slot.ClassNo, slot.StartTime, slot.EndTime,
-						other.LessonType, other.ClassNo, other.StartTime, other.EndTime)
+					// Slots overlap in time — only a real collision if they share a week
+					if weeksOverlap(slot.WeeksSet, other.WeeksSet) {
+						t.Errorf("%s: Collision between %s %s (%s-%s) and %s %s (%s-%s)",
+							dayNames[dayIdx],
+							slot.LessonType, slot.ClassNo, slot.StartTime, slot.EndTime,
+							other.LessonType, other.ClassNo, other.StartTime, other.EndTime)
+					}
 				}
 			}
 		}
 	}
+}
+
+// weeksOverlap returns true if two WeeksSets share at least one week.
+// If either set is nil (weeks were not a []int), assumes overlap conservatively.
+func weeksOverlap(a, b map[int]struct{}) bool {
+	if a == nil || b == nil {
+		return true
+	}
+	for week := range a {
+		if _, exists := b[week]; exists {
+			return true
+		}
+	}
+	return false
 }
 
 func makeRequest(t *testing.T, req models.OptimiserRequest) (*http.Response, []byte) {
