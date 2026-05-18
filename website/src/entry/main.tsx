@@ -2,9 +2,6 @@
 import 'bootstrapping/sentry';
 // core-js has issues with Promise feature detection on Edge, and hence
 // polyfills Promise incorrectly. Importing this polyfill directly resolves that.
-// This is necessary as PersistGate used in ./App uses `Promise.prototype.finally`.
-// See: https://github.com/zloirock/core-js/issues/579#issuecomment-504325213
-import 'core-js/es/promise/finally';
 
 import { createRoot } from 'react-dom/client';
 import ReactModal from 'react-modal';
@@ -18,7 +15,7 @@ import 'styles/main.scss';
 
 import App from './App';
 
-const { store, persistor } = configureStore();
+const store = configureStore(undefined, true);
 
 subscribeOnlineEvents(store);
 
@@ -30,7 +27,7 @@ if (!container) {
   throw new Error('#app element not found');
 }
 const root = createRoot(container);
-root.render(<App store={store} persistor={persistor} />);
+root.render(<App store={store} />);
 
 if (
   ((NUSMODS_ENV === 'preview' || NUSMODS_ENV === 'staging' || NUSMODS_ENV === 'production') &&

@@ -1,5 +1,5 @@
 import type { AnyAction } from 'redux';
-import { PERSIST, PURGE, REHYDRATE } from 'redux-persist';
+import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from 'redux-remember';
 import { createStateSyncMiddleware, type Config } from 'redux-state-sync';
 
 const reduxStateSyncConfig = {
@@ -9,7 +9,7 @@ const reduxStateSyncConfig = {
   channel: 'redux_state_sync',
   predicate: (action: AnyAction) => {
     // Reference: https://github.com/aohua/redux-state-sync/issues/53
-    const blacklist = [PERSIST, PURGE, REHYDRATE];
+    const blacklist = [REMEMBER_REHYDRATED, REMEMBER_PERSISTED];
 
     // redux-state-sync relies on BroadcastChannel, which only supports
     // objects that are clonable by `structuredClone`

@@ -1,7 +1,6 @@
 import { produce, Draft } from 'immer';
 import { keyBy, map, omit, size, zipObject } from 'lodash-es';
 
-import { createMigrate, REHYDRATE } from 'redux-persist';
 import type { Actions } from 'types/actions';
 import type { Module } from 'types/modules';
 import type { ModuleBank, ModuleList } from 'types/reducers';
@@ -15,8 +14,9 @@ import {
   SET_EXPORTED_DATA,
 } from 'actions/constants';
 import { SUCCESS_KEY } from 'middlewares/requests-middleware';
+import { REMEMBER_REHYDRATED } from 'redux-remember';
 
-const defaultModuleBankState: ModuleBank = {
+export const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of basic modules data (module code, name, semester)
   modules: {}, // Object of Module code -> Module details
   moduleCodes: {},
@@ -106,7 +106,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
         modules: keyBy(action.payload.modules, (module: Module) => module.moduleCode),
       };
 
-    case REHYDRATE:
+    case REMEMBER_REHYDRATED:
       if (!size(state.moduleCodes) && state.moduleList) {
         return {
           ...state,
@@ -122,23 +122,3 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
 }
 
 export default moduleBank;
-
-export const persistConfig = {
-  version: 1,
-  throttle: 1000,
-  whitelist: ['modules', 'moduleList'],
-  migrate: createMigrate({
-    // Clear out modules - after switching to API v2 we need to flush all of the
-    // old module data
-    1: (state) => ({
-      ...state,
-      modules: {},
-      moduleList: [],
-      // FIXME: Remove the next line when _persist is optional again.
-      // Cause: https://github.com/rt2zz/redux-persist/pull/919
-      // Issue: https://github.com/rt2zz/redux-persist/pull/1170
-      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-      _persist: state?._persist!,
-    }),
-  }),
-};
