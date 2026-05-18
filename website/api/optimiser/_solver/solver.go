@@ -12,12 +12,21 @@ import (
 	modules "github.com/nusmodifications/nusmods/website/api/optimiser/_modules"
 )
 
-// Solve is the main HTTP handler that orchestrates the timetable optimization process.
-// It fetches module data, prepares the search space, runs beam search, generates a
-// shareable NUSMods link, and returns the optimized timetable as JSON.
+// Solve orchestrates the timetable optimization workflow.
 //
-// The function applies the Minimum Remaining Values (MRV) heuristic by sorting lessons
-// with fewer class options first, which helps reduce the search space early.
+// The function:
+//
+//   - validates and normalizes the optimiser request
+//   - fetches all candidate module slots and default timetable data
+//   - transforms module lessons into a search space representation
+//   - applies the Minimum Remaining Values (MRV) heuristic by sorting
+//     lessons with fewer class-group options first
+//   - runs beam search to find an optimized timetable assignment
+//   - generates shareable NUSMods links for both the optimized and
+//     default timetables
+//
+// It returns a SolveResponse containing the optimized timetable state
+// and generated shareable links.
 func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 	if err := req.ParseOptimiserRequestFields(); err != nil {
 		return models.SolveResponse{}, &models.SolveError{Code: http.StatusBadRequest, Message: err.Error()}
