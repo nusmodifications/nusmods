@@ -10,7 +10,13 @@ import {
 import { Filter } from 'react-feather';
 import { State as StoreState } from 'types/state';
 
-import { attributeDescription, NUSModuleAttributes, Semester, Semesters } from 'types/modules';
+import {
+  attributeDescription,
+  Module,
+  NUSModuleAttributes,
+  Semester,
+  Semesters,
+} from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
@@ -29,6 +35,11 @@ import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilt
 import ModuleRandomButton from './ModuleRandomButton';
 
 import styles from './ModuleFinderSidebar.scss';
+
+type ExamTiming = {
+  start: string;
+  duration: number;
+};
 
 const RESET_FILTER_OPTIONS = { filter: true };
 
@@ -53,7 +64,42 @@ const STATIC_EXAM_FILTER_ITEMS: FilterItem[] = [
   },
 ];
 
-function getExamClashFilter(semester: Semester, examDates: string[]): FilterItem {
+function getExamClashFilter(semester: Semester, examTimings: ExamTiming[]): FilterItem {
+  // @param startTime is an ISO string in UTC timezone
+  const getEndTime = (startTime: string, duration: number): string => {
+    const endTime = new Date(startTime);
+    endTime.setMinutes(endTime.getMinutes() + duration);
+    return endTime.toISOString();
+  };
+  // For each exam1, map it to an Elasticsearch query that will return True
+  // if another exam clashes with exam1. For example, exam2 clashes (i.e. overlaps)
+  // with exam1 iff (exam2.start < exam1.end) && (exam2.end > exam1.start)
+  const clashRanges = examTimings.map((exam1) => ({
+    bool: {
+      must: [
+        {
+          range: {
+            'semesterData.examDate': {
+              lt: getEndTime(exam1.start, exam1.duration),
+            },
+          },
+        },
+        {
+          script: {
+            script: {
+              source: `doc.containsKey('semesterData.examDate') &&
+              doc.containsKey('semesterData.examDuration') &&
+              doc['semesterData.examDate'].value.plusMinutes(doc['semesterData.examDuration'].value).isAfter(ZonedDateTime.parse(params.exam1start))`,
+              params: {
+                exam1start: exam1.start,
+              },
+            },
+          },
+        },
+      ],
+    },
+  }));
+
   return {
     key: `no-exam-clash-${semester}`,
     label: `No Exam Clash (${config.shortSemesterNames[semester]})`,
@@ -63,8 +109,8 @@ function getExamClashFilter(semester: Semester, examDates: string[]): FilterItem
           nested: {
             path: 'semesterData',
             query: {
-              terms: {
-                'semesterData.examDate': examDates,
+              bool: {
+                must_not: clashRanges,
               },
             },
           },
@@ -86,10 +132,20 @@ const ModuleFinderSidebar: React.FC = () => {
     const examClashFilters = Semesters.map((semester): FilterItem | null => {
       const timetable = getSemesterTimetable(semester);
       const modules = getSemesterModules(timetable, allModules);
-      const examDates = modules
-        .map((module) => getModuleSemesterData(module, semester)?.examDate)
+      const examTimings: ExamTiming[] = modules
+        .map((mod) => {
+          // Filter for modules with non-empty exam timings, and map them to new ExamTiming objects
+          const data = getModuleSemesterData(mod, semester);
+          if (data?.examDate && data?.examDuration) {
+            return {
+              start: data.examDate,
+              duration: data.examDuration,
+            };
+          }
+          return null;
+        })
         .filter(notNull);
-      return examDates.length ? getExamClashFilter(semester, examDates) : null;
+      return examTimings.length ? getExamClashFilter(semester, examTimings) : null;
     }).filter(notNull);
     return [...STATIC_EXAM_FILTER_ITEMS, ...examClashFilters];
   }, [getSemesterTimetable, allModules]);
