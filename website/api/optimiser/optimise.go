@@ -8,6 +8,7 @@ package handler
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
@@ -57,11 +58,20 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		if errors.As(err, &solveErr) {
 			http.Error(w, solveErr.Message, solveErr.Code)
 		} else {
-			http.Error(w, "internal server error", http.StatusInternalServerError)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
 		}
 		return
 	}
 
+	data, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "JSON encoding failed", http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	w.WriteHeader(http.StatusOK)
+	if _, err := w.Write(data); err != nil {
+		log.Printf("Failed to write response: %v", err)
+	}
 }
