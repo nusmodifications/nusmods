@@ -2,7 +2,7 @@ package modules
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -112,8 +112,7 @@ func getVenues() (map[string]models.Location, error) {
 	venues := make(map[string]models.Location)
 	err := json.Unmarshal(constants.VenuesJson, &venues)
 	if err != nil {
-		log.Printf("unable to load venues.json: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("Unable to load venues.json: %v", err)
 	}
 
 	return venues, nil
@@ -138,7 +137,7 @@ func mergeAndFilterModuleSlots(
 		slot := &timetable[i]
 
 		// Add coordinates to slot if venue in venues.json or else use invalid coordinates
-		if venue, ok := venues[slot.Venue]; ok {
+		if venue, ok := venues[slot.Venue]; ok && !isMissingVenueCoordinates(venue.Location) {
 			slot.Coordinates = venue.Location
 		} else {
 			slot.Coordinates = constants.InvalidCoordinates
@@ -194,8 +193,9 @@ func mergeAndFilterModuleSlots(
 
 	// iterate over lessonType|classNo
 	for groupKey, slots := range validClassGroups {
-		lessonType := strings.Split(groupKey, "|")[0]
-		classNo := strings.Split(groupKey, "|")[1]
+		parts := strings.SplitN(groupKey, "|", 2)
+		lessonType := parts[0]
+		classNo := parts[1]
 		lessonKey := strings.ToUpper(module) + "|" + lessonType
 
 		// Parse fields for each slot before sorting
@@ -259,4 +259,9 @@ func isSlotOutsideTimeRange(slot models.ModuleSlot, earliestMin, latestMin int) 
 func extractBuildingName(key string) string {
 	parts := strings.SplitN(key, "-", 2)
 	return parts[0]
+}
+
+// Checks if a venue inside venues.json has missing location
+func isMissingVenueCoordinates(coord models.Coordinates) bool {
+	return coord.X == 0 || coord.Y == 0
 }

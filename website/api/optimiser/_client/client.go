@@ -5,14 +5,17 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
 )
 
+var httpClient = &http.Client{Timeout: 10 * time.Second}
+
 // HTTP request to get Module data
 func GetModuleData(acadYear string, module string) ([]byte, error) {
 	url := fmt.Sprintf(constants.ModulesURL, acadYear, module)
-	res, err := http.Get(url)
+	res, err := httpClient.Get(url)
 	if err != nil {
 		return nil, err
 	}
