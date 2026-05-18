@@ -8,7 +8,7 @@ package handler
 import (
 	"encoding/json"
 	"errors"
-	"log"
+	"log/slog"
 	"net/http"
 
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
@@ -71,7 +71,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	if _, err := w.Write(data); err != nil {
-		log.Printf("Failed to write response: %v", err)
+	if _, writeErr := w.Write(data); writeErr != nil {
+		slog.ErrorContext(r.Context(), "failed to write response", "error", writeErr)
 	}
 }

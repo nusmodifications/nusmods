@@ -2,7 +2,7 @@ package modules
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -112,8 +112,7 @@ func getVenues() (map[string]models.Location, error) {
 	venues := make(map[string]models.Location)
 	err := json.Unmarshal(constants.VenuesJson, &venues)
 	if err != nil {
-		log.Printf("unable to load venues.json: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("Unable to load venues.json: %v", err)
 	}
 
 	return venues, nil
