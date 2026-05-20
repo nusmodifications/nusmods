@@ -30,6 +30,7 @@ Create a new issue on GitHub with this checklist after the finals every semester
 - [ ] **Merge "PR2"** to Master > Production
 - [ ] Deploy! :tada: :tada:
 - [ ] Monitor Sentry and Telegram for issues
+- [ ] **Special Term II overlap:** After migration, `specialTermAcademicYear` in `app-config.json` can be set manually to the previous AY (e.g. `"2024/2025"`) if auto-detection is insufficient. Leave as `null` to auto-detect from `academic-calendar.json`. Clear or leave `null` after previous AY ST II ends (~early August, when new AY Semester 1 starts).
 
 Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286) and [PR #3287](https://github.com/nusmodifications/nusmods/pull/3287)
 

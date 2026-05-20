@@ -11,6 +11,7 @@ import GetAllModules from './GetAllModules';
 import GetSemesterData from './GetSemesterData';
 import CollateVenues from './CollateVenues';
 import CollateModules from './CollateModules';
+import { getEffectiveSt2AcadYear, isUsingPreviousAySt2Data } from '../utils/specialTerm';
 
 /**
  * Run the entire data pipeline
@@ -45,19 +46,47 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
       faculties: organizations.faculties,
     });
 
+    const st2AcadYear = getEffectiveSt2AcadYear(this.academicYear, config.specialTermAcademicYear);
+    const usePreviousAySt2 = isUsingPreviousAySt2Data(
+      this.academicYear,
+      config.specialTermAcademicYear,
+    );
+
+    let st2Organizations = organizations;
+    let st2Modules = allModules;
+
+    if (usePreviousAySt2) {
+      this.logger.info({ st2AcadYear }, 'Using previous academic year data for Special Term II');
+
+      st2Organizations = await new GetFacultyDepartment(st2AcadYear).run();
+      st2Modules = await new GetAllModules(st2AcadYear).run({
+        faculties: st2Organizations.faculties,
+      });
+    }
+
     // With module info fetched upfront, per-semester timetable and exam
     // fetches can run in parallel across semesters
     const semesterResults = await Promise.all(
       Semesters.map(async (semester) => {
         this.logger.info(`Getting data for semester ${semester}`);
 
-        const getSemesterData = new GetSemesterData(semester, this.academicYear);
+        const semesterAcadYear =
+          semester === 4 && usePreviousAySt2 ? st2AcadYear : this.academicYear;
+        const semesterOrganizations =
+          semester === 4 && usePreviousAySt2 ? st2Organizations : organizations;
+        const semesterModules = semester === 4 && usePreviousAySt2 ? st2Modules : allModules;
+
+        const getSemesterData = new GetSemesterData(semester, semesterAcadYear);
         const modules = await getSemesterData.run({
-          ...organizations,
-          modules: allModules,
+          ...semesterOrganizations,
+          modules: semesterModules,
         });
 
-        const { aliases } = await new CollateVenues(semester, this.academicYear).run(modules);
+        const { aliases } = await new CollateVenues(semester, semesterAcadYear).run(modules);
+
+        if (semester === 4 && usePreviousAySt2) {
+          await new CollateVenues(semester, this.academicYear).run(modules);
+        }
 
         return { aliases, modules };
       }),
@@ -67,7 +96,11 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
     const allAliases = semesterResults.map((r) => r.aliases);
 
     const collateModules = new CollateModules(this.academicYear);
-    const modules = await collateModules.run({ aliases: allAliases, semesterData });
+    const modules = await collateModules.run({
+      aliases: allAliases,
+      semesterData,
+      preserveModuleInfoSemesters: usePreviousAySt2 ? new Set([4]) : undefined,
+    });
 
     // Delete all modules that are no longer active
     const removedModules = difference(

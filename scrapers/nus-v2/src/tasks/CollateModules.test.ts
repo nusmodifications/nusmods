@@ -120,6 +120,68 @@ describe(combineModules, () => {
       },
     ]);
   });
+
+  test('should preserve module info when merging preserved semesters', () => {
+    const currentYearModule = {
+      acadYear: '2025/2026',
+      department: 'Computer Science',
+      description: 'Updated description',
+      faculty: 'Computing',
+      moduleCode: 'CS1010S',
+      moduleCredit: '4',
+      title: 'Programming Methodology',
+      workload: [2, 1, 0, 2, 2],
+    };
+
+    const previousYearModule = {
+      ...currentYearModule,
+      acadYear: '2024/2025',
+      description: 'Old description',
+    };
+
+    const semesterFourData: SemesterData = {
+      covidZones: ['A'],
+      examDate: '2025-07-28T09:00:00.000+08:00',
+      examDuration: 120,
+      semester: 4,
+      timetable: [
+        {
+          classNo: '1',
+          covidZone: 'A',
+          day: 'Monday',
+          endTime: '1200',
+          lessonType: 'Lecture',
+          size: 20,
+          startTime: '1000',
+          venue: 'LT19',
+          weeks: [1, 2, 3, 4, 5, 6],
+        },
+      ],
+    };
+
+    expect(
+      combineModules(
+        [
+          [{ module: currentYearModule, moduleCode: 'CS1010S', semesterData: undefined }],
+          [
+            {
+              module: previousYearModule,
+              moduleCode: 'CS1010S',
+              semesterData: semesterFourData,
+            },
+          ],
+        ],
+        {},
+        logger,
+        { preserveModuleInfoSemesters: new Set([4]) },
+      ),
+    ).toEqual([
+      {
+        ...currentYearModule,
+        semesterData: [semesterFourData],
+      },
+    ]);
+  });
 });
 
 describe(moduleDataCheck, () => {
