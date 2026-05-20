@@ -271,7 +271,7 @@ exports[`ModuleTreeComponent > should grey out modules that are not in module ba
   <p
     class="alert alert-warning"
   >
-    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite information above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
       href="https://github.com/nusmodifications/nusmods/issues/new/choose"
       rel="noopener noreferrer nofollow"
@@ -541,7 +541,7 @@ exports[`ModuleTreeComponent > should render prereq branch with nOf condition > 
   <p
     class="alert alert-warning"
   >
-    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite information above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
       href="https://github.com/nusmodifications/nusmods/issues/new/choose"
       rel="noopener noreferrer nofollow"
@@ -953,7 +953,7 @@ exports[`ModuleTreeComponent > should render prereq tree of module > CS3244 1`] 
   <p
     class="alert alert-warning"
   >
-    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite information above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
       href="https://github.com/nusmodifications/nusmods/issues/new/choose"
       rel="noopener noreferrer nofollow"
@@ -1045,7 +1045,7 @@ exports[`ModuleTreeComponent > should render prereq tree to the right when tree 
   <p
     class="alert alert-warning"
   >
-    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite information above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
       href="https://github.com/nusmodifications/nusmods/issues/new/choose"
       rel="noopener noreferrer nofollow"
@@ -1313,7 +1313,7 @@ exports[`ModuleTreeComponent > should render requirements fulfilled tree of modu
   <p
     class="alert alert-warning"
   >
-    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite information above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
       href="https://github.com/nusmodifications/nusmods/issues/new/choose"
       rel="noopener noreferrer nofollow"

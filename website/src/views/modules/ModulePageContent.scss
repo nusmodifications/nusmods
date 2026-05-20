@@ -59,6 +59,22 @@ $sticky-top: $navbar-height;
   font-size: $font-size-lg;
 }
 
+.sectionHeadingRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0;
+  margin: 0 0 0.6rem;
+  border-bottom: 1px solid var(--gray-lighter);
+
+  .sectionHeading {
+    padding: 0;
+    margin: 0;
+    border-bottom: none;
+    flex: 1 1 auto;
+  }
+}
+
 .descriptionHeading {
   margin-bottom: 0;
   font-weight: bold;
