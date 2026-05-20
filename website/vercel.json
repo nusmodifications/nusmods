@@ -1,6 +1,6 @@
 {
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm build",
+  "buildCommand": "timeout --kill-after=30s 5m pnpm build",
   "functions": {
     "api/**/*.ts": {
       "excludeFiles": "./tsconfig.json",
