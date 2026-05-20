@@ -4,7 +4,7 @@ import {
   getEffectiveSt2AcadYear,
   isPreviousAySt2Active,
   isUsingPreviousAySt2Data,
-} from './specialTerm';
+} from './index.js';
 
 describe(isPreviousAySt2Active, () => {
   it('returns true during the ST II overlap after AY migration', () => {

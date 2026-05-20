@@ -1,0 +1,21 @@
+{
+  "name": "nusmods-academic-calendar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NUS academic calendar semester start dates shared across NUSMods packages",
+  "license": "MIT",
+  "author": "NUSModifications",
+  "files": [
+    "academic-calendar.json",
+    "index.js",
+    "index.d.ts"
+  ],
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "catalog:"
+  }
+}

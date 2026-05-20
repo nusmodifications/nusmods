@@ -11,7 +11,7 @@ import GetAllModules from './GetAllModules';
 import GetSemesterData from './GetSemesterData';
 import CollateVenues from './CollateVenues';
 import CollateModules from './CollateModules';
-import { getEffectiveSt2AcadYear, isUsingPreviousAySt2Data } from '../utils/specialTerm';
+import { getEffectiveSt2AcadYear, isUsingPreviousAySt2Data } from 'nusmods-academic-calendar';
 
 /**
  * Run the entire data pipeline

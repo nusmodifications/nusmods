@@ -1,20 +1,12 @@
-import type { AcadYear, Module, Semester, SemesterData } from 'types/modules';
+import type { AcadYear, Module, SemesterData } from 'types/modules';
 
 import config from 'config';
-import academicCalendar from 'data/academic-calendar';
-import { getModuleSemesterData, subtractAcadYear } from 'utils/modules';
-
-type DateTuple = [number, number, number];
-
-function getSemesterStart(acadYear: AcadYear, semester: Semester): Date | null {
-  const semesterConfig = academicCalendar[acadYear]?.[String(semester)];
-  if (!semesterConfig) {
-    return null;
-  }
-
-  const [year, month, day] = semesterConfig.start as DateTuple;
-  return new Date(year, month - 1, day);
-}
+import {
+  getEffectiveSt2AcadYear as getEffectiveSt2AcadYearFromCalendar,
+  isPreviousAySt2Active as isPreviousAySt2ActiveFromCalendar,
+  isUsingPreviousAySt2Data as isUsingPreviousAySt2DataFromCalendar,
+} from 'nusmods-academic-calendar';
+import { getModuleSemesterData } from 'utils/modules';
 
 /**
  * Returns true when Special Term II of the previous academic year is still in
@@ -24,15 +16,7 @@ export function isPreviousAySt2Active(
   academicYear: AcadYear = config.academicYear,
   date: Date = new Date(),
 ): boolean {
-  const previousAcadYear = subtractAcadYear(academicYear);
-  const st2Start = getSemesterStart(previousAcadYear, 4);
-  const st2End = getSemesterStart(academicYear, 1);
-
-  if (!st2Start || !st2End) {
-    return false;
-  }
-
-  return date >= st2Start && date < st2End;
+  return isPreviousAySt2ActiveFromCalendar(academicYear, date);
 }
 
 /**
@@ -44,15 +28,7 @@ export function getEffectiveSt2AcadYear(
   specialTermAcademicYear: AcadYear | null = config.specialTermAcademicYear,
   date: Date = new Date(),
 ): AcadYear {
-  if (specialTermAcademicYear) {
-    return specialTermAcademicYear;
-  }
-
-  if (isPreviousAySt2Active(academicYear, date)) {
-    return subtractAcadYear(academicYear);
-  }
-
-  return academicYear;
+  return getEffectiveSt2AcadYearFromCalendar(academicYear, specialTermAcademicYear, date);
 }
 
 export function isUsingPreviousAySt2Data(
@@ -60,7 +36,7 @@ export function isUsingPreviousAySt2Data(
   specialTermAcademicYear: AcadYear | null = config.specialTermAcademicYear,
   date: Date = new Date(),
 ): boolean {
-  return getEffectiveSt2AcadYear(academicYear, specialTermAcademicYear, date) !== academicYear;
+  return isUsingPreviousAySt2DataFromCalendar(academicYear, specialTermAcademicYear, date);
 }
 
 export function getAcadYearShortName(acadYear: AcadYear): string {
