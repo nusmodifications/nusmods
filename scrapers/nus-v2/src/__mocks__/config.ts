@@ -12,6 +12,7 @@ const config: Config = {
 
   // Other config
   academicYear: '2018/2019',
+  specialTermAcademicYear: null,
   apiConcurrency: 1,
   dataPath: '',
   elasticConfig: {
