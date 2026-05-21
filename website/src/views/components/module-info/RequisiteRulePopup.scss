@@ -11,15 +11,15 @@
   align-items: center;
   padding: 0.15rem;
   border: 0;
-  background: transparent;
-  color: var(--gray-light);
-  cursor: pointer;
   line-height: 0;
+  color: var(--gray-light);
+  background: transparent;
+  cursor: pointer;
 
   &:hover,
   &:focus {
-    color: theme-color();
     outline: none;
+    color: theme-color();
   }
 
   :global(.svg) {
@@ -31,11 +31,11 @@
 
 .content {
   max-width: 28rem;
-  color: var(--tooltip-color);
   font-size: $font-size-sm;
   text-align: left;
   white-space: pre-wrap;
   word-break: break-word;
+  color: var(--tooltip-color);
 
   :global(a) {
     color: theme-color();

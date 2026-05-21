@@ -62,16 +62,16 @@ $sticky-top: $navbar-height;
 .sectionHeadingRow {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
   padding: 0.6rem 0;
   margin: 0 0 0.6rem;
   border-bottom: 1px solid var(--gray-lighter);
+  gap: 0.4rem;
 
   .sectionHeading {
+    flex: 1 1 auto;
     padding: 0;
     margin: 0;
     border-bottom: none;
-    flex: 1 1 auto;
   }
 }
 
