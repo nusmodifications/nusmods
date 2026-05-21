@@ -1,4 +1,4 @@
-import { mapValues } from 'lodash';
+import { mapValues } from 'lodash-es';
 import { format } from 'date-fns';
 
 import { AcadYear, Semester } from 'types/modules';

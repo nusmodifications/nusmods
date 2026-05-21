@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig",
-  "exclude": ["**/*.test.ts", "**/__mocks__"],
+  "exclude": ["**/*.test.ts", "**/__mocks__", "vitest.config.ts"],
   "compilerOptions": {
     "sourceMap": true,
     "inlineSources": true,

@@ -1,7 +1,9 @@
+// This file runs directly in Node.js on Vercel serverless (not bundled by webpack).
+// Vercel's runtime disables require(esm), so modules that depend on ESM-only
+// packages must be loaded via dynamic import() rather than static import statements.
 import axios, { AxiosHeaders } from 'axios';
 import { MpeSubmission, MpePreference, MODULE_TYPES } from '../types/mpe';
 import type { Handler } from './handler';
-import config from '../config';
 
 const vfsEndpoint = process.env.NUS_VFS_MPE_ENDPOINT;
 const defaultHeaders = new AxiosHeaders({
@@ -104,6 +106,8 @@ const validatePreferences = (preferences: MpePreference[]): boolean =>
 export const featureFlagEnablerMiddleware =
   (next: Handler): Handler =>
   async (req, res): Promise<void> => {
+    // Dynamic import because config depends on lodash-es (see top-of-file comment).
+    const config = (await import('../config')).default;
     if (!config.enableCPEx) {
       res.status(404).end();
       return;

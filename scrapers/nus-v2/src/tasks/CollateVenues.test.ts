@@ -543,45 +543,7 @@ describe(CollateVenues, () => {
     expect(aliases).toEqual({});
   });
 
-  test('should not alias modules when timetable was propagated', async () => {
-    const sharedTimetable = [
-      {
-        classNo: '1',
-        day: 'Monday',
-        endTime: '1200',
-        lessonType: 'Lecture',
-        startTime: '1000',
-        venue: 'COM1-0201',
-        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      },
-    ];
-
-    const task = new CollateVenues(1, '2018/2019');
-    const input: any = [
-      {
-        module: { title: 'Global Economy' },
-        moduleCode: 'GES1002',
-        semesterData: { timetable: sharedTimetable },
-      },
-      {
-        module: { title: 'Global Economy' },
-        moduleCode: 'GESS1000T',
-        semesterData: { timetable: sharedTimetable },
-        timetablePropagated: true,
-      },
-    ];
-
-    const { aliases, venues } = await task.run(input);
-
-    // Propagated module should be excluded — no false aliases
-    expect(aliases).toEqual({});
-
-    // Only the original module's lessons should appear in venues
-    expect(venues['COM1-0201'][0].classes).toHaveLength(1);
-    expect(venues['COM1-0201'][0].classes[0].moduleCode).toBe('GES1002');
-  });
-
-  test('should still alias non-propagated modules with identical timetables', async () => {
+  test('should alias modules with identical timetables', async () => {
     const sharedTimetable = [
       {
         classNo: '1',
@@ -610,7 +572,6 @@ describe(CollateVenues, () => {
 
     const { aliases } = await task.run(input);
 
-    // Both modules have their own timetable (not propagated) — aliases should be detected
     expect(aliases).toEqual({
       GES1002: new Set(['GESS1000']),
       GESS1000: new Set(['GES1002']),

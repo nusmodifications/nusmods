@@ -7,26 +7,26 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
+	"log/slog"
 	"net/http"
 
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 	solver "github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
 
-/*
-Handler is the main entry point for the timetable optimiser API endpoint.
-It accepts POST requests with module selection and preferences, runs the optimization
-algorithm, and returns the best timetable as JSON.
-
-The handler:
-  - Enables CORS to allow requests from the NUSMods frontend
-  - Validates that only POST requests are accepted (OPTIONS for CORS preflight)
-  - Parses the JSON request body into an OptimiserRequest
-  - Delegates to the solver to compute the optimal timetable
-
-Expected request body: JSON with modules, preferences, constraints
-Response: JSON with optimal timetable assignments, schedule, and shareable link.
-*/
+// Handler is the main entry point for the timetable optimiser API endpoint.
+// It accepts POST requests with module selection and preferences, runs the optimization
+// algorithm, and returns the best timetable as JSON.
+//
+// The handler:
+//   - Enables CORS to allow requests from the NUSMods frontend
+//   - Validates that only POST requests are accepted (OPTIONS for CORS preflight)
+//   - Parses the JSON request body into an OptimiserRequest
+//   - Delegates to the solver to compute the optimal timetable
+//
+// Expected request body: JSON with modules, preferences, constraints
+// Response: JSON with optimal timetable assignments, schedule, and shareable link.
 func Handler(w http.ResponseWriter, r *http.Request) {
 	// Allow CORS from all origins
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -48,9 +48,30 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	var optimiserRequest models.OptimiserRequest
 	err := json.NewDecoder(r.Body).Decode(&optimiserRequest)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Invalid request format", http.StatusBadRequest)
 		return
 	}
 
-	solver.Solve(w, optimiserRequest)
+	response, err := solver.Solve(optimiserRequest)
+	if err != nil {
+		var solveErr *models.SolveError
+		if errors.As(err, &solveErr) {
+			http.Error(w, solveErr.Message, solveErr.Code)
+		} else {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+		}
+		return
+	}
+
+	data, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "JSON encoding failed", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	if _, writeErr := w.Write(data); writeErr != nil {
+		slog.ErrorContext(r.Context(), "failed to write response", "error", writeErr)
+	}
 }
