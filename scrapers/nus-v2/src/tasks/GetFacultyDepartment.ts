@@ -151,6 +151,10 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
       });
     }
 
+    // Filter out inactive faculties and departments
+    faculties = faculties.filter((faculty) => faculty.EffectiveStatus === 'A');
+    departments = departments.filter((department) => department.EffectiveStatus === 'A');
+
     departments = departments.map(cleanFacultyDepartment);
     faculties = faculties.map(cleanFacultyDepartment);
 
