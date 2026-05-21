@@ -173,7 +173,7 @@ describe(combineModules, () => {
         ],
         {},
         logger,
-        { preserveModuleInfoSemesters: new Set([4]) },
+        { preserveModuleInfoSemesters: new Set([3, 4]) },
       ),
     ).toEqual([
       {

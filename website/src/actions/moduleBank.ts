@@ -8,7 +8,7 @@ import { requestAction } from 'actions/requests';
 import { SUCCESS_KEY } from 'middlewares/requests-middleware';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
-import { getEffectiveSt2AcadYear, mergePreviousAySt2Data } from 'utils/specialTerm';
+import { getEffectiveSpecialTermAcadYear, mergePreviousAySpecialTermData } from 'utils/specialTerm';
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
@@ -44,30 +44,33 @@ export const Internal = {
   },
 };
 
-async function enrichModuleWithPreviousAySt2(
+async function enrichModuleWithPreviousAySpecialTerm(
   dispatch: Dispatch,
   getState: GetState,
   moduleCode: ModuleCode,
   module: Module,
 ): Promise<Module> {
-  const st2AcadYear = getEffectiveSt2AcadYear(config.academicYear, config.specialTermAcademicYear);
+  const specialTermAcadYear = getEffectiveSpecialTermAcadYear(
+    config.academicYear,
+    config.specialTermAcademicYear,
+  );
 
-  if (st2AcadYear === config.academicYear) {
+  if (specialTermAcadYear === config.academicYear) {
     return module;
   }
 
-  const cachedArchive = getState().moduleBank.moduleArchive[moduleCode]?.[st2AcadYear];
+  const cachedArchive = getState().moduleBank.moduleArchive[moduleCode]?.[specialTermAcadYear];
   let archiveModule = cachedArchive;
 
   if (!archiveModule) {
     try {
-      archiveModule = await dispatch<Module>(fetchModuleArchive(moduleCode, st2AcadYear));
+      archiveModule = await dispatch<Module>(fetchModuleArchive(moduleCode, specialTermAcadYear));
     } catch {
       return module;
     }
   }
 
-  const mergedModule = mergePreviousAySt2Data(module, archiveModule);
+  const mergedModule = mergePreviousAySpecialTermData(module, archiveModule);
   if (mergedModule === module) {
     return module;
   }
@@ -116,7 +119,7 @@ export function fetchModule(moduleCode: ModuleCode) {
         }),
       );
 
-      const enrichedModule = await enrichModuleWithPreviousAySt2(
+      const enrichedModule = await enrichModuleWithPreviousAySpecialTerm(
         dispatch,
         getState,
         moduleCode,

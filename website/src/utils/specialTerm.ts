@@ -2,41 +2,42 @@ import type { AcadYear, Module, SemesterData } from 'types/modules';
 
 import config from 'config';
 import {
-  getEffectiveSt2AcadYear as getEffectiveSt2AcadYearFromCalendar,
-  isPreviousAySt2Active as isPreviousAySt2ActiveFromCalendar,
-  isUsingPreviousAySt2Data as isUsingPreviousAySt2DataFromCalendar,
+  getEffectiveSpecialTermAcadYear as getEffectiveSpecialTermAcadYearFromCalendar,
+  isPreviousAySpecialTermActive as isPreviousAySpecialTermActiveFromCalendar,
+  isUsingPreviousAySpecialTermData as isUsingPreviousAySpecialTermDataFromCalendar,
+  SPECIAL_TERM_SEMESTERS,
 } from 'nusmods-academic-calendar';
 import { getModuleSemesterData } from 'utils/modules';
 
 /**
- * Returns true when Special Term II of the previous academic year is still in
- * session, but config.academicYear has already switched to the new AY.
+ * Returns true when previous AY Special Term I or II is still in session after
+ * config has switched to the new AY.
  */
-export function isPreviousAySt2Active(
+export function isPreviousAySpecialTermActive(
   academicYear: AcadYear = config.academicYear,
   date: Date = new Date(),
 ): boolean {
-  return isPreviousAySt2ActiveFromCalendar(academicYear, date);
+  return isPreviousAySpecialTermActiveFromCalendar(academicYear, date);
 }
 
 /**
- * Academic year to source Special Term II data from. Uses specialTermAcademicYear
- * when set, otherwise auto-detects the overlap window.
+ * Academic year to source Special Term I and II data from. Uses
+ * specialTermAcademicYear when set, otherwise auto-detects the overlap window.
  */
-export function getEffectiveSt2AcadYear(
+export function getEffectiveSpecialTermAcadYear(
   academicYear: AcadYear = config.academicYear,
   specialTermAcademicYear: AcadYear | null = config.specialTermAcademicYear,
   date: Date = new Date(),
 ): AcadYear {
-  return getEffectiveSt2AcadYearFromCalendar(academicYear, specialTermAcademicYear, date);
+  return getEffectiveSpecialTermAcadYearFromCalendar(academicYear, specialTermAcademicYear, date);
 }
 
-export function isUsingPreviousAySt2Data(
+export function isUsingPreviousAySpecialTermData(
   academicYear: AcadYear = config.academicYear,
   specialTermAcademicYear: AcadYear | null = config.specialTermAcademicYear,
   date: Date = new Date(),
 ): boolean {
-  return isUsingPreviousAySt2DataFromCalendar(academicYear, specialTermAcademicYear, date);
+  return isUsingPreviousAySpecialTermDataFromCalendar(academicYear, specialTermAcademicYear, date);
 }
 
 export function getAcadYearShortName(acadYear: AcadYear): string {
@@ -51,7 +52,9 @@ export function getPreviousAyShortName(
   specialTermAcademicYear: AcadYear | null = config.specialTermAcademicYear,
   date: Date = new Date(),
 ): string {
-  return getAcadYearShortName(getEffectiveSt2AcadYear(academicYear, specialTermAcademicYear, date));
+  return getAcadYearShortName(
+    getEffectiveSpecialTermAcadYear(academicYear, specialTermAcademicYear, date),
+  );
 }
 
 function upsertSemesterData(
@@ -63,12 +66,33 @@ function upsertSemesterData(
   );
 }
 
+function shouldPreferArchiveSemesterData(
+  currentSemester: SemesterData | undefined,
+  archiveSemester: SemesterData,
+): boolean {
+  const currentHasTimetable = Boolean(currentSemester?.timetable?.length);
+  const archiveHasTimetable = Boolean(archiveSemester.timetable?.length);
+
+  if (currentHasTimetable && !archiveHasTimetable) {
+    return false;
+  }
+
+  if (
+    currentHasTimetable &&
+    archiveHasTimetable &&
+    JSON.stringify(currentSemester) === JSON.stringify(archiveSemester)
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
 /**
- * Merge Special Term II timetable and exam data from the previous AY into the
- * current module. Prefers archive ST II data when the current module lacks a
- * usable ST II timetable.
+ * Merge Special Term I and II timetable and exam data from the previous AY
+ * into the current module.
  */
-export function mergePreviousAySt2Data(
+export function mergePreviousAySpecialTermData(
   module: Module,
   archiveModule: Module | null | undefined,
 ): Module {
@@ -76,31 +100,26 @@ export function mergePreviousAySt2Data(
     return module;
   }
 
-  const archiveSt2 = getModuleSemesterData(archiveModule, 4);
-  if (!archiveSt2) {
-    return module;
+  let mergedModule = module;
+
+  for (const semester of SPECIAL_TERM_SEMESTERS) {
+    const archiveSemester = getModuleSemesterData(archiveModule, semester);
+    if (!archiveSemester) {
+      continue;
+    }
+
+    const currentSemester = getModuleSemesterData(mergedModule, semester);
+    if (!shouldPreferArchiveSemesterData(currentSemester, archiveSemester)) {
+      continue;
+    }
+
+    mergedModule = {
+      ...mergedModule,
+      semesterData: upsertSemesterData(mergedModule.semesterData, archiveSemester),
+    };
   }
 
-  const currentSt2 = getModuleSemesterData(module, 4);
-  const currentHasTimetable = Boolean(currentSt2?.timetable?.length);
-  const archiveHasTimetable = Boolean(archiveSt2.timetable?.length);
-
-  if (currentHasTimetable && !archiveHasTimetable) {
-    return module;
-  }
-
-  if (
-    currentHasTimetable &&
-    archiveHasTimetable &&
-    JSON.stringify(currentSt2) === JSON.stringify(archiveSt2)
-  ) {
-    return module;
-  }
-
-  return {
-    ...module,
-    semesterData: upsertSemesterData(module.semesterData, archiveSt2),
-  };
+  return mergedModule;
 }
 
 /**
@@ -122,7 +141,9 @@ export function shouldShowSt2ExamExternalLink(
     return false;
   }
 
-  if (!isUsingPreviousAySt2Data(config.academicYear, config.specialTermAcademicYear, date)) {
+  if (
+    !isUsingPreviousAySpecialTermData(config.academicYear, config.specialTermAcademicYear, date)
+  ) {
     return false;
   }
 

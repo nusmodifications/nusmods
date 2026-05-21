@@ -1,10 +1,12 @@
 export {
   academicCalendar as default,
   academicCalendar,
-  getEffectiveSt2AcadYear,
+  getEffectiveSpecialTermAcadYear,
   getSemesterStart,
-  isPreviousAySt2Active,
-  isUsingPreviousAySt2Data,
+  isPreviousAySpecialTermActive,
+  isUsingPreviousAySpecialTermData,
+  shouldUsePreviousAyForSemester,
+  SPECIAL_TERM_SEMESTERS,
   subtractAcadYear,
 } from 'nusmods-academic-calendar';
 

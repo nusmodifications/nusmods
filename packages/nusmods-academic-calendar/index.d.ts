@@ -6,6 +6,8 @@ export type AcademicCalendar = {
   };
 };
 
+export declare const SPECIAL_TERM_SEMESTERS: readonly [3, 4];
+
 export declare const academicCalendar: AcademicCalendar;
 export default academicCalendar;
 
@@ -13,15 +15,22 @@ export declare function subtractAcadYear(acadYear: string): string;
 
 export declare function getSemesterStart(acadYear: string, semester: number): Date | null;
 
-export declare function isPreviousAySt2Active(academicYear: string, date?: Date): boolean;
+export declare function isPreviousAySpecialTermActive(academicYear: string, date?: Date): boolean;
 
-export declare function getEffectiveSt2AcadYear(
+export declare function getEffectiveSpecialTermAcadYear(
   academicYear: string,
   specialTermAcademicYear?: string | null,
   date?: Date,
 ): string;
 
-export declare function isUsingPreviousAySt2Data(
+export declare function isUsingPreviousAySpecialTermData(
+  academicYear: string,
+  specialTermAcademicYear?: string | null,
+  date?: Date,
+): boolean;
+
+export declare function shouldUsePreviousAyForSemester(
+  semester: number,
   academicYear: string,
   specialTermAcademicYear?: string | null,
   date?: Date,

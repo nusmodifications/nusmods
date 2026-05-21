@@ -11,7 +11,12 @@ import GetAllModules from './GetAllModules';
 import GetSemesterData from './GetSemesterData';
 import CollateVenues from './CollateVenues';
 import CollateModules from './CollateModules';
-import { getEffectiveSt2AcadYear, isUsingPreviousAySt2Data } from 'nusmods-academic-calendar';
+import {
+  getEffectiveSpecialTermAcadYear,
+  isUsingPreviousAySpecialTermData,
+  shouldUsePreviousAyForSemester,
+  SPECIAL_TERM_SEMESTERS,
+} from 'nusmods-academic-calendar';
 
 /**
  * Run the entire data pipeline
@@ -46,21 +51,27 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
       faculties: organizations.faculties,
     });
 
-    const st2AcadYear = getEffectiveSt2AcadYear(this.academicYear, config.specialTermAcademicYear);
-    const usePreviousAySt2 = isUsingPreviousAySt2Data(
+    const specialTermAcadYear = getEffectiveSpecialTermAcadYear(
+      this.academicYear,
+      config.specialTermAcademicYear,
+    );
+    const usePreviousAySpecialTerms = isUsingPreviousAySpecialTermData(
       this.academicYear,
       config.specialTermAcademicYear,
     );
 
-    let st2Organizations = organizations;
-    let st2Modules = allModules;
+    let specialTermOrganizations = organizations;
+    let specialTermModules = allModules;
 
-    if (usePreviousAySt2) {
-      this.logger.info({ st2AcadYear }, 'Using previous academic year data for Special Term II');
+    if (usePreviousAySpecialTerms) {
+      this.logger.info(
+        { specialTermAcadYear },
+        'Using previous academic year data for Special Term I and II',
+      );
 
-      st2Organizations = await new GetFacultyDepartment(st2AcadYear).run();
-      st2Modules = await new GetAllModules(st2AcadYear).run({
-        faculties: st2Organizations.faculties,
+      specialTermOrganizations = await new GetFacultyDepartment(specialTermAcadYear).run();
+      specialTermModules = await new GetAllModules(specialTermAcadYear).run({
+        faculties: specialTermOrganizations.faculties,
       });
     }
 
@@ -70,11 +81,14 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
       Semesters.map(async (semester) => {
         this.logger.info(`Getting data for semester ${semester}`);
 
-        const semesterAcadYear =
-          semester === 4 && usePreviousAySt2 ? st2AcadYear : this.academicYear;
-        const semesterOrganizations =
-          semester === 4 && usePreviousAySt2 ? st2Organizations : organizations;
-        const semesterModules = semester === 4 && usePreviousAySt2 ? st2Modules : allModules;
+        const usePreviousAy = shouldUsePreviousAyForSemester(
+          semester,
+          this.academicYear,
+          config.specialTermAcademicYear,
+        );
+        const semesterAcadYear = usePreviousAy ? specialTermAcadYear : this.academicYear;
+        const semesterOrganizations = usePreviousAy ? specialTermOrganizations : organizations;
+        const semesterModules = usePreviousAy ? specialTermModules : allModules;
 
         const getSemesterData = new GetSemesterData(semester, semesterAcadYear);
         const modules = await getSemesterData.run({
@@ -84,7 +98,7 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
 
         const { aliases } = await new CollateVenues(semester, semesterAcadYear).run(modules);
 
-        if (semester === 4 && usePreviousAySt2) {
+        if (usePreviousAy) {
           await new CollateVenues(semester, this.academicYear).run(modules);
         }
 
@@ -99,7 +113,9 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
     const modules = await collateModules.run({
       aliases: allAliases,
       semesterData,
-      preserveModuleInfoSemesters: usePreviousAySt2 ? new Set([4]) : undefined,
+      preserveModuleInfoSemesters: usePreviousAySpecialTerms
+        ? new Set(SPECIAL_TERM_SEMESTERS)
+        : undefined,
     });
 
     // Delete all modules that are no longer active

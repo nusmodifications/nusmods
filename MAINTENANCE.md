@@ -17,7 +17,7 @@ Create a new issue on GitHub with this checklist after the finals every semester
   - [ ] In `app-config.json`, update `academicYear` and `examAvailability` to include only the semesters where exam information is available
   - [ ] Update `packages/nusmods-academic-calendar/academic-calendar.json` with data for the new academic year
   - [ ] Add announcement to website by updating `website/src/data/holidays.json`
-  - [ ] Leave `specialTermAcademicYear` as `null` — overlap with previous AY Special Term II is handled automatically until new AY Semester 1 starts (see PR3). Set manually (e.g. `"2024/2025"`) only if auto-detection from the academic calendar is insufficient.
+  - [ ] Leave `specialTermAcademicYear` as `null` — overlap with previous AY Special Term I and II is handled automatically until new AY Semester 1 starts (see PR3). Set manually (e.g. `"2024/2025"`) only if auto-detection from the academic calendar is insufficient.
 
 ### 1-2 days before NUS IT Data Update
 
@@ -34,7 +34,7 @@ Create a new issue on GitHub with this checklist after the finals every semester
 
 ### 1 week before new AY Semester 1 starts
 
-PR2 is usually merged around July, while previous AY Special Term II runs until new AY Semester 1 starts. During this window, sem 1–3 use the new AY and sem 4 continues to use the previous AY automatically — no action needed unless `specialTermAcademicYear` was set manually in PR2.
+PR2 is usually merged around July, while previous AY Special Term I and II run until new AY Semester 1 starts. During this window, sem 1–2 use the new AY and sem 3–4 continue to use the previous AY automatically — no action needed unless `specialTermAcademicYear` was set manually in PR2.
 
 - **Prepare "PR3"**
   - [ ] In `app-config.json`, set `semester` to `1`

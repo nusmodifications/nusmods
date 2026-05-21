@@ -7,7 +7,7 @@ export type Config = Readonly<{
   acadAppKey: string;
   // Current academic year in the format YYYY/YYYY
   academicYear: string;
-  // When set, source Special Term II data from this AY instead of academicYear.
+  // When set, source Special Term I and II data from this AY instead of academicYear.
   // When null, auto-detects the overlap window after AY migration.
   specialTermAcademicYear: string | null;
   // The number of concurrent requests allowed by the API
