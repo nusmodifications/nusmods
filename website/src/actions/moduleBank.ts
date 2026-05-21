@@ -75,6 +75,9 @@ async function enrichModuleWithPreviousAySpecialTerm(
     return module;
   }
 
+  // Intentionally re-dispatch SUCCESS after async archive enrichment.
+  // requestAction already stored the fetched module; components may briefly
+  // show current-AY special-term data before archive data replaces it.
   dispatch({
     type: SUCCESS_KEY(FETCH_MODULE),
     payload: mergedModule,

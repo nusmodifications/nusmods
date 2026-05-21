@@ -98,6 +98,9 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
 
         const { aliases } = await new CollateVenues(semester, semesterAcadYear).run(modules);
 
+        // Also write venue files under the current AY so website lookups keyed
+        // by config.academicYear succeed. Aliases from this call are discarded;
+        // CollateModules uses aliases from the fetch AY above.
         if (usePreviousAy) {
           await new CollateVenues(semester, this.academicYear).run(modules);
         }

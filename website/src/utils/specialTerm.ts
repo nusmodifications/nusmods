@@ -90,7 +90,12 @@ function shouldPreferArchiveSemesterData(
 
 /**
  * Merge Special Term I and II timetable and exam data from the previous AY
- * into the current module.
+ * into the current module during the overlap window.
+ *
+ * Prefers archive data when the current module lacks a usable timetable, when
+ * archive and current timetables differ (ModReg R0 on the new AY is not yet
+ * authoritative), or when only archive has data. Keeps current data when it
+ * has a timetable and archive does not, or when both are identical.
  */
 export function mergePreviousAySpecialTermData(
   module: Module,
