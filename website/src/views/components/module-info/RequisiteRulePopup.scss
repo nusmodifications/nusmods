@@ -16,9 +16,17 @@
   background: transparent;
   cursor: pointer;
 
-  &:hover,
-  &:focus {
+  &:hover {
+    color: theme-color();
+  }
+
+  &:focus:not(:focus-visible) {
     outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
     color: theme-color();
   }
 
