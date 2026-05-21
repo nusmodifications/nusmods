@@ -115,10 +115,10 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
     const collateModules = new CollateModules(this.academicYear);
     const modules = await collateModules.run({
       aliases: allAliases,
-      semesterData,
       preserveModuleInfoSemesters: usePreviousAySpecialTerms
         ? new Set(SPECIAL_TERM_SEMESTERS)
         : undefined,
+      semesterData,
     });
 
     // Delete all modules that are no longer active

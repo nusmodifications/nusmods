@@ -27,8 +27,8 @@ import { isModuleInMPE } from '../utils/mpe';
 
 interface Input {
   aliases: Array<ModuleAliases>;
-  semesterData: Array<Array<SemesterModuleData>>;
   preserveModuleInfoSemesters?: ReadonlySet<number>;
+  semesterData: Array<Array<SemesterModuleData>>;
 }
 type Output = Array<Module>;
 
@@ -239,7 +239,7 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
   async run(input: Input) {
     this.logger.info(`Collating modules for ${this.academicYear}`);
 
-    const { aliases, semesterData, preserveModuleInfoSemesters } = input;
+    const { aliases, preserveModuleInfoSemesters, semesterData } = input;
     const combinedAliases = mergeAliases(aliases);
     const modulesWithoutTree: Array<ModuleWithoutTree> = combineModules(
       semesterData,

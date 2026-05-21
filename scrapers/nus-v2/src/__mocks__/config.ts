@@ -12,12 +12,12 @@ const config: Config = {
 
   // Other config
   academicYear: '2018/2019',
-  specialTermAcademicYear: null,
   apiConcurrency: 1,
   dataPath: '',
   elasticConfig: {
     node: 'http://localhost:9200',
   },
+  specialTermAcademicYear: null,
 };
 
 export default config;
