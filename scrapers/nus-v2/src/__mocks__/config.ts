@@ -17,6 +17,7 @@ const config: Config = {
   elasticConfig: {
     node: 'http://localhost:9200',
   },
+  specialTermAcademicYear: null,
 };
 
 export default config;

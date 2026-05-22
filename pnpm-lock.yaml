@@ -225,6 +225,12 @@ importers:
         specifier: 'catalog:'
         version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
 
+  packages/nusmods-academic-calendar:
+    devDependencies:
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.0(@types/node@22.13.5)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.13.5)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
+
   scrapers/cpex-scraper:
     dependencies:
       axios:
@@ -300,6 +306,9 @@ importers:
       nusmoderator:
         specifier: 3.0.0
         version: 3.0.0
+      nusmods-academic-calendar:
+        specifier: workspace:*
+        version: link:../../packages/nusmods-academic-calendar
       oboe:
         specifier: 2.1.7
         version: 2.1.7
@@ -475,6 +484,9 @@ importers:
       nusmoderator:
         specifier: 3.0.0
         version: 3.0.0
+      nusmods-academic-calendar:
+        specifier: workspace:*
+        version: link:../packages/nusmods-academic-calendar
       p-queue:
         specifier: 6.6.2
         version: 6.6.2
@@ -3373,6 +3385,7 @@ packages:
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
+    deprecated: Potential CWE-502 - Update to 1.3.1 or higher
 
   '@vercel/node-bridge@2.2.2':
     resolution: {integrity: sha512-haGBC8noyA5BfjCRXRH+VIkHCDVW5iD5UX24P2nOdilwUxI4qWsattS/co8QBGq64XsNLRAMdM5pQUE3zxkF9Q==}
