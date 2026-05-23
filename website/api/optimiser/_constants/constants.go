@@ -6,7 +6,7 @@ import (
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
-// Ensure in sync with all E-Venues in NUSMods
+// Ensure in sync with all E-Venues in NUSMods.
 var EVenues = map[string]struct{}{
 	"E-Learn_A":  {},
 	"E-Learn_B":  {},
@@ -18,7 +18,7 @@ var EVenues = map[string]struct{}{
 	"E-Hybrid_D": {},
 }
 
-// Ensure this is in sync with website/src/utils/timetables.ts
+// Ensure this is in sync with website/src/utils/timetables.ts.
 var LessonTypeAbbrev = map[string]string{
 	"DESIGN LECTURE":             "DLEC",
 	"LABORATORY":                 "LAB",
@@ -41,7 +41,7 @@ const ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 
 const NUSModsTimetableBaseURL = "https://nusmods.com/timetable"
 
-// Heuristics for scoring function
+// Heuristics for scoring function.
 const (
 	MaxWalkDistance             = 0.250 // 250 meters
 	NoVenuePenalty              = 100.0
@@ -53,15 +53,15 @@ const (
 	ConsecutiveHoursPenaltyRate = 100
 )
 
-// This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client
+// This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client.
 const ModuleCodeSeparator = ";"
 
-// Beam search parameters
+// Beam search parameters.
 const (
 	BeamWidth       = 5000
 	BranchingFactor = 100
 	DaysPerWeek     = 6
 )
 
-// Indicates that a Coordinate was invalid
+// Indicates that a Coordinate was invalid.
 var InvalidCoordinates = models.Coordinates{X: -1, Y: -1}

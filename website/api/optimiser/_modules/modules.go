@@ -37,7 +37,6 @@ func GetAllModuleSlots(
 	// These are default or backup slots for the partial timetable so that we can display some random slot for unallocated lessons
 	defaultSlots := make(models.ModuleDefaultSlotsMap)
 	for _, module := range optimiserRequest.Modules {
-
 		body, err := client.GetModuleData(optimiserRequest.AcadYear, strings.ToUpper(module))
 		if err != nil {
 			return nil, nil, nil, err
@@ -68,7 +67,6 @@ func GetAllModuleSlots(
 
 		// Parse the weeks
 		for i := range moduleTimetable {
-
 			// Note: if weeks is not a []int, then skip parsing
 			// Currently we are not handling week conflict for non-[]int weeks
 			if _, ok := moduleTimetable[i].Weeks.([]any); !ok {
@@ -101,18 +99,17 @@ func GetAllModuleSlots(
 			optimiserRequest.EarliestMin,
 			optimiserRequest.LatestMin,
 		)
-
 	}
 
 	return moduleSlots, defaultSlots, recordingsMap, nil
 }
 
-// Gets all venue information from venues.json
+// Gets all venue information from venues.json.
 func getVenues() (map[string]models.Location, error) {
 	venues := make(map[string]models.Location)
 	err := json.Unmarshal(constants.VenuesJson, &venues)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to load venues.json: %v", err)
+		return nil, fmt.Errorf("Unable to load venues.json: %w", err)
 	}
 
 	return venues, nil
@@ -127,7 +124,6 @@ func mergeAndFilterModuleSlots(
 	earliestMin int,
 	latestMin int,
 ) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot) {
-
 	// We group by classNo because some slots come as a pair, ie you have to attend both slots to complete the lesson
 	// Key: "lessonType|classNo", Value: []ModuleSlot
 
@@ -263,7 +259,7 @@ func extractBuildingName(key string) string {
 	return parts[0]
 }
 
-// Checks if a venue inside venues.json has missing location
+// Checks if a venue inside venues.json has missing location.
 func isMissingVenueCoordinates(coord models.Coordinates) bool {
 	return coord.X == 0 || coord.Y == 0
 }

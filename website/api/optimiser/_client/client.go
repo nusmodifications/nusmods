@@ -12,7 +12,7 @@ import (
 
 var httpClient = &http.Client{Timeout: 10 * time.Second}
 
-// HTTP request to get Module data
+// HTTP request to get Module data.
 func GetModuleData(acadYear string, module string) ([]byte, error) {
 	url := fmt.Sprintf(constants.ModulesURL, acadYear, module)
 	res, err := httpClient.Get(url)
