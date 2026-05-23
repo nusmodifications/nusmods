@@ -157,19 +157,25 @@ jobs:
       - run:
           name: Run tests
           command: |
-            go test -count=1 -v ./_models ./_solver ./_modules
+            for dir in ./_*/; do
+              if [ "$dir" = "./_test/" ]; then
+                go run ./_test/server/main.go -port 8020 &
+                SERVER_PID=$!
 
-            go run ./_test/server/main.go -port 8020 &
-            SERVER_PID=$!
+                trap "kill $SERVER_PID" EXIT
 
-            trap "kill $SERVER_PID" EXIT
+                for i in {1..10}; do
+                  nc -z localhost 8020 && break
+                  sleep 1
+                done
 
-            for i in {1..10}; do
-              nc -z localhost 8020 && break
-              sleep 1
+                go test ./_test/. -v
+
+              else
+                go test -count=1 -v "$dir"
+              fi
             done
 
-            go test ./_test/. -v
 
 workflows:
   build_and_test:
