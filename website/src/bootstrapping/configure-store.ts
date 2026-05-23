@@ -6,7 +6,7 @@ import { setAutoFreeze } from 'immer';
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
-import stateSyncMiddleware from 'middlewares/state-sync-middleware';
+import stateSyncMiddleware, { initStateWithPrevTab } from 'middlewares/state-sync-middleware';
 import getLocalStorage from 'storage/localStorage';
 
 import type { GetState } from 'types/redux';
@@ -58,5 +58,10 @@ export default function configureStore(defaultState?: State) {
   }
 
   const persistor = persistStore(store);
+
+  // Ask any already-open tab to hand over its current state (including
+  // non-persisted slices like undoHistory) so cross-tab undo stays in sync.
+  initStateWithPrevTab(store);
+
   return { persistor, store };
 }

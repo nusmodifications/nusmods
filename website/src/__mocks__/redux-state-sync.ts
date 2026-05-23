@@ -1,6 +1,15 @@
-import type { Middleware } from 'redux';
+import type { Middleware, Reducer, Store } from 'redux';
 
-// eslint-disable-next-line import/prefer-default-export
 export function createStateSyncMiddleware(): Middleware {
   return () => (next) => (action) => next(action);
 }
+
+export function withReduxStateSync<T extends Reducer>(reducer: T): T {
+  return reducer;
+}
+
+export function initStateWithPrevTab(store: Store): Store {
+  return store;
+}
+
+export const RECEIVE_INIT_STATE = '&_RECEIVE_INIT_STATE';
