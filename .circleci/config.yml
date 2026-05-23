@@ -146,7 +146,7 @@ jobs:
           command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.11.4
       - run:
           name: Lint code
-          command: $(go env GOPATH)/bin/golangci-lint run --timeout=5m . ./_client ./_constants ./_models ./_modules ./_solver ./_test
+          command: $(go env GOPATH)/bin/golangci-lint run --timeout=5m . ./_*/
       - run:
           name: Lint styles
           command: |
