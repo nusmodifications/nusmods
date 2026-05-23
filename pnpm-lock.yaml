@@ -131,8 +131,8 @@ importers:
         specifier: 2.0.4
         version: 2.0.4
       '@types/lodash':
-        specifier: 4.17.14
-        version: 4.17.14
+        specifier: 4.17.24
+        version: 4.17.24
       '@types/node':
         specifier: 22.19.19
         version: 22.19.19
@@ -335,8 +335,8 @@ importers:
         specifier: 1.2.3
         version: 1.2.3
       '@types/lodash':
-        specifier: 4.17.14
-        version: 4.17.14
+        specifier: 4.17.24
+        version: 4.17.24
       '@types/mock-fs':
         specifier: 4.13.4
         version: 4.13.4
@@ -633,8 +633,8 @@ importers:
         specifier: 1.9.21
         version: 1.9.21
       '@types/lodash':
-        specifier: 4.17.14
-        version: 4.17.14
+        specifier: 4.17.24
+        version: 4.17.24
       '@types/lodash-es':
         specifier: 4.17.12
         version: 4.17.12
@@ -3095,8 +3095,8 @@ packages:
   '@types/lodash-es@4.17.12':
     resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
 
-  '@types/lodash@4.17.14':
-    resolution: {integrity: sha512-jsxagdikDiDBeIRaPYtArcT8my4tN1og7MtMRquFT3XNA6axxyHDRUemqDz/taRDdOUn0GnGHRCuff4q48sW9A==}
+  '@types/lodash@4.17.24':
+    resolution: {integrity: sha512-gIW7lQLZbue7lRSWEFql49QJJWThrTFFeIMJdp3eH4tKoxm1OvEPg02rm4wCCSHS0cL3/Fizimb35b7k8atwsQ==}
 
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -12887,9 +12887,9 @@ snapshots:
 
   '@types/lodash-es@4.17.12':
     dependencies:
-      '@types/lodash': 4.17.14
+      '@types/lodash': 4.17.24
 
-  '@types/lodash@4.17.14': {}
+  '@types/lodash@4.17.24': {}
 
   '@types/mdast@3.0.15':
     dependencies:
@@ -19876,7 +19876,7 @@ snapshots:
   searchkit@2.4.1-alpha.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@types/history': 4.7.11
-      '@types/lodash': 4.17.14
+      '@types/lodash': 4.17.24
       axios: 0.18.1
       history: 4.7.2
       immutability-helper: 2.9.1
