@@ -265,7 +265,7 @@ The scoring function combines four penalty/bonus terms. All values were empirica
    pnpm start:optimiser
    ```
 
-4. **Run frontend**(if needed)
+4. **Run frontend** (if needed)
 
    ```bash
    pnpm start:local
@@ -275,25 +275,38 @@ The scoring function combines four penalty/bonus terms. All values were empirica
 
 - Send a POST request following the request body format above to `http://localhost:8020/optimise`
 - Or run the integration tests (requires the test server to be running):
+
   ```bash
   go test ./_test/... -v
   ```
 
 ## Linting and Formatting
 
+### Linting
+
 - Lint the code using:
+
   ```bash
-  golangci-lint run
+  pnpm lint:optimiser:code
   ```
+
   _Auto fix issues where possible:_
+
   ```bash
-  golangci-lint run --fix
+  pnpm lint:optimiser:code --fix
   ```
+
+- The linter will help to do static analysis and catch common issues. The configuration is defined in `.golangci.yaml`.
+
+### Formatting
+
 - Format the code using:
+
   ```bash
-  golangci-lint fmt
+  pnpm lint:optimiser:styles
   ```
-- The golangci-lint configuration is defined in `.golangci.yaml`
+
+- This will format the code according to the defined style guide. The configuration is defined in `.golangci.yaml`.
 
 ## Dependencies
 
@@ -328,4 +341,4 @@ The slot merging step in `_modules/mergeAndFilterModuleSlots` uses the building 
 - Tweak the scoring function to prioritise more important constraints found from user feedback. For instance:
 - Tweak the beam search parameters to improve performance (perhaps depending on the number of modules)
 - Create a more accurate heuristic for scoring distance between consecutive classes. (Currently, it just a random linear function that seems to work)
-- Add more constraints to optimisation proceess
+- Add more constraints to optimisation process

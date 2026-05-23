@@ -145,18 +145,24 @@ jobs:
           name: Install golangci-lint
           command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.7.2
       - run:
-          name: Check linting
-          command: $(go env GOPATH)/bin/golangci-lint run --timeout=5m
+          name: Lint code
+          command: |
+            if ! $(go env GOPATH)/bin/golangci-lint run --timeout=5m; then
+              echo "Lint issues found. Run 'pnpm lint:optimiser:code --fix' locally to fix."
+              exit 1
+            fi
       - run:
-          name: Check formatting
+          name: Lint styles
           command: |
             if [ -n "$($(go env GOPATH)/bin/golangci-lint fmt --diff)" ]; then
-              echo "Formatting issues found. Run 'golangci-lint fmt' locally to fix."
+              echo "Formatting issues found. Run 'pnpm lint:optimiser:styles' locally to fix."
               exit 1
             fi
       - run:
           name: Run tests
           command: |
+            go test -count=1 -v ./_models ./_solver ./_modules
+
             go run ./_test/server/main.go -port 8020 &
             SERVER_PID=$!
 
