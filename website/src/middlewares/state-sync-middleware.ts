@@ -9,6 +9,7 @@ import {
   type Config,
 } from 'redux-state-sync';
 
+import { FAILURE } from 'types/reducers';
 import type { State } from 'types/state';
 
 // Strip slices that can't traverse structuredClone (notifications hold
@@ -41,6 +42,14 @@ const reduxStateSyncConfig = {
     // redux-state-sync relies on BroadcastChannel, which only supports
     // objects that are clonable by `structuredClone`
     if (typeof action === 'function') {
+      return false;
+    }
+
+    // *_FAILURE actions carry an AxiosError as payload, which holds a
+    // reference to the underlying XMLHttpRequest -- structuredClone throws
+    // DataCloneError on those. Action types are dynamic (e.g.
+    // `FETCH_MODULE_LIST_FAILURE`), so discriminate on the lifecycle meta.
+    if (action.meta?.requestStatus === FAILURE) {
       return false;
     }
 
