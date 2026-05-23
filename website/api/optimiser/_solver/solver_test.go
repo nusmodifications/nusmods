@@ -306,7 +306,7 @@ func TestInsertSlotSorted(t *testing.T) {
 
 func TestIsLessonRecorded(t *testing.T) {
 	recordings := map[string]struct{}{
-		"CS1010S|Lecture": {},
+		"CS1010S|Lecture":  {},
 		"CS2040S|Tutorial": {},
 	}
 
@@ -607,9 +607,9 @@ func TestCalculateLunchGap(t *testing.T) {
 
 func TestCalculateLargestGap(t *testing.T) {
 	tests := []struct {
-		name     string
-		slots    []models.ModuleSlot
-		wantGap  int
+		name    string
+		slots   []models.ModuleSlot
+		wantGap int
 	}{
 		{
 			"empty slots",
@@ -634,9 +634,9 @@ func TestCalculateLargestGap(t *testing.T) {
 		{
 			"three slots picks largest gap",
 			[]models.ModuleSlot{
-				{StartMin: 540, EndMin: 600},  // 09:00–10:00
-				{StartMin: 660, EndMin: 720},  // 11:00–12:00, gap=60
-				{StartMin: 900, EndMin: 960},  // 15:00–16:00, gap=180
+				{StartMin: 540, EndMin: 600}, // 09:00–10:00
+				{StartMin: 660, EndMin: 720}, // 11:00–12:00, gap=60
+				{StartMin: 900, EndMin: 960}, // 15:00–16:00, gap=180
 			},
 			180,
 		},

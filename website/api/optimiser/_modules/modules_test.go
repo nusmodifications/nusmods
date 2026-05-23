@@ -267,8 +267,24 @@ func TestMergeAndFilterModuleSlots_DuplicateSlotsAreMerged(t *testing.T) {
 	recordings := map[string]struct{}{}
 
 	timetable := []models.ModuleSlot{
-		{LessonType: "Lecture", ClassNo: "01", Day: "Tuesday", StartTime: "0900", EndTime: "1000", Venue: "BIZ2-0111", WeeksString: "1,2,3"},
-		{LessonType: "Lecture", ClassNo: "02", Day: "Tuesday", StartTime: "0900", EndTime: "1000", Venue: "BIZ2-0222", WeeksString: "1,2,3"},
+		{
+			LessonType:  "Lecture",
+			ClassNo:     "01",
+			Day:         "Tuesday",
+			StartTime:   "0900",
+			EndTime:     "1000",
+			Venue:       "BIZ2-0111",
+			WeeksString: "1,2,3",
+		},
+		{
+			LessonType:  "Lecture",
+			ClassNo:     "02",
+			Day:         "Tuesday",
+			StartTime:   "0900",
+			EndTime:     "1000",
+			Venue:       "BIZ2-0222",
+			WeeksString: "1,2,3",
+		},
 	}
 
 	merged, _ := mergeAndFilterModuleSlots(timetable, venues, "CS1010S", recordings, freeDays, 0, 1440)
@@ -286,8 +302,24 @@ func TestMergeAndFilterModuleSlots_EVenuesNotDeduplicated(t *testing.T) {
 	recordings := map[string]struct{}{}
 
 	timetable := []models.ModuleSlot{
-		{LessonType: "Lecture", ClassNo: "E1", Day: "Tuesday", StartTime: "0900", EndTime: "1000", Venue: "E-Learn_A", WeeksString: "1,2"},
-		{LessonType: "Lecture", ClassNo: "E2", Day: "Tuesday", StartTime: "0900", EndTime: "1000", Venue: "E-Learn_A", WeeksString: "1,2"},
+		{
+			LessonType:  "Lecture",
+			ClassNo:     "E1",
+			Day:         "Tuesday",
+			StartTime:   "0900",
+			EndTime:     "1000",
+			Venue:       "E-Learn_A",
+			WeeksString: "1,2",
+		},
+		{
+			LessonType:  "Lecture",
+			ClassNo:     "E2",
+			Day:         "Tuesday",
+			StartTime:   "0900",
+			EndTime:     "1000",
+			Venue:       "E-Learn_A",
+			WeeksString: "1,2",
+		},
 	}
 
 	merged, _ := mergeAndFilterModuleSlots(timetable, venues, "CS1010S", recordings, freeDays, 0, 1440)
