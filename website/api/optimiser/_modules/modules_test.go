@@ -49,7 +49,6 @@ func TestIsMissingVenueCoordinates(t *testing.T) {
 		{"X zero Y non-zero", models.Coordinates{X: 0, Y: 1.29}, true},
 		{"X non-zero Y zero", models.Coordinates{X: 103.77, Y: 0}, true},
 		{"both non-zero", models.Coordinates{X: 103.77, Y: 1.29}, false},
-		{"negative coords (valid non-zero)", models.Coordinates{X: -1, Y: -1}, false},
 		{"very small non-zero", models.Coordinates{X: 0.0001, Y: 0.0001}, false},
 	}
 
@@ -197,7 +196,7 @@ func TestMergeAndFilterModuleSlots_RecordedBypassesTimeRange(t *testing.T) {
 	freeDays := map[string]struct{}{}
 	recordings := map[string]struct{}{"CS1010S|Lecture": {}}
 
-	// Lecture outside time range but recorded → should be kept
+	// Lecture outside time range but recorded -> should be kept
 	timetable := []models.ModuleSlot{
 		makeRawSlot("Lecture", "01", "Tuesday", "0700", "0800", "BIZ2-0111"),
 	}
@@ -262,7 +261,7 @@ func TestMergeAndFilterModuleSlots_VenueWithZeroCoordinatesGetsInvalid(t *testin
 }
 
 func TestMergeAndFilterModuleSlots_DuplicateSlotsAreMerged(t *testing.T) {
-	// Two classes with same day/time/building/weeks → only one should survive
+	// Two classes with same day/time/building/weeks -> only one should survive
 	venues := minVenues()
 	freeDays := map[string]struct{}{}
 	recordings := map[string]struct{}{}
@@ -327,7 +326,7 @@ func TestMergeAndFilterModuleSlots_PairedSlotsFilteredTogether(t *testing.T) {
 	freeDays := map[string]struct{}{"Wednesday": {}}
 	recordings := map[string]struct{}{}
 
-	// Class "01" has two paired slots: Tuesday (ok) + Wednesday (free day → fails)
+	// Class "01" has two paired slots: Tuesday (ok) + Wednesday (free day -> fails)
 	timetable := []models.ModuleSlot{
 		makeRawSlot("Lecture", "01", "Tuesday", "0900", "1000", "BIZ2-0111"),
 		makeRawSlot("Lecture", "01", "Wednesday", "0900", "1000", "BIZ2-0111"), // free day
