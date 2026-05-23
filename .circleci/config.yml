@@ -143,7 +143,7 @@ jobs:
           command: cp ../../src/data/venues.json _constants/venues.json
       - run:
           name: Install golangci-lint
-          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.7.2
+          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.11.4
       - run:
           name: Lint code
           command: $(go env GOPATH)/bin/golangci-lint run --timeout=5m . ./_client ./_constants ./_models ./_modules ./_solver ./_test
