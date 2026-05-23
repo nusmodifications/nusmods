@@ -218,6 +218,8 @@ func mergeAndFilterModuleSlots(
 		var combinationParts []string
 		allEVenues := true
 		for _, slot := range slots {
+			// TODO: Remove the skip for E-venues & 
+			// remove the tests for it too
 			if _, ok := constants.EVenues[slot.Venue]; !ok {
 				allEVenues = false
 				buildingName := extractBuildingName(slot.Venue)
