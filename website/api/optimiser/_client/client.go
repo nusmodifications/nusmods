@@ -1,4 +1,4 @@
-// HTTP Client to make requests to NUSMODS apis
+// Package client makes HTTP requests to the NUSMods API.
 package client
 
 import (
@@ -12,10 +12,10 @@ import (
 
 var httpClient = &http.Client{Timeout: 10 * time.Second}
 
-// HTTP request to get Module data.
+// GetModuleData fetches timetable data for a module from the NUSMods API.
 func GetModuleData(acadYear string, module string) ([]byte, error) {
 	url := fmt.Sprintf(constants.ModulesURL, acadYear, module)
-	res, err := httpClient.Get(url)
+	res, err := httpClient.Get(url) //nolint:noctx // httpClient has a timeout set
 	if err != nil {
 		return nil, err
 	}

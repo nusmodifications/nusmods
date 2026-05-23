@@ -37,7 +37,8 @@ func GetAllModuleSlots(
 	// These are default or backup slots for the partial timetable so that we can display some random slot for unallocated lessons
 	defaultSlots := make(models.ModuleDefaultSlotsMap)
 	for _, module := range optimiserRequest.Modules {
-		body, err := client.GetModuleData(optimiserRequest.AcadYear, strings.ToUpper(module))
+		var body []byte
+		body, err = client.GetModuleData(optimiserRequest.AcadYear, strings.ToUpper(module))
 		if err != nil {
 			return nil, nil, nil, err
 		}
@@ -69,17 +70,17 @@ func GetAllModuleSlots(
 		for i := range moduleTimetable {
 			// Note: if weeks is not a []int, then skip parsing
 			// Currently we are not handling week conflict for non-[]int weeks
-			if _, ok := moduleTimetable[i].Weeks.([]any); !ok {
+			weeks, ok := moduleTimetable[i].Weeks.([]any)
+			if !ok {
 				continue
 			}
 
 			moduleTimetable[i].WeeksSet = make(map[int]struct{})
-			weeks := moduleTimetable[i].Weeks.([]any)
 			weeksStrings := make([]string, 0, len(weeks))
 
 			for _, week := range weeks {
-				weekFloat, ok := week.(float64)
-				if !ok {
+				weekFloat, isFloat := week.(float64)
+				if !isFloat {
 					continue
 				}
 				weekInt := int(weekFloat)
@@ -107,9 +108,9 @@ func GetAllModuleSlots(
 // Gets all venue information from venues.json.
 func getVenues() (map[string]models.Location, error) {
 	venues := make(map[string]models.Location)
-	err := json.Unmarshal(constants.VenuesJson, &venues)
+	err := json.Unmarshal(constants.VenuesJSON, &venues)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to load venues.json: %w", err)
+		return nil, fmt.Errorf("unable to load venues.json: %w", err)
 	}
 
 	return venues, nil
@@ -155,7 +156,6 @@ func mergeAndFilterModuleSlots(
 		if defaultSlots[lessonType] == nil {
 			defaultSlots[lessonType] = slots
 		}
-
 		// Only apply filters to physical lessons
 		if !isRecorded {
 			for i := range slots {
@@ -165,7 +165,6 @@ func mergeAndFilterModuleSlots(
 					allValid = false
 					break
 				}
-
 				if isSlotOutsideTimeRange(*slot, earliestMin, latestMin) {
 					allValid = false
 					break
@@ -223,7 +222,6 @@ func mergeAndFilterModuleSlots(
 				combinationParts = append(combinationParts, part)
 			}
 		}
-
 		// If not all venues are E-Venues, check for duplicates
 		if !allEVenues {
 			combinationKey := lessonType + "|" + strings.Join(combinationParts, "|")
@@ -238,7 +236,6 @@ func mergeAndFilterModuleSlots(
 		}
 		mergedTimetable[lessonType][classNo] = slots
 	}
-
 	return mergedTimetable, defaultSlots
 }
 

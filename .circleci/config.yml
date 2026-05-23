@@ -147,7 +147,7 @@ jobs:
       - run:
           name: Lint code
           command: |
-            if ! $(go env GOPATH)/bin/golangci-lint run --timeout=5m; then
+            if ! $(go env GOPATH)/bin/golangci-lint run --timeout=5m . ./_client ./_constants ./_models ./_modules ./_solver ./_test; then
               echo "Lint issues found. Run 'pnpm lint:optimiser:code --fix' locally to fix."
               exit 1
             fi

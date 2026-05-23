@@ -35,7 +35,7 @@ func FillDefaultsAndGenerateShareableLinks(
 	defaultConfig := createConfig(assignments, lessonToSlots)
 	defaultSerializedConfig := serializeConfig(defaultConfig)
 
-	semesterPath := ""
+	var semesterPath string
 	switch req.AcadSem {
 	case 1:
 		semesterPath = "sem-1"

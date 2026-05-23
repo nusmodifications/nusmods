@@ -172,8 +172,8 @@ func TestSerializeConfig(t *testing.T) {
 		}
 		got := serializeConfig(config)
 		// Both LEC and TUT should appear, joined by ModuleCodeSeparator ";"
-		if !strings.Contains(got, "LEC:(0)") && !strings.Contains(got, "LEC:(0)") {
-			t.Logf("serialized: %q", got)
+		if !strings.Contains(got, "LEC:(0)") || !strings.Contains(got, "TUT:(5)") {
+			t.Errorf("expected both LEC:(0) and TUT:(5) in serialized output: %q", got)
 		}
 		if !strings.Contains(got, constants.ModuleCodeSeparator) {
 			t.Errorf("expected ModuleCodeSeparator %q in multi-lesson output: %q",

@@ -158,13 +158,13 @@ func ParseTimeToMinutes(timeStr string) (int, error) {
 	if len(timeStr) != 4 {
 		return 0, fmt.Errorf("invalid time format: %s", timeStr)
 	}
-	hour, err1 := strconv.Atoi(timeStr[:2])
-	min, err2 := strconv.Atoi(timeStr[2:])
+	hours, err1 := strconv.Atoi(timeStr[:2])
+	mins, err2 := strconv.Atoi(timeStr[2:])
 	if err1 != nil || err2 != nil {
 		return 0, fmt.Errorf("invalid time format: %s", timeStr)
 	}
-	if hour < 0 || hour > 23 || min < 0 || min > 59 {
+	if hours < 0 || hours > 23 || mins < 0 || mins > 59 {
 		return 0, fmt.Errorf("time out of range: %s", timeStr)
 	}
-	return hour*60 + min, nil
+	return hours*60 + mins, nil
 }
