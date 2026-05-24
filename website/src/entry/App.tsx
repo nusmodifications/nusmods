@@ -16,29 +16,36 @@ type Props = {
   store: Store<State>;
 };
 
+type RehydrateGateProps = PropsWithChildren<{
+  onBeforeLift: () => void;
+}>;
+
+const RehydrateGate: FC<RehydrateGateProps> = ({ children, onBeforeLift }) => {
+  const isRehydrated = useSelector<State, boolean>((state) => state.reduxRemember.isRehydrated);
+
+  React.useEffect(() => {
+    if (isRehydrated) onBeforeLift();
+  }, [isRehydrated, onBeforeLift]);
+
+  if (!isRehydrated) return null;
+
+  return children;
+};
+
 const App: FC<PropsWithChildren<Props>> = ({ store }) => {
-  const onBeforeLift = () => {
+  const onBeforeLift = React.useCallback(() => {
     const { theme, settings } = store.getState();
 
     setCustomDimensions({
       [DIMENSIONS.theme]: theme.id,
       [DIMENSIONS.beta]: String(!!settings.beta),
     });
-  };
-
-  const RehydrateGate: FC<PropsWithChildren> = ({ children }) => {
-    const isRehydrated = useSelector<State>((state) => state.reduxRemember.isRehydrated);
-
-    if (!isRehydrated) return;
-
-    onBeforeLift();
-    return children;
-  };
+  }, [store]);
 
   return (
     <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
       <Provider store={store}>
-        <RehydrateGate>
+        <RehydrateGate onBeforeLift={onBeforeLift}>
           <Router>
             <AppShell>
               <Routes />

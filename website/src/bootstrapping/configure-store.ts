@@ -16,10 +16,6 @@ import { rememberEnhancer } from 'redux-remember';
 import { migrate } from 'remigrate';
 import storage from 'storage';
 
-// For redux-devtools-extensions - see
-// https://github.com/zalmoxisus/redux-devtools-extension
-const composeEnhancers: typeof compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
 // immer uses Object.freeze on returned state objects, which breaks undo history functionality
 setAutoFreeze(false);
 
@@ -53,7 +49,7 @@ export default function configureStore(defaultState?: State, usePersistence: boo
     enhancers: (getDefaultEnhancers) =>
       getDefaultEnhancers().concat(
         (usePersistence
-          ? composeEnhancers(
+          ? compose(
               rememberEnhancer(
                 storage,
                 ['moduleBank', 'venueBank', 'timetables', 'theme', 'settings', 'planner'],
