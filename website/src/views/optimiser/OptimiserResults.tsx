@@ -84,7 +84,6 @@ const OptimiserResultPartialTimetable: React.FC<OptimiserResultsPartialProps> = 
     <div className={styles.unassignedExplanation}>
       <div className={styles.unassignedExplanationHeader}>Why couldn't these be scheduled?</div>
       <ul>
-        <li className={styles.unassignedExplanationItem}>Missing venue information, or</li>
         <li className={styles.unassignedExplanationItem}>
           No possible way to schedule these lessons with your selected preferences (e.g., free days,
           preferred hours)

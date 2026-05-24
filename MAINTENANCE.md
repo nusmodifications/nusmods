@@ -4,6 +4,10 @@ Create a new issue on GitHub with this checklist after the finals every semester
 
 ## Every Year
 
+### Around End of Semester 2
+
+- [ ] Venue issues are created by [Cloudflare workers](https://github.com/nusmodifications/serverless-functions), and the GitHub access token expires after 366 days. Update the personal access token on the Cloudflare dashboard and grant write permissions under [Issues](https://docs.github.com/en/rest/issues/issues?apiVersion=2026-03-10#create-an-issue) for the `nusmods` repository.
+
 ### 1 week before NUS IT Data Update
 
 - **Prepare "PR1"**

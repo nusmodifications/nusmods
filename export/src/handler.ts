@@ -1,6 +1,8 @@
 import * as Sentry from '@sentry/node';
 import type { VercelApiHandler, VercelRequest, VercelResponse } from '@vercel/node';
+import type { Browser, Page } from 'puppeteer-core';
 
+import * as render from './render-serverless';
 import config from './config';
 import { render422, render500 } from './views';
 import { HttpError } from './HttpError';
@@ -30,9 +32,22 @@ function setUpSentry() {
   }
 }
 
+function handleExportError(response: VercelResponse, error: Error & { original?: Error }) {
+  const eventId = Sentry.captureException(error.original || error);
+
+  console.error(error);
+
+  if (error instanceof HttpError && error.code === 422) {
+    response.status(422).send(render422());
+    return;
+  }
+
+  response.status(500).send(render500(eventId));
+}
+
 /**
  * Convenience higher-order function that encapsulates most of the logic shared
- * by all export serverless functions.
+ * by all Satori export serverless functions.
  * @returns A Vercel serverless function handler.
  */
 export function makeExportHandler<T>(
@@ -54,17 +69,51 @@ export function makeExportHandler<T>(
 
       await performExport(response, data);
     } catch (error) {
-      const eventId = Sentry.captureException(error.original || error);
+      handleExportError(response, error);
+    }
+  };
+}
 
-      console.error(error);
+export function makeBrowserExportHandler<T>(
+  parseExportData: (request: VercelRequest) => T,
+  performExport: (response: VercelResponse, page: Page, data: T) => void | Promise<void>,
+): VercelApiHandler {
+  return async function handler(request, response) {
+    try {
+      throwIfAcademicYearNotSet();
+      setUpSentry();
 
-      if (error instanceof HttpError) {
-        if (error.code === 422) {
-          response.status(422).send(render422());
-          return;
-        }
+      // Validate input before starting the browser (which is expensive)
+      let data = undefined;
+      try {
+        data = parseExportData(request);
+      } catch (error) {
+        throw new HttpError(422, 'Invalid timetable data', error);
       }
-      response.status(500).send(render500(eventId));
+
+      const url = config.page;
+      let browser: Browser;
+      let page: Page;
+      try {
+        ({ browser, page } = await render.open(url));
+      } catch (error) {
+        if (error.message.includes('ERR_CONNECTION_REFUSED')) {
+          throw new HttpError(
+            500,
+            `Could not open the page located at process.env.PAGE (${url}). Try opening it in your browser?`,
+            error,
+          );
+        }
+        throw new HttpError(500, 'Cannot start browser', error);
+      }
+
+      try {
+        await performExport(response, page, data);
+      } finally {
+        await browser.close();
+      }
+    } catch (error) {
+      handleExportError(response, error);
     }
   };
 }
