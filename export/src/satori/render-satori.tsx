@@ -17,7 +17,7 @@ export async function renderSatoriSvg(
   modules: Array<Module>,
   options: ViewportOptions = {},
 ): Promise<{ layout: TimetableImageLayout; svg: string }> {
-  const width = options.width || config.pageWidth;
+  const width = options.width ?? config.pageWidth;
   const model = buildRenderableTimetable(exportData, modules);
   const layout = model.isVertical
     ? estimateVerticalImageLayout(model, width, options.height)

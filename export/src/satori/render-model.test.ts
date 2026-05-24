@@ -549,8 +549,16 @@ describe('week text formatting', () => {
 
   test('handles WeekRange with weekInterval 2', () => {
     expect(getWeekText({ end: '2026-04-14', start: '2026-01-13', weekInterval: 2 })).toBe(
-      'Odd Weeks',
+      '13 Jan-14 Apr, every 2 weeks',
     );
+  });
+
+  test('handles WeekRange with a single date', () => {
+    expect(getWeekText({ end: '2026-01-13', start: '2026-01-13' })).toBe('13 Jan');
+  });
+
+  test('handles WeekRange without weekInterval', () => {
+    expect(getWeekText({ end: '2026-04-14', start: '2026-01-13' })).toBe('13 Jan-14 Apr');
   });
 });
 

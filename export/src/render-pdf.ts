@@ -44,14 +44,13 @@ export async function renderPdf(exportData: ExportData): Promise<Buffer> {
     size: 'A4',
   });
 
-  doc.image(pngBuffer, x, y, { height: fitHeight, width: fitWidth });
-  doc.end();
-
   const chunks: Array<Buffer> = [];
   const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
     doc.on('data', (chunk: Buffer) => chunks.push(chunk));
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
+    doc.image(pngBuffer, x, y, { height: fitHeight, width: fitWidth });
+    doc.end();
   });
 
   const renderFinishedAt = Date.now();

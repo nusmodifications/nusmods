@@ -59,6 +59,11 @@ const INTERVALS_PER_HOUR = 4;
 const DEFAULT_EARLIEST_INDEX = 10 * INTERVALS_PER_HOUR;
 const DEFAULT_LATEST_INDEX = 18 * INTERVALS_PER_HOUR;
 const SCHOOLDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const;
+const LESSON_DATE_FORMAT = new Intl.DateTimeFormat('en-SG', {
+  day: '2-digit',
+  month: 'short',
+  timeZone: 'Asia/Singapore',
+});
 
 const LESSON_TYPE_ABBREV: Record<string, string> = {
   'Design Lecture': 'DLEC',
@@ -239,6 +244,26 @@ function formatNumericWeeks(unprocessedWeeks: Array<number>): string | null {
   return `Weeks ${processed.join(', ')}`;
 }
 
+function formatLessonDate(date: string) {
+  return LESSON_DATE_FORMAT.format(new Date(date));
+}
+
+function formatWeekRange(
+  weeks: Exclude<Module['semesterData'][number]['timetable'][number]['weeks'], Array<number>>,
+) {
+  const start = formatLessonDate(weeks.start);
+  if (weeks.start === weeks.end) {
+    return start;
+  }
+
+  const dateRange = `${start}-${formatLessonDate(weeks.end)}`;
+  if (weeks.weekInterval) {
+    return `${dateRange}, every ${weeks.weekInterval} weeks`;
+  }
+
+  return dateRange;
+}
+
 function formatWeeks(
   weeks: Module['semesterData'][number]['timetable'][number]['weeks'],
 ): string | null {
@@ -250,12 +275,7 @@ function formatWeeks(
     return formatNumericWeeks(weeks.weeks);
   }
 
-  if (weeks.weekInterval === 2) {
-    const startWeek = 1;
-    return startWeek % 2 === 0 ? 'Even Weeks' : 'Odd Weeks';
-  }
-
-  return null;
+  return formatWeekRange(weeks);
 }
 
 function formatExamDate(examDate?: string) {
