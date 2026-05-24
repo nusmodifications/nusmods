@@ -100,7 +100,7 @@ function formatWeekRange(weekRange: WeekRange) {
   );
 
   return (
-    <Tooltip content={table} interactive arrow>
+    <Tooltip content={table} interactive arrow appendTo={() => document.body}>
       <span className={styles.weeksSpecial}>{dateRange}</span>
     </Tooltip>
   );
