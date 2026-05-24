@@ -35,7 +35,17 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
+if (/^https?:\/\//.test(config.page)) {
+  app.context.pageUrl = config.page;
+} else if (config.page) {
+  app.context.pageContent = fs.readFileSync(config.page, 'utf8');
+}
+
 const server = app.listen(Number(process.env.PORT) || 3000, process.env.HOST);
 console.log('Export server started');
 
-gracefulShutdown(server);
+gracefulShutdown(server, {
+  onShutdown: async () => {
+    await app.context.browser?.close();
+  },
+});

@@ -20,7 +20,7 @@ export async function renderPdf(exportData: ExportData): Promise<Buffer> {
   const pageWidth = isLandscape ? A4_HEIGHT_PT : A4_WIDTH_PT;
   const pageHeight = isLandscape ? A4_WIDTH_PT : A4_HEIGHT_PT;
 
-  const { svg, layout } = await renderSatoriSvg(exportData, modules);
+  const { layout, svg } = await renderSatoriSvg(exportData, modules);
 
   const resvg = new Resvg(svg, {
     fitTo: { mode: 'zoom', value: PDF_IMAGE_SCALE },
@@ -44,10 +44,10 @@ export async function renderPdf(exportData: ExportData): Promise<Buffer> {
     size: 'A4',
   });
 
-  doc.image(pngBuffer, x, y, { width: fitWidth, height: fitHeight });
+  doc.image(pngBuffer, x, y, { height: fitHeight, width: fitWidth });
   doc.end();
 
-  const chunks: Buffer[] = [];
+  const chunks: Array<Buffer> = [];
   const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
     doc.on('data', (chunk: Buffer) => chunks.push(chunk));
     doc.on('end', () => resolve(Buffer.concat(chunks)));
@@ -60,8 +60,8 @@ export async function renderPdf(exportData: ExportData): Promise<Buffer> {
       durationMs: renderFinishedAt - startedAt,
       moduleCount: modules.length,
       moduleLoadMs: modulesLoadedAt - startedAt,
-      renderMs: renderFinishedAt - modulesLoadedAt,
       renderer: 'satori-pdf',
+      renderMs: renderFinishedAt - modulesLoadedAt,
       type: 'export-pdf',
     }),
   );

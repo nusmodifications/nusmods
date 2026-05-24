@@ -2,8 +2,8 @@ import type { ColorScheme } from '../types';
 
 type ThemeColors = {
   background: string;
-  border: string;
   bodyColor: string;
+  border: string;
   dayLabelBackground: string;
   gray: string;
   grayLight: string;
@@ -15,7 +15,11 @@ type ThemeColors = {
 
 function parseHex(hex: string): [number, number, number] {
   const h = hex.replace('#', '');
-  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  return [
+    Number.parseInt(h.slice(0, 2), 16),
+    Number.parseInt(h.slice(2, 4), 16),
+    Number.parseInt(h.slice(4, 6), 16),
+  ];
 }
 
 function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
@@ -25,14 +29,40 @@ function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   const l = (max + min) / 2;
-  if (max === min) return [0, 0, l];
+  if (max === min) {
+    return [0, 0, l];
+  }
   const d = max - min;
   const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
   let h = 0;
-  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-  else if (max === g) h = ((b - r) / d + 2) / 6;
-  else h = ((r - g) / d + 4) / 6;
+  if (max === r) {
+    h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  } else if (max === g) {
+    h = ((b - r) / d + 2) / 6;
+  } else {
+    h = ((r - g) / d + 4) / 6;
+  }
   return [h, s, l];
+}
+
+function hue2rgb(p: number, q: number, tValue: number) {
+  let t = tValue;
+  if (t < 0) {
+    t += 1;
+  }
+  if (t > 1) {
+    t -= 1;
+  }
+  if (t < 1 / 6) {
+    return p + (q - p) * 6 * t;
+  }
+  if (t < 1 / 2) {
+    return q;
+  }
+  if (t < 2 / 3) {
+    return p + (q - p) * (2 / 3 - t) * 6;
+  }
+  return p;
 }
 
 function hslToRgb(h: number, s: number, l: number): [number, number, number] {
@@ -40,14 +70,6 @@ function hslToRgb(h: number, s: number, l: number): [number, number, number] {
     const v = Math.round(l * 255);
     return [v, v, v];
   }
-  const hue2rgb = (p: number, q: number, t: number) => {
-    if (t < 0) t += 1;
-    if (t > 1) t -= 1;
-    if (t < 1 / 6) return p + (q - p) * 6 * t;
-    if (t < 1 / 2) return q;
-    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-    return p;
-  };
   const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
   const p = 2 * l - q;
   return [
@@ -69,7 +91,7 @@ export function darken(hex: string, percent: number): string {
   return toHex(nr, ng, nb);
 }
 
-const TIMETABLE_THEME_COLORS: Record<string, string[]> = {
+const TIMETABLE_THEME_COLORS: Record<string, Array<string>> = {
   ashes: ['#c7ae95', '#c7c795', '#aec795', '#95c7ae', '#95aec7', '#ae95c7', '#c795ae', '#c79595'],
   chalk: ['#fb9fb1', '#eda987', '#ddb26f', '#acc267', '#12cfc0', '#6fc2ef', '#e1a3ee', '#deaf8f'],
   eighties: [
@@ -155,7 +177,7 @@ const DARK_THEME: ThemeColors = {
   text: '#aaaaaa',
 };
 
-export function getLessonPalette(themeId: string): string[] {
+export function getLessonPalette(themeId: string): Array<string> {
   return TIMETABLE_THEME_COLORS[themeId] ?? TIMETABLE_THEME_COLORS.eighties;
 }
 

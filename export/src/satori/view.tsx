@@ -37,13 +37,15 @@ function estimateTextWidth(text: string, fontSize: number): number {
 
 function estimateTitleLines(title: string, cellWidthPx: number): number {
   const availableWidth = cellWidthPx - CELL_PADDING * 2;
-  if (availableWidth <= 0) return 1;
+  if (availableWidth <= 0) {
+    return 1;
+  }
   const titleWidth = estimateTextWidth(title, FONT_SIZE_XS);
   return Math.max(1, Math.ceil(titleWidth / availableWidth));
 }
 
 function computeRowHeight(
-  row: RenderableLesson[],
+  row: Array<RenderableLesson>,
   gridContentWidth: number,
   startingIndex: number,
   endingIndex: number,
@@ -198,16 +200,16 @@ function LessonBlock({
 
 function LessonRow({
   endingIndex,
+  isLastRow,
   row,
   rowHeight,
   startingIndex,
-  isLastRow,
 }: {
   endingIndex: number;
-  row: RenderableLesson[];
+  isLastRow: boolean;
+  row: Array<RenderableLesson>;
   rowHeight: number;
   startingIndex: number;
-  isLastRow: boolean;
 }) {
   const totalCols = endingIndex - startingIndex;
 
@@ -317,17 +319,17 @@ function VerticalLessonBlock({
 }
 
 function VerticalLessonRow({
+  dayHeight,
   endingIndex,
+  isLastRow,
   row,
   startingIndex,
-  isLastRow,
-  dayHeight,
 }: {
-  endingIndex: number;
-  row: RenderableLesson[];
-  startingIndex: number;
-  isLastRow: boolean;
   dayHeight: number;
+  endingIndex: number;
+  isLastRow: boolean;
+  row: Array<RenderableLesson>;
+  startingIndex: number;
 }) {
   const totalCols = endingIndex - startingIndex;
 
@@ -351,8 +353,8 @@ function VerticalLessonRow({
             key={lesson.key}
             lesson={lesson}
             style={{
-              top: `${offset}%`,
               height: `${height}%`,
+              top: `${offset}%`,
             }}
           />
         );
@@ -548,12 +550,12 @@ function HorizontalTimetableGrid({
               >
                 {day.rows.map((row, index) => (
                   <LessonRow
-                    key={`${day.day}-${index}`}
                     endingIndex={model.endingIndex}
+                    isLastRow={index === day.rows.length - 1}
+                    key={`${day.day}-${index}`}
                     row={row}
                     rowHeight={rowHeights[index]}
                     startingIndex={model.startingIndex}
-                    isLastRow={index === day.rows.length - 1}
                   />
                 ))}
               </div>
@@ -666,12 +668,12 @@ function VerticalTimetableGrid({
               >
                 {day.rows.map((row, index) => (
                   <VerticalLessonRow
-                    key={`${day.day}-${index}`}
+                    dayHeight={dayHeight}
                     endingIndex={model.endingIndex}
+                    isLastRow={index === day.rows.length - 1}
+                    key={`${day.day}-${index}`}
                     row={row}
                     startingIndex={model.startingIndex}
-                    isLastRow={index === day.rows.length - 1}
-                    dayHeight={dayHeight}
                   />
                 ))}
               </div>
@@ -703,7 +705,7 @@ function ModuleCardsList({
             display: 'flex',
             ...(model.isVertical
               ? { flexDirection: 'column' as const }
-              : { flexWrap: 'wrap' as const, columnGap: MODULE_TABLE_GAP }),
+              : { columnGap: MODULE_TABLE_GAP, flexWrap: 'wrap' as const }),
             rowGap: MODULE_ROW_GAP,
           }}
         >

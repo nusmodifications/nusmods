@@ -1,3 +1,5 @@
+import type { Page } from 'puppeteer-core';
+
 // These types are duplicated from `website/src/types`.
 
 export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
@@ -20,40 +22,40 @@ export type ModuleTitle = string;
 export type Venue = string;
 
 export type WeekRange = {
-  start: string;
   end: string;
+  start: string;
   weekInterval?: number;
-  weeks?: number[];
+  weeks?: Array<number>;
 };
 
-export type Weeks = number[] | WeekRange;
+export type Weeks = Array<number> | WeekRange;
 
 export type RawLesson = Readonly<{
   classNo: ClassNo;
   day: DayText;
-  startTime: LessonTime;
   endTime: LessonTime;
   lessonType: LessonType;
+  startTime: LessonTime;
   venue: Venue;
   weeks: Weeks;
 }>;
 
 export type SemesterData = {
-  semester: Semester;
-  timetable: readonly RawLesson[];
   examDate?: string;
   examDuration?: number;
+  semester: Semester;
+  timetable: ReadonlyArray<RawLesson>;
 };
 
 export type Module = {
   moduleCode: ModuleCode;
-  title: ModuleTitle;
   moduleCredit: string;
-  semesterData: readonly SemesterData[];
+  semesterData: ReadonlyArray<SemesterData>;
+  title: ModuleTitle;
 };
 
 export type ModuleLessonConfig = {
-  [lessonType: LessonType]: LessonIndex[];
+  [lessonType: LessonType]: Array<LessonIndex>;
 };
 
 export type SemTimetableConfig = {
@@ -63,22 +65,23 @@ export type SemTimetableConfig = {
 // `ExportData` is duplicated from `website/src/types/export.ts`.
 export type ExportData = {
   readonly colors: ColorMapping;
-  readonly hidden: ModuleCode[];
+  readonly hidden: Array<ModuleCode>;
   readonly semester: Semester;
   readonly settings: {
     colorScheme: ColorScheme;
   };
-  readonly ta: ModuleCode[];
+  readonly ta: Array<ModuleCode>;
   readonly theme: ThemeState;
   readonly timetable: SemTimetableConfig;
 };
 
 export type ViewportOptions = {
+  height?: number;
   pixelRatio?: number;
   width?: number;
-  height?: number;
 };
 
 export interface State {
   data: ExportData;
+  page: Page;
 }

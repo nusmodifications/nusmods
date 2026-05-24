@@ -19,10 +19,12 @@ import { State } from 'types/state';
 import useColorScheme from 'views/hooks/useColorScheme';
 import styles from './ExportMenu.scss';
 
-type ExportAction = 'CALENDAR' | 'IMAGE' | 'PDF';
+type ExportAction = 'CALENDAR' | 'IMAGE' | 'IMAGE_BETA' | 'PDF' | 'PDF_BETA';
 const CALENDAR: ExportAction = 'CALENDAR';
 const IMAGE: ExportAction = 'IMAGE';
+const IMAGE_BETA: ExportAction = 'IMAGE_BETA';
 const PDF: ExportAction = 'PDF';
+const PDF_BETA: ExportAction = 'PDF_BETA';
 
 type Props = {
   semester: Semester;
@@ -34,6 +36,7 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
 
   const dispatch = useDispatch();
   const state = useSelector((storeState: State) => storeState);
+  const isBetaTester = !!state.settings.beta;
 
   const colorScheme = useColorScheme();
 
@@ -106,6 +109,38 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
               >
                 <FileText className="svg svg-small" /> PDF (.pdf)
               </a>
+
+              {isBetaTester && (
+                <>
+                  <div className="dropdown-divider" />
+
+                  <a
+                    href={exportApi.betaImage(
+                      semester,
+                      timetable,
+                      colorScheme,
+                      state,
+                      window.devicePixelRatio,
+                    )}
+                    className={classnames('dropdown-item', {
+                      'dropdown-selected': counter.matches(highlightedIndex),
+                    })}
+                    {...getItemProps({ item: IMAGE_BETA })}
+                  >
+                    <Image className="svg svg-small" /> Image (.png, beta)
+                  </a>
+
+                  <a
+                    href={exportApi.betaPdf(semester, timetable, colorScheme, state)}
+                    className={classnames('dropdown-item', {
+                      'dropdown-selected': counter.matches(highlightedIndex),
+                    })}
+                    {...getItemProps({ item: PDF_BETA })}
+                  >
+                    <FileText className="svg svg-small" /> PDF (.pdf, beta)
+                  </a>
+                </>
+              )}
             </Online>
 
             {SUPPORTS_DOWNLOAD && (
@@ -141,7 +176,15 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
         </div>
       );
     },
-    [isMacWarningOpen, closeMacOSWarningModal, semester, timetable, colorScheme, state],
+    [
+      isMacWarningOpen,
+      closeMacOSWarningModal,
+      semester,
+      timetable,
+      colorScheme,
+      state,
+      isBetaTester,
+    ],
   );
 
   return <Downshift onSelect={onSelect}>{renderDropdown}</Downshift>;

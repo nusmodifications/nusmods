@@ -17,8 +17,8 @@ export function parseViewportOptions(source: SizeSource): ViewportOptions {
   const width = Number(source.width);
 
   if (
-    typeof source.height !== 'undefined' &&
-    typeof source.width !== 'undefined' &&
+    source.height !== undefined &&
+    source.width !== undefined &&
     !Number.isNaN(height) &&
     !Number.isNaN(width) &&
     height > 0 &&

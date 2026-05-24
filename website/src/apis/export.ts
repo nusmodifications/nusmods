@@ -35,10 +35,26 @@ export default {
     pixelRatio = 1,
   ) =>
     `${baseUrl}/image?${serializeState(semester, timetable, colorScheme, state, { pixelRatio })}`,
+  betaImage: (
+    semester: Semester,
+    timetable: SemTimetableConfig,
+    colorScheme: ColorScheme,
+    state: State,
+    pixelRatio = 1,
+  ) =>
+    `${baseUrl}/beta/image?${serializeState(semester, timetable, colorScheme, state, {
+      pixelRatio,
+    })}`,
   pdf: (
     semester: Semester,
     timetable: SemTimetableConfig,
     colorScheme: ColorScheme,
     state: State,
   ) => `${baseUrl}/pdf?${serializeState(semester, timetable, colorScheme, state)}`,
+  betaPdf: (
+    semester: Semester,
+    timetable: SemTimetableConfig,
+    colorScheme: ColorScheme,
+    state: State,
+  ) => `${baseUrl}/beta/pdf?${serializeState(semester, timetable, colorScheme, state)}`,
 };

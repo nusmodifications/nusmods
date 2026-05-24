@@ -4,7 +4,7 @@ import type { ExportData, Module } from '../types';
 import { buildRenderableTimetable } from './render-model';
 import { renderSatoriImage } from './render-satori';
 
-const fixtureModules: Module[] = [
+const fixtureModules: Array<Module> = [
   {
     moduleCode: 'CS1010',
     moduleCredit: '4',
@@ -105,6 +105,41 @@ function makeExportData(overrides: Partial<ExportData> = {}): ExportData {
     },
     ...overrides,
   };
+}
+
+type WeekInput =
+  | Array<number>
+  | {
+      end: string;
+      start: string;
+      weekInterval?: number;
+      weeks?: Array<number>;
+    };
+
+function moduleWithWeeks(weeks: WeekInput): Array<Module> {
+  return [
+    {
+      moduleCode: 'WK',
+      moduleCredit: '4',
+      semesterData: [
+        {
+          semester: 1,
+          timetable: [
+            {
+              classNo: '01',
+              day: 'Monday',
+              endTime: '1200',
+              lessonType: 'Lecture',
+              startTime: '1000',
+              venue: 'LT1',
+              weeks,
+            },
+          ],
+        },
+      ],
+      title: 'Week Test',
+    },
+  ];
 }
 
 test('buildRenderableTimetable excludes hidden lessons and keeps overlapping rows separate', () => {
@@ -390,7 +425,7 @@ test('buildRenderableTimetable preserves normal venue names', () => {
 
 describe('time boundary calculations', () => {
   test('expands boundaries for early morning lessons', () => {
-    const earlyModule: Module[] = [
+    const earlyModule: Array<Module> = [
       {
         moduleCode: 'EARLY',
         moduleCredit: '4',
@@ -428,7 +463,7 @@ describe('time boundary calculations', () => {
   });
 
   test('expands boundaries for late evening lessons', () => {
-    const lateModule: Module[] = [
+    const lateModule: Array<Module> = [
       {
         moduleCode: 'LATE',
         moduleCredit: '4',
@@ -462,43 +497,13 @@ describe('time boundary calculations', () => {
     );
 
     expect(model.endingIndex).toBe(21 * 4);
-    const lastLabel = model.timeLabels[model.timeLabels.length - 1];
+    const lastLabel = model.timeLabels.at(-1);
     expect(lastLabel?.label).toBe('2000');
   });
 });
 
 describe('week text formatting', () => {
-  function moduleWithWeeks(
-    weeks: number[] | { start: string; end: string; weekInterval?: number; weeks?: number[] },
-  ): Module[] {
-    return [
-      {
-        moduleCode: 'WK',
-        moduleCredit: '4',
-        semesterData: [
-          {
-            semester: 1,
-            timetable: [
-              {
-                classNo: '01',
-                day: 'Monday',
-                endTime: '1200',
-                lessonType: 'Lecture',
-                startTime: '1000',
-                venue: 'LT1',
-                weeks,
-              },
-            ],
-          },
-        ],
-        title: 'Week Test',
-      },
-    ];
-  }
-
-  function getWeekText(
-    weeks: number[] | { start: string; end: string; weekInterval?: number; weeks?: number[] },
-  ) {
+  function getWeekText(weeks: WeekInput) {
     const model = buildRenderableTimetable(
       makeExportData({
         hidden: [],
@@ -537,13 +542,13 @@ describe('week text formatting', () => {
   });
 
   test('handles WeekRange with weeks array', () => {
-    expect(getWeekText({ start: '2026-01-13', end: '2026-04-14', weeks: [1, 3, 5] })).toBe(
+    expect(getWeekText({ end: '2026-04-14', start: '2026-01-13', weeks: [1, 3, 5] })).toBe(
       'Weeks 1, 3, 5',
     );
   });
 
   test('handles WeekRange with weekInterval 2', () => {
-    expect(getWeekText({ start: '2026-01-13', end: '2026-04-14', weekInterval: 2 })).toBe(
+    expect(getWeekText({ end: '2026-04-14', start: '2026-01-13', weekInterval: 2 })).toBe(
       'Odd Weeks',
     );
   });
@@ -567,7 +572,7 @@ describe('module card metadata', () => {
   });
 
   test('shows "No Exam" for modules without exam date', () => {
-    const noExamModules: Module[] = [
+    const noExamModules: Array<Module> = [
       {
         moduleCode: 'CS3216',
         moduleCredit: '5',
@@ -606,7 +611,7 @@ describe('module card metadata', () => {
   });
 
   test('formats 1 unit module correctly', () => {
-    const oneUnitModule: Module[] = [
+    const oneUnitModule: Array<Module> = [
       {
         moduleCode: 'CFG1002',
         moduleCredit: '1',
@@ -645,7 +650,7 @@ describe('module card metadata', () => {
   });
 
   test('formats sub-hour exam duration in minutes', () => {
-    const modules: Module[] = [
+    const modules: Array<Module> = [
       {
         moduleCode: 'SHORT',
         moduleCredit: '2',
@@ -686,7 +691,7 @@ describe('module card metadata', () => {
 });
 
 test('buildRenderableTimetable handles multiple lesson types per module', () => {
-  const modules: Module[] = [
+  const modules: Array<Module> = [
     {
       moduleCode: 'CS1010S',
       moduleCredit: '4',
@@ -782,7 +787,7 @@ test('buildRenderableTimetable skips modules not found in module list', () => {
 });
 
 test('buildRenderableTimetable filters by semester', () => {
-  const multiSemModule: Module[] = [
+  const multiSemModule: Array<Module> = [
     {
       moduleCode: 'CP3880',
       moduleCredit: '12',
@@ -844,7 +849,7 @@ test('buildRenderableTimetable filters by semester', () => {
 });
 
 test('buildRenderableTimetable generates correct lesson abbreviations', () => {
-  const modules: Module[] = [
+  const modules: Array<Module> = [
     {
       moduleCode: 'HSI1000',
       moduleCredit: '4',
@@ -950,7 +955,7 @@ describe('activeUnits and totalUnits calculations', () => {
 });
 
 describe('heavy timetable with 5 modules', () => {
-  const heavyModules: Module[] = [
+  const heavyModules: Array<Module> = [
     {
       moduleCode: 'CS3230',
       moduleCredit: '4',

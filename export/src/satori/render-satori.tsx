@@ -14,9 +14,9 @@ import {
 
 export async function renderSatoriSvg(
   exportData: ExportData,
-  modules: Module[],
+  modules: Array<Module>,
   options: ViewportOptions = {},
-): Promise<{ svg: string; layout: TimetableImageLayout }> {
+): Promise<{ layout: TimetableImageLayout; svg: string }> {
   const width = options.width || config.pageWidth;
   const model = buildRenderableTimetable(exportData, modules);
   const layout = model.isVertical
@@ -30,12 +30,12 @@ export async function renderSatoriSvg(
     width: layout.width,
   });
 
-  return { svg, layout };
+  return { layout, svg };
 }
 
 export async function renderSatoriImage(
   exportData: ExportData,
-  modules: Module[],
+  modules: Array<Module>,
   options: ViewportOptions = {},
 ) {
   const { svg } = await renderSatoriSvg(exportData, modules, options);

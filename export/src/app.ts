@@ -5,6 +5,7 @@ import serve from 'koa-static';
 import views from 'koa-views';
 import * as Sentry from '@sentry/node';
 
+import * as render from './render';
 import * as data from './data';
 import config from './config';
 import { parseViewportOptions } from './image-options';
@@ -17,15 +18,29 @@ const app = new Koa<State>();
 const router = new Router({ prefix: '/api/export' });
 
 router
-  .get('/image', async (ctx) => {
+  .get('/image', render.openPage, async (ctx) => {
+    const { data, page } = ctx.state;
+    const options = parseViewportOptions(ctx.query);
+
+    ctx.body = await render.image(page, data, options);
+    ctx.attachment('My Timetable.png');
+  })
+  .get('/pdf', render.openPage, async (ctx) => {
+    const { data, page } = ctx.state;
+
+    ctx.body = await render.pdf(page, data);
+    ctx.set('Content-Type', 'application/pdf');
+    ctx.attachment('My Timetable.pdf');
+  })
+  .get('/beta/image', async (ctx) => {
     const { data } = ctx.state;
     const options = parseViewportOptions(ctx.query);
 
     ctx.body = await renderImage(data, options);
-
+    ctx.set('Content-Type', 'image/png');
     ctx.attachment('My Timetable.png');
   })
-  .get('/pdf', async (ctx) => {
+  .get('/beta/pdf', async (ctx) => {
     const { data } = ctx.state;
 
     ctx.body = await renderPdf(data);
@@ -33,9 +48,8 @@ router
     ctx.set('Content-Type', 'application/pdf');
     ctx.attachment('My Timetable.pdf');
   })
-  .get('/debug', async (ctx) => {
-    ctx.status = 501;
-    ctx.body = 'Debug HTML is unavailable as browser renderer is disabled.';
+  .get('/debug', render.openPage, async (ctx) => {
+    ctx.body = await ctx.state.page.content();
   });
 
 // Error handling

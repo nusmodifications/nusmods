@@ -26,7 +26,7 @@ export type RenderableLesson = {
 
 export type RenderableDay = {
   day: string;
-  rows: RenderableLesson[][];
+  rows: Array<Array<RenderableLesson>>;
 };
 
 export type RenderableModuleCard = {
@@ -43,14 +43,14 @@ export type RenderableModuleCard = {
 export type RenderableTimetable = {
   activeUnits: number;
   colorScheme: ColorScheme;
-  days: RenderableDay[];
+  days: Array<RenderableDay>;
   endingIndex: number;
   isVertical: boolean;
-  timeLabels: { index: number; label: string }[];
-  moduleCards: RenderableModuleCard[];
+  moduleCards: Array<RenderableModuleCard>;
   showTitle: boolean;
   startingIndex: number;
   themeId: string;
+  timeLabels: Array<{ index: number; label: string }>;
   totalUnits: number;
 };
 
@@ -91,7 +91,7 @@ type LessonWithDisplay = {
   weekText: string | null;
 };
 
-function getNewColor(currentColors: number[]): number {
+function getNewColor(currentColors: Array<number>): number {
   let availableColors = Array.from({ length: NUM_DIFFERENT_COLORS }, (_, index) => index);
   for (const index of currentColors) {
     availableColors = availableColors.filter((color) => color !== index);
@@ -107,7 +107,7 @@ function fillColorMapping(
   original: ColorMapping,
 ): ColorMapping {
   const colorMap: ColorMapping = {};
-  const colorsUsed: number[] = [];
+  const colorsUsed: Array<number> = [];
 
   for (const moduleCode of Object.keys(timetable)) {
     if (moduleCode in original) {
@@ -139,7 +139,7 @@ function convertIndexToTime(index: number) {
   return `${hour.toString().padStart(2, '0')}${minute.toString().padStart(2, '0')}`;
 }
 
-function calculateBorderTimings(lessons: readonly LessonWithDisplay[]) {
+function calculateBorderTimings(lessons: ReadonlyArray<LessonWithDisplay>) {
   let earliestIndex = DEFAULT_EARLIEST_INDEX;
   let latestIndex = DEFAULT_LATEST_INDEX;
 
@@ -149,8 +149,8 @@ function calculateBorderTimings(lessons: readonly LessonWithDisplay[]) {
   }
 
   return {
-    startingIndex: earliestIndex - (earliestIndex % INTERVALS_PER_HOUR),
     endingIndex: Math.ceil(latestIndex / INTERVALS_PER_HOUR) * INTERVALS_PER_HOUR,
+    startingIndex: earliestIndex - (earliestIndex % INTERVALS_PER_HOUR),
   };
 }
 
@@ -158,8 +158,8 @@ function doLessonsOverlap(left: LessonWithDisplay, right: LessonWithDisplay) {
   return left.day === right.day && left.startTime < right.endTime && right.startTime < left.endTime;
 }
 
-function arrangeLessonsWithinDay(lessons: LessonWithDisplay[]) {
-  const rows: LessonWithDisplay[][] = [[]];
+function arrangeLessonsWithinDay(lessons: Array<LessonWithDisplay>) {
+  const rows: Array<Array<LessonWithDisplay>> = [[]];
 
   if (!lessons.length) {
     return rows;
@@ -172,7 +172,7 @@ function arrangeLessonsWithinDay(lessons: LessonWithDisplay[]) {
 
   sortedLessons.forEach((lesson) => {
     for (const row of rows) {
-      const previousLesson = row[row.length - 1];
+      const previousLesson = row.at(-1);
       if (!previousLesson || !doLessonsOverlap(previousLesson, lesson)) {
         row.push(lesson);
         return;
@@ -189,21 +189,29 @@ function formatModuleUnits(moduleCredit: number) {
   return `${moduleCredit} ${moduleCredit === 1 ? 'Unit' : 'Units'}`;
 }
 
-function formatNumericWeeks(unprocessedWeeks: number[]): string | null {
+function formatNumericWeeks(unprocessedWeeks: Array<number>): string | null {
   const weeks = unprocessedWeeks.filter(
     (value, index) => unprocessedWeeks.indexOf(value) === index,
   );
 
-  if (weeks.length === 13) return null;
-  if (weeks.length === 1) return `Week ${weeks[0]}`;
+  if (weeks.length === 13) {
+    return null;
+  }
+  if (weeks.length === 1) {
+    return `Week ${weeks[0]}`;
+  }
 
   const deltas = weeks.slice(1).map((week, index) => week - weeks[index]);
   if (deltas.every((delta) => delta === 2)) {
-    if (weeks[0] % 2 === 0 && weeks.length >= 6) return 'Even Weeks';
-    if (weeks[0] % 2 === 1 && weeks.length >= 7) return 'Odd Weeks';
+    if (weeks[0] % 2 === 0 && weeks.length >= 6) {
+      return 'Even Weeks';
+    }
+    if (weeks[0] % 2 === 1 && weeks.length >= 7) {
+      return 'Odd Weeks';
+    }
   }
 
-  const processed: (number | string)[] = [];
+  const processed: Array<number | string> = [];
   let start = weeks[0] ?? 0;
   let end = start;
 
@@ -251,7 +259,9 @@ function formatWeeks(
 }
 
 function formatExamDate(examDate?: string) {
-  if (!examDate) return 'No Exam';
+  if (!examDate) {
+    return 'No Exam';
+  }
 
   const date = new Date(examDate);
   const datePart = new Intl.DateTimeFormat('en-SG', {
@@ -261,7 +271,8 @@ function formatExamDate(examDate?: string) {
     year: 'numeric',
   })
     .format(date)
-    .replace(/ /g, '-');
+    .split(' ')
+    .join('-');
 
   const timePart = new Intl.DateTimeFormat('en-SG', {
     hour: 'numeric',
@@ -274,8 +285,12 @@ function formatExamDate(examDate?: string) {
 }
 
 function formatExamDuration(examDuration?: number) {
-  if (!examDuration) return null;
-  if (examDuration < 60 || examDuration % 30 !== 0) return `${examDuration} mins`;
+  if (!examDuration) {
+    return null;
+  }
+  if (examDuration < 60 || examDuration % 30 !== 0) {
+    return `${examDuration} mins`;
+  }
 
   const hours = examDuration / 60;
   return `${hours} ${hours === 1 ? 'hr' : 'hrs'}`;
@@ -302,7 +317,7 @@ function buildRenderableLessons(
   effectiveShowTitle: boolean,
 ) {
   const palette = getLessonPalette(exportData.theme.id);
-  const lessons: LessonWithDisplay[] = [];
+  const lessons: Array<LessonWithDisplay> = [];
 
   for (const [moduleCode, lessonConfig] of Object.entries(exportData.timetable)) {
     const module = modulesByCode.get(moduleCode);
@@ -322,7 +337,9 @@ function buildRenderableLessons(
     for (const lessonIndices of Object.values(lessonConfig)) {
       for (const lessonIndex of lessonIndices) {
         const lesson = semesterData.timetable[lessonIndex as LessonIndex];
-        if (!lesson) continue;
+        if (!lesson) {
+          continue;
+        }
 
         lessons.push({
           classNo: lesson.classNo,
@@ -360,7 +377,9 @@ function buildModuleCards(
   return Object.keys(exportData.timetable)
     .map((moduleCode): RenderableModuleCard | null => {
       const module = modulesByCode.get(moduleCode);
-      if (!module) return null;
+      if (!module) {
+        return null;
+      }
 
       const semesterData = getSemesterData(module, exportData.semester);
       const moduleCredit = Number.parseFloat(module.moduleCredit);
@@ -369,7 +388,9 @@ function buildModuleCards(
       const examDuration = formatExamDuration(semesterData?.examDuration);
       const metaParts = [examDate ? `Exam: ${formatExamDate(examDate)}` : 'No Exam'];
 
-      if (examDuration) metaParts.push(examDuration);
+      if (examDuration) {
+        metaParts.push(examDuration);
+      }
       metaParts.push(formatModuleUnits(moduleCredit));
 
       return {
@@ -383,25 +404,27 @@ function buildModuleCards(
         title: module.title,
       };
     })
-    .filter((module): module is RenderableModuleCard => Boolean(module))
+    .filter((module): module is RenderableModuleCard => module !== null)
     .sort((left, right) => {
-      if (left.sortKey !== right.sortKey) return left.sortKey - right.sortKey;
+      if (left.sortKey !== right.sortKey) {
+        return left.sortKey - right.sortKey;
+      }
       return left.moduleCode.localeCompare(right.moduleCode);
     });
 }
 
 export function buildRenderableTimetable(
   exportData: ExportData,
-  modules: Module[],
+  modules: Array<Module>,
 ): RenderableTimetable {
   const modulesByCode = new Map(modules.map((module) => [module.moduleCode, module]));
   const colorMap = fillColorMapping(exportData.timetable, exportData.colors);
   const isVertical = exportData.theme.timetableOrientation === 'VERTICAL';
   const effectiveShowTitle = !isVertical && exportData.theme.showTitle;
   const lessons = buildRenderableLessons(exportData, modulesByCode, colorMap, effectiveShowTitle);
-  const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
+  const { endingIndex, startingIndex } = calculateBorderTimings(lessons);
 
-  const lessonsByDay = new Map<string, LessonWithDisplay[]>();
+  const lessonsByDay = new Map<string, Array<LessonWithDisplay>>();
   for (const lesson of lessons) {
     const dayLessons = lessonsByDay.get(lesson.day) ?? [];
     dayLessons.push(lesson);
@@ -441,6 +464,10 @@ export function buildRenderableTimetable(
     days,
     endingIndex,
     isVertical,
+    moduleCards,
+    showTitle: effectiveShowTitle,
+    startingIndex,
+    themeId: exportData.theme.id,
     timeLabels: Array.from(
       { length: (endingIndex - startingIndex) / INTERVALS_PER_HOUR },
       (_, offset) => {
@@ -451,10 +478,6 @@ export function buildRenderableTimetable(
         };
       },
     ),
-    moduleCards,
-    showTitle: effectiveShowTitle,
-    startingIndex,
-    themeId: exportData.theme.id,
     totalUnits,
   };
 }

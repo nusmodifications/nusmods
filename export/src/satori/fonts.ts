@@ -7,9 +7,9 @@ type FontDefinition = {
   weight: 400 | 600 | 700;
 };
 
-let fontsPromise: Promise<FontDefinition[]> | null = null;
+let fontsPromise: Promise<Array<FontDefinition>> | null = null;
 
-async function loadFonts(): Promise<FontDefinition[]> {
+async function loadFonts(): Promise<Array<FontDefinition>> {
   const [regular, semibold, bold] = await Promise.all([
     readFile(require.resolve('@fontsource/inter/files/inter-latin-400-normal.woff')),
     readFile(require.resolve('@fontsource/inter/files/inter-latin-600-normal.woff')),

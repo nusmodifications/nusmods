@@ -15,8 +15,8 @@ export async function renderImage(exportData: ExportData, options: ViewportOptio
       durationMs: Date.now() - startedAt,
       moduleCount: modules.length,
       moduleLoadMs: modulesLoadedAt - moduleLoadStartedAt,
-      renderMs: Date.now() - modulesLoadedAt,
       renderer: 'satori',
+      renderMs: Date.now() - modulesLoadedAt,
       type: 'export-image',
     }),
   );
