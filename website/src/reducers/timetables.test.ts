@@ -1,5 +1,4 @@
-import { PersistConfig } from 'redux-persist/es/types';
-import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
+import reducer, { defaultTimetableState, stateReconciler } from 'reducers/timetables';
 import {
   ADD_MODULE,
   hideLessonInTimetable,
@@ -253,7 +252,7 @@ describe('lesson reducer', () => {
   });
 });
 
-describe('stateReconciler', () => {
+describe(stateReconciler, () => {
   const oldArchive = {
     '2015/2016': {
       [1]: {
@@ -296,17 +295,10 @@ describe('stateReconciler', () => {
     archive: oldArchive,
   };
 
-  const { stateReconciler } = persistConfig;
-  if (!stateReconciler) {
-    throw new Error('No stateReconciler');
-  }
-
-  const reconcilerPersistConfig = { debug: false } as PersistConfig<TimetablesState>;
+  const debug = false;
 
   test('should return inbound state when academic year is the same', () => {
-    expect(stateReconciler(inbound, initialState, initialState, reconcilerPersistConfig)).toEqual(
-      inbound,
-    );
+    expect(stateReconciler(inbound, initialState, debug)).toEqual(inbound);
   });
 
   test('should archive old timetables and clear state when academic year is different', () => {
@@ -315,9 +307,7 @@ describe('stateReconciler', () => {
       academicYear: '2016/2017',
     };
 
-    expect(
-      stateReconciler(oldInbound, initialState, initialState, reconcilerPersistConfig),
-    ).toEqual({
+    expect(stateReconciler(oldInbound, initialState, debug)).toEqual({
       ...initialState,
       archive: {
         ...oldArchive,

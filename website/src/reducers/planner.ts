@@ -1,6 +1,5 @@
 import { produce } from 'immer';
-import { each, max, min, pull } from 'lodash-es';
-import { createMigrate, PersistedState } from 'redux-persist';
+import { max, min, pull } from 'lodash-es';
 
 import { PlannerState } from 'types/reducers';
 import { Actions } from 'types/actions';
@@ -165,44 +164,3 @@ export default function planner(
       return state;
   }
 }
-
-// Migration from state V0 -> V1
-type PlannerStateV0 = Omit<PlannerState, 'modules'> & {
-  modules: { [moduleCode: string]: [string, Semester, number] };
-};
-export function migrateV0toV1(
-  oldState: PlannerStateV0 & PersistedState,
-): PlannerState & PersistedState {
-  // Map the old module time mapping of module code to module time tuple
-  // to the new mapping of id to module time object
-  let id = 0;
-
-  const newModules: PlannerState['modules'] = {};
-
-  each(oldState.modules, ([year, semester, index], moduleCode) => {
-    newModules[id] = {
-      id: String(id),
-      year,
-      semester,
-      index,
-      moduleCode,
-    };
-
-    id += 1;
-  });
-
-  return {
-    ...oldState,
-    // Map old ModuleTime type to new PlannerTime shape
-    modules: newModules,
-  };
-}
-
-export const persistConfig = {
-  version: 1,
-  migrate: createMigrate({
-    // The typings for this seems really weird
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    1: migrateV0toV1 as any,
-  }),
-};

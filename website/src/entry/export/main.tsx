@@ -23,7 +23,7 @@ declare global {
 }
 
 // Set up Redux store
-const { store } = configureStore();
+const store = configureStore(undefined, true);
 window.store = store;
 
 // For Puppeteer to import data
