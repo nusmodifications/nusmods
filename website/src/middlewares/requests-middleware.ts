@@ -74,23 +74,10 @@ const requestMiddleware: Middleware<RequestsDispatchExt, State, Dispatch> =
     // payload  is the request body to be processed
     const { type, payload, meta } = action;
 
-    // Pick only the cloneable subset of the config for the broadcast action
-    // payload. AxiosRequestConfig permits function fields like
-    // `transformRequest` and `paramsSerializer`; if a caller ever adds one,
-    // structuredClone would throw silently in state-sync. None of the request
-    // status reducers read this payload, so a narrowed shape is sufficient.
-    const safePayload: AxiosRequestConfig = {
-      method: payload.method,
-      url: payload.url,
-      headers: payload.headers,
-      params: payload.params,
-      data: payload.data,
-    };
-
     // Propagate the start of the request
     next({
       type: type + REQUEST,
-      payload: safePayload,
+      payload,
       meta: {
         ...meta,
         requestStatus: REQUEST,

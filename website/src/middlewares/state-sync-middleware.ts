@@ -1,4 +1,4 @@
-import { OPEN_NOTIFICATION } from 'actions/app';
+import { OPEN_NOTIFICATION, POP_NOTIFICATION } from 'actions/app';
 import type { AnyAction } from 'redux';
 import { PERSIST, PURGE, REHYDRATE } from 'redux-persist';
 import {
@@ -9,7 +9,7 @@ import {
   type Config,
 } from 'redux-state-sync';
 
-import { FAILURE } from 'types/reducers';
+import { FAILURE, REQUEST } from 'types/reducers';
 import type { State } from 'types/state';
 
 // Strip slices that can't traverse structuredClone (notifications hold
@@ -37,7 +37,14 @@ const reduxStateSyncConfig = {
   channel: 'redux_state_sync',
   predicate: (action: AnyAction) => {
     // Reference: https://github.com/aohua/redux-state-sync/issues/53
-    const blacklist = [PERSIST, PURGE, REHYDRATE, OPEN_NOTIFICATION, RECEIVE_INIT_STATE];
+    const blacklist = [
+      PERSIST,
+      PURGE,
+      REHYDRATE,
+      OPEN_NOTIFICATION,
+      POP_NOTIFICATION,
+      RECEIVE_INIT_STATE,
+    ];
 
     // redux-state-sync relies on BroadcastChannel, which only supports
     // objects that are clonable by `structuredClone`
@@ -45,11 +52,18 @@ const reduxStateSyncConfig = {
       return false;
     }
 
-    // *_FAILURE actions carry an AxiosError as payload, which holds a
-    // reference to the underlying XMLHttpRequest -- structuredClone throws
-    // DataCloneError on those. Action types are dynamic (e.g.
-    // `FETCH_MODULE_LIST_FAILURE`), so discriminate on the lifecycle meta.
-    if (action.meta?.requestStatus === FAILURE) {
+    // The `requests` slice is a per-tab loading-status indicator -- it's
+    // already stripped in `prepareState` for init sync, and no reducer outside
+    // the slice itself reads `_REQUEST` / `_FAILURE` actions. Filtering both
+    // here keeps the slice's contract honest (per-tab) and avoids observer
+    // tabs getting stuck at REQUEST when `_FAILURE` can't be cloned (the
+    // AxiosError payload holds an XMLHttpRequest reference, which
+    // structuredClone refuses). `_SUCCESS` is kept -- it carries the response
+    // data that hydrates shared slices like `moduleBank` / `venueBank`.
+    // Action types are dynamic (e.g. `FETCH_MODULE_LIST_FAILURE`), so we
+    // discriminate on the lifecycle meta rather than a static type list.
+    const requestStatus = action.meta?.requestStatus;
+    if (requestStatus === REQUEST || requestStatus === FAILURE) {
       return false;
     }
 
