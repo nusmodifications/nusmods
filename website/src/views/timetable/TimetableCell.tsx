@@ -101,7 +101,7 @@ function formatWeekRange(weekRange: WeekRange) {
 
   // Mount interactive tooltip to the reference element's document root instead of within the same container
   const mountToReferenceRoot = (ref: Element): Element =>
-    ref.ownerDocument.body ?? ref.ownerDocument.documentElement;
+    ref.ownerDocument.body ?? ref.ownerDocument.documentElement ?? ref;
 
   return (
     <Tooltip content={table} interactive arrow appendTo={mountToReferenceRoot}>
