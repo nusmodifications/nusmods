@@ -33,6 +33,9 @@ type Props = {
 
 const lessonDateFormat = 'MMM dd';
 
+const mountToReferenceRoot = (ref: Element): Element =>
+  ref.ownerDocument.body ?? ref.ownerDocument.documentElement ?? ref;
+
 function formatWeekInfo(weekInfo: AcadWeekInfo) {
   if (weekInfo.type === 'Instructional') return `Week ${weekInfo.num}`;
   return weekInfo.type;
@@ -98,10 +101,6 @@ function formatWeekRange(weekRange: WeekRange) {
       </ol>
     </div>
   );
-
-  // Mount interactive tooltip to the reference element's document root instead of within the same container
-  const mountToReferenceRoot = (ref: Element): Element =>
-    ref.ownerDocument.body ?? ref.ownerDocument.documentElement ?? ref;
 
   return (
     <Tooltip content={table} interactive arrow appendTo={mountToReferenceRoot}>
