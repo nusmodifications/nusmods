@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import type { VercelApiHandler, VercelRequest, VercelResponse } from '@vercel/node';
-import type { Page } from 'puppeteer-core';
+import type { Browser, Page } from 'puppeteer-core';
 
 import * as render from './render-serverless';
 import config from './config';
@@ -56,9 +56,10 @@ export function makeExportHandler<T>(
 
       // Prepare browser for export
       const url = config.page;
+      let browser: Browser;
       let page: Page;
       try {
-        page = await render.open(url);
+        ({ browser, page } = await render.open(url));
       } catch (error) {
         if (error.message.includes('ERR_CONNECTION_REFUSED')) {
           throw new HttpError(
@@ -70,11 +71,12 @@ export function makeExportHandler<T>(
         throw new HttpError(500, 'Cannot start browser', error);
       }
 
-      // Export
-      await performExport(response, page, data);
-
-      // Cleanup
-      await page.close();
+      try {
+        // Export
+        await performExport(response, page, data);
+      } finally {
+        await browser.close();
+      }
     } catch (error) {
       const eventId = Sentry.captureException(error.original || error);
 
