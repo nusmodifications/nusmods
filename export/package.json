@@ -42,7 +42,7 @@
     "@types/koa-router": "7.4.9",
     "@types/koa-static": "^4.0.4",
     "@types/koa-views": "2.0.4",
-    "@types/lodash": "4.17.14",
+    "@types/lodash": "4.17.24",
     "@types/node": "catalog:",
     "@types/pug": "2.0.10",
     "@vercel/node": "1.15.4",

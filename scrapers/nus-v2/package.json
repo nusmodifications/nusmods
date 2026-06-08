@@ -44,7 +44,7 @@
     "@types/deep-diff": "1.0.5",
     "@types/fs-extra": "9.0.13",
     "@types/he": "1.2.3",
-    "@types/lodash": "4.17.14",
+    "@types/lodash": "4.17.24",
     "@types/mock-fs": "4.13.4",
     "@types/node": "catalog:",
     "@types/oboe": "2.1.4",
