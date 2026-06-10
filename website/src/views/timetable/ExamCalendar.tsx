@@ -4,7 +4,7 @@ import { groupBy, range } from 'lodash-es';
 import classnames from 'classnames';
 import { addDays } from 'date-fns';
 
-import { Semester, WorkingDays } from 'types/modules';
+import { Semester, DaysOfWeek } from 'types/modules';
 import { ModuleWithColor, ModuleWithExamTime, TimeSegment } from 'types/views';
 import config from 'config';
 import { formatExamDate, getExamDate } from 'utils/modules';
@@ -113,10 +113,14 @@ export default class ExamCalendar extends PureComponent<Props> {
 
     // Get the number of days of the week which have exams on them. Default to Monday to Friday
     // (5 days), and expand as necessary
-    const daysWithExams = Math.max(
-      5,
-      ...modulesWithExams.map((module) => toSingaporeTime(module.dateTime).getDay()),
-    );
+    const minDisplayDays = 5;
+    const maxDisplayDays = 7;
+
+    const daysWithExams = modulesWithExams
+      .map((module) => toSingaporeTime(module.dateTime).getDay())
+      .some((day) => day === 6)
+      ? maxDisplayDays
+      : minDisplayDays;
 
     const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);
 
@@ -134,7 +138,7 @@ export default class ExamCalendar extends PureComponent<Props> {
             <tr>
               {range(daysWithExams).map((day) => (
                 <th key={day} className={styles.dayName}>
-                  {WorkingDays[day].slice(0, 3)}
+                  {DaysOfWeek[day].slice(0, 3)}
                 </th>
               ))}
             </tr>
