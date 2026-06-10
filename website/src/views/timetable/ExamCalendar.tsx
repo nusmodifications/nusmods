@@ -41,45 +41,29 @@ export default class ExamCalendar extends PureComponent<Props> {
   getExamCalendar(): [Date, number] {
     const { semester } = this.props;
     const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
-    let firstDayOfExams = NUSModerator.academicCalendar.getExamWeek(year, semester);
-    firstDayOfExams = new Date(
-      firstDayOfExams.getTime() - firstDayOfExams.getTimezoneOffset() * 60 * 1000,
-    );
 
-    let examinableModules = 0;
-    let weekCount = 0;
-    let lastDayOfExams = addDays(firstDayOfExams, 0);
+    const examDates = this.getVisibleModules()
+      .map((module) => getExamDate(module, semester))
+      .filter((dateString): dateString is string => Boolean(dateString))
+      .map((dateString) => toSingaporeTime(dateString));
 
-    // Check modules for outliers, eg. GER1000 that has exams on the Saturday before the exam week
-    // and expand the range accordingly
-    this.getVisibleModules().forEach((module) => {
-      const dateString = getExamDate(module, semester);
-      if (!dateString) return;
-
-      examinableModules += 1;
-      const date = toSingaporeTime(dateString);
-      while (date < firstDayOfExams) {
-        firstDayOfExams = addDays(firstDayOfExams, -7);
-        weekCount += 1;
-      }
-
-      while (date > lastDayOfExams) {
-        lastDayOfExams = addDays(lastDayOfExams, 7);
-        weekCount += 1;
-      }
-    });
-
-    // If there's only one examinable module, just show that week instead of the whole range
-    if (examinableModules === 1) {
-      this.getVisibleModules().forEach((module) => {
-        const dateString = getExamDate(module, semester);
-        if (!dateString) return;
-
-        const date = toSingaporeTime(dateString);
-        firstDayOfExams = addDays(date, -date.getDay() + 1);
-      });
-      weekCount = 1;
+    if (examDates.length === 0) {
+      // If there are no exams, just return the default exam week for that semester
+      let firstDayOfExams = NUSModerator.academicCalendar.getExamWeek(year, semester);
+      firstDayOfExams = new Date(
+        firstDayOfExams.getTime() - firstDayOfExams.getTimezoneOffset() * 60 * 1000,
+      );
+      return [firstDayOfExams, 0];
     }
+
+    const firstExamDate = examDates.reduce((a, b) => (a < b ? a : b));
+    const lastExamDate = examDates.reduce((a, b) => (a > b ? a : b));
+
+    const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+    const firstDayOfExams = addDays(firstExamDate, -firstExamDate.getDay() + 1);
+    const lastMondayOfExams = addDays(lastExamDate, -lastExamDate.getDay() + 1);
+    const weekCount =
+      Math.round((lastMondayOfExams.getTime() - firstDayOfExams.getTime()) / MS_PER_WEEK) + 1;
 
     return [firstDayOfExams, weekCount];
   }
