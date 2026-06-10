@@ -46,6 +46,7 @@ export default class ExamCalendar extends PureComponent<Props> {
       firstDayOfExams.getTime() - firstDayOfExams.getTimezoneOffset() * 60 * 1000,
     );
 
+    let examinableModules = 0;
     let weekCount = 0;
     let lastDayOfExams = addDays(firstDayOfExams, 0);
 
@@ -55,6 +56,7 @@ export default class ExamCalendar extends PureComponent<Props> {
       const dateString = getExamDate(module, semester);
       if (!dateString) return;
 
+      examinableModules += 1;
       const date = toSingaporeTime(dateString);
       while (date < firstDayOfExams) {
         firstDayOfExams = addDays(firstDayOfExams, -7);
@@ -66,6 +68,18 @@ export default class ExamCalendar extends PureComponent<Props> {
         weekCount += 1;
       }
     });
+
+    // If there's only one examinable module, just show that week instead of the whole range
+    if (examinableModules === 1) {
+      this.getVisibleModules().forEach((module) => {
+        const dateString = getExamDate(module, semester);
+        if (!dateString) return;
+
+        const date = toSingaporeTime(dateString);
+        firstDayOfExams = addDays(date, -date.getDay() + 1);
+      });
+      weekCount = 1;
+    }
 
     return [firstDayOfExams, weekCount];
   }
