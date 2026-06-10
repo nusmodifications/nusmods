@@ -8,6 +8,10 @@ import mockModules from '__mocks__/modules';
 import GER1000 from '__mocks__/modules/GER1000.json';
 /** @vars {Module} */
 import PC1222 from '__mocks__/modules/PC1222.json';
+/** @vars {Module} */
+import CS1010S from '__mocks__/modules/CS1010S.json';
+/** @vars {Module} */
+import ACC2002 from '__mocks__/modules/ACC2002.json';
 import { Semester } from 'types/modules';
 
 import ExamCalendar, { getTimeSegment } from './ExamCalendar';
@@ -74,14 +78,31 @@ describe(ExamCalendar, () => {
     ]);
   });
 
+  test('show only one week when all exams fall within the same week', () => {
+    // CS1010S (2017-11-29, Wed) and ACC2002 (2017-12-01, Fri) both fall in the week of Mon
+    // 2017-11-27, so only that single week should be rendered.
+    const wrapper = make([
+      CS1010S as unknown as ModuleWithColor,
+      ACC2002 as unknown as ModuleWithColor,
+    ]);
+
+    expect(wrapper.find('tbody tr')).toHaveLength(TR_PER_WEEK);
+    expect(wrapper.find(Link)).toHaveLength(2);
+    expect(wrapper.find(`.${styles.dayDate} time`).first().text()).toEqual('Nov 27');
+  });
+
   test('show only the exam week when a single module has an exam', () => {
-    // PC1222's only sem 1 exam is on 2017-12-05 (Tue), which is in the second week of the
-    // exam period. With a single examinable module we only render that module's exam week,
-    // starting from its Monday (2017-12-04), instead of the entire exam period.
     const wrapper = make([PC1222 as unknown as ModuleWithColor]);
 
     expect(wrapper.find('tbody tr')).toHaveLength(TR_PER_WEEK);
     expect(wrapper.find(`.${styles.dayDate} time`).first().text()).toEqual('Dec 4');
+  });
+
+  test('show a message instead of a table when there are no exams', () => {
+    const wrapper = make([]);
+
+    expect(wrapper.find(`.${styles.noExams}`)).toHaveLength(1);
+    expect(wrapper.find('table')).toHaveLength(0);
   });
 
   test('show month names only in the first cell and on first weekday of month', () => {
