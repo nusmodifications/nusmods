@@ -1,12 +1,10 @@
 import { PureComponent } from 'react';
-import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash-es';
 import classnames from 'classnames';
 import { addDays } from 'date-fns';
 
 import { Semester, DaysOfWeek } from 'types/modules';
 import { ModuleWithColor, ModuleWithExamTime, TimeSegment } from 'types/views';
-import config from 'config';
 import { formatExamDate, getExamDate } from 'utils/modules';
 import { toSingaporeTime } from 'utils/timify';
 import elements from 'views/elements';
@@ -43,7 +41,7 @@ export default class ExamCalendar extends PureComponent<Props> {
 
     const examDates = this.getVisibleModules()
       .map((module) => getExamDate(module, semester))
-      .filter((dateString): dateString is string => Boolean(dateString))
+      .filter(Boolean as unknown as (dateString: string | null) => dateString is string)
       .map((dateString) => toSingaporeTime(dateString));
 
     if (examDates.length === 0) {
