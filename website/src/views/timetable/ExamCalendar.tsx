@@ -109,12 +109,10 @@ export default class ExamCalendar extends PureComponent<Props> {
 
     const modulesWithExams = this.modulesWithExamDate();
 
-    // Get the number of days of the week which have exams on them. Default to Monday to Friday
-    // (5 days), and expand as necessary
     const minDisplayDays = 5;
     const maxDisplayDays = 7;
 
-    const daysWithExams = modulesWithExams
+    const daysToDisplay = modulesWithExams
       .map((module) => toSingaporeTime(module.dateTime).getDay())
       .some((day) => day === 6)
       ? maxDisplayDays
@@ -134,7 +132,7 @@ export default class ExamCalendar extends PureComponent<Props> {
         <table>
           <thead>
             <tr>
-              {range(daysWithExams).map((day) => (
+              {range(daysToDisplay).map((day) => (
                 <th key={day} className={styles.dayName}>
                   {DaysOfWeek[day].slice(0, 3)}
                 </th>
@@ -146,7 +144,7 @@ export default class ExamCalendar extends PureComponent<Props> {
             {range(weekCount).map((week) => (
               <ExamWeek
                 key={week}
-                days={daysWithExams}
+                days={daysToDisplay}
                 weekNumber={week}
                 firstDayOfExams={firstDayOfExams}
                 modules={modulesByExamDate}
