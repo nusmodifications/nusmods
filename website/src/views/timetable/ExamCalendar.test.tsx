@@ -6,6 +6,8 @@ import { ModuleWithColor } from 'types/views';
 import mockModules from '__mocks__/modules';
 /** @vars {Module} */
 import GER1000 from '__mocks__/modules/GER1000.json';
+/** @vars {Module} */
+import PC1222 from '__mocks__/modules/PC1222.json';
 import { Semester } from 'types/modules';
 
 import ExamCalendar, { getTimeSegment } from './ExamCalendar';
@@ -43,12 +45,43 @@ function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
 //  - PC1222:  2017-12-05 (Tue) Evening
 //  - CS3216:  No exams
 describe(ExamCalendar, () => {
-  test('only show Saturday if there is a Saturday exam', () => {
-    const withSaturdayExams = make([GER1000 as unknown as ModuleWithColor]);
-    const withoutSaturdayExams = make(modulesWithColor);
+  test('show the full week (Mon-Sun) when there is a Saturday exam', () => {
+    // GER1000 has a Saturday exam (2017-11-25), so the weekend should be shown
+    const wrapper = make([GER1000 as unknown as ModuleWithColor]);
 
-    expect(withSaturdayExams.find('thead th')).toHaveLength(6);
-    expect(withoutSaturdayExams.find('thead th')).toHaveLength(5);
+    expect(wrapper.find('thead th')).toHaveLength(7);
+    expect(wrapper.find('thead th').map((th) => th.text())).toEqual([
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+      'Sun',
+    ]);
+  });
+
+  test('show only weekdays (Mon-Fri) when there is no Saturday exam', () => {
+    const wrapper = make(modulesWithColor);
+
+    expect(wrapper.find('thead th')).toHaveLength(5);
+    expect(wrapper.find('thead th').map((th) => th.text())).toEqual([
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+    ]);
+  });
+
+  test('show only the exam week when a single module has an exam', () => {
+    // PC1222's only sem 1 exam is on 2017-12-05 (Tue), which is in the second week of the
+    // exam period. With a single examinable module we only render that module's exam week,
+    // starting from its Monday (2017-12-04), instead of the entire exam period.
+    const wrapper = make([PC1222 as unknown as ModuleWithColor]);
+
+    expect(wrapper.find('tbody tr')).toHaveLength(TR_PER_WEEK);
+    expect(wrapper.find(`.${styles.dayDate} time`).first().text()).toEqual('Dec 4');
   });
 
   test('show month names only in the first cell and on first weekday of month', () => {
