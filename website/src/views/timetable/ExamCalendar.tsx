@@ -40,7 +40,6 @@ export default class ExamCalendar extends PureComponent<Props> {
   // Utility function to get the first day of exams and calculate the number of weeks
   getExamCalendar(): [Date, number] {
     const { semester } = this.props;
-    const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
 
     const examDates = this.getVisibleModules()
       .map((module) => getExamDate(module, semester))
@@ -48,12 +47,7 @@ export default class ExamCalendar extends PureComponent<Props> {
       .map((dateString) => toSingaporeTime(dateString));
 
     if (examDates.length === 0) {
-      // If there are no exams, just return the default exam week for that semester
-      let firstDayOfExams = NUSModerator.academicCalendar.getExamWeek(year, semester);
-      firstDayOfExams = new Date(
-        firstDayOfExams.getTime() - firstDayOfExams.getTimezoneOffset() * 60 * 1000,
-      );
-      return [firstDayOfExams, 0];
+      return [new Date(), 0];
     }
 
     const firstExamDate = examDates.reduce((a, b) => (a < b ? a : b));
