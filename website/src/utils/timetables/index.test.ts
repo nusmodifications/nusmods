@@ -16,7 +16,6 @@ import {
   getStartTimeAsDate,
   isLessonAvailable,
   isLessonOngoing,
-  isSameTimetableConfig,
   isValidSemester,
   lessonsForLessonType,
   randomModuleLessonConfig,
@@ -68,54 +67,6 @@ test('lessonsForLessonType should return empty array if no such lessonType is pr
 test('timetableLessonsArray should return a flat array of lessons', () => {
   const someTimetable = timetable;
   expect(timetableLessonsArray(someTimetable).length).toBe(6);
-});
-
-test('isSameTimetableConfig', () => {
-  // Empty timetable
-  expect(isSameTimetableConfig({}, {})).toBe(true);
-
-  // Change lessonType order
-  expect(
-    isSameTimetableConfig(
-      { CS2104: { Tutorial: [1], Lecture: [2] } },
-      { CS2104: { Lecture: [2], Tutorial: [1] } },
-    ),
-  ).toBe(true);
-
-  // Change module order
-  expect(
-    isSameTimetableConfig(
-      {
-        CS2104: { Lecture: [1], Tutorial: [2] },
-        CS2105: { Lecture: [1], Tutorial: [1] },
-      },
-      {
-        CS2105: { Lecture: [1], Tutorial: [1] },
-        CS2104: { Lecture: [1], Tutorial: [2] },
-      },
-    ),
-  ).toBe(true);
-
-  // Different values
-  expect(
-    isSameTimetableConfig(
-      { CS2104: { Lecture: [1], Tutorial: [2] } },
-      { CS2104: { Lecture: [2], Tutorial: [1] } },
-    ),
-  ).toBe(false);
-
-  // One is subset of the other
-  expect(
-    isSameTimetableConfig(
-      {
-        CS2104: { Tutorial: [1], Lecture: [2] },
-      },
-      {
-        CS2104: { Tutorial: [1], Lecture: [2] },
-        CS2105: { Lecture: [1], Tutorial: [1] },
-      },
-    ),
-  ).toBe(false);
 });
 
 describe(formatNumericWeeks, () => {

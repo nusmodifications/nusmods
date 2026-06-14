@@ -4,13 +4,11 @@ import { addDays, min as minDate, parseISO, startOfDay } from 'date-fns';
 
 import {
   consumeWeeks,
-  LessonIndex,
   LessonType,
   RawLessonWithIndex,
   NumericWeeks,
   RawLesson,
   Semester,
-  ClassNo,
 } from 'types/modules';
 
 import {
@@ -19,7 +17,6 @@ import {
   Lesson,
   LessonWithIndex,
   ModuleLessonConfig,
-  SemTimetableConfig,
   SemTimetableConfigWithLessons,
 } from 'types/timetables';
 
@@ -163,28 +160,6 @@ export function formatNumericWeeks(unprocessedWeeks: NumericWeeks): string | nul
   mergeConsecutive();
 
   return `Weeks ${processed.join(', ')}`;
-}
-
-/**
- * A helper function to convert the lesson indices array in a semester timetable config to sets
- */
-function convertSemTimetableConfigLessonIndicesFromArrayToSets(
-  semTimetableConfig: SemTimetableConfig,
-): {
-  [lessonType: LessonType]: {
-    [classNo: ClassNo]: Set<LessonIndex>;
-  };
-} {
-  return mapValues(semTimetableConfig, (moduleLessonConfig) =>
-    mapValues(moduleLessonConfig, (lessonsInLessonType) => new Set(lessonsInLessonType)),
-  );
-}
-
-export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
-  return isEqual(
-    convertSemTimetableConfigLessonIndicesFromArrayToSets(t1),
-    convertSemTimetableConfigLessonIndicesFromArrayToSets(t2),
-  );
 }
 
 export function isSameLesson(l1: Lesson, l2: Lesson) {
