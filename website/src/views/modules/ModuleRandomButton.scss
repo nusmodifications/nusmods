@@ -4,6 +4,34 @@
   composes: btn btn-secondary btn-svg from global;
   flex-grow: 1;
   margin-bottom: 2rem;
+  transition:
+    box-shadow $desktop-entering-duration $material-deceleration-curve,
+    transform $desktop-entering-duration $material-deceleration-curve;
+
+  :global(.svg) {
+    transition: transform $desktop-entering-duration $material-deceleration-curve;
+  }
+
+  &:hover,
+  &:focus {
+    box-shadow: 0 0.25rem 0.75rem rgba(#000, 0.18);
+    transform: translateY(-1px);
+
+    :global(.svg) {
+      transform: rotate(-12deg);
+    }
+  }
+
+  &:focus-visible {
+    box-shadow:
+      0 0.25rem 0.75rem rgba(#000, 0.18),
+      0 0 0 0.2rem rgba(theme-color(), 0.28);
+  }
+
+  &:active {
+    box-shadow: none;
+    transform: translateY(0);
+  }
 
   @include media-breakpoint-down(md) {
     margin: 0 1rem;
