@@ -57,11 +57,18 @@ export default function configureStore(defaultState?: State) {
     module.hot.accept('../reducers', () => store.replaceReducer(rootReducer));
   }
 
-  const persistor = persistStore(store);
-
   // Ask any already-open tab to hand over its current state (including
   // non-persisted slices like undoHistory) so cross-tab undo stays in sync.
-  initStateWithPrevTab(store);
+  // This must run from the redux-persist bootstrapped callback rather than
+  // immediately: persistStore rehydrates asynchronously, and adopting a peer's
+  // full snapshot (RECEIVE_INIT_STATE) before local REHYDRATE settles would let
+  // a later REHYDRATE overwrite persisted slices (timetables/theme) while
+  // leaving the peer's non-persisted undoHistory in place -- pairing the peer
+  // undo stack with stale local state. Syncing after bootstrap keeps the
+  // adopted snapshot internally consistent.
+  const persistor = persistStore(store, undefined, () => {
+    initStateWithPrevTab(store);
+  });
 
   return { persistor, store };
 }
