@@ -1,16 +1,4 @@
-import {
-  fromPairs,
-  get,
-  groupBy,
-  invert,
-  isNaN,
-  isUndefined,
-  map,
-  mapValues,
-  omitBy,
-  some,
-  split,
-} from 'lodash';
+import { fromPairs, groupBy, invert, isUndefined, map, mapValues } from 'lodash';
 import { DayText, Lesson, ModuleLessonMap, RawLesson, WeekRange, Weeks } from './types';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
@@ -128,56 +116,11 @@ export const serializeLessonDetails = <T extends RawLesson>(lesson: T): string =
 /**
  * Group lessons by lesson types
  * @param lessons lessons to group
- * @returns map of `LessonId`s, not lessons
+ * @returns a {@link ModuleLessonMap|ModuleLessonMap} from the `RawLesson`s provided
  */
 export const makeModuleLessonMap = (lessons: Readonly<Array<RawLesson>>): ModuleLessonMap => {
   const lessonsByLessonType = groupBy(lessons, 'lessonType');
   return mapValues(lessonsByLessonType, (lessonsWithLessonType) =>
     fromPairs(map(lessonsWithLessonType, (lesson) => [serializeLessonDetails(lesson), lesson])),
   );
-};
-
-const deserializeWeekNumbers = (serializedWeekNumbers: string): Array<number> => {
-  const weeks = map(split(serializedWeekNumbers, WEEKS_SEP), (week) => Number.parseInt(week, 10));
-
-  if (some(weeks, isNaN)) {
-    throw 'Serialized weeks is malformed';
-  }
-
-  return weeks;
-};
-
-/**
- * Parses serialized weeks by first attempting to deserialize it as a week range\
- * if that fails, attempt to deserialize it as week numbers\
- * if that also fails, the string is malformed
- * @param serializedWeeks
- * @returns
- */
-export const parseWeeks = (serializedWeeks: string): Weeks => {
-  const parsedRegex =
-    /(?<start>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<end>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<weekInterval>[0-9])_?(?<weeks>(?:_*[0-9])*)/.exec(
-      serializedWeeks,
-    );
-  const regexGroup = parsedRegex?.groups;
-  if (!regexGroup) {
-    return deserializeWeekNumbers(serializedWeeks);
-  }
-
-  const start = get(regexGroup, 'start');
-  const end = get(regexGroup, 'end');
-  const weekIntervalString = get(regexGroup, 'weekInterval');
-
-  const weekInterval = Number.parseInt(weekIntervalString, 10);
-  const weeks = get(regexGroup, 'weeks', undefined);
-
-  return omitBy(
-    {
-      end,
-      start,
-      weekInterval: weekInterval === 0 ? undefined : weekInterval,
-      weeks: weeks ? deserializeWeekNumbers(weeks) : undefined,
-    },
-    isUndefined,
-  ) as WeekRange;
 };
