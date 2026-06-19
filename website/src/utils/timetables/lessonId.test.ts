@@ -35,7 +35,7 @@ describe('serialize/parse weeks', () => {
 
     each(weekRanges, (weekRange) => {
       const deserializedWeekRange = parseWeeks(serializeWeekRange(weekRange));
-      expect(deserializedWeekRange).toStrictEqual(weekRange);
+      expect(deserializedWeekRange).resolves.toStrictEqual(weekRange);
     });
   });
 
@@ -43,7 +43,7 @@ describe('serialize/parse weeks', () => {
     const weekNumbers = [2, 3, 5, 7, 11, 13];
 
     const deserializedWeekRange = parseWeeks(serializeWeekNumbers(weekNumbers));
-    expect(deserializedWeekRange).toStrictEqual(weekNumbers);
+    expect(deserializedWeekRange).resolves.toStrictEqual(weekNumbers);
   });
 });
 

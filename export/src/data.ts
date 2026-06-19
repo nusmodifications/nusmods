@@ -38,9 +38,9 @@ async function fetchModule(moduleCode: string) {
 
 export async function getModules(moduleCodes: Array<string>) {
   const modules = await Promise.all(
-    moduleCodes.map(async (moduleCode) => {
+    moduleCodes.map(async (moduleCode) =>
       // Not in use currently, refer to https://github.com/nusmodifications/nusmods/discussions/4387
-      return await fetchModule(moduleCode)
+      fetchModule(moduleCode)
         .then((module) => {
           return {
             ...module,
@@ -50,8 +50,8 @@ export async function getModules(moduleCodes: Array<string>) {
             })),
           };
         })
-        .catch(() => null);
-    }),
+        .catch(() => null),
+    ),
   );
 
   return modules.filter(Boolean);

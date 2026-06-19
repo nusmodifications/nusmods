@@ -144,7 +144,7 @@ export const serializeLessonDetails = <T extends RawLesson>(lesson: T): string =
 /**
  * Group lessons by lesson types
  * @param lessons lessons to group
- * @returns map of `LessonId`s, not lessons
+ * @returns a {@link ModuleLessonMap|ModuleLessonMap} from the `RawLesson`s provided
  */
 export const makeModuleLessonMap = (lessons: readonly RawLesson[]): ModuleLessonMap<RawLesson> => {
   const lessonsByLessonType = groupBy(lessons, 'lessonType');
@@ -153,11 +153,11 @@ export const makeModuleLessonMap = (lessons: readonly RawLesson[]): ModuleLesson
   );
 };
 
-const deserializeWeekNumbers = (serializedWeekNumbers: string): number[] => {
+const deserializeWeekNumbers = async (serializedWeekNumbers: string): Promise<number[]> => {
   const weeks = map(split(serializedWeekNumbers, WEEKS_SEP), (week) => parseInt(week, 10));
 
   if (some(weeks, isNaN)) {
-    throw 'Serialized weeks is malformed';
+    throw new Error('Serialized weeks is malformed');
   }
 
   return weeks;
@@ -170,7 +170,7 @@ const deserializeWeekNumbers = (serializedWeekNumbers: string): number[] => {
  * @param serializedWeeks
  * @returns
  */
-export const parseWeeks = (serializedWeeks: string): Weeks => {
+export const parseWeeks = async (serializedWeeks: string): Promise<Weeks> => {
   const parsedRegex =
     /(?<start>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<end>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<weekInterval>[0-9])_?(?<weeks>(?:_*[0-9])*)/.exec(
       serializedWeeks,
@@ -192,7 +192,7 @@ export const parseWeeks = (serializedWeeks: string): Weeks => {
       start,
       end,
       weekInterval: weekInterval === 0 ? undefined : weekInterval,
-      weeks: weeks ? deserializeWeekNumbers(weeks) : undefined,
+      weeks: weeks ? await deserializeWeekNumbers(weeks) : undefined,
     },
     isUndefined,
   ) as WeekRange;
@@ -211,7 +211,7 @@ export const deserializeLessonDetails = async (
 
   const regexGroup = parsedRegex?.groups;
   if (!regexGroup) {
-    throw 'Lesson ID is malformed';
+    return Promise.reject('Lesson ID is malformed');
   }
 
   const classNo = get(regexGroup, 'classNo');
@@ -222,7 +222,7 @@ export const deserializeLessonDetails = async (
   const serializedWeeks = get(regexGroup, 'serializedWeeks');
 
   const day = get(DAY_OF_WEEK_FULL, abbreviatedDayOfWeek);
-  const weeks = parseWeeks(serializedWeeks);
+  const weeks = await parseWeeks(serializedWeeks);
 
   return {
     classNo,
