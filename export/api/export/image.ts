@@ -13,6 +13,9 @@ type Data = {
 const handler = makeExportHandler<Data>(
   (request) => {
     const exportData = JSON.parse(request.query.data as never);
+    if (typeof exportData !== 'object' || exportData === null || Array.isArray(exportData)) {
+      throw new Error('Invalid export data');
+    }
     validateExportData(exportData);
 
     let options: render.ViewportOptions = {
