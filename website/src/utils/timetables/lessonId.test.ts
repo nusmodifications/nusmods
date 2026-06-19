@@ -1,7 +1,9 @@
 import { each } from 'lodash-es';
 import {
+  deserializeLessonDetails,
   makeModuleLessonMap,
   parseWeeks,
+  serializeLessonDetails,
   serializeWeekNumbers,
   serializeWeekRange,
 } from './lessonId';
@@ -70,5 +72,98 @@ describe('makeModuleLessonMap', () => {
     };
 
     expect(makeModuleLessonMap(lessons)).toStrictEqual(expectedLessonMap);
+  });
+});
+
+describe('deserializeLessonDetails', () => {
+  const lesson = {
+    classNo: '1',
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    day: 'Monday',
+    startTime: '1830',
+    endTime: '2030',
+    venue: 'VCRm',
+  };
+
+  describe('deserialized lessonId should be identical to lesson details that was serialized', () => {
+    test('lesson with NumericWeeks', () => {
+      const serializedLessonDetails = serializeLessonDetails(lesson);
+
+      expect(serializedLessonDetails).toBe('1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13');
+      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(lesson);
+    });
+
+    test('lesson with WeekRange with both weekInterval and weeks', () => {
+      const lessonWithWeekRange = {
+        ...lesson,
+        weeks: {
+          start: '2026-06-18',
+          end: '2026-05-21',
+          weekInterval: 2,
+          weeks: [1, 3, 5, 7, 9, 11, 13],
+        },
+      };
+      const serializedLessonDetails = serializeLessonDetails(lessonWithWeekRange);
+
+      expect(serializedLessonDetails).toBe(
+        '1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_2_1_3_5_7_9_11_13',
+      );
+      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(
+        lessonWithWeekRange,
+      );
+    });
+
+    test('lesson with WeekRange with no week interval', () => {
+      const lessonWithWeekRange = {
+        ...lesson,
+        weeks: {
+          start: '2026-06-18',
+          end: '2026-05-21',
+          weeks: [1, 3, 5, 7, 9, 11, 13],
+        },
+      };
+      const serializedLessonDetails = serializeLessonDetails(lessonWithWeekRange);
+
+      expect(serializedLessonDetails).toBe(
+        '1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_0_1_3_5_7_9_11_13',
+      );
+      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(
+        lessonWithWeekRange,
+      );
+    });
+
+    test('lesson with WeekRange with empty week numbers list', () => {
+      const lessonWithWeekRange = {
+        ...lesson,
+        weeks: {
+          start: '2026-06-18',
+          end: '2026-05-21',
+          weeks: [],
+        },
+      };
+      const serializedLessonDetails = serializeLessonDetails(lessonWithWeekRange);
+
+      expect(serializedLessonDetails).toBe('1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_0__');
+      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(
+        lessonWithWeekRange,
+      );
+    });
+
+    test('lesson with WeekRange with no week numbers list defined', () => {
+      const lessonWithWeekRange = {
+        ...lesson,
+        weeks: {
+          start: '2026-06-18',
+          end: '2026-05-21',
+          weekInterval: 2,
+        },
+      };
+      const serializedLessonDetails = serializeLessonDetails(lessonWithWeekRange);
+
+      expect(serializedLessonDetails).toBe('1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_2');
+      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(
+        lessonWithWeekRange,
+      );
+    });
   });
 });

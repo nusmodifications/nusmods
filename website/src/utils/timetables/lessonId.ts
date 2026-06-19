@@ -4,6 +4,7 @@ import {
   get,
   groupBy,
   invert,
+  isEmpty,
   isNaN,
   isUndefined,
   keys,
@@ -85,6 +86,10 @@ export function getLessonIdentifier(lesson: Lesson): string {
 }
 
 export const serializeWeekNumbers = (weeks: readonly number[]): string => {
+  if (isEmpty(weeks)) {
+    return '_';
+  }
+
   return weeks.join(WEEKS_SEP);
 };
 
@@ -128,7 +133,9 @@ export const serializeWeekRange = ({ start, end, weekInterval, weeks }: WeekRang
  *
  * Notably, _`lessonType` is excluded_ because timetable serialization groups lessons together
  */
-export const serializeLessonDetails = <T extends RawLesson>(lesson: T): string => {
+export const serializeLessonDetails = <T extends Omit<RawLesson, 'lessonType'>>(
+  lesson: T,
+): string => {
   const { classNo, day, startTime, endTime, venue, weeks } = lesson;
 
   const abbreviatedDayOfWeek = DAY_OF_WEEK_ABBREV[day as DayOfWeek];
@@ -154,6 +161,8 @@ export const makeModuleLessonMap = (lessons: readonly RawLesson[]): ModuleLesson
 };
 
 const deserializeWeekNumbers = async (serializedWeekNumbers: string): Promise<number[]> => {
+  if (serializedWeekNumbers === '_') return [];
+
   const weeks = map(split(serializedWeekNumbers, WEEKS_SEP), (week) => parseInt(week, 10));
 
   if (some(weeks, isNaN)) {
@@ -172,7 +181,7 @@ const deserializeWeekNumbers = async (serializedWeekNumbers: string): Promise<nu
  */
 export const parseWeeks = async (serializedWeeks: string): Promise<Weeks> => {
   const parsedRegex =
-    /(?<start>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<end>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<weekInterval>[0-9])_?(?<weeks>(?:_*[0-9])*)/.exec(
+    /(?<start>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<end>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<weekInterval>[0-9])_?(?<weeks>(?:_*[0-9]*)*)/.exec(
       serializedWeeks,
     );
   const regexGroup = parsedRegex?.groups;
