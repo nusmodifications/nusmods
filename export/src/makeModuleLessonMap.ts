@@ -1,4 +1,17 @@
-import { fromPairs, groupBy, invert, isUndefined, map, mapValues } from 'lodash';
+import {
+  fromPairs,
+  get,
+  groupBy,
+  invert,
+  isNaN,
+  isUndefined,
+  map,
+  mapValues,
+  omitBy,
+  some,
+  split,
+} from 'lodash';
+import { DayText, Lesson, ModuleLessonMap, RawLesson, WeekRange, Weeks } from './types';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
 export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
@@ -27,15 +40,9 @@ export const LESSON_ABBREV_TYPE = invert(LESSON_TYPE_ABBREV);
 const LESSON_DETAILS_SEP = '|';
 const WEEKS_SEP = '_';
 
-export type DayOfWeek =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
-export const DAY_OF_WEEK_ABBREV: { [x in DayOfWeek]: string } = {
+// Ignore the sort-objects rule because sorting by order of days of week is more logical than sorting by alphabetical order
+/* eslint-disable @perfectionist/sort-objects */
+export const DAY_OF_WEEK_ABBREV: Record<DayText, string> = {
   Monday: 'MON',
   Tuesday: 'TUE',
   Wednesday: 'WED',
@@ -44,16 +51,16 @@ export const DAY_OF_WEEK_ABBREV: { [x in DayOfWeek]: string } = {
   Saturday: 'SAT',
   Sunday: 'SUN',
 };
-const DAY_OF_WEEK_FULL = invert(DAY_OF_WEEK_ABBREV);
+/* eslint-enable @perfectionist/sort-objects */
 
 /**
  * Obtain a semi-unique key for a lesson
  */
-export function getLessonIdentifier(lesson: any): string {
+export function getLessonIdentifier(lesson: Lesson): string {
   return `${lesson.moduleCode}-${LESSON_TYPE_ABBREV[lesson.lessonType]}-${lesson.classNo}`;
 }
 
-export const serializeWeekNumbers = (weeks: readonly number[]): string => {
+export const serializeWeekNumbers = (weeks: Readonly<Array<number>>): string => {
   return weeks.join(WEEKS_SEP);
 };
 
@@ -74,13 +81,19 @@ export const serializeWeekNumbers = (weeks: readonly number[]): string => {
  * If weeks is undefined, the serialized string would be `2025-01-13_2025-02-14`, without the dangling `_`\
  * to ensure that the string is a complete and unique representation of the WeekRange\
  */
-export const serializeWeekRange = ({ start, end, weekInterval, weeks }: any) => {
+export const serializeWeekRange = ({ end, start, weekInterval, weeks }: WeekRange) => {
   const serializedStartEndInterval = [start, end, weekInterval ?? 0].join(WEEKS_SEP);
-  if (isUndefined(weeks)) return serializedStartEndInterval;
+  if (isUndefined(weeks)) {
+    return serializedStartEndInterval;
+  }
+
   return `${serializedStartEndInterval}${WEEKS_SEP}${serializeWeekNumbers(weeks)}`;
 };
 
-const isWeekRange = (week: any) => !Array.isArray(week);
+/**
+ * Typesafe helper functions for consuming Weeks
+ */
+export const isWeekRange = (week: Weeks): week is WeekRange => !Array.isArray(week);
 
 /**
  * Given a {@link RawLesson|RawLesson}
@@ -99,10 +112,10 @@ const isWeekRange = (week: any) => !Array.isArray(week);
  *
  * Notably, _`lessonType` is excluded_ because timetable serialization groups lessons together
  */
-export const serializeLessonDetails = (lesson: any): string => {
-  const { classNo, day, startTime, endTime, venue, weeks } = lesson;
+export const serializeLessonDetails = <T extends RawLesson>(lesson: T): string => {
+  const { classNo, day, endTime, startTime, venue, weeks } = lesson;
 
-  const abbreviatedDayOfWeek = DAY_OF_WEEK_ABBREV[day as DayOfWeek];
+  const abbreviatedDayOfWeek = DAY_OF_WEEK_ABBREV[day as DayText];
   const serializedWeeks = isWeekRange(weeks)
     ? serializeWeekRange(weeks)
     : serializeWeekNumbers(weeks);
@@ -117,9 +130,54 @@ export const serializeLessonDetails = (lesson: any): string => {
  * @param lessons lessons to group
  * @returns map of `LessonId`s, not lessons
  */
-export const makeModuleLessonMap = (lessons: readonly any[]) => {
+export const makeModuleLessonMap = (lessons: Readonly<Array<RawLesson>>): ModuleLessonMap => {
   const lessonsByLessonType = groupBy(lessons, 'lessonType');
   return mapValues(lessonsByLessonType, (lessonsWithLessonType) =>
     fromPairs(map(lessonsWithLessonType, (lesson) => [serializeLessonDetails(lesson), lesson])),
   );
+};
+
+const deserializeWeekNumbers = (serializedWeekNumbers: string): Array<number> => {
+  const weeks = map(split(serializedWeekNumbers, WEEKS_SEP), (week) => Number.parseInt(week, 10));
+
+  if (some(weeks, isNaN)) {
+    throw 'Serialized weeks is malformed';
+  }
+
+  return weeks;
+};
+
+/**
+ * Parses serialized weeks by first attempting to deserialize it as a week range\
+ * if that fails, attempt to deserialize it as week numbers\
+ * if that also fails, the string is malformed
+ * @param serializedWeeks
+ * @returns
+ */
+export const parseWeeks = (serializedWeeks: string): Weeks => {
+  const parsedRegex =
+    /(?<start>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<end>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<weekInterval>[0-9])_?(?<weeks>(?:_*[0-9])*)/.exec(
+      serializedWeeks,
+    );
+  const regexGroup = parsedRegex?.groups;
+  if (!regexGroup) {
+    return deserializeWeekNumbers(serializedWeeks);
+  }
+
+  const start = get(regexGroup, 'start');
+  const end = get(regexGroup, 'end');
+  const weekIntervalString = get(regexGroup, 'weekInterval');
+
+  const weekInterval = Number.parseInt(weekIntervalString, 10);
+  const weeks = get(regexGroup, 'weeks', undefined);
+
+  return omitBy(
+    {
+      end,
+      start,
+      weekInterval: weekInterval === 0 ? undefined : weekInterval,
+      weeks: weeks ? deserializeWeekNumbers(weeks) : undefined,
+    },
+    isUndefined,
+  ) as WeekRange;
 };
