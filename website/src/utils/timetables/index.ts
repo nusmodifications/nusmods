@@ -1,5 +1,15 @@
 import { AcadWeekInfo } from 'nusmoderator';
-import { flatMapDeep, groupBy, isEqual, map, mapValues, range, sample, values } from 'lodash-es';
+import {
+  flatMapDeep,
+  groupBy,
+  isEqual,
+  map,
+  mapValues,
+  pick,
+  range,
+  sample,
+  values,
+} from 'lodash-es';
 import { addDays, min as minDate, parseISO, startOfDay } from 'date-fns';
 
 import {
@@ -9,6 +19,7 @@ import {
   NumericWeeks,
   RawLesson,
   Semester,
+  Module,
 } from 'types/modules';
 
 import {
@@ -22,6 +33,7 @@ import {
 
 import { getTimeAsDate } from '../timify';
 import { deltas } from '../array';
+import { ModulesMap } from 'types/reducers';
 
 export function isValidSemester(semester: Semester): boolean {
   return semester >= 1 && semester <= 4;
@@ -183,6 +195,14 @@ export function getHoverLesson(lesson: InteractableLesson): HoverLesson {
   };
 }
 
+// Get information for all modules present in a semester timetable config
+export function getSemesterModules(
+  timetable: { [moduleCode: string]: unknown },
+  modules: ModulesMap,
+): Module[] {
+  return values(pick(modules, Object.keys(timetable)));
+}
+
 export { findExamClashes } from './exams';
 export { isInteractable, getInteractableLessons } from './interactabilityHydration';
 export { hydrateSemTimetableWithLessons } from './lessonHydration';
@@ -190,7 +210,6 @@ export {
   getClosestLessonConfig,
   getLessonIndices,
   getRecoveryLessonIndices,
-  getSemesterModules,
   makeLessonIndicesMap,
 } from './lessonIndices';
 export { LESSON_ABBREV_TYPE, LESSON_TYPE_ABBREV, getLessonIdentifier } from './lessonId';
