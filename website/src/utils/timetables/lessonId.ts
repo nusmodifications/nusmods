@@ -211,7 +211,7 @@ export const deserializeLessonDetails = async (
 
   const regexGroup = parsedRegex?.groups;
   if (!regexGroup) {
-    return Promise.reject('Lesson ID is malformed');
+    throw new Error('Lesson ID is malformed');
   }
 
   const classNo = get(regexGroup, 'classNo');
