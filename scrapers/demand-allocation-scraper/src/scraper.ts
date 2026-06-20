@@ -293,14 +293,15 @@ export function mergeCourseRegRound(
     const demandRow = demandByClass.get(key);
     const vacancyRow = vacancyByClass.get(key);
     const [moduleCode, classNo] = key.split(':');
+    const forecastedSlots = vacancyRow?.forecastedSlots[studentType] ?? 'notAvailable';
 
     return {
       classNo,
       moduleCode,
       roundHistory: {
-        allocatedSlots: demandRow?.allocatedSlots ?? 'notAvailable',
-        forecastedSlots: vacancyRow?.forecastedSlots[studentType] ?? 'notAvailable',
-        registered: demandRow?.registered ?? null,
+        allocatedSlots: demandRow?.allocatedSlots ?? forecastedSlots,
+        forecastedSlots,
+        registered: demandRow?.registered ?? (forecastedSlots === 'notAvailable' ? null : 0),
         round,
       },
       studentType,

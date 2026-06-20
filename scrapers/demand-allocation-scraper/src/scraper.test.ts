@@ -156,9 +156,9 @@ Science,Statistics,ST2131,Probability,L1,200,-1,-1,-1,-1
         classNo: 'L1',
         moduleCode: 'ST2131',
         roundHistory: {
-          allocatedSlots: 'notAvailable',
+          allocatedSlots: 200,
           forecastedSlots: 200,
-          registered: null,
+          registered: 0,
           round: 1,
         },
         studentType: 'UG',
@@ -177,9 +177,9 @@ Computing,Computer Science,CS2030S,Programming Methodology II,L1,750,-1,-1,-1,-1
         classNo: 'L1',
         moduleCode: 'CS2030S',
         roundHistory: {
-          allocatedSlots: 'notAvailable',
+          allocatedSlots: 750,
           forecastedSlots: 750,
-          registered: null,
+          registered: 0,
           round: 1,
         },
         studentType: 'UG',
