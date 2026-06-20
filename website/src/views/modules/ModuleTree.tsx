@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { getModuleCondensed } from 'selectors/moduleBank';
 
-import { ModuleCode, PrereqTree, ModuleCondensed } from 'types/modules';
+import { CohortCondition, ModuleCode, PrereqTree, ModuleCondensed } from 'types/modules';
 import { State } from 'types/state';
 import { notNull } from 'types/utils';
 
@@ -34,6 +34,30 @@ const GRADE_REQUIREMENT_SEPARATOR = ':';
 const MODULE_NAME_WILDCARD = '%';
 const PASSING_GRADE = 'D';
 
+// Turn a cohort condition into a human-readable label. Year tokens are
+// "S:2022" (from, inclusive) or "E:2019/20" (until, inclusive); we show the
+// leading year of each.
+const formatCohortYears = ({ rule, years }: CohortCondition): string => {
+  const startToken = years.find((y) => !y.startsWith('E'));
+  const endToken = years.find((y) => y.startsWith('E'));
+  const start = startToken ? parseInt(startToken.slice(2), 10) : undefined;
+  const end = endToken ? parseInt(endToken.slice(2), 10) : undefined;
+
+  let range: string;
+  if (start !== undefined && end !== undefined) {
+    range = start === end ? `cohort ${start}` : `cohorts ${start}–${end}`;
+  } else if (start !== undefined) {
+    range = `cohort ${start} onwards`;
+  } else if (end !== undefined) {
+    range = `cohorts up to ${end}`;
+  } else {
+    range = 'select cohorts';
+  }
+
+  const exclude = rule === 'IF_NOT_IN' || rule === 'MUST_NOT_BE_IN';
+  return exclude ? `For cohorts excluding ${range}` : `For ${range}`;
+};
+
 const formatConditional = (node: PrereqTree, prereqTreeOnLeft?: boolean) => {
   if (typeof node === 'string') return node;
   if ('nOf' in node) {
@@ -42,6 +66,9 @@ const formatConditional = (node: PrereqTree, prereqTreeOnLeft?: boolean) => {
   }
   if ('or' in node) {
     return prereqTreeOnLeft ? 'take one' : `one of`;
+  }
+  if ('cohort' in node) {
+    return formatCohortYears(node.cohort);
   }
   return prereqTreeOnLeft ? 'take all' : `all of`;
 };
@@ -78,6 +105,11 @@ const unwrapLayer = (node: PrereqTree) => {
   }
   if ('nOf' in node) {
     return node.nOf[1];
+  }
+  if ('cohort' in node) {
+    // Only the gated requirement is a child branch; the condition is rendered
+    // as this node's label via formatConditional.
+    return [node.then];
   }
   return flatten(values(node).filter(notNull));
 };

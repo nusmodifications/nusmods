@@ -421,9 +421,12 @@ THEN
       ),
     ).toEqual(result);
   });
-  it('allows cohort years as predicate (optional)', () => {
+  it('keeps cohort years as a gating predicate', () => {
     const result: PrereqTree = {
-      or: ['GEA1000N:D', 'ST1131:D', 'DSA1101:D', 'IE1111R:D', 'DSE1101:D', 'BT1101:D'],
+      cohort: { rule: 'IF_IN', years: ['S:2022'] },
+      then: {
+        or: ['GEA1000N:D', 'ST1131:D', 'DSA1101:D', 'IE1111R:D', 'DSE1101:D', 'BT1101:D'],
+      },
     };
     expect(
       parse(
@@ -435,8 +438,11 @@ THEN
   });
 
   // According to NUS docs, this means ALL courses are required.
-  it('allows omitted courses count', () => {
-    const result: PrereqTree = 'NTW%:D';
+  it('allows omitted courses count, keeping the cohort gate', () => {
+    const result: PrereqTree = {
+      cohort: { rule: 'IF_IN', years: ['S:2022'] },
+      then: 'NTW%:D',
+    };
     expect(
       parse(
         `
@@ -444,6 +450,41 @@ THEN
       `,
       ),
     ).toEqual(result);
+  });
+
+  it('keeps an academic-year cohort range and IF_NOT_IN exclusions', () => {
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COHORT_YEARS IF_IN S:2020/21 E:2022/23 THEN COURSES (1) CS1010:D )
+      `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_IN', years: ['S:2020/21', 'E:2022/23'] },
+      then: 'CS1010:D',
+    });
+
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COHORT_YEARS IF_NOT_IN E:2019 THEN COURSES (1) CS1010:D )
+      `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_NOT_IN', years: ['E:2019'] },
+      then: 'CS1010:D',
+    });
+  });
+
+  it('drops a bare cohort predicate with no gated requirement', () => {
+    // The cohort constraint has no THEN subtree, so there is nothing to require.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COURSES (1) CS1010:D AND COHORT_YEARS MUST_BE_IN E:2016 )
+      `,
+      ),
+    ).toEqual('CS1010:D');
   });
 
   // According to NUS docs, this means ALL subjects are required.

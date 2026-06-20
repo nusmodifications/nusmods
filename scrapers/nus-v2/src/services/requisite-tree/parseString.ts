@@ -3,7 +3,7 @@
 import * as R from 'ramda';
 
 import { NusModsLexer, NusModsVisitor } from './antlr4';
-import { PrereqTree } from '../../types/modules';
+import { CohortRule, PrereqTree } from '../../types/modules';
 import { Logger } from '../logger';
 import {
   NusModsParser,
@@ -173,6 +173,34 @@ class ReqTreeVisitor
       return '';
     }
     return '';
+  };
+
+  // @ts-ignore
+  visitCohort_years?: ((ctx: Cohort_yearsContext) => PrereqTree) | undefined = (ctx) => {
+    const then = ctx.compound()?.accept(this);
+    // A cohort predicate only matters when it gates an actual requirement. A
+    // bare predicate (no THEN, e.g. an AND-ed "COHORT_YEARS MUST_BE_IN E:2016")
+    // or one whose subtree simplifies away has nothing to require, so drop it
+    // to '' exactly as before.
+    if (then === undefined || then === '') {
+      return '';
+    }
+
+    let rule: CohortRule;
+    if (ctx.IF_IN() !== undefined) {
+      rule = 'IF_IN';
+    } else if (ctx.IF_NOT_IN() !== undefined) {
+      rule = 'IF_NOT_IN';
+    } else if (ctx.must_be_in() !== undefined) {
+      rule = 'MUST_BE_IN';
+    } else if (ctx.must_not_be_in() !== undefined) {
+      rule = 'MUST_NOT_BE_IN';
+    } else {
+      this.errors.push(new Error('Cohort years missing a condition'));
+      return '';
+    }
+
+    return { cohort: { rule, years: ctx.YEARS().map((node) => node.text) }, then };
   };
 }
 

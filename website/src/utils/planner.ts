@@ -1,5 +1,5 @@
 import { sum } from 'lodash-es';
-import { ModuleCode, PrereqTree, Semester } from 'types/modules';
+import { CohortCondition, ModuleCode, PrereqTree, Semester } from 'types/modules';
 import { PlannerModuleInfo, Conflict } from 'types/planner';
 import config from 'config';
 import { assertNever } from 'types/utils';
@@ -33,11 +33,48 @@ export function getSemesterName(semester: Semester) {
 }
 
 /**
+ * A cohort year token looks like "S:2022" (start/from, inclusive) or
+ * "E:2019/20" (end/until, inclusive). The year part may be a calendar year or
+ * an academic-year string, so we parse the leading year from it.
+ */
+function cohortTokenYear(token: string): number {
+  return parseInt(token.slice(2), 10);
+}
+
+/**
+ * Determine whether a cohort-gated requirement applies to a student who
+ * matriculated in the given year. When the matriculation year is unknown we
+ * conservatively assume it applies, matching the previous behaviour where the
+ * gate was ignored and the inner requirement always enforced.
+ */
+export function cohortConditionApplies(
+  { rule, years }: CohortCondition,
+  cohortYear?: number,
+): boolean {
+  if (cohortYear === undefined || Number.isNaN(cohortYear)) return true;
+
+  const inRange = years.every((token) => {
+    const year = cohortTokenYear(token);
+    if (Number.isNaN(year)) return true;
+    // "E:" is an upper bound (cohorts up to and including the year); any other
+    // bound ("S:") is a lower bound (cohorts from the year onwards).
+    return token.startsWith('E') ? cohortYear <= year : cohortYear >= year;
+  });
+
+  return rule === 'IF_NOT_IN' || rule === 'MUST_NOT_BE_IN' ? !inRange : inRange;
+}
+
+/**
  * Check if a prereq tree is fulfilled given a set of modules that have already
  * been taken. An array of unfulfilled requirements is returned. An empty array
- * means that the prereq tree is fulfilled.
+ * means that the prereq tree is fulfilled. `cohortYear` is the student's
+ * matriculation year, used to evaluate cohort-gated requirements.
  */
-export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree): PrereqTree[] {
+export function checkPrerequisite(
+  moduleSet: Set<ModuleCode>,
+  tree: PrereqTree,
+  cohortYear?: number,
+): PrereqTree[] {
   const moduleArray = Array.from(moduleSet);
 
   function walkTree(fragment: PrereqTree): PrereqTree[] {
@@ -53,6 +90,12 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree):
 
     if ('and' in fragment) {
       return fragment.and.map(walkTree).flat();
+    }
+
+    if ('cohort' in fragment) {
+      // The gated requirement only applies to matching cohorts. If it doesn't
+      // apply to this student, there is nothing left to fulfil.
+      return cohortConditionApplies(fragment.cohort, cohortYear) ? walkTree(fragment.then) : [];
     }
 
     if ('nOf' in fragment) {
@@ -101,6 +144,12 @@ export function conflictToText(rootConflict: PrereqTree): string {
 
     if ('and' in conflict) {
       return `${conflict.and.map((opt) => `${walkSubtree(opt)}`).join(' and ')}`;
+    }
+
+    if ('cohort' in conflict) {
+      // The gate has already been evaluated; only the gated requirement is an
+      // actionable conflict, so render that.
+      return walkTree(conflict.then);
     }
 
     if ('nOf' in conflict) {

@@ -30,4 +30,13 @@ describe(flattenTree, () => {
       'CS2020',
     ]);
   });
+
+  test('should flatten through a cohort gate without leaking the condition', () => {
+    expect(
+      flattenTree({
+        cohort: { rule: 'IF_IN', years: ['S:2022'] },
+        then: { and: ['LC1016:D', 'NTW%:D'] },
+      }),
+    ).toEqual(['LC1016:D', 'NTW%:D']);
+  });
 });

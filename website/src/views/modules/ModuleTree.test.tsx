@@ -92,6 +92,24 @@ describe(ModuleTreeComponent, () => {
     expect(component).toMatchSnapshot('PC2130');
   });
 
+  test('should render a cohort-gated prereq tree', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="NGT2001E"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
+        prereqTree={{
+          cohort: { rule: 'IF_IN', years: ['S:2022'] },
+          then: {
+            and: ['LC1016:D', 'NTW%:D', 'NSW%:D'],
+          },
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('NGT2001E');
+  });
+
   test('should render prereq tree to the right when tree direction is set to right', () => {
     const component = render(
       <ModuleTreeComponent
