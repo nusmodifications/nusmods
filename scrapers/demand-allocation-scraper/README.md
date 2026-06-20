@@ -16,7 +16,15 @@ Install workspace dependencies from the repository root:
 pnpm install
 ```
 
-PDF conversion requires Python with `tabula-py` installed and Java available through `JAVA_HOME`.
+PDF conversion requires Java available through `JAVA_HOME` and a Python environment with the pinned dependencies:
+
+```sh
+cd scrapers/demand-allocation-scraper
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+Then pass the pinned environment to scraper runs with `--python .venv/bin/python`.
 
 ## Source PDF Archive
 
@@ -55,7 +63,8 @@ Build CourseReg history after manually staging one newly released round:
 JAVA_HOME=/path/to/java \
 pnpm dev 2 2025/2026 \
   --round 1 \
-  --pdfDir archive/pdfs/2025-2026/semesters/2
+  --pdfDir archive/pdfs/2025-2026/semesters/2 \
+  --python .venv/bin/python
 ```
 
 By default, output goes to:
@@ -74,7 +83,8 @@ To rebuild all available rounds from staged PDFs, omit `--round`:
 ```sh
 JAVA_HOME=/path/to/java \
 pnpm dev 2 2025/2026 \
-  --pdfDir archive/pdfs/2025-2026/semesters/2
+  --pdfDir archive/pdfs/2025-2026/semesters/2 \
+  --python .venv/bin/python
 ```
 
 To test against a temporary output directory:
@@ -85,7 +95,8 @@ pnpm dev 2 2025/2026 \
   --round 1 \
   --pdfDir archive/pdfs/2025-2026/semesters/2 \
   --inputDir /tmp/demand-allocation-csv \
-  --outputDir /tmp/demand-allocation-output
+  --outputDir /tmp/demand-allocation-output \
+  --python .venv/bin/python
 ```
 
 ## Data Semantics
