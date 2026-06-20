@@ -5,52 +5,50 @@ import serve from 'koa-static';
 import views from 'koa-views';
 import * as Sentry from '@sentry/node';
 
-import _ from 'lodash';
-
 import * as render from './render';
 import * as data from './data';
 import config from './config';
+import { parseViewportOptions } from './image-options';
+import { renderImage } from './render-image';
+import { renderPdf } from './render-pdf';
 import type { State } from './types';
 
 // Start router
 const app = new Koa<State>();
-const router = new Router();
+const router = new Router({ prefix: '/api/export' });
 
 router
-  .get('/api/export/image', async (ctx) => {
+  .get('/image', render.openPage, async (ctx) => {
     const { data, page } = ctx.state;
-    const { height, width } = ctx.query;
-
-    // Validate options
-    let options: render.ViewportOptions = {
-      pixelRatio: _.clamp(Number(ctx.query.pixelRatio) || 1, 1, 3),
-    };
-
-    if (
-      height !== undefined &&
-      width !== undefined &&
-      !Number.isNaN(height) && // accept floats
-      !Number.isNaN(width) && // accept floats
-      Number(height) > 0 &&
-      Number(width) > 0
-    ) {
-      options = {
-        ...options,
-        height: Number(height),
-        width: Number(width),
-      };
-    }
+    const options = parseViewportOptions(ctx.query);
 
     ctx.body = await render.image(page, data, options);
     ctx.attachment('My Timetable.png');
   })
-  .get('/api/export/pdf', async (ctx) => {
+  .get('/pdf', render.openPage, async (ctx) => {
     const { data, page } = ctx.state;
 
     ctx.body = await render.pdf(page, data);
+    ctx.set('Content-Type', 'application/pdf');
     ctx.attachment('My Timetable.pdf');
   })
-  .get('/debug', async (ctx) => {
+  .get('/beta/image', async (ctx) => {
+    const { data } = ctx.state;
+    const options = parseViewportOptions(ctx.query);
+
+    ctx.body = await renderImage(data, options);
+    ctx.set('Content-Type', 'image/png');
+    ctx.attachment('My Timetable.png');
+  })
+  .get('/beta/pdf', async (ctx) => {
+    const { data } = ctx.state;
+
+    ctx.body = await renderPdf(data);
+
+    ctx.set('Content-Type', 'application/pdf');
+    ctx.attachment('My Timetable.pdf');
+  })
+  .get('/debug', render.openPage, async (ctx) => {
     ctx.body = await ctx.state.page.content();
   });
 
@@ -92,7 +90,6 @@ app
   .use(serve(path.join(__dirname, '..', '..', 'public')))
   .use(errorHandler)
   .use(data.parseExportData)
-  .use(render.openPage)
   .use(router.routes())
   .use(router.allowedMethods());
 

@@ -32,12 +32,49 @@ function setUpSentry() {
   }
 }
 
+function handleExportError(response: VercelResponse, error: Error & { original?: Error }) {
+  const eventId = Sentry.captureException(error.original || error);
+
+  console.error(error);
+
+  if (error instanceof HttpError && error.code === 422) {
+    response.status(422).send(render422());
+    return;
+  }
+
+  response.status(500).send(render500(eventId));
+}
+
 /**
  * Convenience higher-order function that encapsulates most of the logic shared
- * by all export serverless functions.
+ * by all Satori export serverless functions.
  * @returns A Vercel serverless function handler.
  */
 export function makeExportHandler<T>(
+  parseExportData: (request: VercelRequest) => T,
+  performExport: (response: VercelResponse, data: T) => void | Promise<void>,
+): VercelApiHandler {
+  return async function handler(request, response) {
+    try {
+      throwIfAcademicYearNotSet();
+      setUpSentry();
+
+      // Validate input before rendering
+      let data = undefined;
+      try {
+        data = parseExportData(request);
+      } catch (error) {
+        throw new HttpError(422, 'Invalid timetable data', error);
+      }
+
+      await performExport(response, data);
+    } catch (error) {
+      handleExportError(response, error);
+    }
+  };
+}
+
+export function makeBrowserExportHandler<T>(
   parseExportData: (request: VercelRequest) => T,
   performExport: (response: VercelResponse, page: Page, data: T) => void | Promise<void>,
 ): VercelApiHandler {
@@ -54,7 +91,6 @@ export function makeExportHandler<T>(
         throw new HttpError(422, 'Invalid timetable data', error);
       }
 
-      // Prepare browser for export
       const url = config.page;
       let browser: Browser;
       let page: Page;
@@ -72,23 +108,12 @@ export function makeExportHandler<T>(
       }
 
       try {
-        // Export
         await performExport(response, page, data);
       } finally {
         await browser.close();
       }
     } catch (error) {
-      const eventId = Sentry.captureException(error.original || error);
-
-      console.error(error);
-
-      if (error instanceof HttpError) {
-        if (error.code === 422) {
-          response.status(422).send(render422());
-          return;
-        }
-      }
-      response.status(500).send(render500(eventId));
+      handleExportError(response, error);
     }
   };
 }

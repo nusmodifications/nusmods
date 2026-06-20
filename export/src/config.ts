@@ -8,7 +8,7 @@ export default {
   // for production
   // If set to a URL, the page will be loaded instead - use localhost:8081 in
   // development with Webpack hot reload server
-  page: process.env.PAGE!,
+  page: process.env.PAGE || '',
 
   // Path to a folder containing module data. If null, during development the
   // NUSMods API will be used instead. In production leaving this as null will

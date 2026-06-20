@@ -2,6 +2,9 @@
   "compilerOptions": {
     "outDir": "build",
     "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "strict": true,
     "useUnknownInCatchVariables": false,
     "skipLibCheck": true

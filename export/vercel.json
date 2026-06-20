@@ -15,6 +15,12 @@
     },
     "api/export/pdf.ts": {
       "maxDuration": 15
+    },
+    "api/export/beta/image.ts": {
+      "maxDuration": 15
+    },
+    "api/export/beta/pdf.ts": {
+      "maxDuration": 15
     }
   },
   "ignoreCommand": "bash ../vercel_ignore_build.sh"

@@ -1,6 +1,6 @@
 # NUSMods Timetable Export Service
 
-Uses [Puppeteer][puppeteer] to render a copy of the user's timetable on the server before taking a screenshot and sending it back to them.
+Renders timetables server-side using Satori and sends them back as images or PDFs.
 
 ## Getting started
 
@@ -8,8 +8,6 @@ Uses [Puppeteer][puppeteer] to render a copy of the user's timetable on the serv
 
 ```bash
 # Install dependencies
-# To skip Puppeteer installing Chromium, set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
-# See https://github.com/GoogleChrome/puppeteer/blob/v0.13.0/docs/api.md#environment-variables
 $ pnpm install
 
 # Configure - the defaults are sufficient for development, but for
@@ -23,8 +21,7 @@ $ cd ../website
 $ pnpm start
 $ pnpm start:export
 
-# Start export server - use "pnpm devtools" if need to see the graphical browser with
-# developer tools. Note that PDF export does not work in devtools mode.
+# Start export server
 $ cd ../export
 $ pnpm dev
 ```
@@ -42,9 +39,8 @@ $ pnpm dev
 1. The serialized state is added as query params to the 'Download as' link the user sees when they open the dropdown menu
 1. When the user clicks on the link, the browser makes a GET request to the chosen export endpoint
 1. The endpoint parses and validates the incoming data
-1. The export service uses the Puppeteer instance to create a new `Page` object
-1. The page loads a special version of the app that only has the `<TimetableContent>` component, and injects the data into the Redux store
-1. The screenshot or PDF is taken of the page, and sent back to the user
+1. The export service renders the timetable using Satori (SVG) and converts it to the requested format
+1. The screenshot or PDF is sent back to the user
 
 ## API
 
@@ -68,17 +64,6 @@ Download PNG image of the timetable.
 
 - `data` - JSON encoded timetable data
 - `pixelRatio = 1` (Number: 1 to 3 inclusive) - the device pixel ratio as reported in [`window.devicePixelRatio`](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio). This scales the entire image by that amount so it will appear correctly when downloaded to the user's device.
-
-### GET `/debug`
-
-Returns the HTML content of the page that Puppeteer renders.
-
-## Testing
-
-After running locally, you can test with the following URLs on `localhost:3000`:
-
-- [Example image export](http://localhost:3000/api/export/image?data=%7B%22semester%22%3A2%2C%22timetable%22%3A%7B%22CS3217%22%3A%7B%22Lecture%22%3A%5B0%2C3%5D%2C%22Tutorial%22%3A%5B1%5D%7D%2C%22CS1010%22%3A%7B%22Tutorial%22%3A%5B4%5D%2C%22Sectional%20Teaching%22%3A%5B3%5D%7D%2C%22CS1231S%22%3A%7B%22Tutorial%22%3A%5B2%5D%2C%22Lecture%22%3A%5B6%2C7%5D%7D%2C%22CS4218%22%3A%7B%22Lecture%22%3A%5B0%5D%2C%22Laboratory%22%3A%5B4%5D%7D%7D%2C%22colors%22%3A%7B%22CS3217%22%3A4%2C%22CS1010%22%3A6%2C%22CS1231S%22%3A5%2C%22CS4218%22%3A0%7D%2C%22hidden%22%3A%5B%5D%2C%22ta%22%3A%5B%5D%2C%22theme%22%3A%7B%22id%22%3A%22mocha%22%2C%22timetableOrientation%22%3A%22HORIZONTAL%22%2C%22showTitle%22%3Afalse%2C%22_persist%22%3A%7B%22version%22%3A-1%2C%22rehydrated%22%3Atrue%7D%7D%2C%22settings%22%3A%7B%22colorScheme%22%3A%22LIGHT_COLOR_SCHEME%22%7D%7D&pixelRatio=2)
-- [Example PDF export](http://localhost:3000/api/export/pdf?data=%7B%22semester%22%3A2%2C%22timetable%22%3A%7B%22CS3217%22%3A%7B%22Lecture%22%3A%5B0%2C3%5D%2C%22Tutorial%22%3A%5B1%5D%7D%2C%22CS1010%22%3A%7B%22Tutorial%22%3A%5B4%5D%2C%22Sectional%20Teaching%22%3A%5B3%5D%7D%2C%22CS1231S%22%3A%7B%22Tutorial%22%3A%5B2%5D%2C%22Lecture%22%3A%5B6%2C7%5D%7D%2C%22CS4218%22%3A%7B%22Lecture%22%3A%5B0%5D%2C%22Laboratory%22%3A%5B4%5D%7D%7D%2C%22colors%22%3A%7B%22CS3217%22%3A4%2C%22CS1010%22%3A6%2C%22CS1231S%22%3A5%2C%22CS4218%22%3A0%7D%2C%22hidden%22%3A%5B%5D%2C%22ta%22%3A%5B%5D%2C%22theme%22%3A%7B%22id%22%3A%22mocha%22%2C%22timetableOrientation%22%3A%22HORIZONTAL%22%2C%22showTitle%22%3Afalse%2C%22_persist%22%3A%7B%22version%22%3A-1%2C%22rehydrated%22%3Atrue%7D%7D%2C%22settings%22%3A%7B%22colorScheme%22%3A%22LIGHT_COLOR_SCHEME%22%7D%7D&pixelRatio=2)
 
 ## Deployment
 
@@ -108,5 +93,3 @@ $ pnpm build
 # Start the app
 $ pnpm start
 ```
-
-[puppeteer]: https://github.com/GoogleChrome/puppeteer

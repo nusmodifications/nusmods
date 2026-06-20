@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { validateExportData } from '../../src/data';
-import { makeExportHandler } from '../../src/handler';
+import { makeBrowserExportHandler } from '../../src/handler';
 import * as render from '../../src/render-serverless';
 import type { ExportData } from '../../src/types';
 
@@ -10,7 +10,7 @@ type Data = {
   options: render.ViewportOptions;
 };
 
-const handler = makeExportHandler<Data>(
+const handler = makeBrowserExportHandler<Data>(
   (request) => {
     const exportData = JSON.parse(request.query.data as never);
     validateExportData(exportData);
