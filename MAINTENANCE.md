@@ -39,6 +39,8 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 - [ ] In `app-config.json`, add semester to `examAvailability` to indicate exam information is available for the semester
 - [ ] Update the ModReg schedule in `website/src/data/modreg-schedule.json`, and make sure the correct version is pointed to in `website/src/config/index.ts`
   - Reference PR: [PR #2764](https://github.com/nusmodifications/nusmods/pull/2764)
+- [ ] After each CourseReg round is released, manually upload that round's vacancy, UG demand allocation, and GD demand allocation PDFs under `scrapers/demand-allocation-scraper/archive/pdfs/<acad-year>/semesters/<semester>/`, then run `pnpm dev <semester> <acad-year> --round <round> --pdfDir archive/pdfs/<acad-year>/semesters/<semester>` from `scrapers/demand-allocation-scraper`
+  - Verify that the PDFs contain released data, not "Information not available yet", and that `scrapers/nus-v2/data/<acad-year>/semesters/<semester>/courseRegHistory.json` is generated with non-empty module history for the academic-year archive
 
 ## CPEx
 

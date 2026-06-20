@@ -1,0 +1,30 @@
+{
+  "name": "nusmods-demand-allocation-scraper",
+  "version": "1.0.0",
+  "description": "NUSMods scraper for CourseReg demand allocation and vacancy history",
+  "license": "MIT",
+  "repository": "https://github.com/nusmodifications/nusmods",
+  "main": "src/index.ts",
+  "scripts": {
+    "scrape": "node build/src/index.js",
+    "dev": "pnpm build && node build/src/index.js",
+    "build": "tsc",
+    "lint": "oxlint -c oxlint.config.mjs src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "check": "run-s lint typecheck test"
+  },
+  "devDependencies": {
+    "@nkzw/eslint-plugin": "catalog:",
+    "@nkzw/oxlint-config": "catalog:",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint-plugin-no-only-tests": "catalog:",
+    "eslint-plugin-perfectionist": "catalog:",
+    "eslint-plugin-unused-imports": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

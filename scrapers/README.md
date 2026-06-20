@@ -11,6 +11,7 @@ universities. However, we have only implemented an NUS scraper. More details on 
 can be found in its folder.
 
 1. [NUS Scraper](nus-v2)
+2. [Demand Allocation Scraper](demand-allocation-scraper)
 
 If you are from another university and would like to implement a scraper for
 your uni, feel free to file an issue or just contact us! We already have some
