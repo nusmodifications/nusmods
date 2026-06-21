@@ -3,6 +3,7 @@ import {
   fromPairs,
   get,
   groupBy,
+  intersection,
   invert,
   isEmpty,
   isNaN,
@@ -275,11 +276,13 @@ export function getRecoverySerializedLessonDetails(
   lessonsWithLessonType: Record<LessonId, RawLesson>,
   configLessonTypeLessonIds: LessonId[],
 ): LessonId[] {
+  const lessonsWithValidLessonIds = intersection(
+    keys(lessonsWithLessonType),
+    configLessonTypeLessonIds,
+  );
+  if (!isEmpty(lessonsWithValidLessonIds)) return lessonsWithValidLessonIds;
+
   const configLessonTypeLessonIdsSet = new Set(configLessonTypeLessonIds);
-
-  const lessonsWithValidLessonIds = pick(lessonsWithLessonType, configLessonTypeLessonIds);
-  if (size(lessonsWithValidLessonIds) > 0) return keys(lessonsWithValidLessonIds);
-
   const lessonsWithClassNo = pickBy(lessonsWithLessonType, (lesson) =>
     configLessonTypeLessonIdsSet.has(lesson.classNo),
   );
