@@ -194,9 +194,9 @@ class ReqTreeVisitor
 
     const cohort = ctx.cohort_years();
     let rule: CohortRule;
-    if (cohort.IF_IN() !== undefined) {
+    if (cohort.if_in() !== undefined) {
       rule = 'IF_IN';
-    } else if (cohort.IF_NOT_IN() !== undefined) {
+    } else if (cohort.if_not_in() !== undefined) {
       rule = 'IF_NOT_IN';
     } else if (cohort.must_be_in() !== undefined) {
       rule = 'MUST_BE_IN';

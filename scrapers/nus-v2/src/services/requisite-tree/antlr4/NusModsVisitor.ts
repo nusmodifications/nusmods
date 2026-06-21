@@ -25,6 +25,8 @@ import { CoursesContext } from './NusModsParser';
 import { Course_itemsContext } from './NusModsParser';
 import { Must_be_inContext } from './NusModsParser';
 import { Must_not_be_inContext } from './NusModsParser';
+import { If_inContext } from './NusModsParser';
+import { If_not_inContext } from './NusModsParser';
 import { Contains_numberContext } from './NusModsParser';
 
 /**
@@ -195,6 +197,20 @@ export interface NusModsVisitor<Result> extends ParseTreeVisitor<Result> {
    * @return the visitor result
    */
   visitMust_not_be_in?: (ctx: Must_not_be_inContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.if_in`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitIf_in?: (ctx: If_inContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.if_not_in`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitIf_not_in?: (ctx: If_not_inContext) => Result;
 
   /**
    * Visit a parse tree produced by `NusModsParser.contains_number`.
