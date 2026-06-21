@@ -93,8 +93,10 @@ const requestMiddleware: Middleware<RequestsDispatchExt, State, Dispatch> =
           meta: {
             ...meta,
             requestStatus: SUCCESS,
-            request: payload,
-            responseHeaders: response.headers,
+            // Spread to a plain object so cross-tab clones match the local
+            // shape; axios 1.x returns response.headers as an AxiosHeaders
+            // class instance whose prototype methods structuredClone strips.
+            responseHeaders: { ...response.headers },
           },
         });
 
@@ -107,7 +109,6 @@ const requestMiddleware: Middleware<RequestsDispatchExt, State, Dispatch> =
           meta: {
             ...meta,
             requestStatus: FAILURE,
-            request: payload,
           },
         });
 
