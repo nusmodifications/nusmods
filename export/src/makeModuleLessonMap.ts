@@ -1,4 +1,4 @@
-import { fromPairs, groupBy, invert, isUndefined, map, mapValues } from 'lodash';
+import { fromPairs, groupBy, invert, isEmpty, isUndefined, map, mapValues } from 'lodash';
 import { DayText, Lesson, ModuleLessonMap, RawLesson, WeekRange, Weeks } from './types';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
@@ -49,6 +49,10 @@ export function getLessonIdentifier(lesson: Lesson): string {
 }
 
 export const serializeWeekNumbers = (weeks: Readonly<Array<number>>): string => {
+  if (isEmpty(weeks)) {
+    return '_';
+  }
+
   return weeks.join(WEEKS_SEP);
 };
 
