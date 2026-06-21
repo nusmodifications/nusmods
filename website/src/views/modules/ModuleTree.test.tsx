@@ -110,6 +110,38 @@ describe(ModuleTreeComponent, () => {
     expect(component).toMatchSnapshot('NGT2001E');
   });
 
+  test('should render a prereq tree with multiple cohort gates', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="BT4103"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
+        prereqTree={{
+          and: [
+            {
+              cohort: { rule: 'IF_IN', years: ['E:2021'] },
+              then: {
+                and: ['BT3102:D', 'BT3103:D', { or: ['IS2101:D', 'ES1601:D', 'ES2002:D'] }],
+              },
+            },
+            {
+              cohort: { rule: 'IF_IN', years: ['S:2022'] },
+              then: {
+                and: [
+                  'BT2101:D',
+                  'BT3103:D',
+                  { or: ['IS2101:D', 'UWC2101%:D', 'ES2002:D', 'ES1601:D'] },
+                ],
+              },
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('BT4103');
+  });
+
   test('should render prereq tree to the right when tree direction is set to right', () => {
     const component = render(
       <ModuleTreeComponent

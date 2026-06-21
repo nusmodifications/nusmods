@@ -426,6 +426,320 @@ exports[`ModuleTreeComponent > should render a cohort-gated prereq tree > NGT200
 ]
 `;
 
+exports[`ModuleTreeComponent > should render a prereq tree with multiple cohort gates > BT4103 1`] = `
+[
+  <div
+    class="container"
+  >
+    <ul
+      class="prereqTree root"
+    >
+      <li
+        class="branch leftBranch"
+      >
+        <ul
+          class="tree"
+        >
+          <li
+            class="branch leftBranch"
+          >
+            <ul
+              class="tree"
+            >
+              <li
+                class="branch leftBranch"
+              >
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <ul
+                      class="tree"
+                    >
+                      <li
+                        class="branch leftBranch"
+                      >
+                        <div
+                          class="node moduleNode leftNode"
+                        >
+                          <div>
+                            <mockedlink
+                              class="link"
+                            >
+                              BT3102
+                            </mockedlink>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        class="branch leftBranch"
+                      >
+                        <div
+                          class="node moduleNode leftNode"
+                        >
+                          <div>
+                            <mockedlink
+                              class="link"
+                            >
+                              BT3103
+                            </mockedlink>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        class="branch leftBranch"
+                      >
+                        <ul
+                          class="tree"
+                        >
+                          <li
+                            class="branch leftBranch"
+                          >
+                            <div
+                              class="node moduleNode leftNode"
+                            >
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  IS2101
+                                </mockedlink>
+                              </div>
+                            </div>
+                          </li>
+                          <li
+                            class="branch leftBranch"
+                          >
+                            <div
+                              class="node moduleNode leftNode"
+                            >
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  ES1601
+                                </mockedlink>
+                              </div>
+                            </div>
+                          </li>
+                          <li
+                            class="branch leftBranch"
+                          >
+                            <div
+                              class="node moduleNode leftNode"
+                            >
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  ES2002
+                                </mockedlink>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                        <div
+                          class="node conditional"
+                        >
+                          take one
+                        </div>
+                      </li>
+                    </ul>
+                    <div
+                      class="node conditional"
+                    >
+                      take all
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  class="node conditional"
+                >
+                  For cohorts up to 2021
+                </div>
+              </li>
+              <li
+                class="branch leftBranch"
+              >
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <ul
+                      class="tree"
+                    >
+                      <li
+                        class="branch leftBranch"
+                      >
+                        <div
+                          class="node moduleNode leftNode"
+                        >
+                          <div>
+                            <mockedlink
+                              class="link"
+                            >
+                              BT2101
+                            </mockedlink>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        class="branch leftBranch"
+                      >
+                        <div
+                          class="node moduleNode leftNode"
+                        >
+                          <div>
+                            <mockedlink
+                              class="link"
+                            >
+                              BT3103
+                            </mockedlink>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        class="branch leftBranch"
+                      >
+                        <ul
+                          class="tree"
+                        >
+                          <li
+                            class="branch leftBranch"
+                          >
+                            <div
+                              class="node moduleNode leftNode"
+                            >
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  IS2101
+                                </mockedlink>
+                              </div>
+                            </div>
+                          </li>
+                          <li
+                            class="branch leftBranch"
+                          >
+                            <div
+                              class="node moduleNode leftNode"
+                            >
+                              <span
+                                class="prefix"
+                              >
+                                Course starting with
+                              </span>
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  "UWC2101" 
+                                </mockedlink>
+                              </div>
+                            </div>
+                          </li>
+                          <li
+                            class="branch leftBranch"
+                          >
+                            <div
+                              class="node moduleNode leftNode"
+                            >
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  ES2002
+                                </mockedlink>
+                              </div>
+                            </div>
+                          </li>
+                          <li
+                            class="branch leftBranch"
+                          >
+                            <div
+                              class="node moduleNode leftNode"
+                            >
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  ES1601
+                                </mockedlink>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                        <div
+                          class="node conditional"
+                        >
+                          take one
+                        </div>
+                      </li>
+                    </ul>
+                    <div
+                      class="node conditional"
+                    >
+                      take all
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  class="node conditional"
+                >
+                  For cohort 2022 onwards
+                </div>
+              </li>
+            </ul>
+            <div
+              class="node conditional"
+            >
+              take all
+            </div>
+          </li>
+        </ul>
+        <div
+          class="node moduleNode leftNode inactiveRootNode"
+        >
+          <div>
+            <mockedlink
+              class="link"
+            >
+              BT4103
+            </mockedlink>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>,
+  <p
+    class="alert alert-warning"
+  >
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    <a
+      href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      our repository
+    </a>
+     or send an email to 
+    <a
+      href="mailto:bugs@nusmods.com"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      bugs@nusmods.com
+    </a>
+    .
+  </p>,
+]
+`;
+
 exports[`ModuleTreeComponent > should render prereq branch with nOf condition > PC2130 1`] = `
 [
   <div
