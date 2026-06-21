@@ -1,16 +1,25 @@
 import { AcadWeekInfo } from 'nusmoderator';
-import { flatMapDeep, groupBy, isEqual, map, mapValues, range, sample, values } from 'lodash-es';
+import {
+  flatMapDeep,
+  groupBy,
+  isEqual,
+  map,
+  mapValues,
+  pick,
+  range,
+  sample,
+  values,
+} from 'lodash-es';
 import { addDays, min as minDate, parseISO, startOfDay } from 'date-fns';
 
 import {
   consumeWeeks,
-  LessonIndex,
   LessonType,
   RawLessonWithIndex,
   NumericWeeks,
   RawLesson,
   Semester,
-  ClassNo,
+  Module,
 } from 'types/modules';
 
 import {
@@ -19,12 +28,12 @@ import {
   Lesson,
   LessonWithIndex,
   ModuleLessonConfig,
-  SemTimetableConfig,
   SemTimetableConfigWithLessons,
 } from 'types/timetables';
 
 import { getTimeAsDate } from '../timify';
 import { deltas } from '../array';
+import { ModulesMap } from 'types/reducers';
 
 export function isValidSemester(semester: Semester): boolean {
   return semester >= 1 && semester <= 4;
@@ -165,28 +174,6 @@ export function formatNumericWeeks(unprocessedWeeks: NumericWeeks): string | nul
   return `Weeks ${processed.join(', ')}`;
 }
 
-/**
- * A helper function to convert the lesson indices array in a semester timetable config to sets
- */
-function convertSemTimetableConfigLessonIndicesFromArrayToSets(
-  semTimetableConfig: SemTimetableConfig,
-): {
-  [lessonType: LessonType]: {
-    [classNo: ClassNo]: Set<LessonIndex>;
-  };
-} {
-  return mapValues(semTimetableConfig, (moduleLessonConfig) =>
-    mapValues(moduleLessonConfig, (lessonsInLessonType) => new Set(lessonsInLessonType)),
-  );
-}
-
-export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
-  return isEqual(
-    convertSemTimetableConfigLessonIndicesFromArrayToSets(t1),
-    convertSemTimetableConfigLessonIndicesFromArrayToSets(t2),
-  );
-}
-
 export function isSameLesson(l1: Lesson, l2: Lesson) {
   return (
     l1.lessonType === l2.lessonType &&
@@ -208,6 +195,14 @@ export function getHoverLesson(lesson: InteractableLesson): HoverLesson {
   };
 }
 
+// Get information for all modules present in a semester timetable config
+export function getSemesterModules(
+  timetable: { [moduleCode: string]: unknown },
+  modules: ModulesMap,
+): Module[] {
+  return values(pick(modules, Object.keys(timetable)));
+}
+
 export { findExamClashes } from './exams';
 export { isInteractable, getInteractableLessons } from './interactabilityHydration';
 export { hydrateSemTimetableWithLessons } from './lessonHydration';
@@ -215,7 +210,6 @@ export {
   getClosestLessonConfig,
   getLessonIndices,
   getRecoveryLessonIndices,
-  getSemesterModules,
   makeLessonIndicesMap,
 } from './lessonIndices';
 export { LESSON_ABBREV_TYPE, LESSON_TYPE_ABBREV, getLessonIdentifier } from './lessonId';
