@@ -10,6 +10,13 @@ export function flattenTree(tree: PrereqTree | Array<PrereqTree>): Array<string>
     return flatMap(tree, flattenTree);
   }
 
+  // The Object.values() walk below recurses into the nOf tuple, so the count
+  // (a number) gets passed back in. The `in` operator below only works on
+  // objects, so bail on any non-object (numbers contribute no module codes).
+  if (typeof tree !== 'object') {
+    return [];
+  }
+
   // Only the gated requirement holds module codes; the cohort condition itself
   // (rule + year tokens) must not be walked as if it were a subtree.
   if ('cohort' in tree) {
