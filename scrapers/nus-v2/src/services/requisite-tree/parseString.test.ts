@@ -437,6 +437,21 @@ THEN
     ).toEqual(result);
   });
 
+  it('gates trailing AND clauses under the cohort (the NGT2001E shape)', () => {
+    // The consequence after THEN is greedy: the trailing "AND COURSES NSW%:D"
+    // belongs inside the cohort gate, not as an ungated sibling requirement.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COHORT_YEARS IF_IN S:2022 THEN COURSES NTW%:D, LC1016:D AND COURSES NSW%:D)
+      `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_IN', years: ['S:2022'] },
+      then: { and: ['NTW%:D', 'LC1016:D', 'NSW%:D'] },
+    });
+  });
+
   // According to NUS docs, this means ALL courses are required.
   it('allows omitted courses count, keeping the cohort gate', () => {
     const result: PrereqTree = {
