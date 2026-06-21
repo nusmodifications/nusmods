@@ -42,6 +42,7 @@ describe(Navtabs, () => {
         [
           "Today",
           "Timetable",
+          "Optimiser",
           "Courses",
           "CPEx",
           "Venues",
@@ -56,6 +57,7 @@ describe(Navtabs, () => {
         [
           "Today",
           "Timetable",
+          "Optimiser",
           "Courses",
           "Venues",
           "Planner",

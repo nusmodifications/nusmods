@@ -102,8 +102,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run:
           name: Lint code
-          command: pnpm lint:code --cache --cache-location 'node_modules/.eslintcache/'
-            --format junit -o reports/junit/js-lint-results.xml
+          command: pnpm lint:code
       - run:
           name: Lint styles
           command: pnpm lint:styles
