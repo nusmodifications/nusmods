@@ -230,6 +230,7 @@ servers:
 tags:
   - name: 'Modules'
   - name: 'Venues'
+  - name: 'CourseReg'
 
 paths:
   /{acadYear}/moduleList.json:
@@ -388,6 +389,30 @@ paths:
         404:
           $ref: '#/components/responses/404'
 
+  /{acadYear}/semesters/{semester}/courseRegHistory.json:
+    get:
+      summary: 'Get CourseReg vacancy and demand allocation history'
+      parameters:
+        - $ref: '#/components/parameters/acadYear'
+        - $ref: '#/components/parameters/semester'
+      description: |
+        Get CourseReg vacancy and demand allocation history for modules in a semester, grouped by module, student type, class number, and CourseReg round.
+
+        This data is extracted from CourseReg vacancy and demand allocation PDFs after each round is released. Slot values preserve the difference between `0`, `unlimited`, and `notAvailable`. The `registered` value is `null` when CourseReg did not publish a registered count for that class and round.
+      tags:
+        - 'CourseReg'
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: 'array'
+                items:
+                  $ref: '#/components/schemas/CourseRegModuleSemesterHistory'
+        404:
+          $ref: '#/components/responses/404'
+
 components:
   responses:
     404:
@@ -457,6 +482,77 @@ components:
             moduleCode:
               type: 'string'
               example: 'CS1010S'
+
+    CourseRegSlotValue:
+      oneOf:
+        - type: 'number'
+          example: 50
+        - type: 'string'
+          enum:
+            - 'notAvailable'
+            - 'unlimited'
+
+    CourseRegRoundHistory:
+      required:
+        - 'allocatedSlots'
+        - 'forecastedSlots'
+        - 'registered'
+        - 'round'
+      properties:
+        allocatedSlots:
+          $ref: '#/components/schemas/CourseRegSlotValue'
+        forecastedSlots:
+          $ref: '#/components/schemas/CourseRegSlotValue'
+        registered:
+          nullable: true
+          type: 'number'
+          example: 17
+        round:
+          type: 'number'
+          enum: [0, 1, 2, 3]
+          example: 2
+
+    CourseRegClassHistory:
+      required:
+        - 'classNo'
+        - 'rounds'
+        - 'studentType'
+      properties:
+        classNo:
+          type: 'string'
+          example: '1'
+        rounds:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/CourseRegRoundHistory'
+        studentType:
+          type: 'string'
+          enum:
+            - 'UG'
+            - 'GD'
+          example: 'UG'
+
+    CourseRegModuleSemesterHistory:
+      required:
+        - 'acadYear'
+        - 'classes'
+        - 'moduleCode'
+        - 'semester'
+      properties:
+        acadYear:
+          type: 'string'
+          example: '2025/2026'
+        classes:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/CourseRegClassHistory'
+        moduleCode:
+          type: 'string'
+          example: 'CS2030S'
+        semester:
+          type: 'number'
+          enum: [1, 2, 3, 4]
+          example: 2
 
     PrereqTree:
       oneOf:

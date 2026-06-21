@@ -69,6 +69,16 @@ class NUSModsApi {
   }
 
   /**
+   * CourseReg vacancy and demand allocation history for one semester.
+   * @param {number} semester
+   * @param {string} academicYear
+   * @returns {string}
+   */
+  static courseRegHistoryUrl(semester, academicYear = config.academicYear) {
+    return `${NUSModsApi.baseUrl(academicYear)}/semesters/${semester}/courseRegHistory.json`;
+  }
+
+  /**
    * List of departments mapped to faculties
    * @param {string} academicYear
    * @returns {string}
