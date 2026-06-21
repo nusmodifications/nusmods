@@ -7,21 +7,27 @@ import {
   shouldUsePreviousAyForSemester,
 } from './index.js';
 
+// Refer to packages/nusmods-academic-calendar/academic-calendar.json each AY's configs.
+
 describe(isPreviousAySpecialTermActive, () => {
   it('returns true during previous AY Special Term I after AY migration', () => {
     expect(isPreviousAySpecialTermActive('2025/2026', new Date(2025, 4, 15))).toBe(true);
+    expect(isPreviousAySpecialTermActive('2025/2026', new Date(2025, 4, 12))).toBe(true);
   });
 
   it('returns true during previous AY Special Term II after AY migration', () => {
     expect(isPreviousAySpecialTermActive('2025/2026', new Date(2025, 6, 1))).toBe(true);
+    expect(isPreviousAySpecialTermActive('2025/2026', new Date(2025, 7, 10))).toBe(true);
   });
 
   it('returns false before previous AY Special Term I starts', () => {
     expect(isPreviousAySpecialTermActive('2025/2026', new Date(2025, 4, 1))).toBe(false);
+    expect(isPreviousAySpecialTermActive('2025/2026', new Date(2025, 4, 11))).toBe(false);
   });
 
   it('returns false after new AY semester 1 starts', () => {
     expect(isPreviousAySpecialTermActive('2025/2026', new Date(2025, 7, 11))).toBe(false);
+    expect(isPreviousAySpecialTermActive('2025/2026', new Date(2026, 0, 1))).toBe(false);
   });
 });
 
@@ -32,6 +38,18 @@ describe(getEffectiveSpecialTermAcadYear, () => {
     );
     expect(getEffectiveSpecialTermAcadYear('2025/2026', null, new Date(2025, 6, 1))).toBe(
       '2024/2025',
+    );
+    expect(getEffectiveSpecialTermAcadYear('2025/2026', null, new Date(2025, 7, 10))).toBe(
+      '2024/2025',
+    );
+  });
+
+  it('uses current AY outside overlap', () => {
+    expect(getEffectiveSpecialTermAcadYear('2025/2026', null, new Date(2025, 7, 11))).toBe(
+      '2025/2026',
+    );
+    expect(getEffectiveSpecialTermAcadYear('2025/2026', null, new Date(2025, 8, 1))).toBe(
+      '2025/2026',
     );
   });
 
