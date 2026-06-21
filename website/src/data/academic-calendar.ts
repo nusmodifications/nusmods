@@ -1,11 +1,13 @@
-import academicCalendarJSON from './academic-calendar.json';
+export {
+  academicCalendar as default,
+  academicCalendar,
+  getEffectiveSpecialTermAcadYear,
+  getSemesterStart,
+  isPreviousAySpecialTermActive,
+  isUsingPreviousAySpecialTermData,
+  shouldUsePreviousAyForSemester,
+  SPECIAL_TERM_SEMESTERS,
+  subtractAcadYear,
+} from 'nusmods-academic-calendar';
 
-// Force TS to accept our typing instead of inferring from the JSON
-type DateTuple = [number, number, number];
-const academicCalendar = academicCalendarJSON as unknown as {
-  [year: string]: {
-    [semester: string]: { start: DateTuple };
-  };
-};
-
-export default academicCalendar;
+export type { AcademicCalendar, DateTuple } from 'nusmods-academic-calendar';

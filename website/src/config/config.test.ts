@@ -4,7 +4,7 @@ vi.unmock('config');
 import { flatten, range } from 'lodash-es';
 
 import { Semesters } from 'types/modules';
-import academicCalendar from 'data/academic-calendar.json';
+import academicCalendar from 'data/academic-calendar';
 import { getModRegRoundKey } from 'selectors/modreg';
 
 import config from './index';
