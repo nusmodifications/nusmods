@@ -43,6 +43,20 @@ test('getModuleSemesterData should return semester data if semester is present',
         lessonIndex: 0,
       },
     ],
+    lessonMap: {
+      Lecture: {
+        '1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13': {
+          classNo: '1',
+          lessonType: 'Lecture',
+          weeks: EVERY_WEEK,
+          day: 'Monday',
+          startTime: '1830',
+          endTime: '2030',
+          venue: 'VCRm',
+          lessonIndex: 0,
+        },
+      },
+    },
   };
   expect(actual).toEqual(expected);
 });
@@ -89,6 +103,7 @@ describe(getFirstAvailableSemester, () => {
     return {
       semester,
       timetable: [],
+      lessonMap: {},
     };
   }
 

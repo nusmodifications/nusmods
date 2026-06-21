@@ -26,6 +26,11 @@ export type WeekRange = {
   weeks?: number[];
 };
 export type LessonIndex = number;
+/**
+ * `LessonId`s identify a singular lesson from a list of lessons of a `LessonType`.
+ * `LessonType` is excluded from the `LessonId` because lessons of different `LessonType`s are serialized separately in sharing links.
+ */
+export type LessonId = string;
 
 // Whether a cohort condition includes (IF_IN/MUST_BE_IN) or excludes
 // (IF_NOT_IN/MUST_NOT_BE_IN) the listed cohort years.
@@ -159,10 +164,20 @@ export type LessonIndicesMap = {
   };
 };
 
+/**
+ * Mapping of lessons to their respective lesson ID and lesson type\
+ */
+export type ModuleLessonMap<T extends RawLesson> = {
+  [lessonType: LessonType]: {
+    [lessonId: LessonId]: T;
+  };
+};
+
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
   timetable: readonly RawLessonWithIndex[];
+  readonly lessonMap: ModuleLessonMap<RawLesson>;
 
   // Exam
   examDate?: string;
