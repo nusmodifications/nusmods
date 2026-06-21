@@ -536,6 +536,21 @@ THEN
     });
   });
 
+  it('keeps a subject-year gate as a cohort-style predicate (the NHS2045 shape)', () => {
+    // SUBJECT_YEARS shares COHORT_YEARS' S:/E: year-bound format, so it is
+    // carried as a cohort-style gate evaluated against the matriculation year.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN (SUBJECT_YEARS IF_IN S:2022/23 THEN COURSES NTW%:D)
+        `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_IN', years: ['S:2022/23'] },
+      then: 'NTW%:D',
+    });
+  });
+
   // According to NUS docs, this means ALL subjects are required.
   // Also SPECIAL_PROGRAMME is undocumented by NUS, so best effort here...
   it('allows omitted subjects count an undocumented SPECIAL_PROGRAMME type', () => {

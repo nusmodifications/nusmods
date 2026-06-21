@@ -18,6 +18,7 @@ import {
   ProgramsContext,
   Cohort_yearsContext,
   Cohort_conditionalContext,
+  Subject_years_conditionalContext,
   Program_typesContext,
 } from './antlr4/NusModsParser';
 import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
@@ -199,6 +200,26 @@ class ReqTreeVisitor
 
     const cohort = this.cohortCondition(ctx.cohort_years());
     return cohort === undefined ? '' : { cohort, then };
+  };
+
+  // A subject-year-gated requirement. SUBJECT_YEARS shares the S:/E: year-bound
+  // format of COHORT_YEARS and there is no separate planner input for it, so it
+  // is carried as a cohort-style gate evaluated against the matriculation year.
+  // @ts-ignore
+  visitSubject_years_conditional?:
+    | ((ctx: Subject_years_conditionalContext) => PrereqTree)
+    | undefined = (ctx) => {
+    const then = ctx.compound()?.accept(this);
+    // If the gated requirement simplifies away, there is nothing to require.
+    if (then === undefined || then === '') {
+      return '';
+    }
+    // subject_years only supports IF_IN (see the grammar).
+    const years = ctx
+      .subject_years()
+      .YEARS()
+      .map((node) => node.text);
+    return { cohort: { rule: 'IF_IN', years }, then };
   };
 
   cohortCondition(ctx: Cohort_yearsContext): CohortCondition | undefined {

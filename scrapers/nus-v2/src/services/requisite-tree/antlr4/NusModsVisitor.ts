@@ -6,6 +6,7 @@ import { OverallContext } from './NusModsParser';
 import { Program_typesContext } from './NusModsParser';
 import { CompoundContext } from './NusModsParser';
 import { Cohort_conditionalContext } from './NusModsParser';
+import { Subject_years_conditionalContext } from './NusModsParser';
 import { BinopContext } from './NusModsParser';
 import { Boolean_exprContext } from './NusModsParser';
 import { OpContext } from './NusModsParser';
@@ -64,6 +65,13 @@ export interface NusModsVisitor<Result> extends ParseTreeVisitor<Result> {
    * @return the visitor result
    */
   visitCohort_conditional?: (ctx: Cohort_conditionalContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.subject_years_conditional`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitSubject_years_conditional?: (ctx: Subject_years_conditionalContext) => Result;
 
   /**
    * Visit a parse tree produced by `NusModsParser.binop`.
