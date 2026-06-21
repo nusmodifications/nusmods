@@ -32,6 +32,7 @@ export type RegPeriod = {
 export type Config = {
   brandName: string;
   academicYear: AcadYear;
+  specialTermAcademicYear: AcadYear | null;
   semester: Semester;
   getSemesterKey: () => string;
 
@@ -46,9 +47,9 @@ export type Config = {
   shortSemesterNames: { [semester: string]: string };
 
   /*
-   * Toggle to show a notice for ST2 modules to refer to NUS's timetable.
-   * Added because ModReg Round 0 (next AY data) overlaps with ST2 (prev AY)
-   * data, and NUSMods rotates complete AYs.
+   * Fallback link for ST II exam dates that are unavailable after AY migration.
+   * During the overlap window we prefer merged previous-AY ST II data; this
+   * link is shown only when that data has no exam date.
    */
   showSt2ExamTimetable: boolean;
   st2ExamTimetableUrl: string;
