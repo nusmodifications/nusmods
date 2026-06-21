@@ -1,6 +1,7 @@
-import { each } from 'lodash-es';
+import { each, get } from 'lodash-es';
 import {
   deserializeLessonDetails,
+  getRecoverySerializedLessonDetails,
   makeModuleLessonMap,
   parseWeeks,
   serializeLessonDetails,
@@ -8,8 +9,8 @@ import {
   serializeWeekRange,
 } from './lessonId';
 import { ModuleLessonMap, RawLesson, WeekRange } from 'types/modules';
-import { CS1010S } from '__mocks__/modules';
-import { getModuleTimetable } from 'utils/modules';
+import { CS1010S, GES1021 } from '__mocks__/modules';
+import { getModuleLessonMap, getModuleTimetable } from 'utils/modules';
 
 const semester = 1;
 const sampleModuleTimetable = getModuleTimetable(CS1010S, semester);
@@ -203,5 +204,41 @@ describe('deserializeLessonDetails', () => {
         expect(() => deserializeLessonDetails(lessonId)).toThrow('Serialized weeks is malformed');
       });
     });
+  });
+});
+
+describe('getRecoverySerializedLessonDetails', () => {
+  test('return corresponding lesson ids if config contains valid class no', () => {
+    const lessonMap = getModuleLessonMap(GES1021, 1);
+
+    expect(getRecoverySerializedLessonDetails(get(lessonMap, 'Lecture'), ['SL1'])).toStrictEqual([
+      'SL1|MON|1600|1800|LT27|1_2_3_4_5_6_7_8_9_10_11_12_13',
+      'SL1|WED|1600|1800|LT27|1_2_3_4_5_6_7_8_9_10_11_12_13',
+    ]);
+  });
+
+  const lessonMap = getModuleLessonMap(CS1010S, 1);
+
+  test('return first lessonId if config is empty', () => {
+    expect(getRecoverySerializedLessonDetails(get(lessonMap, 'Tutorial'), [])).toStrictEqual([
+      '1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13',
+    ]);
+  });
+
+  test('return valid lessonIds if any are present', () => {
+    expect(
+      getRecoverySerializedLessonDetails(get(lessonMap, 'Tutorial'), [
+        '2|MON|1000|1100|COM1-0217|3_4_5_6_7_8_9_10_11_12_13',
+        '3|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
+      ]),
+    ).toStrictEqual(['2|MON|1000|1100|COM1-0217|3_4_5_6_7_8_9_10_11_12_13']);
+  });
+
+  test('return first lessonId if no classNo or lessonId is valid', () => {
+    expect(
+      getRecoverySerializedLessonDetails(get(lessonMap, 'Tutorial'), [
+        '3|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
+      ]),
+    ).toStrictEqual(['1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13']);
   });
 });

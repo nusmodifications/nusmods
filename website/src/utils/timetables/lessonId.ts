@@ -264,19 +264,26 @@ export function getRecoveryClassNo(
 }
 
 /**
- * Used to recover from the config of a lesson type of a TA module with invalid lessons
+ * Used to recover from the config of a lesson type of a TA module with invalid lesson config\
+ * If any of the `LessonId`s are valid, they are returned\
+ * If none of the `LessonId`s are valid, check they are valid `ClassNo`s, if so, return the corresponding `LessonId`s\
+ * Otherwise return a config containing the first `LessonId`
  * @param lessonsWithLessonType lessons with the same lesson type to generate a valid lesson config from
- * @returns a `LessonId`. The current implementation generates a config containing the first `LessonId`
+ * @returns config of `LessonId`s
  */
 export function getRecoverySerializedLessonDetails(
   lessonsWithLessonType: Record<LessonId, RawLesson>,
   configLessonTypeLessonIds: LessonId[],
 ): LessonId[] {
   const configLessonTypeLessonIdsSet = new Set(configLessonTypeLessonIds);
-  const recoveryLessons = pickBy(lessonsWithLessonType, (lesson) =>
+
+  const lessonsWithValidLessonIds = pick(lessonsWithLessonType, configLessonTypeLessonIds);
+  if (size(lessonsWithValidLessonIds) > 0) return keys(lessonsWithValidLessonIds);
+
+  const lessonsWithClassNo = pickBy(lessonsWithLessonType, (lesson) =>
     configLessonTypeLessonIdsSet.has(lesson.classNo),
   );
-  if (size(recoveryLessons) > 0) return keys(recoveryLessons);
+  if (size(lessonsWithClassNo) > 0) return keys(lessonsWithClassNo);
 
   const firstLessonId = first(keys(lessonsWithLessonType));
   if (!firstLessonId) {
