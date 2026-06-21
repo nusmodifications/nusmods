@@ -45,8 +45,10 @@ export type CohortCondition = { rule: CohortRule; years: Array<string> };
 export type PrereqTree =
   | string
   | { and?: Array<PrereqTree>; nOf?: [number, Array<PrereqTree>]; or?: Array<PrereqTree> }
-  // A requirement (`then`) that only applies to certain cohorts (`cohort`).
-  | { cohort: CohortCondition; then: PrereqTree };
+  // A cohort predicate. With `then`, it gates that requirement to the matching
+  // cohorts; without `then`, it is a bare eligibility constraint (the student
+  // must be in the cohort to take the module).
+  | { cohort: CohortCondition; then?: PrereqTree };
 
 // Auxiliary data types
 export type Day =

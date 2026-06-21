@@ -18,9 +18,10 @@ export function flattenTree(tree: PrereqTree | Array<PrereqTree>): Array<string>
   }
 
   // Only the gated requirement holds module codes; the cohort condition itself
-  // (rule + year tokens) must not be walked as if it were a subtree.
+  // (rule + year tokens) must not be walked as if it were a subtree. A bare
+  // cohort constraint has no `then`, so it contributes no module codes.
   if ('cohort' in tree) {
-    return flattenTree(tree.then);
+    return tree.then === undefined ? [] : flattenTree(tree.then);
   }
 
   return flatMap(Object.values(tree), (t) => flattenTree(t as PrereqTree));

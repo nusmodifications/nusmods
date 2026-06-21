@@ -48,8 +48,10 @@ export type PrereqTree =
   | { and: PrereqTree[] }
   | { or: PrereqTree[] }
   | { nOf: [number, PrereqTree[]] }
-  // A requirement (`then`) that only applies to certain cohorts (`cohort`).
-  | { cohort: CohortCondition; then: PrereqTree };
+  // A cohort predicate. With `then`, it gates that requirement to the matching
+  // cohorts; without `then`, it is a bare eligibility constraint (the student
+  // must be in the cohort to take the module).
+  | { cohort: CohortCondition; then?: PrereqTree };
 
 // Auxiliary data types
 export type Day =

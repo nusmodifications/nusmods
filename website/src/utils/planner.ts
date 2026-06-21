@@ -65,6 +65,33 @@ export function cohortConditionApplies(
 }
 
 /**
+ * Human-readable description of a cohort condition, e.g. "cohort 2022 onwards".
+ */
+export function formatCohortCondition({ rule, years }: CohortCondition): string {
+  const tokenYear = (token?: string) => {
+    if (token === undefined) return undefined;
+    const year = cohortTokenYear(token);
+    return Number.isNaN(year) ? undefined : year;
+  };
+  const start = tokenYear(years.find((y) => !y.startsWith('E')));
+  const end = tokenYear(years.find((y) => y.startsWith('E')));
+
+  let range: string;
+  if (start !== undefined && end !== undefined) {
+    range = start === end ? `cohort ${start}` : `cohorts ${start}–${end}`;
+  } else if (start !== undefined) {
+    range = `cohort ${start} onwards`;
+  } else if (end !== undefined) {
+    range = `cohorts up to ${end}`;
+  } else {
+    range = 'select cohorts';
+  }
+
+  const exclude = rule === 'IF_NOT_IN' || rule === 'MUST_NOT_BE_IN';
+  return exclude ? `cohorts excluding ${range}` : range;
+}
+
+/**
  * Check if a prereq tree is fulfilled given a set of modules that have already
  * been taken. An array of unfulfilled requirements is returned. An empty array
  * means that the prereq tree is fulfilled. `cohortYear` is the student's
@@ -93,9 +120,15 @@ export function checkPrerequisite(
     }
 
     if ('cohort' in fragment) {
+      const applies = cohortConditionApplies(fragment.cohort, cohortYear);
+      if (fragment.then === undefined) {
+        // A bare cohort constraint is an eligibility requirement: unfulfilled
+        // when the student's matriculation year doesn't match.
+        return applies ? [] : [fragment];
+      }
       // The gated requirement only applies to matching cohorts. If it doesn't
       // apply to this student, there is nothing left to fulfil.
-      return cohortConditionApplies(fragment.cohort, cohortYear) ? walkTree(fragment.then) : [];
+      return applies ? walkTree(fragment.then) : [];
     }
 
     if ('nOf' in fragment) {
@@ -147,9 +180,12 @@ export function conflictToText(rootConflict: PrereqTree): string {
     }
 
     if ('cohort' in conflict) {
-      // The gate has already been evaluated; only the gated requirement is an
-      // actionable conflict, so render that.
-      return walkTree(conflict.then);
+      // A bare cohort constraint surfaces as the conflict itself, so describe
+      // the cohort. For a gated requirement the gate has already been
+      // evaluated, so render the requirement.
+      return conflict.then === undefined
+        ? formatCohortCondition(conflict.cohort)
+        : walkTree(conflict.then);
     }
 
     if ('nOf' in conflict) {

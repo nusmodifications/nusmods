@@ -56,4 +56,12 @@ describe(flattenTree, () => {
       }),
     ).toEqual(['LC1016:D', 'NTW%:D', 'NSW%:D']);
   });
+
+  test('should yield no module codes for a bare cohort constraint', () => {
+    expect(
+      flattenTree({
+        and: ['CS1010:D', { cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } }],
+      }),
+    ).toEqual(['CS1010:D']);
+  });
 });

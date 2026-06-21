@@ -177,6 +177,30 @@ describe(checkPrerequisite, () => {
       // moduleSet contains NTW2006, fulfilling the NTW% wildcard.
       expect(checkPrerequisite(moduleSet, gate(['S:2020'], 'NTW%'), 2022)).toHaveLength(0);
     });
+
+    describe('bare cohort constraint (no `then`)', () => {
+      const constraint: PrereqTree = { cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } };
+
+      test('is satisfied when the matriculation year matches', () => {
+        expect(checkPrerequisite(moduleSet, constraint, 2018)).toHaveLength(0);
+      });
+
+      test('is unfulfilled when the matriculation year does not match', () => {
+        expect(checkPrerequisite(moduleSet, constraint, 2016)).toEqual([constraint]);
+      });
+
+      test('is conservatively satisfied when the cohort year is unknown', () => {
+        expect(checkPrerequisite(moduleSet, constraint)).toHaveLength(0);
+      });
+
+      test('surfaces as a conflict alongside an unmet course requirement', () => {
+        // The DBA3702 shape: one of the courses AND a cohort constraint.
+        const tree: PrereqTree = {
+          and: [{ or: ['CS9999'] }, constraint],
+        };
+        expect(checkPrerequisite(moduleSet, tree, 2016)).toEqual([{ or: ['CS9999'] }, constraint]);
+      });
+    });
   });
 });
 
@@ -192,6 +216,12 @@ describe(conflictToText, () => {
         then: { or: ['CS1010:D', 'CS1101S:D'] },
       }),
     ).toEqual('CS1010 or CS1101S');
+  });
+
+  test('describes a bare cohort constraint', () => {
+    expect(conflictToText({ cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } })).toEqual(
+      'cohort 2017 onwards',
+    );
   });
 });
 

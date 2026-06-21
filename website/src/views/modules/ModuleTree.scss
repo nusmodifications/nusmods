@@ -98,6 +98,16 @@ $connector-size: 0.75rem;
   }
 }
 
+// A conditional with no children (e.g. a bare cohort constraint) has nothing to
+// connect to, so suppress the trailing connector line.
+.childless {
+  margin-right: 0;
+
+  &::after {
+    display: none;
+  }
+}
+
 .branch {
   position: relative;
   display: flex;

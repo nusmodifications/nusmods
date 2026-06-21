@@ -110,6 +110,24 @@ describe(ModuleTreeComponent, () => {
     expect(component).toMatchSnapshot('NGT2001E');
   });
 
+  test('should render a bare cohort eligibility constraint', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="DBA3702"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
+        prereqTree={{
+          and: [
+            { or: ['DAO1704%:D', 'DSC1007:D'] },
+            { cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } },
+          ],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('DBA3702');
+  });
+
   test('should render a prereq tree with multiple cohort gates', () => {
     const component = render(
       <ModuleTreeComponent
