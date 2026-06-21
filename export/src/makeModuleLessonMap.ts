@@ -69,8 +69,8 @@ export const serializeWeekNumbers = (weeks: Readonly<Array<number>>): string => 
  * will be serialized to `2025-01-13_2025-02-14_1_1_2_3_4_5_6_7_8_9_10_11_12_13`\
  *
  * If `weekInterval` is undefined, it is serialized as `0`, _despite the fact that a 1 week interval is assumed in the logic_\
- * If weeks is an empty array, the serialized string would be `2025-01-13_2025-02-14_`\
- * If weeks is undefined, the serialized string would be `2025-01-13_2025-02-14`, without the dangling `_`\
+ * If `weeks` is an empty array, the serialized string would be `2025-01-13_2025-02-14_`\
+ * If `weeks` is undefined, the serialized string would be `2025-01-13_2025-02-14`, without the dangling `_`\
  * to ensure that the string is a complete and unique representation of the WeekRange\
  */
 export const serializeWeekRange = ({ end, start, weekInterval, weeks }: WeekRange) => {
