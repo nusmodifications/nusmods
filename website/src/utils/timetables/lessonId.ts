@@ -21,6 +21,7 @@ import {
 } from 'lodash-es';
 
 import {
+  ClassNo,
   isWeekRange,
   LessonId,
   LessonType,
@@ -160,7 +161,7 @@ export const makeModuleLessonMap = (lessons: readonly RawLesson[]): ModuleLesson
   );
 };
 
-const deserializeWeekNumbers = async (serializedWeekNumbers: string): Promise<number[]> => {
+const deserializeWeekNumbers = (serializedWeekNumbers: string): number[] => {
   if (serializedWeekNumbers === '_') return [];
 
   const weeks = map(split(serializedWeekNumbers, WEEKS_SEP), (week) => parseInt(week, 10));
@@ -173,20 +174,25 @@ const deserializeWeekNumbers = async (serializedWeekNumbers: string): Promise<nu
 };
 
 /**
- * Parses serialized weeks by first attempting to deserialize it as a week range\
- * if that fails, attempt to deserialize it as week numbers\
- * if that also fails, the string is malformed
+ * Checks if serialized week string is serialized week numbers
+ * If it is, attempt to deserialize it as week numbers\
+ * Otherwise, deserialize it as a `WeekRange`. If that fails, the string is malformed
  * @param serializedWeeks
  * @returns
  */
-export const parseWeeks = async (serializedWeeks: string): Promise<Weeks> => {
+export const parseWeeks = (serializedWeeks: string): Weeks => {
+  const isSerializedWeekNumbers = /^(?:_*[0-9]*)*$/.test(serializedWeeks);
+  if (isSerializedWeekNumbers) {
+    return deserializeWeekNumbers(serializedWeeks);
+  }
+
   const parsedRegex =
-    /(?<start>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<end>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<weekInterval>[0-9])_?(?<weeks>(?:_*[0-9]*)*)/.exec(
+    /^(?<start>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<end>[0-9]{4}-[0-9]{2}-[0-9]{2})_(?<weekInterval>[0-9]+)_?(?<weeks>(?:_*[0-9]*)*)$/.exec(
       serializedWeeks,
     );
   const regexGroup = parsedRegex?.groups;
   if (!regexGroup) {
-    return deserializeWeekNumbers(serializedWeeks);
+    throw new Error('Serialized weeks is malformed');
   }
 
   const start = get(regexGroup, 'start');
@@ -201,7 +207,7 @@ export const parseWeeks = async (serializedWeeks: string): Promise<Weeks> => {
       start,
       end,
       weekInterval: weekInterval === 0 ? undefined : weekInterval,
-      weeks: weeks ? await deserializeWeekNumbers(weeks) : undefined,
+      weeks: weeks ? deserializeWeekNumbers(weeks) : undefined,
     },
     isUndefined,
   ) as WeekRange;
@@ -210,11 +216,9 @@ export const parseWeeks = async (serializedWeeks: string): Promise<Weeks> => {
 /**
  * Refer to {@link serializeLessonDetails|serializeLessonDetails}
  */
-export const deserializeLessonDetails = async (
-  lessonId: string,
-): Promise<Omit<RawLesson, 'lessonType'>> => {
+export const deserializeLessonDetails = (lessonId: string): Omit<RawLesson, 'lessonType'> => {
   const parsedRegex =
-    /(?<classNo>.*)\|(?<abbreviatedDayOfWeek>.*)\|(?<startTime>.*)\|(?<endTime>.*)\|(?<venue>.*)\|(?<serializedWeeks>.*)/.exec(
+    /^(?<classNo>.*)\|(?<abbreviatedDayOfWeek>(MON|TUE|WED|THU|FRI|SAT|SUN))\|(?<startTime>[0-9]{4})\|(?<endTime>[0-9]{4})\|(?<venue>.*)\|(?<serializedWeeks>[0-9_-]+)$/.exec(
       lessonId,
     );
 
@@ -231,7 +235,7 @@ export const deserializeLessonDetails = async (
   const serializedWeeks = get(regexGroup, 'serializedWeeks');
 
   const day = get(DAY_OF_WEEK_FULL, abbreviatedDayOfWeek);
-  const weeks = await parseWeeks(serializedWeeks);
+  const weeks = parseWeeks(serializedWeeks);
 
   return {
     classNo,
@@ -246,14 +250,17 @@ export const deserializeLessonDetails = async (
 /**
  * Used to recover from the config of a lesson type of a non-TA module with invalid lessons
  * @param lessonsWithLessonType lessons with the same lesson type to generate a valid lesson config from
- * @returns a `ClassNo`. The current implementation generates a config containing the first `ClassNo`
+ * @returns a `ClassNo` or `null` if record of lessons provided is empty
+ * The current implementation returns the first `ClassNo`
  */
-export function getRecoveryClassNo(lessonsWithLessonType: Record<LessonId, RawLesson>): LessonId[] {
+export function getRecoveryClassNo(
+  lessonsWithLessonType: Record<LessonId, RawLesson>,
+): ClassNo | null {
   const firstClass = first(map(lessonsWithLessonType));
   if (!firstClass) {
-    return [];
+    return null;
   }
-  return [firstClass.classNo];
+  return firstClass.classNo;
 }
 
 /**

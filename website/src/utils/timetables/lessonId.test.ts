@@ -37,7 +37,7 @@ describe('serialize/parse weeks', () => {
 
     each(weekRanges, (weekRange) => {
       const deserializedWeekRange = parseWeeks(serializeWeekRange(weekRange));
-      expect(deserializedWeekRange).resolves.toStrictEqual(weekRange);
+      expect(deserializedWeekRange).toStrictEqual(weekRange);
     });
   });
 
@@ -45,7 +45,7 @@ describe('serialize/parse weeks', () => {
     const weekNumbers = [2, 3, 5, 7, 11, 13];
 
     const deserializedWeekRange = parseWeeks(serializeWeekNumbers(weekNumbers));
-    expect(deserializedWeekRange).resolves.toStrictEqual(weekNumbers);
+    expect(deserializedWeekRange).toStrictEqual(weekNumbers);
   });
 });
 
@@ -90,7 +90,7 @@ describe('deserializeLessonDetails', () => {
       const serializedLessonDetails = serializeLessonDetails(lesson);
 
       expect(serializedLessonDetails).toBe('1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13');
-      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(lesson);
+      expect(deserializeLessonDetails(serializedLessonDetails)).toStrictEqual(lesson);
     });
 
     test('lesson with WeekRange with both weekInterval and weeks', () => {
@@ -108,9 +108,21 @@ describe('deserializeLessonDetails', () => {
       expect(serializedLessonDetails).toBe(
         '1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_2_1_3_5_7_9_11_13',
       );
-      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(
-        lessonWithWeekRange,
-      );
+      expect(deserializeLessonDetails(serializedLessonDetails)).toStrictEqual(lessonWithWeekRange);
+    });
+
+    test('lesson with WeekRange with neither weekInterval nor weeks', () => {
+      const lessonWithWeekRange = {
+        ...lesson,
+        weeks: {
+          start: '2026-06-18',
+          end: '2026-05-21',
+        },
+      };
+      const serializedLessonDetails = serializeLessonDetails(lessonWithWeekRange);
+
+      expect(serializedLessonDetails).toBe('1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_0');
+      expect(deserializeLessonDetails(serializedLessonDetails)).toStrictEqual(lessonWithWeekRange);
     });
 
     test('lesson with WeekRange with no week interval', () => {
@@ -127,9 +139,7 @@ describe('deserializeLessonDetails', () => {
       expect(serializedLessonDetails).toBe(
         '1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_0_1_3_5_7_9_11_13',
       );
-      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(
-        lessonWithWeekRange,
-      );
+      expect(deserializeLessonDetails(serializedLessonDetails)).toStrictEqual(lessonWithWeekRange);
     });
 
     test('lesson with WeekRange with empty week numbers list', () => {
@@ -144,9 +154,7 @@ describe('deserializeLessonDetails', () => {
       const serializedLessonDetails = serializeLessonDetails(lessonWithWeekRange);
 
       expect(serializedLessonDetails).toBe('1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_0__');
-      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(
-        lessonWithWeekRange,
-      );
+      expect(deserializeLessonDetails(serializedLessonDetails)).toStrictEqual(lessonWithWeekRange);
     });
 
     test('lesson with WeekRange with no week numbers list defined', () => {
@@ -155,15 +163,45 @@ describe('deserializeLessonDetails', () => {
         weeks: {
           start: '2026-06-18',
           end: '2026-05-21',
-          weekInterval: 2,
+          weekInterval: 10,
         },
       };
       const serializedLessonDetails = serializeLessonDetails(lessonWithWeekRange);
 
-      expect(serializedLessonDetails).toBe('1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_2');
-      expect(deserializeLessonDetails(serializedLessonDetails)).resolves.toStrictEqual(
-        lessonWithWeekRange,
-      );
+      expect(serializedLessonDetails).toBe('1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_10');
+      expect(deserializeLessonDetails(serializedLessonDetails)).toStrictEqual(lessonWithWeekRange);
+    });
+  });
+
+  describe('reject malformed strings', () => {
+    test('reject malformed lesson id', () => {
+      const malformedLessonIds = [
+        '1|ABC|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13',
+        '1|MON|TEXT|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13',
+        '1|MON|1830|TEXT|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13',
+        '1|MON|1830|2030|VCRm|',
+        '1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13|EXTRA',
+      ];
+
+      each(malformedLessonIds, (lessonId) => {
+        expect(() => deserializeLessonDetails(lessonId)).toThrow('Lesson ID is malformed');
+      });
+    });
+
+    test('reject malformed serialized weeks', () => {
+      const lessonIdsWithMalformedSerializedWeeks = [
+        '1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13_',
+        '1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12__13',
+        '1|MON|1830|2030|VCRm|-_2026-06-18_2026-05-21_2_1_3_5_7_9_11_13',
+        '1|MON|1830|2030|VCRm|2026-06-18_2026-05-21__1_3_5_7_9_11_13',
+        '1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_2_1_3_5_7_9_11_13_-',
+        '1|MON|1830|2030|VCRm|2026-06-18__2_1_3_5_7_9_11_13',
+        '1|MON|1830|2030|VCRm|2026-06-18_2_1_3_5_7_9_11_13',
+      ];
+
+      each(lessonIdsWithMalformedSerializedWeeks, (lessonId) => {
+        expect(() => deserializeLessonDetails(lessonId)).toThrow('Serialized weeks is malformed');
+      });
     });
   });
 });
