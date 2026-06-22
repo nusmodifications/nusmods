@@ -6,11 +6,17 @@ options {
 overall: | program_types THEN compound EOF | compound EOF;
 
 program_types:
-	PROGRAM_TYPES (IF_IN | must_be_in) PROGRAM_TYPES_VALUE (
+	PROGRAM_TYPES (if_in | must_be_in) PROGRAM_TYPES_VALUE (
 		COMMA PROGRAM_TYPES_VALUE
 	)*;
 
-compound: | '(' compound ')' | binop | op;
+compound: | '(' compound ')' | cohort_conditional | binop | op;
+
+// A cohort-gated requirement. The consequence is a full compound (placed above
+// binop) so that trailing AND/OR clauses are absorbed into the gate, i.e.
+// `COHORT_YEARS ... THEN a AND b` parses as the gate over `(a AND b)` rather
+// than `(gate over a) AND b`.
+cohort_conditional: cohort_years THEN compound;
 
 binop: | op boolean_expr compound;
 
@@ -32,8 +38,8 @@ programs:
 	PROGRAMS programs_condition programs_values (THEN compound)?;
 
 programs_condition:
-	IF_IN
-	| IF_NOT_IN
+	if_in
+	| if_not_in
 	| must_be_in
 	| must_not_be_in;
 
@@ -45,26 +51,26 @@ plan_types:
 	)?;
 
 plan_types_condition:
-	IF_IN
-	| IF_NOT_IN
+	if_in
+	| if_not_in
 	| must_be_in
 	| must_not_be_in;
 
 cohort_years:
 	COHORT_YEARS (
-		IF_IN
-		| IF_NOT_IN
+		if_in
+		| if_not_in
 		| must_be_in
 		| must_not_be_in
-	) YEARS YEARS? (THEN compound)?;
+	) YEARS YEARS?;
 
-subject_years: SUBJECT_YEARS IF_IN YEARS YEARS?;
+subject_years: SUBJECT_YEARS if_in YEARS YEARS?;
 
 special: SPECIAL special_condition '"' SPECIAL_VALUE '"';
 
 special_condition:
-	IF_IN
-	| IF_NOT_IN
+	if_in
+	| if_not_in
 	| must_be_in
 	| must_not_be_in;
 
@@ -84,6 +90,8 @@ course_items: PROGRAMS_VALUE (COMMA PROGRAMS_VALUE)*;
 
 must_be_in: MUST_BE_IN contains_number?;
 must_not_be_in: MUST_NOT_BE_IN contains_number?;
+if_in: IF_IN;
+if_not_in: IF_NOT_IN;
 
 contains_number: '(' NUMBER ')';
 

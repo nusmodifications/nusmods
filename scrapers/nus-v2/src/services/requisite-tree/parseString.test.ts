@@ -39,131 +39,146 @@ describe(parseString, () => {
 
   it('parses complex undergrad with multiple modules and simplifies tree)', () => {
     const result: PrereqTree = {
-      or: [
-        { nOf: [7, ['PH%:D', 'GET1029:D']] },
+      and: [
         {
-          nOf: [
-            7,
-            [
-              'EU%:D',
-              'LAF%:D',
-              'LAG%:D',
-              'AH2202:D',
-              'AH3204:D',
-              'AR2221:D',
-              'AR2222:D',
-              'AR2225:D',
-              'EC3371:D',
-              'EC3376:D',
-              'EC3377:D',
-              'EC4377:D',
-              'EL4200:D',
-              'EN2201:D',
-              'EN3266:D',
-              'EN3267:D',
-              'EN3268:D',
-              'EN4224:D',
-              'EN4271:D',
-              'HY2210:D',
-              'HY2249:D',
-              'HY2259:D',
-              'HY2262:D',
-              'HY4230:D',
-              'PH2206:D',
-              'PH2207:D',
-              'PH2222:D',
-              'PH3213:D',
-              'PH3222:D',
-              'PH4206:D',
-              'PH4207:D',
-              'PH4209:D',
-              'PH4210:D',
-              'PH4213:D',
-              'PH4261:D',
-              'PH4262:D',
-              'PS3258:D',
-              'PS3267:D',
-              'PS3880B:D',
-              'PS3880C:D',
-              'PS3880H:D',
-              'PS4201:D',
-              'PS4213:D',
-              'PS4217D:D',
-              'PS4217E:D',
-              'PS4217F:D',
-              'PS4231:D',
-              'PS4311:D',
-              'PS4882B:D',
-              'PS4883B:D',
-              'SC4213:D',
-              'TS2231:D',
-              'TS2239:D',
-              'TS3231:D',
-            ],
+          or: [
+            { nOf: [7, ['PH%:D', 'GET1029:D']] },
+            {
+              and: [
+                { cohort: { rule: 'MUST_BE_IN', years: ['E:2014'] } },
+                {
+                  nOf: [
+                    7,
+                    [
+                      'EU%:D',
+                      'LAF%:D',
+                      'LAG%:D',
+                      'AH2202:D',
+                      'AH3204:D',
+                      'AR2221:D',
+                      'AR2222:D',
+                      'AR2225:D',
+                      'EC3371:D',
+                      'EC3376:D',
+                      'EC3377:D',
+                      'EC4377:D',
+                      'EL4200:D',
+                      'EN2201:D',
+                      'EN3266:D',
+                      'EN3267:D',
+                      'EN3268:D',
+                      'EN4224:D',
+                      'EN4271:D',
+                      'HY2210:D',
+                      'HY2249:D',
+                      'HY2259:D',
+                      'HY2262:D',
+                      'HY4230:D',
+                      'PH2206:D',
+                      'PH2207:D',
+                      'PH2222:D',
+                      'PH3213:D',
+                      'PH3222:D',
+                      'PH4206:D',
+                      'PH4207:D',
+                      'PH4209:D',
+                      'PH4210:D',
+                      'PH4213:D',
+                      'PH4261:D',
+                      'PH4262:D',
+                      'PS3258:D',
+                      'PS3267:D',
+                      'PS3880B:D',
+                      'PS3880C:D',
+                      'PS3880H:D',
+                      'PS4201:D',
+                      'PS4213:D',
+                      'PS4217D:D',
+                      'PS4217E:D',
+                      'PS4217F:D',
+                      'PS4231:D',
+                      'PS4311:D',
+                      'PS4882B:D',
+                      'PS4883B:D',
+                      'SC4213:D',
+                      'TS2231:D',
+                      'TS2239:D',
+                      'TS3231:D',
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              and: [
+                { cohort: { rule: 'MUST_BE_IN', years: ['S:2015'] } },
+                {
+                  nOf: [
+                    7,
+                    [
+                      'EU%:D',
+                      'LAF%:D',
+                      'LAG%:D',
+                      'LAS%:D',
+                      'AH2202:D',
+                      'AH3204:D',
+                      'AR2221:D',
+                      'AR2222:D',
+                      'AR2225:D',
+                      'EC3371:D',
+                      'EC3376:D',
+                      'EC3377:D',
+                      'EC4377:D',
+                      'EL4200:D',
+                      'EN2201:D',
+                      'EN3266:D',
+                      'EN3267:D',
+                      'EN3268:D',
+                      'EN4224:D',
+                      'EN4271:D',
+                      'HY2210:D',
+                      'HY2249:D',
+                      'HY2259:D',
+                      'HY2262:D',
+                      'HY4230:D',
+                      'PH2206:D',
+                      'PH2207:D',
+                      'PH2222:D',
+                      'PH3213:D',
+                      'PH3222:D',
+                      'PH4206:D',
+                      'PH4207:D',
+                      'PH4209:D',
+                      'PH4210:D',
+                      'PH4213:D',
+                      'PH4261:D',
+                      'PH4262:D',
+                      'PS3258:D',
+                      'PS3267:D',
+                      'PS3880B:D',
+                      'PS3880C:D',
+                      'PS3880H:D',
+                      'PS4201:D',
+                      'PS4213:D',
+                      'PS4217D:D',
+                      'PS4217E:D',
+                      'PS4217F:D',
+                      'PS4231:D',
+                      'PS4311:D',
+                      'PS4882B:D',
+                      'PS4883B:D',
+                      'SC4213:D',
+                      'TS2231:D',
+                      'TS2239:D',
+                      'TS3231:D',
+                    ],
+                  ],
+                },
+              ],
+            },
           ],
         },
-        {
-          nOf: [
-            7,
-            [
-              'EU%:D',
-              'LAF%:D',
-              'LAG%:D',
-              'LAS%:D',
-              'AH2202:D',
-              'AH3204:D',
-              'AR2221:D',
-              'AR2222:D',
-              'AR2225:D',
-              'EC3371:D',
-              'EC3376:D',
-              'EC3377:D',
-              'EC4377:D',
-              'EL4200:D',
-              'EN2201:D',
-              'EN3266:D',
-              'EN3267:D',
-              'EN3268:D',
-              'EN4224:D',
-              'EN4271:D',
-              'HY2210:D',
-              'HY2249:D',
-              'HY2259:D',
-              'HY2262:D',
-              'HY4230:D',
-              'PH2206:D',
-              'PH2207:D',
-              'PH2222:D',
-              'PH3213:D',
-              'PH3222:D',
-              'PH4206:D',
-              'PH4207:D',
-              'PH4209:D',
-              'PH4210:D',
-              'PH4213:D',
-              'PH4261:D',
-              'PH4262:D',
-              'PS3258:D',
-              'PS3267:D',
-              'PS3880B:D',
-              'PS3880C:D',
-              'PS3880H:D',
-              'PS4201:D',
-              'PS4213:D',
-              'PS4217D:D',
-              'PS4217E:D',
-              'PS4217F:D',
-              'PS4231:D',
-              'PS4311:D',
-              'PS4882B:D',
-              'PS4883B:D',
-              'SC4213:D',
-              'TS2231:D',
-              'TS2239:D',
-              'TS3231:D',
-            ],
-          ],
-        },
+        { cohort: { rule: 'MUST_BE_IN', years: ['S:2012'] } },
       ],
     };
     expect(
@@ -383,6 +398,7 @@ describe(parseString, () => {
         {
           or: ['DSC2008:D', 'DSC1007%:D', 'CS1010:D', 'CS1101:D'],
         },
+        { cohort: { rule: 'MUST_BE_IN', years: ['E:2016'] } },
       ],
     };
     expect(
@@ -421,9 +437,12 @@ THEN
       ),
     ).toEqual(result);
   });
-  it('allows cohort years as predicate (optional)', () => {
+  it('keeps cohort years as a gating predicate', () => {
     const result: PrereqTree = {
-      or: ['GEA1000N:D', 'ST1131:D', 'DSA1101:D', 'IE1111R:D', 'DSE1101:D', 'BT1101:D'],
+      cohort: { rule: 'IF_IN', years: ['S:2022'] },
+      then: {
+        or: ['GEA1000N:D', 'ST1131:D', 'DSA1101:D', 'IE1111R:D', 'DSE1101:D', 'BT1101:D'],
+      },
     };
     expect(
       parse(
@@ -434,9 +453,27 @@ THEN
     ).toEqual(result);
   });
 
+  it('gates trailing AND clauses under the cohort (the NGT2001E shape)', () => {
+    // The consequence after THEN is greedy: the trailing "AND COURSES NSW%:D"
+    // belongs inside the cohort gate, not as an ungated sibling requirement.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COHORT_YEARS IF_IN S:2022 THEN COURSES NTW%:D, LC1016:D AND COURSES NSW%:D)
+      `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_IN', years: ['S:2022'] },
+      then: { and: ['NTW%:D', 'LC1016:D', 'NSW%:D'] },
+    });
+  });
+
   // According to NUS docs, this means ALL courses are required.
-  it('allows omitted courses count', () => {
-    const result: PrereqTree = 'NTW%:D';
+  it('allows omitted courses count, keeping the cohort gate', () => {
+    const result: PrereqTree = {
+      cohort: { rule: 'IF_IN', years: ['S:2022'] },
+      then: 'NTW%:D',
+    };
     expect(
       parse(
         `
@@ -444,6 +481,59 @@ THEN
       `,
       ),
     ).toEqual(result);
+  });
+
+  it('keeps an academic-year cohort range and IF_NOT_IN exclusions', () => {
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COHORT_YEARS IF_IN S:2020/21 E:2022/23 THEN COURSES (1) CS1010:D )
+      `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_IN', years: ['S:2020/21', 'E:2022/23'] },
+      then: 'CS1010:D',
+    });
+
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COHORT_YEARS IF_NOT_IN E:2019 THEN COURSES (1) CS1010:D )
+      `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_NOT_IN', years: ['E:2019'] },
+      then: 'CS1010:D',
+    });
+  });
+
+  it('keeps a bare cohort constraint (no THEN) as an eligibility requirement', () => {
+    // The cohort has no THEN subtree, so it is a bare constraint (the student
+    // must be in the cohort) kept alongside the course requirement.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COURSES (1) CS1010:D AND COHORT_YEARS MUST_BE_IN E:2016 )
+      `,
+      ),
+    ).toEqual({
+      and: ['CS1010:D', { cohort: { rule: 'MUST_BE_IN', years: ['E:2016'] } }],
+    });
+  });
+
+  it('keeps a bare cohort constraint ANDed with courses (the DBA3702 shape)', () => {
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COURSES (1) DAO1704%:D, DSC1007:D AND COHORT_YEARS MUST_BE_IN S:2017)
+      `,
+      ),
+    ).toEqual({
+      and: [
+        { or: ['DAO1704%:D', 'DSC1007:D'] },
+        { cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } },
+      ],
+    });
   });
 
   // According to NUS docs, this means ALL subjects are required.

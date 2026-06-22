@@ -31,10 +31,24 @@ export type WeekRange = {
 
 export type Weeks = Array<number> | WeekRange;
 
+// Whether a cohort condition includes (IF_IN/MUST_BE_IN) or excludes
+// (IF_NOT_IN/MUST_NOT_BE_IN) the listed cohort years.
+export type CohortRule = 'IF_IN' | 'IF_NOT_IN' | 'MUST_BE_IN' | 'MUST_NOT_BE_IN';
+
+// A cohort-year predicate that gates a subtree. `years` holds the raw YEARS
+// tokens, each prefixed by a bound: "S:" = start/from (inclusive), "E:" =
+// end/until (inclusive). The year part may be a calendar year ("2022") or an
+// academic year ("2019/20"). Two tokens form a closed range.
+export type CohortCondition = { rule: CohortRule; years: Array<string> };
+
 // Recursive tree of module codes and boolean operators for the prereq tree
 export type PrereqTree =
   | string
-  | { and?: Array<PrereqTree>; nOf?: [number, Array<PrereqTree>]; or?: Array<PrereqTree> };
+  | { and?: Array<PrereqTree>; nOf?: [number, Array<PrereqTree>]; or?: Array<PrereqTree> }
+  // A cohort predicate. With `then`, it gates that requirement to the matching
+  // cohorts; without `then`, it is a bare eligibility constraint (the student
+  // must be in the cohort to take the module).
+  | { cohort: CohortCondition; then?: PrereqTree };
 
 // Auxiliary data types
 export type Day =

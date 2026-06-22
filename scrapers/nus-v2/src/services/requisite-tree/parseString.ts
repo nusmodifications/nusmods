@@ -3,7 +3,7 @@
 import * as R from 'ramda';
 
 import { NusModsLexer, NusModsVisitor } from './antlr4';
-import { PrereqTree } from '../../types/modules';
+import { CohortCondition, CohortRule, PrereqTree } from '../../types/modules';
 import { Logger } from '../logger';
 import {
   NusModsParser,
@@ -17,6 +17,7 @@ import {
   PrimitiveContext,
   ProgramsContext,
   Cohort_yearsContext,
+  Cohort_conditionalContext,
   Program_typesContext,
 } from './antlr4/NusModsParser';
 import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
@@ -174,6 +175,48 @@ class ReqTreeVisitor
     }
     return '';
   };
+
+  // A bare cohort predicate (no THEN, e.g. an AND-ed "COHORT_YEARS MUST_BE_IN
+  // S:2017") is an eligibility constraint: the student must be in the cohort to
+  // take the module. It gates no requirement, so it has no `then`.
+  // @ts-ignore
+  visitCohort_years?: ((ctx: Cohort_yearsContext) => PrereqTree) | undefined = (ctx) => {
+    const cohort = this.cohortCondition(ctx);
+    return cohort === undefined ? '' : { cohort };
+  };
+
+  // A cohort that gates a requirement: the requirement only applies to the
+  // matching cohorts.
+  // @ts-ignore
+  visitCohort_conditional?: ((ctx: Cohort_conditionalContext) => PrereqTree) | undefined = (
+    ctx,
+  ) => {
+    const then = ctx.compound()?.accept(this);
+    // If the gated requirement simplifies away, there is nothing to require.
+    if (then === undefined || then === '') {
+      return '';
+    }
+
+    const cohort = this.cohortCondition(ctx.cohort_years());
+    return cohort === undefined ? '' : { cohort, then };
+  };
+
+  cohortCondition(ctx: Cohort_yearsContext): CohortCondition | undefined {
+    let rule: CohortRule;
+    if (ctx.if_in() !== undefined) {
+      rule = 'IF_IN';
+    } else if (ctx.if_not_in() !== undefined) {
+      rule = 'IF_NOT_IN';
+    } else if (ctx.must_be_in() !== undefined) {
+      rule = 'MUST_BE_IN';
+    } else if (ctx.must_not_be_in() !== undefined) {
+      rule = 'MUST_NOT_BE_IN';
+    } else {
+      this.errors.push(new Error('Cohort years missing a condition'));
+      return undefined;
+    }
+    return { rule, years: ctx.YEARS().map((node) => node.text) };
+  }
 }
 
 /**
