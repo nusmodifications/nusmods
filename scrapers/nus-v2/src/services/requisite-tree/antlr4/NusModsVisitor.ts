@@ -5,6 +5,7 @@ import { ParseTreeVisitor } from 'antlr4ts/tree/ParseTreeVisitor';
 import { OverallContext } from './NusModsParser';
 import { Program_typesContext } from './NusModsParser';
 import { CompoundContext } from './NusModsParser';
+import { Program_types_conditionalContext } from './NusModsParser';
 import { Cohort_conditionalContext } from './NusModsParser';
 import { Subject_years_conditionalContext } from './NusModsParser';
 import { BinopContext } from './NusModsParser';
@@ -58,6 +59,13 @@ export interface NusModsVisitor<Result> extends ParseTreeVisitor<Result> {
    * @return the visitor result
    */
   visitCompound?: (ctx: CompoundContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.program_types_conditional`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitProgram_types_conditional?: (ctx: Program_types_conditionalContext) => Result;
 
   /**
    * Visit a parse tree produced by `NusModsParser.cohort_conditional`.

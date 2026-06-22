@@ -7,8 +7,13 @@ const logger = mockLogger();
 const parse = (string: string) => parseString(string, logger);
 
 describe(parseString, () => {
-  it('parses basic undergrad modules)', () => {
-    const result: PrereqTree = 'BMF5322';
+  // A graduate-only wrapper is kept and labelled (undergraduates are excluded),
+  // unlike the ubiquitous undergraduate wrapper which is dropped as assumed.
+  it('keeps the program-type label for a graduate-only module', () => {
+    const result: PrereqTree = {
+      programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+      then: 'BMF5322',
+    };
     expect(
       parse(
         `
@@ -662,27 +667,98 @@ THEN
     ).toEqual(result);
   });
 
-  // Too complex, this says IF CPE degree then xyz course, else IF postgrad then abc course.
-  it('cannot parse alternate degree', () => {
-    const result = null;
+  // Differing program types are modelled as gates (IF CPE: x, OR IF postgrad: y).
+  // The planner has no program-type input, so these are carried for display only.
+  it('models differing program-type branches (alternate degree)', () => {
     expect(
       parse(
         `
           (PROGRAM_TYPES IF_IN CPE (Certificate) THEN (COURSES (1) IT5003:D)) OR (PROGRAM_TYPES IF_IN Graduate Degree Coursework THEN COURSES (1) IT5003:D)
         `,
       ),
-    ).toEqual(result);
+    ).toEqual({
+      or: [
+        { programType: { rule: 'IF_IN', types: ['CPE (Certificate)'] }, then: 'IT5003:D' },
+        { programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] }, then: 'IT5003:D' },
+      ],
+    });
   });
 
-  it('cannot parse alternate program types', () => {
-    const result = null;
+  // The ESE5608 shape: the undergraduate branch is entirely PROGRAMS + SPECIAL
+  // constraints (which the tree cannot represent), so it collapses away. Only
+  // the graduate branch survives, and being non-undergraduate it keeps its label
+  // rather than being dropped as an assumed wrapper.
+  it('keeps a graduate survivor when the undergraduate branch is unrepresentable', () => {
+    expect(
+      parse(
+        `
+          (PROGRAM_TYPES IF_IN Graduate Degree Coursework THEN (COURSES (1) ESE5003:D)) OR (PROGRAM_TYPES IF_IN Undergraduate Degree THEN PROGRAMS MUST_BE_IN (1) 0613EVEHON AND SPECIAL MUST_BE_IN "ACAD_LEVEL=4")
+        `,
+      ),
+    ).toEqual({
+      programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+      then: 'ESE5003:D',
+    });
+  });
+
+  it('models a clean two-branch differing program-type prereq', () => {
+    expect(
+      parse(
+        `
+          (PROGRAM_TYPES IF_IN Undergraduate Degree THEN COURSES (1) A1234:D) OR (PROGRAM_TYPES IF_IN Graduate Degree Coursework THEN COURSES (1) B1234:D)
+        `,
+      ),
+    ).toEqual({
+      or: [
+        { programType: { rule: 'IF_IN', types: ['Undergraduate Degree'] }, then: 'A1234:D' },
+        { programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] }, then: 'B1234:D' },
+      ],
+    });
+  });
+
+  // Same program type on both branches: the gate is uniform, so it is flattened
+  // away and the consequences are OR-ed directly (no program-type nodes remain).
+  it('flattens same-type program-type branches (the honours shape)', () => {
+    expect(
+      parse(
+        `
+          PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COURSES (1) A1234:D) OR PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COURSES (1) B1234:D)
+        `,
+      ),
+    ).toEqual({ or: ['A1234:D', 'B1234:D'] });
+  });
+
+  // The outermost (assumed) Undergraduate wrapper is dropped, hoisting its
+  // courses to the top, while the differing Graduate branch is kept as a gate.
+  it('drops the outer wrapper but keeps a differing nested program-type gate', () => {
+    expect(
+      parse(
+        `
+          PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COURSES IE2100 OR COURSES IE2110) OR PROGRAM_TYPES IF_IN Graduate Degree Coursework THEN (COURSES IE5001 OR COURSES IE5004)
+        `,
+      ),
+    ).toEqual({
+      or: [
+        'IE2100',
+        'IE2110',
+        {
+          programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+          then: { or: ['IE5001', 'IE5004'] },
+        },
+      ],
+    });
+  });
+
+  // A real honours module: same program type, complex cohort/units/gpa/special
+  // branches. The uniform gate flattens, leaving a symmetric disjunction.
+  it('parses a complex same-program-type honours module', () => {
     expect(
       parse(
         `
         PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( UNITS (80) AND COHORT_YEARS MUST_BE_IN E:2019/20 AND COURSES (7) SE%:D OR COURSES (7) PS%:D OR COURSES (7) GL%:D AND GPA (3.2) OR SPECIAL MUST_BE_IN "ACAD_LEVEL=4" ) OR PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( UNITS (80) AND COHORT_YEARS MUST_BE_IN S:2020/21 E:2020/21 AND COURSES (7) SE%:D OR COURSES (7) PS%:D AND GPA (3.2) OR SPECIAL MUST_BE_IN "ACAD_LEVEL=4" )
         `,
       ),
-    ).toEqual(result);
+    ).toMatchSnapshot();
   });
 
   it('cannot parse invalid stuff', () => {

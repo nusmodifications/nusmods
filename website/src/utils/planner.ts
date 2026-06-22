@@ -1,5 +1,11 @@
 import { sum } from 'lodash-es';
-import { CohortCondition, ModuleCode, PrereqTree, Semester } from 'types/modules';
+import {
+  CohortCondition,
+  ModuleCode,
+  PrereqTree,
+  ProgramTypeCondition,
+  Semester,
+} from 'types/modules';
 import { PlannerModuleInfo, Conflict } from 'types/planner';
 import config from 'config';
 import { assertNever } from 'types/utils';
@@ -92,6 +98,15 @@ export function formatCohortCondition({ rule, years }: CohortCondition): string 
 }
 
 /**
+ * Human-readable description of a program-type condition, e.g.
+ * "Undergraduate Degree" or "Graduate Degree Coursework or Graduate Degree
+ * Research".
+ */
+export function formatProgramTypeCondition({ types }: ProgramTypeCondition): string {
+  return types.join(' or ');
+}
+
+/**
  * Check if a prereq tree is fulfilled given a set of modules that have already
  * been taken. An array of unfulfilled requirements is returned. An empty array
  * means that the prereq tree is fulfilled. `cohortYear` is the student's
@@ -129,6 +144,12 @@ export function checkPrerequisite(
       // The gated requirement only applies to matching cohorts. If it doesn't
       // apply to this student, there is nothing left to fulfil.
       return applies ? walkTree(fragment.then) : [];
+    }
+
+    if ('programType' in fragment) {
+      // Display only: the planner has no program-type input, so a
+      // program-type-gated requirement is never treated as unmet.
+      return [];
     }
 
     if ('nOf' in fragment) {
@@ -186,6 +207,12 @@ export function conflictToText(rootConflict: PrereqTree): string {
       return conflict.then === undefined
         ? formatCohortCondition(conflict.cohort)
         : walkTree(conflict.then);
+    }
+
+    if ('programType' in conflict) {
+      // Program-type gates are not evaluated, so they should not surface as a
+      // conflict on their own; describe the gated requirement defensively.
+      return walkTree(conflict.then);
     }
 
     if ('nOf' in conflict) {

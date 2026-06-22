@@ -202,6 +202,27 @@ describe(checkPrerequisite, () => {
       });
     });
   });
+
+  describe('program-type-gated requirements (display only)', () => {
+    // The planner has no program-type input, so a program-type gate is never
+    // treated as unmet — its requirement is not enforced.
+    const gated: PrereqTree = {
+      programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+      then: 'CS9999',
+    };
+
+    test('is never unmet even when the gated course is missing', () => {
+      expect(checkPrerequisite(moduleSet, gated)).toHaveLength(0);
+    });
+
+    test('an OR with a program-type branch is satisfied via that branch', () => {
+      expect(checkPrerequisite(moduleSet, { or: ['CS9999', gated] })).toHaveLength(0);
+    });
+
+    test('does not contribute to an AND of other requirements', () => {
+      expect(checkPrerequisite(moduleSet, { and: ['CS9999', gated] })).toEqual(['CS9999']);
+    });
+  });
 });
 
 describe(conflictToText, () => {
@@ -222,6 +243,15 @@ describe(conflictToText, () => {
     expect(conflictToText({ cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } })).toEqual(
       'cohort 2017 onwards',
     );
+  });
+
+  test('describes the gated requirement of a program-type node', () => {
+    expect(
+      conflictToText({
+        programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+        then: { or: ['CS1010:D', 'CS1101S:D'] },
+      }),
+    ).toEqual('CS1010 or CS1101S');
   });
 });
 
