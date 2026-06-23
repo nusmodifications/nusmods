@@ -69,7 +69,7 @@ export function getInteractableLessons(
     (lessonMap: ModuleLessonMap<Lesson>, moduleCode: ModuleCode) => {
       const moduleIsTaInTimetable: boolean = isTaInTimetable(moduleCode);
 
-      const res = mapValues(
+      return mapValues(
         lessonMap,
         (
           lessonsWithLessonType: Record<LessonId, Lesson>,
@@ -115,8 +115,6 @@ export function getInteractableLessons(
           });
         },
       );
-      console.log(res);
-      return res;
     },
   );
 }
