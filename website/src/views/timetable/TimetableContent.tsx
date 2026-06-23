@@ -12,6 +12,7 @@ import {
   keys,
   omit,
   get,
+  flatMap,
 } from 'lodash-es';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
@@ -176,7 +177,7 @@ class TimetableContent extends React.Component<Props, State> {
   };
 
   modifyTaCell = (
-    sameModuleLessons: Record<LessonId, InteractableLesson>,
+    sameModuleLessons: InteractableLesson[],
     interactedLesson: InteractableLesson,
   ): void => {
     const { moduleCode, lessonType } = interactedLesson;
@@ -209,10 +210,12 @@ class TimetableContent extends React.Component<Props, State> {
       // If activeLesson exists, then the user is choosing a cell to modify
       const isChoosing = !!activeLesson;
       if (isChoosing) {
-        const sameLessonTypeLessons = get(lessonMap, activeLesson.lessonType);
-
         if (this.isTaInTimetable(lesson.moduleCode)) {
-          this.modifyTaCell(sameLessonTypeLessons, lesson);
+          const sameModuleLessons: InteractableLesson[] = flatMap(
+            lessonMap,
+            (lessonsWithLessonType) => values(lessonsWithLessonType),
+          );
+          this.modifyTaCell(sameModuleLessons, lesson);
           return;
         }
 
