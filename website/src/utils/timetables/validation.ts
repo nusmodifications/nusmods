@@ -155,9 +155,9 @@ export function validateNonTaModuleLesson(
     }
 
     try {
-      const firstLesson = deserializeLessonDetails(firstLessonId);
-      const isValidClassNo = some(validLessons, (lesson) => lesson.classNo === firstLesson.classNo);
-      const classNo = isValidClassNo ? firstLessonId : getRecoveryClassNo(validLessons);
+      const firstLessonClassNo = deserializeLessonDetails(firstLessonId).classNo;
+      const isValidClassNo = some(validLessons, (lesson) => lesson.classNo === firstLessonClassNo);
+      const classNo = isValidClassNo ? firstLessonClassNo : getRecoveryClassNo(validLessons);
 
       return {
         lessonType,
