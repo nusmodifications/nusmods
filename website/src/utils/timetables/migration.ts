@@ -80,7 +80,7 @@ function migrateLessonTypeLessonsFromLessonIndicesToLessonIds(
     lessonsWithLessonType,
     (lesson) => lesson.classNo === firstClassNo,
   );
-  if (firstClassNo && isEqual(lessonIds, keys(lessonsWithClassNo))) {
+  if (firstClassNo && isEqual(new Set(lessonIds), new Set(keys(lessonsWithClassNo)))) {
     return [firstClassNo];
   }
 
