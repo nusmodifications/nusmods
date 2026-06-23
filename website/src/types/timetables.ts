@@ -14,13 +14,18 @@ export type ModuleLessonConfig = {
   [lessonType: LessonType]: ClassNo[] | LessonId[];
 };
 
+/**
+ * `ModuleLessonConfigV2` is the v2 representation of module configs\
+ * It is a mapping of `LessonType` to `LessonIndex`\
+ * It is only used for type annotations in the migration logic
+ */
 export type ModuleLessonConfigV2 = {
   [lessonType: LessonType]: LessonIndex[];
 };
 
 /**
- * ModuleLessonConfig is the v1 representation of module configs\
- * It is a mapping of lessonType to classNo\
+ * `ModuleLessonConfigV1` is the v1 representation of module configs\
+ * It is a mapping of `LessonType` to `ClassNo`\
  * It is only used for type annotations in the migration logic
  */
 export type ModuleLessonConfigV1 = {
@@ -32,8 +37,8 @@ export type SemTimetableConfig = {
 };
 
 /**
- * SemTimetableConfigV1 is the v1 representation of semester timetables\
- * It is a mapping of {@link ModuleCode|module code} to the {@link ModuleLessonConfigV1|module config}\
+ * `SemTimetableConfigV2` is the v2 representation of semester timetables\
+ * It is a mapping of {@link ModuleCode|module code} to the {@link ModuleLessonConfigV2|module config}\
  * It is only used for type annotations in the migration logic
  */
 export type SemTimetableConfigV2 = {
@@ -41,7 +46,7 @@ export type SemTimetableConfigV2 = {
 };
 
 /**
- * SemTimetableConfigV1 is the v1 representation of semester timetables\
+ * `SemTimetableConfigV1` is the v1 representation of semester timetables\
  * It is a mapping of {@link ModuleCode|module code} to the {@link ModuleLessonConfigV1|module config}\
  * It is only used for type annotations in the migration logic
  */
