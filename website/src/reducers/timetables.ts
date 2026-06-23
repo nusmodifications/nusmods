@@ -104,7 +104,7 @@ function moduleLessonConfig(
       const { lessonIds, lessonType } = action.payload;
       return {
         ...state,
-        [lessonType]: uniq([...lessonIds, ...get(state, lessonType)]),
+        [lessonType]: uniq([...lessonIds, ...get(state, lessonType, [])]),
       };
     }
     case REMOVE_LESSON: {
