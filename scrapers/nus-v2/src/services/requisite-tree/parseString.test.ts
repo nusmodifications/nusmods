@@ -551,6 +551,21 @@ THEN
     });
   });
 
+  it('keeps a two-year subject-year range gate (parallels the cohort range)', () => {
+    // subject_years allows an optional second YEARS bound (S: ... E: ...), the
+    // same closed-range syntax as cohort_years; both bounds must be preserved.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN (SUBJECT_YEARS IF_IN S:2022/23 E:2023/24 THEN COURSES NTW%:D)
+        `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_IN', years: ['S:2022/23', 'E:2023/24'] },
+      then: 'NTW%:D',
+    });
+  });
+
   it('keeps a bare subject-year constraint (no THEN) as an eligibility requirement', () => {
     // No current module presents a bare SUBJECT_YEARS, but it should be surfaced
     // as a cohort-style { cohort } node rather than silently dropped, mirroring
