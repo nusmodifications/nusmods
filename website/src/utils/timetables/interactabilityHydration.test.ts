@@ -7,7 +7,7 @@ import {
 } from 'types/timetables';
 import { LessonId, LessonType, ModuleCode, ModuleLessonMap, RawLesson } from 'types/modules';
 
-import { getModuleLessonMap } from 'utils/modules';
+import { getModuleLessonMap, getModuleTimetable } from 'utils/modules';
 
 import { CS4243, PC1222, GES1021 } from '__mocks__/modules';
 import { createGenericLesson } from 'test-utils/timetable';
@@ -245,22 +245,22 @@ describe('getInteractableLessons', () => {
   });
 
   describe('hydrating modules when there is an active lesson from a ta module', () => {
-    const activeLessonId: LessonId = '1|TUE|1400|1600|AS6-0421|3_4_5_6_7_8_9_10_11_12_13';
+    const activeLessonId: LessonId = 'F01|FRI|1400|1700|S12-0402|3_5_7_9_11';
 
     const timetableLessonsKeys: LessonId[] = [
       activeLessonId,
-      '2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13',
-      '3|TUE|1830|2030|AS6-0421|3_4_5_6_7_8_9_10_11_12_13',
+      'F02|FRI|1400|1700|S12-0402|3_5_7_9_11',
+      'M01|MON|1400|1700|S12-0402|4_6_8_10_12',
     ];
 
     const semTimetableConfig: SemTimetableConfig = {
       [PC1222.moduleCode]: {
-        Laboratory: ['F01|FRI|1400|1700|S12-0402|3_5_7_9_11'],
+        Laboratory: timetableLessonsKeys,
         Lecture: ['SL1|TUE|1200|1400|LT25|1_2_3_4_5_6_7_8_9_10_11_12_13'],
         Tutorial: ['T1|MON|1600|1700|S11-0204|1_2_3_4_5_6_7_8_9_10_11_12_13'],
       },
       [CS4243.moduleCode]: {
-        Laboratory: timetableLessonsKeys,
+        Laboratory: ['1|TUE|1400|1600|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
         Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
       },
     };
@@ -273,7 +273,7 @@ describe('getInteractableLessons', () => {
 
     const readOnly: boolean = false;
     const activeLesson: Lesson = get(timetableLessons, [
-      CS4243.moduleCode,
+      PC1222.moduleCode,
       'Laboratory',
       activeLessonId,
     ]);
@@ -285,13 +285,13 @@ describe('getInteractableLessons', () => {
         semester,
         colors,
         readOnly,
-        (moduleCode: ModuleCode) => moduleCode === CS4243.moduleCode,
+        (moduleCode: ModuleCode) => moduleCode === PC1222.moduleCode,
         activeLesson,
       );
 
     const hydratedOtherModuleLessons: ModuleLessonMap<InteractableLesson> = get(
       hydratedLessons,
-      PC1222.moduleCode,
+      CS4243.moduleCode,
     );
 
     test('lessons that are not from the same module as the active lesson cannot be added', () => {
@@ -305,7 +305,7 @@ describe('getInteractableLessons', () => {
 
     test('timetable lessons from other modules are visible', () => {
       const otherModuleLessons: Record<LessonType, LessonId[]> = mapValues(
-        get(lessonsMap, PC1222.moduleCode),
+        get(lessonsMap, CS4243.moduleCode),
         (lessons) => keys(lessons),
       );
       const otherModuleLessonKeys = new Set(keys(otherModuleLessons));
@@ -317,7 +317,7 @@ describe('getInteractableLessons', () => {
     });
 
     const hydratedActiveLesson: InteractableLesson = get(hydratedLessons, [
-      CS4243.moduleCode,
+      PC1222.moduleCode,
       'Laboratory',
       activeLessonId,
     ]);
@@ -331,7 +331,7 @@ describe('getInteractableLessons', () => {
     });
 
     const hydratedActiveModuleLessons: InteractableLesson[] = flatMap(
-      get(hydratedLessons, CS4243.moduleCode),
+      get(hydratedLessons, PC1222.moduleCode),
       (lessons) => values(lessons),
     );
 
@@ -342,7 +342,7 @@ describe('getInteractableLessons', () => {
     });
 
     test("all lessons from the active lesson's module should be visible, currently selected lessons and active lesson should not appear twice", () => {
-      expect(hydratedActiveModuleLessons).toHaveLength(6);
+      expect(hydratedActiveModuleLessons).toHaveLength(getModuleTimetable(PC1222, semester).length);
     });
 
     const hydratedAlternativeLessons: InteractableLesson[] = filter(
@@ -375,7 +375,7 @@ describe('getInteractableLessons', () => {
 
     test('all alternative lessons are displayed', () => {
       const alternativeLessons: Lesson[] = filter(
-        flatMap(get(lessonsMap, CS4243.moduleCode), (lessons) => values(lessons)),
+        flatMap(get(lessonsMap, PC1222.moduleCode), (lessons) => values(lessons)),
         (lesson) =>
           lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
       );

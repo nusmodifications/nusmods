@@ -69,23 +69,23 @@ export function getInteractableLessons(
     (lessonMap: ModuleLessonMap<Lesson>, moduleCode: ModuleCode) => {
       const moduleIsTaInTimetable: boolean = isTaInTimetable(moduleCode);
 
-      return mapValues(
+      const res = mapValues(
         lessonMap,
         (
           lessonsWithLessonType: Record<LessonId, Lesson>,
           lessonType: LessonType,
         ): { [lessonId: LessonId]: InteractableLesson } => {
-          const isSameModuleAndLessonType: boolean =
-            moduleCode === activeLesson?.moduleCode && lessonType === activeLesson?.lessonType;
+          const isSameModule: boolean = moduleCode === activeLesson?.moduleCode;
+          const isSameLessonType: boolean = lessonType === activeLesson?.lessonType;
 
           const configLessonIds: Set<LessonId> = new Set(keys(lessonsWithLessonType));
           const lessons: Record<LessonId, RawLesson> =
-            activeLesson && isSameModuleAndLessonType
+            activeLesson && isSameModule && (moduleIsTaInTimetable || isSameLessonType)
               ? get(getModuleLessonMap(get(modules, moduleCode), semester), lessonType)
               : lessonsWithLessonType;
 
           return mapValues(lessons, (lesson, lessonId: LessonId): InteractableLesson => {
-            const isActive = isSameModuleAndLessonType && lessonId === activeLessonId;
+            const isActive = isSameModule && isSameLessonType && lessonId === activeLessonId;
             const canBeSelectedAsActiveLesson =
               !readOnly &&
               (moduleIsTaInTimetable ||
@@ -96,7 +96,8 @@ export function getInteractableLessons(
               ? isActive
               : lesson.classNo === activeLesson?.classNo;
             const canBeAddedToLessonConfig =
-              isSameModuleAndLessonType &&
+              isSameModule &&
+              (moduleIsTaInTimetable || isSameLessonType) &&
               !alreadyAddedToLessonConfig &&
               !isSameLessonGroupAsActiveLesson;
 
@@ -114,6 +115,8 @@ export function getInteractableLessons(
           });
         },
       );
+      console.log(res);
+      return res;
     },
   );
 }
