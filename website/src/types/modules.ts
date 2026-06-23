@@ -158,14 +158,6 @@ export type RawLesson = Readonly<{
   weeks: Weeks;
 }>;
 
-export type RawLessonWithIndex = RawLesson & { readonly lessonIndex: LessonIndex };
-
-export type LessonIndicesMap = {
-  [lessonType: LessonType]: {
-    [classNo: ClassNo]: LessonIndex[];
-  };
-};
-
 /**
  * Mapping of lessons to their respective lesson ID and lesson type\
  */
@@ -178,7 +170,7 @@ export type ModuleLessonMap<T extends RawLesson> = {
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
-  timetable: readonly RawLessonWithIndex[];
+  timetable: readonly RawLesson[];
   readonly lessonMap: ModuleLessonMap<RawLesson>;
 
   // Exam

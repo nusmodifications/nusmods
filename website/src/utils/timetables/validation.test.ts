@@ -1,7 +1,7 @@
 import { ModuleLessonConfig } from 'types/timetables';
 import { Semester } from 'types/modules';
 
-import { CS1010S } from '__mocks__/modules';
+import { CS1010S, CS4243 } from '__mocks__/modules';
 import moduleCodeMapJSON from '__mocks__/module-code-map.json';
 
 import { validateModuleLessons, validateTimetableModules } from './validation';
@@ -36,7 +36,6 @@ describe(validateTimetableModules, () => {
   });
 });
 
-// TODO: validate module lessons
 // - either normal non-TA or TA module
 //   - remove lesson group if there are lessons of other lesson types
 // - if module is a normal non TA module:
@@ -45,17 +44,52 @@ describe(validateTimetableModules, () => {
 //
 describe(validateModuleLessons, () => {
   const semester: Semester = 1;
-  const lessons: ModuleLessonConfig = {
-    Lecture: [0],
-    Recitation: [2],
-    Tutorial: [13],
-  };
 
   describe('validate non ta module lessons', () => {
+    const lessons: ModuleLessonConfig = {
+      Lecture: ['1'],
+      Recitation: ['2'],
+      Tutorial: ['3'],
+    };
+
     test('should leave valid lessons untouched', () => {
-      expect(validateModuleLessons(semester, lessons, CS1010S, false)).toEqual({
+      expect(validateModuleLessons(semester, lessons, CS1010S, false)).toStrictEqual({
         validatedLessonConfig: lessons,
         valid: true,
+      });
+    });
+
+    test('should convert serializedLessonDetails lessonId to classNo lessonId', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          },
+          CS1010S,
+          false,
+        ),
+      ).toStrictEqual({
+        validatedLessonConfig: lessons,
+        valid: false,
+      });
+    });
+
+    test('should recover configs with invalid classNo', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Lecture: ['2'],
+          },
+          CS1010S,
+          false,
+        ),
+      ).toStrictEqual({
+        validatedLessonConfig: lessons,
+        valid: false,
       });
     });
 
@@ -65,26 +99,12 @@ describe(validateModuleLessons, () => {
           semester,
           {
             ...lessons,
-            Laboratory: [0], // CS1010S has no lab
+            Laboratory: ['1'], // CS1010S has no lab
           },
           CS1010S,
           false,
         ),
-      ).toEqual({ validatedLessonConfig: lessons, valid: false });
-    });
-
-    test('should replace lessons that have invalid class no', () => {
-      expect(
-        validateModuleLessons(
-          semester,
-          {
-            ...lessons,
-            Lecture: [2], // CS1010S lesson index 2 is not a lecture
-          },
-          CS1010S,
-          false,
-        ),
-      ).toEqual({ validatedLessonConfig: lessons, valid: false });
+      ).toStrictEqual({ validatedLessonConfig: lessons, valid: false });
     });
 
     test('should add lessons for when they are missing', () => {
@@ -92,16 +112,16 @@ describe(validateModuleLessons, () => {
         validateModuleLessons(
           semester,
           {
-            Tutorial: [13],
+            Tutorial: ['3'],
           },
           CS1010S,
           false,
         ),
-      ).toEqual({
+      ).toStrictEqual({
         validatedLessonConfig: {
-          Lecture: [0],
-          Recitation: [1],
-          Tutorial: [13],
+          Lecture: ['1'],
+          Recitation: ['1'],
+          Tutorial: ['3'],
         },
         valid: false,
       });
@@ -109,10 +129,32 @@ describe(validateModuleLessons, () => {
   });
 
   describe('validate ta module lessons', () => {
+    const lessons: ModuleLessonConfig = {
+      Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+      Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+    };
+
     test('should leave valid config untouched', () => {
-      expect(validateModuleLessons(semester, lessons, CS1010S, true)).toEqual({
+      expect(validateModuleLessons(semester, lessons, CS4243, true)).toStrictEqual({
         validatedLessonConfig: lessons,
         valid: true,
+      });
+    });
+
+    test('should convert classNo lessonId to serializedLessonDetails', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Laboratory: ['2'],
+          },
+          CS4243,
+          true,
+        ),
+      ).toStrictEqual({
+        validatedLessonConfig: lessons,
+        valid: false,
       });
     });
 
@@ -122,12 +164,12 @@ describe(validateModuleLessons, () => {
           semester,
           {
             ...lessons,
-            Laboratory: [0],
+            Recitation: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
           },
-          CS1010S,
+          CS4243,
           true,
         ),
-      ).toEqual({
+      ).toStrictEqual({
         validatedLessonConfig: lessons,
         valid: false,
       });
@@ -139,12 +181,12 @@ describe(validateModuleLessons, () => {
           semester,
           {
             ...lessons,
-            Lecture: [1],
+            Lecture: ['1|THU|1200|1300|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'], // lesson is not a lecture
           },
-          CS1010S,
+          CS4243,
           true,
         ),
-      ).toEqual({
+      ).toStrictEqual({
         validatedLessonConfig: lessons,
         valid: false,
       });

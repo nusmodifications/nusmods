@@ -1,7 +1,7 @@
 import type { Module } from 'types/modules';
 
 import { map } from 'lodash-es';
-import { makeModuleLessonMap } from 'utils/timetables/lessonId';
+import { makeModuleLessonMap } from 'utils/timetables';
 import ACC2002_JSON from './ACC2002.json';
 import BFS1001_JSON from './BFS1001.json';
 import CP3880_JSON from './CP3880.json';

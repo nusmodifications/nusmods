@@ -4,7 +4,7 @@ import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Repeat } from 'react-feather';
 import classnames from 'classnames';
 
-import type { ModuleCode, RawLessonWithIndex, Semester } from 'types/modules';
+import type { ModuleCode, Semester } from 'types/modules';
 import type { ColorMapping } from 'types/reducers';
 import type { State } from 'types/state';
 import type { SemTimetableConfig } from 'types/timetables';
@@ -20,7 +20,7 @@ import {
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeTimetable, parseTaModuleCodes } from 'utils/timetables';
+import { deserializeTimetable, getImportedModuleCodes } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -29,8 +29,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import useScrollToTop from 'views/hooks/useScrollToTop';
 import qs from 'query-string';
 
-import { isArray, keys, last, omit } from 'lodash-es';
-import { getModuleTimetable } from 'utils/modules';
+import { keys } from 'lodash-es';
 import styles from './TimetableContainer.scss';
 import TimetableContent from './TimetableContent';
 
@@ -189,15 +188,6 @@ export const TimetableContainerComponent: FC = () => {
 
   const dispatch = useDispatch();
 
-  const getModuleSemesterTimetable = useCallback(
-    (moduleCode: ModuleCode): readonly RawLessonWithIndex[] => {
-      const module = modules[moduleCode];
-      if (!semester || !module) return [];
-      return getModuleTimetable(module, semester);
-    },
-    [modules, semester],
-  );
-
   const [isLoading, setLoading] = useState<boolean>(true);
   const isValidModule = useCallback(
     (moduleCode: ModuleCode): boolean => !!getModule(moduleCode),
@@ -214,12 +204,7 @@ export const TimetableContainerComponent: FC = () => {
     }
 
     const parsedQuery = qs.parse(location.search);
-    const serializedTaModuleConfig = isArray(parsedQuery.ta)
-      ? last(parsedQuery.ta)
-      : parsedQuery.ta;
-    const taModuleCodes = parseTaModuleCodes(serializedTaModuleConfig);
-
-    const importedModuleCodes = [...keys(omit(parsedQuery, ['ta', 'hidden'])), ...taModuleCodes];
+    const importedModuleCodes = getImportedModuleCodes(parsedQuery);
 
     if (!importedModuleCodes.length) {
       setLoading(false);
@@ -253,12 +238,12 @@ export const TimetableContainerComponent: FC = () => {
       semTimetableConfig,
       hidden: hiddenModules,
       ta: taModules,
-    } = deserializeTimetable(location.search, getModuleSemesterTimetable);
+    } = deserializeTimetable(location.search, modules, semester);
 
     setImportedTimetable(semTimetableConfig);
     setImportedHidden(hiddenModules);
     setImportedTa(taModules);
-  }, [semester, params.action, isLoading, location.search, getModuleSemesterTimetable]);
+  }, [semester, params.action, isLoading, location.search, modules]);
 
   const displayedTimetable = importedTimetable || timetable;
   const filledColors = useMemo(

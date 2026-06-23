@@ -1,9 +1,9 @@
 import NUSModerator from 'nusmoderator';
 import { parseISO } from 'date-fns';
 import { ModuleLessonConfig } from 'types/timetables';
-import { LessonType, RawLesson, Semester, Weeks } from 'types/modules';
+import { LessonType, ModuleLessonMap, RawLesson, Semester, Weeks } from 'types/modules';
 
-import { getModuleTimetable } from 'utils/modules';
+import { getModuleLessonMap, getModuleTimetable } from 'utils/modules';
 
 import { CS1010S } from '__mocks__/modules';
 import timetable from '__mocks__/sem-timetable.json';
@@ -38,7 +38,7 @@ describe(isValidSemester, () => {
 
 test('randomModuleLessonConfig should return a random lesson config', () => {
   const sem: Semester = 1;
-  const rawLessons = getModuleTimetable(CS1010S, sem);
+  const rawLessons: ModuleLessonMap<RawLesson> = getModuleLessonMap(CS1010S, sem);
   const lessonConfig: ModuleLessonConfig = randomModuleLessonConfig(rawLessons);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
     expect(lessonConfig[lessonType]).toBeTruthy();

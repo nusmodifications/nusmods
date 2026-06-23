@@ -15,6 +15,7 @@ import {
   omitBy,
   pick,
   pickBy,
+  reduce,
   size,
   some,
   split,
@@ -32,7 +33,7 @@ import {
   Weeks,
 } from 'types/modules';
 
-import { Lesson } from 'types/timetables';
+import { Lesson, ModuleLessonConfig } from 'types/timetables';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
 export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
@@ -317,4 +318,33 @@ export function getClosestClassNo(
 
   if (!closestLessons) return null;
   return closestLessons[0];
+}
+
+/**
+ * Based on what lessons are currently in the lesson config, find the classNo that most of the lessons belong to
+ * @param moduleLessonMap {@link moduleLessonMap|ModuleLessonMap} of the module
+ * @param moduleLessonConfig current {@link moduleLessonConfig|ModuleLessonConfig}
+ * @returns a non-TA module lesson config that best matches the current module lesson config
+ */
+export function getClosestLessonConfig(
+  moduleLessonMap: ModuleLessonMap<RawLesson>,
+  moduleLessonConfig: ModuleLessonConfig,
+): ModuleLessonConfig {
+  return reduce(
+    moduleLessonMap,
+    (accumulatedModuleLessonConfig, lessonTypeLessons, lessonType) => {
+      const configLessonTypeLessonIds: LessonId[] = get(moduleLessonConfig, lessonType);
+      const closestClassNo: ClassNo | null = getClosestClassNo(
+        lessonTypeLessons,
+        configLessonTypeLessonIds,
+      );
+      if (!closestClassNo) return accumulatedModuleLessonConfig;
+
+      return {
+        ...accumulatedModuleLessonConfig,
+        [lessonType]: [closestClassNo],
+      };
+    },
+    {} as ModuleLessonConfig,
+  );
 }

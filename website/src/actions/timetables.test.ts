@@ -1,8 +1,15 @@
 import { ModuleCode, Semester } from 'types/modules';
-import { SemTimetableConfig, LessonWithIndex, TimetableConfigV1 } from 'types/timetables';
+import {
+  SemTimetableConfig,
+  Lesson,
+  ModuleLessonConfig,
+  TimetableConfig,
+  TimetableConfigV2,
+  SemTimetableConfigV1,
+} from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';
-import { CS1010A, CS1010S, CS3216 } from '__mocks__/modules';
+import { CS1010A, CS1010S, CS3216, CS4243 } from '__mocks__/modules';
 
 import {
   TaModulesMapV1,
@@ -14,6 +21,7 @@ import {
 } from 'types/reducers';
 import { defaultTimetableState } from 'reducers/timetables';
 import * as actions from './timetables';
+import { serializeLessonDetails } from 'utils/timetables';
 
 const jest = vi;
 const initialState = defaultTimetableState;
@@ -41,15 +49,17 @@ test('removeLesson should return information to remove module', () => {
 });
 
 test('modifyLesson should return lesson payload', () => {
-  const activeLesson: LessonWithIndex = lessons[0];
+  const activeLesson: Lesson = lessons[0];
   expect(actions.modifyLesson(activeLesson)).toMatchSnapshot();
 });
 
 test('changeLesson should return updated information to change lesson', () => {
   const semester: Semester = 1;
-  const lesson: LessonWithIndex = lessons[1];
+  const lesson: Lesson = lessons[1];
   expect(
-    actions.changeLesson(semester, lesson.moduleCode, lesson.lessonType, [lesson.lessonIndex]),
+    actions.changeLesson(semester, lesson.moduleCode, lesson.lessonType, [
+      serializeLessonDetails(lesson),
+    ]),
   ).toMatchSnapshot();
 });
 
@@ -70,10 +80,10 @@ describe('disabling ta module', () => {
     lessons: {
       [semester]: {
         CS1010S: {
-          Lecture: [0],
-          Tutorial: [11],
-          Recitation: [1],
-        },
+          Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Tutorial: ['3|MON|1100|1200|COM1-0217|3_4_5_6_7_8_9_10_11_12_13'],
+        } satisfies ModuleLessonConfig,
       },
     },
     ta: { [semester]: ta },
@@ -95,10 +105,10 @@ describe('disabling ta module', () => {
     expect(firstAction).toEqual({
       payload: {
         lessonConfig: {
-          Lecture: [0],
-          Recitation: [1],
-          Tutorial: [11],
-        },
+          Lecture: ['1'],
+          Recitation: ['2'],
+          Tutorial: ['3'],
+        } satisfies ModuleLessonConfig,
         moduleCode: 'CS1010S',
         semester: 1,
       },
@@ -106,7 +116,7 @@ describe('disabling ta module', () => {
     });
   });
 
-  test('should dispatch action even if semesterData cannot be found to create normal mode lessonConfig', () => {
+  test('should dispatch action with serializedLessonDetails lessonId if semesterData cannot be found to create non-TA lessonConfig', () => {
     const ta = ['CS1010S'];
 
     const state: any = {
@@ -122,10 +132,10 @@ describe('disabling ta module', () => {
     expect(firstAction).toEqual({
       payload: {
         lessonConfig: {
-          Lecture: [0],
-          Recitation: [1],
-          Tutorial: [11],
-        },
+          Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Tutorial: ['3|MON|1100|1200|COM1-0217|3_4_5_6_7_8_9_10_11_12_13'],
+        } satisfies ModuleLessonConfig,
         moduleCode: 'CS1010S',
         semester: 1,
       },
@@ -135,7 +145,7 @@ describe('disabling ta module', () => {
 });
 
 describe('fillTimetableBlanks', () => {
-  const moduleBank: Partial<ModuleBank> = { modules: { CS1010S, CS1010A, CS3216 } };
+  const moduleBank: Partial<ModuleBank> = { modules: { CS1010S, CS1010A, CS3216, CS4243 } };
   const semester: Semester = 1;
   const timetablesState = (timetable: SemTimetableConfig): TimetablesState => ({
     ...initialState,
@@ -143,64 +153,164 @@ describe('fillTimetableBlanks', () => {
   });
   const action = actions.validateTimetable(semester);
 
-  test('do nothing if timetable is already full', async () => {
-    const timetable = {
+  test('do nothing if timetable is already full', () => {
+    const timetable: SemTimetableConfig = {
       CS1010S: {
-        Lecture: [0],
-        Tutorial: [11],
-        Recitation: [1],
+        Lecture: ['1'],
+        Recitation: ['2'],
+        Tutorial: ['3'],
       },
     };
 
     const state: any = { timetables: timetablesState(timetable), moduleBank };
     const dispatch = jest.fn();
-    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
+    action(dispatch, () => state);
     expect(dispatch).not.toHaveBeenCalled();
   });
 
-  test('fill missing lessons with randomly generated modules', async () => {
-    const timetable = {
+  test('fill non-TA modules that has missing lessons with first classNo, ignore TA modules with missing lessons', () => {
+    const timetable: SemTimetableConfig = {
       CS1010S: {
-        Lecture: [0],
-        Tutorial: [11],
+        Lecture: ['1'],
+        Tutorial: ['3'],
       },
-      CS3216: {},
+      CS4243: {},
     };
-    const state: any = { timetables: timetablesState(timetable), moduleBank };
+    const state: any = {
+      timetables: {
+        ...initialState,
+        lessons: {
+          [semester]: timetable,
+        },
+        ta: {
+          [semester]: ['CS4243'],
+        },
+      } as TimetablesState,
+      moduleBank,
+    };
     const dispatch = jest.fn();
-    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
-    expect(dispatch).toHaveBeenCalledTimes(2);
+    action(dispatch, () => state);
+    expect(dispatch).toHaveBeenCalledTimes(1);
 
-    const [[firstAction], [secondAction]] = dispatch.mock.calls;
-    expect(firstAction).toEqual({
+    const [[firstAction]] = dispatch.mock.calls;
+    expect(firstAction).toStrictEqual({
       type: actions.SET_LESSON_CONFIG,
       payload: {
         semester,
         moduleCode: 'CS1010S',
         lessonConfig: {
-          Lecture: [0],
-          Tutorial: [11],
-          Recitation: [1],
-        },
-      },
-    });
-
-    expect(secondAction).toEqual({
-      type: actions.SET_LESSON_CONFIG,
-      payload: {
-        semester,
-        moduleCode: 'CS3216',
-        lessonConfig: {
-          Lecture: [0],
-        },
+          Lecture: ['1'],
+          Recitation: ['1'],
+          Tutorial: ['3'],
+        } satisfies ModuleLessonConfig,
       },
     });
   });
 
-  test('migrate v1 config', async () => {
+  test('should not change v3 config', () => {
     const colors: ColorMapping = {
       CS1010S: 0,
-      CS3216: 1,
+      CS4243: 1,
+    };
+    const hiddenModules: ModuleCode[] = [];
+    const taModules = ['CS4243'];
+    const timetables = {
+      lessons: {
+        [semester]: {
+          CS1010S: {
+            Lecture: ['1'],
+            Recitation: ['2'],
+            Tutorial: ['3'],
+          },
+          CS4243: {
+            Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+            Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          },
+        },
+      } satisfies TimetableConfig,
+      colors: {
+        [semester]: colors,
+      },
+      hidden: {
+        [semester]: hiddenModules,
+      },
+      ta: {
+        [semester]: taModules,
+      },
+    };
+
+    const state: any = { timetables, moduleBank };
+    const dispatch = jest.fn();
+    action(dispatch, () => state);
+    expect(dispatch).toHaveBeenCalledTimes(0);
+  });
+
+  test('migrate v2 config', () => {
+    const colors: ColorMapping = {
+      CS1010S: 0,
+      CS4243: 1,
+    };
+    const hiddenModules: ModuleCode[] = [];
+    const taModules = ['CS4243'];
+    const timetables = {
+      lessons: {
+        [semester]: {
+          CS1010S: {
+            Lecture: [0],
+            Recitation: [3],
+            Tutorial: [30],
+          },
+          CS4243: {
+            Laboratory: [1],
+            Lecture: [5],
+          },
+        },
+      } satisfies TimetableConfigV2,
+      colors: {
+        [semester]: colors,
+      },
+      hidden: {
+        [semester]: hiddenModules,
+      },
+      ta: {
+        [semester]: taModules,
+      },
+    };
+
+    const state: any = { timetables, moduleBank };
+    const dispatch = jest.fn();
+    action(dispatch, () => state);
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    const [[firstAction]] = dispatch.mock.calls;
+
+    const migratedTimetable: SemTimetableConfig = {
+      CS1010S: {
+        Lecture: ['1'],
+        Recitation: ['2'],
+        Tutorial: ['3'],
+      },
+      CS4243: {
+        Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+        Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+      },
+    };
+
+    expect(firstAction).toEqual({
+      type: 'SET_TIMETABLE',
+      payload: {
+        semester,
+        timetable: migratedTimetable,
+        colors,
+        hiddenModules,
+        taModules,
+      },
+    });
+  });
+
+  test('migrate v1 config', () => {
+    const colors: ColorMapping = {
+      CS1010S: 0,
+      CS4243: 1,
     };
     const hiddenModules: ModuleCode[] = [];
     const timetables = {
@@ -208,48 +318,49 @@ describe('fillTimetableBlanks', () => {
         [semester]: {
           CS1010S: {
             Lecture: '1',
-            Tutorial: '1',
-            Recitation: '1',
+            Recitation: '2',
+            Tutorial: '3',
           },
-          CS3216: {
+          CS4243: {
+            Laboratory: '1',
             Lecture: '1',
           },
-        } as TimetableConfigV1,
+        } satisfies SemTimetableConfigV1,
       },
       colors: {
         [semester]: colors,
-      } as SemesterColorMap,
+      } satisfies SemesterColorMap,
       hidden: {
         [semester]: hiddenModules,
-      } as HiddenModulesMap,
+      } satisfies HiddenModulesMap,
       ta: {
         [semester]: {
-          CS1010S: [
+          CS4243: [
+            ['Laboratory', '2'],
             ['Lecture', '1'],
-            ['Tutorial', '2'],
-            ['Recitation', '2'],
           ],
         },
-      } as TaModulesMapV1,
+      } satisfies TaModulesMapV1,
     };
 
     const state: any = { timetables, moduleBank };
     const dispatch = jest.fn();
-    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
+    action(dispatch, () => state);
     expect(dispatch).toHaveBeenCalledTimes(1);
     const [[firstAction]] = dispatch.mock.calls;
 
     const migratedTimetable: SemTimetableConfig = {
       CS1010S: {
-        Lecture: [0],
-        Recitation: [3],
-        Tutorial: [21],
+        Lecture: ['1'],
+        Recitation: ['2'],
+        Tutorial: ['3'],
       },
-      CS3216: {
-        Lecture: [0],
+      CS4243: {
+        Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+        Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
       },
     };
-    const migratedTaModules: ModuleCode[] = ['CS1010S'];
+    const migratedTaModules: ModuleCode[] = ['CS4243'];
 
     expect(firstAction).toEqual({
       type: 'SET_TIMETABLE',
@@ -263,12 +374,12 @@ describe('fillTimetableBlanks', () => {
     });
   });
 
-  test('should not error when module cannot be found', async () => {
-    const timetable = {
+  test('should not error when module cannot be found', () => {
+    const timetable: SemTimetableConfig = {
       CS1010S: {
-        Lecture: [0],
-        Tutorial: [11],
-        Recitation: [1],
+        Lecture: ['1'],
+        Recitation: ['2'],
+        Tutorial: ['3'],
       },
     };
     const moduleBankWithoutModule = {
@@ -281,11 +392,11 @@ describe('fillTimetableBlanks', () => {
       moduleBank: moduleBankWithoutModule,
     };
     const dispatch = jest.fn();
-    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
+    action(dispatch, () => state);
     expect(dispatch).not.toThrow(TypeError);
   });
 
-  test('should not error when timetable configs are malformed', async () => {
+  test('should not error when timetable configs are malformed', () => {
     const timetable = {
       CS1010S: {
         Lecture: [undefined],
@@ -299,7 +410,7 @@ describe('fillTimetableBlanks', () => {
     };
     const state: any = { timetables, moduleBank };
     const dispatch = jest.fn();
-    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
+    action(dispatch, () => state);
     expect(dispatch).not.toThrow(TypeError);
   });
 });

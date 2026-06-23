@@ -1,21 +1,11 @@
 import { AcadWeekInfo } from 'nusmoderator';
-import {
-  flatMapDeep,
-  groupBy,
-  isEqual,
-  map,
-  mapValues,
-  pick,
-  range,
-  sample,
-  values,
-} from 'lodash-es';
+import { flatMap, groupBy, isEqual, keys, mapValues, pick, range, sample, values } from 'lodash-es';
 import { addDays, min as minDate, parseISO, startOfDay } from 'date-fns';
 
 import {
   consumeWeeks,
   LessonType,
-  RawLessonWithIndex,
+  ModuleLessonMap,
   NumericWeeks,
   RawLesson,
   Semester,
@@ -26,7 +16,6 @@ import {
   HoverLesson,
   InteractableLesson,
   Lesson,
-  LessonWithIndex,
   ModuleLessonConfig,
   SemTimetableConfigWithLessons,
 } from 'types/timetables';
@@ -43,29 +32,16 @@ export function isValidSemester(semester: Semester): boolean {
 //  Used when a module is first added.
 //  TODO: Suggest a configuration that does not clash with itself.
 //  {
-//    [lessonType: string]: ClassNo,
+//    [lessonType: string]: ClassNo[],
 //  }
-export function randomModuleLessonConfig(lessons: readonly RawLesson[]): ModuleLessonConfig {
-  const lessonsWithIndices = map(lessons, (lesson, lessonIndex) => ({ ...lesson, lessonIndex }));
-
-  const lessonByGroups: { [lessonType: string]: readonly RawLessonWithIndex[] } = groupBy(
-    lessonsWithIndices,
-    (lesson) => lesson.lessonType,
-  );
-
-  const lessonByGroupsByClassNo: {
-    [lessonType: string]: { [classNo: string]: readonly RawLessonWithIndex[] };
-  } = mapValues(lessonByGroups, (lessonsOfSamelessonType: readonly RawLessonWithIndex[]) =>
-    groupBy(lessonsOfSamelessonType, (lesson) => lesson.classNo),
-  );
-
-  return mapValues(
-    lessonByGroupsByClassNo,
-    (group: { [classNo: string]: readonly RawLessonWithIndex[] }) => {
-      const randomlySelectedLessons = sample(group);
-      return map(randomlySelectedLessons, 'lessonIndex');
-    },
-  );
+export function randomModuleLessonConfig(
+  lessonMap: ModuleLessonMap<RawLesson>,
+): ModuleLessonConfig {
+  return mapValues(lessonMap, (lessons) => {
+    const lessonsByClassNo = groupBy(lessons, 'classNo');
+    const randomClassNo = sample(keys(lessonsByClassNo));
+    return randomClassNo ? [randomClassNo] : [];
+  });
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
@@ -83,8 +59,10 @@ export function lessonsForLessonType<T extends RawLesson>(
 //      [lessonType: string]: [Lesson, ...],
 //    }
 //  }
-export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons): LessonWithIndex[] {
-  return flatMapDeep(timetable, values);
+export function timetableLessonsArray<T extends Lesson>(
+  timetable: SemTimetableConfigWithLessons<T>,
+): T[] {
+  return flatMap(timetable, (moduleLessonConfig) => flatMap(moduleLessonConfig, values));
 }
 
 export function isLessonAvailable(
@@ -191,7 +169,7 @@ export function getHoverLesson(lesson: InteractableLesson): HoverLesson {
     classNo: lesson.classNo,
     moduleCode: lesson.moduleCode,
     lessonType: lesson.lessonType,
-    lessonIndex: lesson.lessonIndex,
+    lessonId: lesson.lessonId,
   };
 }
 
@@ -208,16 +186,18 @@ export { isInteractable, getInteractableLessons } from './interactabilityHydrati
 export { hydrateSemTimetableWithLessons } from './lessonHydration';
 export {
   getClosestLessonConfig,
-  getLessonIndices,
-  getRecoveryLessonIndices,
-  makeLessonIndicesMap,
-} from './lessonIndices';
+  getRecoveryClassNo,
+  getRecoverySerializedLessonDetails,
+  makeModuleLessonMap,
+  serializeLessonDetails,
+} from './lessonId';
 export { LESSON_ABBREV_TYPE, LESSON_TYPE_ABBREV, getLessonIdentifier } from './lessonId';
 export { arrangeLessonsForWeek, groupLessonsByDay } from './lessonsArrangement';
 export { migrateSemTimetableConfig } from './migration';
 export {
   deserializeTimetable,
   parseTaModuleCodes,
+  getImportedModuleCodes,
   serializeModuleList,
   serializeTimetable,
 } from './shareLinks';
