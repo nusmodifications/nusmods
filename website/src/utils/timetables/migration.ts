@@ -198,7 +198,7 @@ export function migrateModuleLessonConfig(
             ...accumulatedModuleLessonConfig.migratedModuleLessonConfig,
             [lessonType]: migratedLessonConfig,
           },
-          alreadyMigrated: !configIsV2,
+          alreadyMigrated: accumulatedModuleLessonConfig.alreadyMigrated && !configIsV2,
         };
       }
 
