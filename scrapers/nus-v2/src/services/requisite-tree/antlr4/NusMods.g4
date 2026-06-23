@@ -26,7 +26,16 @@ compound:
 // or combined, e.g. `(Grad THEN X) OR (Undergrad THEN Y)`. The visitor then
 // flattens redundant same-type repeats and drops the outermost wrapper (the
 // ubiquitous single-program prefix that almost every prereq carries).
-program_types_conditional: program_types THEN compound;
+program_types_conditional: program_types_gate THEN compound;
+
+// The gate may be a single program type, a disjunction of program types
+// (`Undergraduate OR Graduate THEN ...`), or that disjunction parenthesised
+// (`(Undergraduate OR Graduate) THEN ...`). A disjunction of IF_IN program
+// types is equivalent to one IF_IN over the union of their types, which is how
+// the visitor collapses it.
+program_types_gate:
+	'(' program_types_gate ')'
+	| program_types (OR program_types)*;
 
 // A cohort-gated requirement. The consequence is a full compound (placed above
 // binop) so that trailing AND/OR clauses are absorbed into the gate, i.e.

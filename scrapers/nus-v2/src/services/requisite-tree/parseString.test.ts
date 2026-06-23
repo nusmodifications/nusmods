@@ -654,9 +654,16 @@ THEN
     ).toEqual(result);
   });
 
-  it('can parse multiple program types in one PROGRAM_TYPE', () => {
+  // A gate that names several program types is a real restriction (only the
+  // lone "Undergraduate Degree" wrapper is dropped as assumed), so it is kept
+  // and labelled with the union of its types.
+  it('keeps and labels a multi-type program-type gate', () => {
     const result = {
-      or: ['PL3102:D', 'PL3232:D'],
+      programType: {
+        rule: 'IF_IN',
+        types: ['Undergraduate Degree', 'Graduate Degree Research', 'Graduate Degree Coursework'],
+      },
+      then: { or: ['PL3102:D', 'PL3232:D'] },
     };
     expect(
       parse(
@@ -698,6 +705,61 @@ THEN
     ).toEqual({
       programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
       then: 'ESE5003:D',
+    });
+  });
+
+  // A gate that is a disjunction of program types — `IF_IN X OR IF_IN Y` — is
+  // collapsed into one IF_IN over the union of types. The EE6438 shape:
+  // parenthesised, graduate-only, so the gate is kept and labelled.
+  it('collapses a parenthesised OR-of-program-types gate (the EE6438 shape)', () => {
+    expect(
+      parse(
+        `
+          (PROGRAM_TYPES IF_IN Graduate Degree Coursework OR PROGRAM_TYPES IF_IN Graduate Degree Research) THEN (COURSES (1) EE5431:D, EE5431R:D, EE5433R:D, EE5441:D)
+        `,
+      ),
+    ).toEqual({
+      programType: {
+        rule: 'IF_IN',
+        types: ['Graduate Degree Coursework', 'Graduate Degree Research'],
+      },
+      then: { or: ['EE5431:D', 'EE5431R:D', 'EE5433R:D', 'EE5441:D'] },
+    });
+  });
+
+  // The BL5232D shape: an unparenthesised OR-of-program-types gate.
+  it('collapses an unparenthesised OR-of-program-types gate (the BL5232D shape)', () => {
+    expect(
+      parse(
+        `
+          PROGRAM_TYPES IF_IN Graduate Degree Research OR PROGRAM_TYPES IF_IN Graduate Degree Coursework THEN COURSES BL5232:D
+        `,
+      ),
+    ).toEqual({
+      programType: {
+        rule: 'IF_IN',
+        types: ['Graduate Degree Research', 'Graduate Degree Coursework'],
+      },
+      then: 'BL5232:D',
+    });
+  });
+
+  // The EE5113 shape: an OR-gate that names undergraduates alongside another
+  // program type is a real restriction (not the lone undergraduate wrapper), so
+  // it is kept and labelled with the union of types.
+  it('keeps an OR-of-program-types gate that includes undergraduates', () => {
+    expect(
+      parse(
+        `
+          (PROGRAM_TYPES IF_IN Undergraduate Degree OR PROGRAM_TYPES IF_IN Graduate Degree Coursework) THEN COURSES EE5934:D
+        `,
+      ),
+    ).toEqual({
+      programType: {
+        rule: 'IF_IN',
+        types: ['Undergraduate Degree', 'Graduate Degree Coursework'],
+      },
+      then: 'EE5934:D',
     });
   });
 

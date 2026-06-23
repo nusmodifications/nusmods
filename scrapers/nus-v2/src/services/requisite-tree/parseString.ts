@@ -28,6 +28,7 @@ import {
   Subject_years_conditionalContext,
   Program_typesContext,
   Program_types_conditionalContext,
+  Program_types_gateContext,
 } from './antlr4/NusModsParser';
 import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
@@ -61,6 +62,13 @@ function generateOrBranch(modules: Array<PrereqTree>) {
     return result[0];
   }
   return { or: result };
+}
+
+// Flatten a program-type gate (which may be parenthesised and/or a disjunction
+// of program types) down to its list of program types.
+function collectGateProgramTypes(gate: Program_types_gateContext): Array<Program_typesContext> {
+  const inner = gate.program_types_gate();
+  return inner !== undefined ? collectGateProgramTypes(inner) : gate.program_types();
 }
 
 /**
@@ -247,7 +255,7 @@ class ReqTreeVisitor
     if (then === undefined || then === '') {
       return '';
     }
-    const programType = this.programTypeCondition(ctx.program_types());
+    const programType = this.programTypeGateCondition(ctx.program_types_gate());
     return programType === undefined ? '' : { programType, then };
   };
 
@@ -279,6 +287,25 @@ class ReqTreeVisitor
       return undefined;
     }
     return { rule, types: ctx.PROGRAM_TYPES_VALUE().map((node) => node.text) };
+  }
+
+  // A gate may be a disjunction of program types, e.g.
+  // `(Undergraduate OR Graduate Coursework)`. Since `IF_IN X OR IF_IN Y` is just
+  // `IF_IN X, Y`, collapse the disjunction into a single condition over the
+  // union of types. (Real data only uses IF_IN here; the first rule is kept if
+  // they ever differ.)
+  programTypeGateCondition(ctx: Program_types_gateContext): ProgramTypeCondition | undefined {
+    const conditions = collectGateProgramTypes(ctx)
+      .map((pt) => this.programTypeCondition(pt))
+      .filter((condition): condition is ProgramTypeCondition => condition !== undefined);
+    if (conditions.length === 0) {
+      this.errors.push(new Error('Program types gate has no conditions'));
+      return undefined;
+    }
+    return {
+      rule: conditions[0].rule,
+      types: R.uniq(conditions.flatMap((condition) => condition.types)),
+    };
   }
 }
 
@@ -333,25 +360,26 @@ function normalizeProgramTypes(tree: PrereqTree, enclosing?: ProgramTypeConditio
   return tree;
 }
 
-// Undergraduates are NUSMods' default audience, so an undergraduate (or
-// undergraduate-inclusive) gate is the ubiquitous wrapper almost every prereq
-// carries.
-function includesUndergraduate({ types }: ProgramTypeCondition): boolean {
-  return types.some((type) => type.toLowerCase() === 'undergraduate degree');
+// The lone "Undergraduate Degree" gate is the ubiquitous wrapper almost every
+// prereq carries; undergraduates are NUSMods' default audience, so it is assumed
+// and carries no information. Any gate naming more — a graduate/CPE type, or
+// undergraduate alongside other types — is a real restriction worth keeping.
+function isAssumedUndergraduateGate({ types }: ProgramTypeCondition): boolean {
+  return types.length === 1 && types[0].toLowerCase() === 'undergraduate degree';
 }
 
 /**
- * Drop the single outermost program-type gate when it includes undergraduates,
- * since that "Undergraduate Degree THEN ..." wrapper is assumed when viewing a
- * module (matching the historical behaviour of ignoring the top-level program
- * type). A non-undergraduate outermost gate (e.g. a graduate-only module) is
+ * Drop the single outermost program-type gate only when it is the assumed
+ * "Undergraduate Degree THEN ..." wrapper (matching the historical behaviour of
+ * ignoring that top-level program type). Any more specific outermost gate — a
+ * graduate/CPE-only module, or an "Undergraduate or Graduate" disjunction — is
  * kept and labelled, as it is meaningful signal. Nested or combined (differing)
  * program-type gates are always kept and modelled.
  */
 function dropOuterProgramType(tree: PrereqTree): PrereqTree {
   return typeof tree === 'object' &&
     'programType' in tree &&
-    includesUndergraduate(tree.programType)
+    isAssumedUndergraduateGate(tree.programType)
     ? tree.then
     : tree;
 }
