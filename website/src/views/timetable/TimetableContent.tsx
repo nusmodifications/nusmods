@@ -190,7 +190,7 @@ class TimetableContent extends React.Component<Props, State> {
       // Allow multiple lessons of the same type to be added for TA lessons
       this.props.addLesson(this.props.semester, moduleCode, lessonType, [lessonId]);
     } else if (currentlySelected.length > 1) {
-      // If a TA lesson is the last of its type, disallow removing it
+      // If a TA lesson is the last lesson in the module config, disallow removing it
       this.props.removeLesson(this.props.semester, moduleCode, lessonType, [lessonId]);
     } else {
       this.props.cancelModifyLesson();
