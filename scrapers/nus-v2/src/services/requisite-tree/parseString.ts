@@ -18,6 +18,7 @@ import {
   ProgramsContext,
   Cohort_yearsContext,
   Cohort_conditionalContext,
+  Subject_yearsContext,
   Subject_years_conditionalContext,
   Program_typesContext,
 } from './antlr4/NusModsParser';
@@ -200,6 +201,18 @@ class ReqTreeVisitor
 
     const cohort = this.cohortCondition(ctx.cohort_years());
     return cohort === undefined ? '' : { cohort, then };
+  };
+
+  // A bare subject-year predicate (no THEN) is an eligibility constraint, the
+  // same as a bare cohort. SUBJECT_YEARS only supports IF_IN (see the grammar)
+  // and shares COHORT_YEARS' S:/E: year-bound format, so it is surfaced as a
+  // cohort-style { cohort } node, mirroring visitCohort_years. No current module
+  // uses this bare form, but handling it keeps subject_years from being silently
+  // dropped if the data ever does.
+  // @ts-ignore
+  visitSubject_years?: ((ctx: Subject_yearsContext) => PrereqTree) | undefined = (ctx) => {
+    const years = ctx.YEARS().map((node) => node.text);
+    return { cohort: { rule: 'IF_IN', years } };
   };
 
   // A subject-year-gated requirement. SUBJECT_YEARS shares the S:/E: year-bound

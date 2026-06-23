@@ -551,6 +551,21 @@ THEN
     });
   });
 
+  it('keeps a bare subject-year constraint (no THEN) as an eligibility requirement', () => {
+    // No current module presents a bare SUBJECT_YEARS, but it should be surfaced
+    // as a cohort-style { cohort } node rather than silently dropped, mirroring
+    // the bare COHORT_YEARS handling.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COURSES (1) CS1010:D AND SUBJECT_YEARS IF_IN S:2022/23 )
+      `,
+      ),
+    ).toEqual({
+      and: ['CS1010:D', { cohort: { rule: 'IF_IN', years: ['S:2022/23'] } }],
+    });
+  });
+
   // According to NUS docs, this means ALL subjects are required.
   // Also SPECIAL_PROGRAMME is undocumented by NUS, so best effort here...
   it('allows omitted subjects count an undocumented SPECIAL_PROGRAMME type', () => {
