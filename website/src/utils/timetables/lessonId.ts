@@ -120,6 +120,12 @@ export const serializeWeekRange = ({ start, end, weekInterval, weeks }: WeekRang
   return `${serializedStartEndInterval}${WEEKS_SEP}${serializeWeekNumbers(weeks)}`;
 };
 
+/**
+ * Checks whether the provided lesson identifiers represent a single `ClassNo`.
+ *
+ * This assumes `lessonIdentifiers` is already a valid `([ClassNo] | LessonId[])` value,
+ * so we only need to distinguish the one-item class number case from serialized lesson IDs.
+ */
 export const isClassNo = (
   lessonIdentifiers: [ClassNo] | LessonId[],
 ): lessonIdentifiers is [ClassNo] => {
