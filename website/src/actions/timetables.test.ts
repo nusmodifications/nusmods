@@ -1,4 +1,4 @@
-import { ModuleCode, Semester } from 'types/modules';
+import { Module, ModuleCode, ModuleLessonMap, RawLesson, Semester } from 'types/modules';
 import {
   SemTimetableConfig,
   Lesson,
@@ -11,6 +11,7 @@ import {
 import lessons from '__mocks__/lessons-array.json';
 import { CS1010A, CS1010S, CS3216, CS4243 } from '__mocks__/modules';
 
+import { OPEN_NOTIFICATION } from './app';
 import {
   TaModulesMapV1,
   ModuleBank,
@@ -20,8 +21,13 @@ import {
   ColorMapping,
 } from 'types/reducers';
 import { defaultTimetableState } from 'reducers/timetables';
-import * as actions from './timetables';
 import { serializeLessonDetails } from 'utils/timetables';
+
+import * as actions from './timetables';
+
+import * as moduleBankActions from 'actions/moduleBank';
+import * as modulesUtils from 'utils/modules';
+import * as timetablesUtils from 'utils/timetables';
 
 const jest = vi;
 const initialState = defaultTimetableState;
@@ -31,15 +37,65 @@ vi.mock('storage', () => ({
   setItem: vi.fn(),
 }));
 
-// see: https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md#example-1
-// TODO: write addModule test with nock and mockStore.
-test('addModule should create an action to add a module', () => {
-  const moduleCode = 'CS1010';
-  const semester = 1;
+describe(actions.addModule, () => {
+  const semester: Semester = 1;
+  const moduleCode: ModuleCode = 'CS1010';
 
-  const value = actions.addModule(semester, moduleCode);
-  // TODO
-  expect(value).toBeInstanceOf(Function);
+  beforeEach(() => {
+    vi.spyOn(moduleBankActions, 'fetchModule').mockImplementation(
+      () => () => Promise.resolve({} as Module),
+    );
+
+    vi.spyOn(modulesUtils, 'getModuleLessonMap').mockReturnValue({} as ModuleLessonMap<RawLesson>);
+
+    vi.spyOn(timetablesUtils, 'randomModuleLessonConfig').mockReturnValue({} as ModuleLessonConfig);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test('dispatches addModule when the module exists', async () => {
+    const state: any = {
+      moduleBank: {
+        modules: {
+          [moduleCode]: { moduleCode },
+        },
+      },
+    };
+
+    const dispatch = vi.fn().mockResolvedValue(undefined);
+    await actions.addModule(semester, moduleCode)(dispatch, () => state);
+    expect(dispatch).toHaveBeenCalledTimes(2);
+    const [, [secondAction]] = dispatch.mock.calls;
+
+    expect(secondAction).toEqual(
+      actions.Internal.addModule(semester, moduleCode, expect.any(Object)),
+    );
+  });
+
+  test('dispatches a notification when the module cannot be loaded', async () => {
+    const state: any = {
+      moduleBank: {
+        modules: {},
+      },
+    };
+
+    const dispatch = vi.fn().mockResolvedValue(undefined);
+    await actions.addModule(semester, moduleCode)(dispatch, () => state);
+    expect(dispatch).toHaveBeenCalledTimes(2);
+    const [, [secondAction]] = dispatch.mock.calls;
+
+    expect(secondAction).toEqual({
+      type: OPEN_NOTIFICATION,
+      payload: {
+        message: `Cannot load ${moduleCode}`,
+        action: expect.objectContaining({
+          text: 'Retry',
+        }),
+      },
+    });
+  });
 });
 
 test('removeLesson should return information to remove module', () => {
@@ -71,77 +127,6 @@ test('select module color should dispatch a select of module color', () => {
   const semester: Semester = 1;
   expect(actions.selectModuleColor(semester, 'CS1010S', 0)).toMatchSnapshot();
   expect(actions.selectModuleColor(semester, 'CS3216', 1)).toMatchSnapshot();
-});
-
-describe('disabling ta module', () => {
-  const semester = 1;
-  const timetablesState = (ta: ModuleCode[]): TimetablesState => ({
-    ...initialState,
-    lessons: {
-      [semester]: {
-        CS1010S: {
-          Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
-          Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
-          Tutorial: ['3|MON|1100|1200|COM1-0217|3_4_5_6_7_8_9_10_11_12_13'],
-        } satisfies ModuleLessonConfig,
-      },
-    },
-    ta: { [semester]: ta },
-  });
-
-  test('should dispatch action to remove the module', () => {
-    const ta = ['CS1010S'];
-
-    const state: any = {
-      timetables: timetablesState(ta),
-      moduleBank: { modules: { CS1010S, CS3216 } },
-    };
-    const dispatch = jest.fn();
-    const action = actions.disableTaModule(semester, 'CS1010S');
-    action(dispatch, () => state);
-    const [[firstAction]] = dispatch.mock.calls;
-
-    expect(dispatch).toHaveBeenCalledTimes(1);
-    expect(firstAction).toEqual({
-      payload: {
-        lessonConfig: {
-          Lecture: ['1'],
-          Recitation: ['2'],
-          Tutorial: ['3'],
-        } satisfies ModuleLessonConfig,
-        moduleCode: 'CS1010S',
-        semester: 1,
-      },
-      type: 'REMOVE_TA_MODULE',
-    });
-  });
-
-  test('should dispatch action with serializedLessonDetails lessonId if semesterData cannot be found to create non-TA lessonConfig', () => {
-    const ta = ['CS1010S'];
-
-    const state: any = {
-      timetables: timetablesState(ta),
-      moduleBank: { modules: { CS1010S: { semesterData: [] } } },
-    };
-    const dispatch = jest.fn();
-    const action = actions.disableTaModule(semester, 'CS1010S');
-    action(dispatch, () => state);
-    const [[firstAction]] = dispatch.mock.calls;
-
-    expect(dispatch).toHaveBeenCalled();
-    expect(firstAction).toEqual({
-      payload: {
-        lessonConfig: {
-          Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
-          Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
-          Tutorial: ['3|MON|1100|1200|COM1-0217|3_4_5_6_7_8_9_10_11_12_13'],
-        } satisfies ModuleLessonConfig,
-        moduleCode: 'CS1010S',
-        semester: 1,
-      },
-      type: 'REMOVE_TA_MODULE',
-    });
-  });
 });
 
 describe('fillTimetableBlanks', () => {
@@ -579,6 +564,77 @@ describe(actions.enableTaModule, () => {
         moduleCode: CS4243.moduleCode,
         lessonConfig: {},
       },
+    });
+  });
+});
+
+describe(actions.disableTaModule, () => {
+  const semester = 1;
+  const timetablesState = (ta: ModuleCode[]): TimetablesState => ({
+    ...initialState,
+    lessons: {
+      [semester]: {
+        CS1010S: {
+          Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Tutorial: ['3|MON|1100|1200|COM1-0217|3_4_5_6_7_8_9_10_11_12_13'],
+        } satisfies ModuleLessonConfig,
+      },
+    },
+    ta: { [semester]: ta },
+  });
+
+  test('should dispatch action to remove the module', () => {
+    const ta = ['CS1010S'];
+
+    const state: any = {
+      timetables: timetablesState(ta),
+      moduleBank: { modules: { CS1010S, CS3216 } },
+    };
+    const dispatch = jest.fn();
+    const action = actions.disableTaModule(semester, 'CS1010S');
+    action(dispatch, () => state);
+    const [[firstAction]] = dispatch.mock.calls;
+
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(firstAction).toEqual({
+      payload: {
+        lessonConfig: {
+          Lecture: ['1'],
+          Recitation: ['2'],
+          Tutorial: ['3'],
+        } satisfies ModuleLessonConfig,
+        moduleCode: 'CS1010S',
+        semester: 1,
+      },
+      type: 'REMOVE_TA_MODULE',
+    });
+  });
+
+  test('should dispatch action with serializedLessonDetails lessonId if semesterData cannot be found to create non-TA lessonConfig', () => {
+    const ta = ['CS1010S'];
+
+    const state: any = {
+      timetables: timetablesState(ta),
+      moduleBank: { modules: { CS1010S: { semesterData: [] } } },
+    };
+    const dispatch = jest.fn();
+    const action = actions.disableTaModule(semester, 'CS1010S');
+    action(dispatch, () => state);
+    const [[firstAction]] = dispatch.mock.calls;
+
+    expect(dispatch).toHaveBeenCalled();
+    expect(firstAction).toEqual({
+      payload: {
+        lessonConfig: {
+          Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Tutorial: ['3|MON|1100|1200|COM1-0217|3_4_5_6_7_8_9_10_11_12_13'],
+        } satisfies ModuleLessonConfig,
+        moduleCode: 'CS1010S',
+        semester: 1,
+      },
+      type: 'REMOVE_TA_MODULE',
     });
   });
 });
