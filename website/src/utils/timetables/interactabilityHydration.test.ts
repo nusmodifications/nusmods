@@ -1,4 +1,4 @@
-import { filter, flatMap, get, keys, map, mapValues, shuffle, some, values } from 'lodash-es';
+import { filter, flatMap, get, map, mapValues, shuffle, some, values } from 'lodash-es';
 import {
   InteractableLesson,
   Lesson,
@@ -58,6 +58,8 @@ describe('getInteractableLessons', () => {
     CS4243: 1,
     GES1021: 2,
   };
+  const lessonIds = (lessons: readonly (Lesson | RawLesson | InteractableLesson)[]) =>
+    new Set(map(lessons, serializeLessonDetails));
 
   const lessonsMap: Record<ModuleCode, Record<LessonType, Record<LessonId, Lesson>>> = mapValues(
     modules,
@@ -157,10 +159,12 @@ describe('getInteractableLessons', () => {
     });
 
     test('should only show lessons in timetable when no lesson is active', () => {
-      expect(allLessons).toHaveLength(
-        flatMap(timetableLessons, (moduleLessons) =>
-          flatMap(moduleLessons, (lessons) => values(lessons)),
-        ).length,
+      expect(lessonIds(allLessons)).toEqual(
+        lessonIds(
+          flatMap(timetableLessons, (moduleLessons) =>
+            flatMap(moduleLessons, (lessons) => values(lessons)),
+          ),
+        ),
       );
     });
   });
@@ -304,16 +308,14 @@ describe('getInteractableLessons', () => {
     });
 
     test('timetable lessons from other modules are visible', () => {
-      const otherModuleLessons: Record<LessonType, LessonId[]> = mapValues(
-        get(lessonsMap, CS4243.moduleCode),
-        (lessons) => keys(lessons),
+      const otherModuleLessons = flatMap(get(timetableLessons, CS4243.moduleCode), (lessons) =>
+        values(lessons),
       );
-      const otherModuleLessonKeys = new Set(keys(otherModuleLessons));
-      const hydratedOtherModuleLessonKeys = new Set(
-        keys(mapValues(hydratedOtherModuleLessons, (lessons) => keys(lessons))),
+      const hydratedOtherModuleLessonsArray = flatMap(hydratedOtherModuleLessons, (lessons) =>
+        values(lessons),
       );
 
-      expect(otherModuleLessonKeys).toEqual(hydratedOtherModuleLessonKeys);
+      expect(lessonIds(hydratedOtherModuleLessonsArray)).toEqual(lessonIds(otherModuleLessons));
     });
 
     const hydratedActiveLesson: InteractableLesson = get(hydratedLessons, [
@@ -342,7 +344,9 @@ describe('getInteractableLessons', () => {
     });
 
     test("all lessons from the active lesson's module should be visible, currently selected lessons and active lesson should not appear twice", () => {
-      expect(hydratedActiveModuleLessons).toHaveLength(getModuleTimetable(PC1222, semester).length);
+      expect(lessonIds(hydratedActiveModuleLessons)).toEqual(
+        lessonIds(getModuleTimetable(PC1222, semester)),
+      );
     });
 
     const hydratedAlternativeLessons: InteractableLesson[] = filter(
@@ -433,7 +437,9 @@ describe('getInteractableLessons', () => {
     });
 
     test('should only show lessons in timetable when no lesson is active', () => {
-      expect(hydratedTimetableLessons).toHaveLength(timetableLessonsArray(timetableLessons).length);
+      expect(lessonIds(hydratedTimetableLessons)).toEqual(
+        lessonIds(timetableLessonsArray(timetableLessons)),
+      );
     });
   });
 
@@ -472,7 +478,9 @@ describe('getInteractableLessons', () => {
       const hydratedLessonsArray: InteractableLesson[] = timetableLessonsArray(hydratedLessons);
 
       test('only the lesson in the timetable are visible', () => {
-        expect(hydratedLessonsArray).toHaveLength(timetableLessonsArray(timetableLessons).length);
+        expect(lessonIds(hydratedLessonsArray)).toEqual(
+          lessonIds(timetableLessonsArray(timetableLessons)),
+        );
       });
 
       test('lesson is already in timetable', () => {
@@ -501,7 +509,9 @@ describe('getInteractableLessons', () => {
       const hydratedLessonsArray: InteractableLesson[] = timetableLessonsArray(hydratedLessons);
 
       test('all lessons from the module are visible', () => {
-        expect(hydratedLessonsArray).toHaveLength(2);
+        expect(lessonIds(hydratedLessonsArray)).toEqual(
+          lessonIds(getModuleTimetable(GES1021, semester)),
+        );
       });
 
       test('lesson already in timetable are already in the lesson config', () => {
@@ -588,7 +598,13 @@ describe('getInteractableLessons', () => {
     });
 
     test('readonly timetables should only show the lessons in the timetable', () => {
-      expect(hydratedLessonsArray).toHaveLength(5);
+      expect(lessonIds(hydratedLessonsArray)).toEqual(
+        lessonIds(timetableLessonsArray(timetableLessons)),
+      );
+    });
+
+    test('readonly timetables keep timetable lessons locked in the config', () => {
+      expect(some(hydratedLessonsArray, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(false);
     });
   });
 });
