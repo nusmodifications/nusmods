@@ -151,7 +151,7 @@ export const isClassNo = (
  */
 export const serializeLessonDetails = <T extends Omit<RawLesson, 'lessonType'>>(
   lesson: T,
-): string => {
+): LessonId => {
   const { classNo, day, startTime, endTime, venue, weeks } = lesson;
 
   const abbreviatedDayOfWeek = DAY_OF_WEEK_ABBREV[day as DayOfWeek];
