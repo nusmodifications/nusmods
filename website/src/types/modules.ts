@@ -25,7 +25,17 @@ export type WeekRange = {
   // Week intervals for modules with uneven spacing between lessons
   weeks?: number[];
 };
+
+/**
+ * LessonIndex was previously used to disambiguate lessons.
+ * However, it was fragile and caused several issues.
+ * See https://github.com/nusmodifications/nusmods/issues/4283.
+ *
+ * @deprecated LessonIndex has been replaced by LessonId.
+ * This type is preserved for backwards compatability. Do not use this.
+ */
 export type LessonIndex = number;
+
 /**
  * `LessonId`s identify a singular lesson from a list of lessons of a `LessonType`.
  * `LessonType` is excluded from the `LessonId` because lessons of different `LessonType`s are serialized separately in sharing links.

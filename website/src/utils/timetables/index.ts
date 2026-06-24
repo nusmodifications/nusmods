@@ -79,6 +79,21 @@ export function lessonsForLessonType<T extends RawLesson>(
 //      [lessonType: string]: [Lesson, ...],
 //    }
 //  }
+
+/**
+ * Converts from timetable config format to flat array of lessons.
+ *
+ * SemTimetableConfigWithLessons has the following shape:
+ *
+ * ```ts
+ * {
+ *   [moduleCode: string]: {
+ *     [lessonType: string]: [Lesson, Lesson, ...],
+ *     [lessonType: string]: [Lesson, ...],
+ *   }
+ * }
+ * ```
+ */
 export function timetableLessonsArray<T extends Lesson>(
   timetable: SemTimetableConfigWithLessons<T>,
 ): T[] {
