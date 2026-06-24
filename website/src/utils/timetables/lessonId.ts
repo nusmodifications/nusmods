@@ -3,6 +3,7 @@ import {
   fromPairs,
   get,
   groupBy,
+  includes,
   intersection,
   invert,
   isEmpty,
@@ -117,6 +118,12 @@ export const serializeWeekRange = ({ start, end, weekInterval, weeks }: WeekRang
   const serializedStartEndInterval = [start, end, weekInterval ?? 0].join(WEEKS_SEP);
   if (isUndefined(weeks)) return serializedStartEndInterval;
   return `${serializedStartEndInterval}${WEEKS_SEP}${serializeWeekNumbers(weeks)}`;
+};
+
+export const isClassNo = (
+  lessonIdentifiers: [ClassNo] | LessonId[],
+): lessonIdentifiers is [ClassNo] => {
+  return lessonIdentifiers.length === 1 && !includes(lessonIdentifiers[0], '|');
 };
 
 /**
@@ -275,19 +282,23 @@ export function getRecoveryClassNo(
  */
 export function getRecoverySerializedLessonDetails(
   lessonsWithLessonType: Record<LessonId, RawLesson>,
-  configLessonTypeLessonIds: LessonId[],
+  configLessonTypeLessonIds: [ClassNo] | LessonId[],
 ): LessonId[] {
-  const lessonsWithValidLessonIds = intersection(
+  const lessonsWithValidLessonIds: LessonId[] = intersection(
     keys(lessonsWithLessonType),
     configLessonTypeLessonIds,
   );
   if (!isEmpty(lessonsWithValidLessonIds)) return lessonsWithValidLessonIds;
 
-  const configLessonTypeLessonIdsSet = new Set(configLessonTypeLessonIds);
-  const lessonsWithClassNo = pickBy(lessonsWithLessonType, (lesson) =>
-    configLessonTypeLessonIdsSet.has(lesson.classNo),
-  );
-  if (size(lessonsWithClassNo) > 0) return keys(lessonsWithClassNo);
+  if (isClassNo(configLessonTypeLessonIds)) {
+    const classNo: ClassNo = first(configLessonTypeLessonIds);
+    const lessonsWithClassNo = pickBy(
+      lessonsWithLessonType,
+      (lesson) => lesson.classNo === classNo,
+    );
+
+    if (size(lessonsWithClassNo) > 0) return keys(lessonsWithClassNo);
+  }
 
   const firstLessonId = first(keys(lessonsWithLessonType));
   if (!firstLessonId) {
@@ -305,8 +316,8 @@ export function getRecoverySerializedLessonDetails(
  */
 export function getClosestClassNo(
   lessonTypeLessons: Record<LessonId, RawLesson>,
-  configLessonTypeLessonIds: LessonId[],
-) {
+  configLessonTypeLessonIds: [ClassNo] | LessonId[],
+): ClassNo | null {
   const configLessonsByClassNo = groupBy(
     pick(lessonTypeLessons, configLessonTypeLessonIds),
     'classNo',
@@ -333,7 +344,7 @@ export function getClosestLessonConfig(
   return reduce(
     moduleLessonMap,
     (accumulatedModuleLessonConfig, lessonTypeLessons, lessonType) => {
-      const configLessonTypeLessonIds: LessonId[] = get(moduleLessonConfig, lessonType);
+      const configLessonTypeLessonIds: [ClassNo] | LessonId[] = get(moduleLessonConfig, lessonType);
       const closestClassNo: ClassNo | null = getClosestClassNo(
         lessonTypeLessons,
         configLessonTypeLessonIds,

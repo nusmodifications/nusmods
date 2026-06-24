@@ -11,7 +11,7 @@ import {
 } from './modules';
 
 export type ModuleLessonConfig = {
-  [lessonType: LessonType]: ClassNo[] | LessonId[];
+  [lessonType: LessonType]: [ClassNo] | LessonId[];
 };
 
 /**

@@ -1,6 +1,6 @@
 // Components within a module:
 export type AcadYear = string;
-export type ClassNo = string;
+export type ClassNo = string & { __brand?: 'ClassNo' };
 export type DayText = string;
 export type StartTime = string;
 export type EndTime = string;
@@ -30,7 +30,7 @@ export type LessonIndex = number;
  * `LessonId`s identify a singular lesson from a list of lessons of a `LessonType`.
  * `LessonType` is excluded from the `LessonId` because lessons of different `LessonType`s are serialized separately in sharing links.
  */
-export type LessonId = string;
+export type LessonId = string & { __brand?: 'LessonId' };
 
 // Whether a cohort condition includes (IF_IN/MUST_BE_IN) or excludes
 // (IF_NOT_IN/MUST_NOT_BE_IN) the listed cohort years.

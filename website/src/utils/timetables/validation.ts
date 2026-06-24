@@ -1,10 +1,11 @@
 import {
   first,
   get,
-  includes,
+  isEmpty,
   isEqual,
   keys,
   map,
+  mapValues,
   partition,
   pick,
   reduce,
@@ -12,7 +13,15 @@ import {
   some,
 } from 'lodash-es';
 
-import { LessonId, Module, ModuleCode, ModuleLessonMap, RawLesson, Semester } from 'types/modules';
+import {
+  ClassNo,
+  LessonId,
+  Module,
+  ModuleCode,
+  ModuleLessonMap,
+  RawLesson,
+  Semester,
+} from 'types/modules';
 
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 
@@ -24,6 +33,7 @@ import {
   getClosestClassNo,
   getRecoveryClassNo,
   getRecoverySerializedLessonDetails,
+  isClassNo,
 } from './lessonId';
 
 /**
@@ -63,36 +73,57 @@ export function validateTaModuleLessons(
   validatedLessonConfig: ModuleLessonConfig;
   valid: boolean;
 } {
-  const { config: validatedLessonConfig, valid } = reduce(
+  const {
+    config: validatedLessonConfig,
+    numberOfLessons,
+    valid,
+  } = reduce(
     lessonConfig,
     (accumulatedValidationResult, configLessonTypeLessonIds, lessonType) => {
       const validLessonTypeLessonIds: Set<LessonId> = new Set(keys(get(lessonMap, lessonType, {})));
       if (!validLessonTypeLessonIds.size) {
         return {
-          config: accumulatedValidationResult.config,
+          ...accumulatedValidationResult,
           valid: false,
         };
       }
-      const hasInvalidLesson = some(
-        configLessonTypeLessonIds,
-        (lessonId) => !validLessonTypeLessonIds.has(lessonId),
-      );
+      const hasInvalidLesson =
+        isClassNo(configLessonTypeLessonIds) ||
+        some(configLessonTypeLessonIds, (lessonId) => !validLessonTypeLessonIds.has(lessonId));
+      const validatedLessonTypeLessonIds: LessonId[] = hasInvalidLesson
+        ? getRecoverySerializedLessonDetails(
+            get(lessonMap, lessonType, {}),
+            configLessonTypeLessonIds,
+          )
+        : configLessonTypeLessonIds;
 
       return {
         config: {
           ...accumulatedValidationResult.config,
-          [lessonType]: hasInvalidLesson
-            ? getRecoverySerializedLessonDetails(
-                get(lessonMap, lessonType, {}),
-                configLessonTypeLessonIds,
-              )
-            : configLessonTypeLessonIds,
+          [lessonType]: validatedLessonTypeLessonIds,
         },
+        numberOfLessons:
+          accumulatedValidationResult.numberOfLessons + validatedLessonTypeLessonIds.length,
         valid: accumulatedValidationResult.valid && !hasInvalidLesson,
       };
     },
-    { config: {}, valid: true } as { config: ModuleLessonConfig; valid: boolean },
+    { config: {}, numberOfLessons: 0, valid: true } as {
+      config: ModuleLessonConfig;
+      numberOfLessons: number;
+      valid: boolean;
+    },
   );
+
+  if (numberOfLessons < 1 && !isEmpty(lessonMap)) {
+    const recoveredModuleLessonConfig: ModuleLessonConfig = mapValues(
+      lessonMap,
+      (lessonTypeLessons) => getRecoverySerializedLessonDetails(lessonTypeLessons, []),
+    );
+    return {
+      validatedLessonConfig: recoveredModuleLessonConfig,
+      valid: false,
+    };
+  }
 
   return {
     validatedLessonConfig,
@@ -120,22 +151,18 @@ export function validateNonTaModuleLesson(
   const lessonTypesInLessonConfig = keys(lessonConfig);
 
   const lessonTypesValidationResults = map(lessonMap, (validLessons, lessonType) => {
-    const lessonTypeInLessonConfig = lessonTypesInLessonConfig.includes(lessonType);
-    const configLessonIds: LessonId[] = get(lessonConfig, lessonType, []);
-    const firstLessonId = first(configLessonIds);
+    const lessonTypeInLessonConfig: boolean = lessonTypesInLessonConfig.includes(lessonType);
+    const configLessonIdentifier: [ClassNo] | LessonId[] = get(lessonConfig, lessonType, []);
 
-    if (!lessonTypeInLessonConfig || !firstLessonId) {
-      const recoveryClassNo = getRecoveryClassNo(validLessons);
-      return {
-        lessonType,
-        validLessonIds: recoveryClassNo ? [recoveryClassNo] : [],
-        valid: false,
-      };
-    }
-
-    if (configLessonIds.length === 1 && !includes(firstLessonId, '|')) {
-      const isValidClassNo = some(validLessons, (lesson) => lesson.classNo === firstLessonId);
-      const classNo = isValidClassNo ? firstLessonId : getRecoveryClassNo(validLessons);
+    if (isClassNo(configLessonIdentifier)) {
+      const firstLessonIdentifier: ClassNo = configLessonIdentifier[0];
+      const isValidClassNo: boolean = some(
+        validLessons,
+        (lesson) => lesson.classNo === firstLessonIdentifier,
+      );
+      const classNo: ClassNo | null = isValidClassNo
+        ? firstLessonIdentifier
+        : getRecoveryClassNo(validLessons);
 
       return {
         lessonType,
@@ -144,20 +171,39 @@ export function validateNonTaModuleLesson(
       };
     }
 
-    if (size(pick(validLessons, configLessonIds)) > 0) {
-      const closestClassNo = getClosestClassNo(validLessons, configLessonIds);
-      if (closestClassNo)
+    const firstLessonId = first(configLessonIdentifier);
+    if (!lessonTypeInLessonConfig || !firstLessonId) {
+      const recoveryClassNo: ClassNo | null = getRecoveryClassNo(validLessons);
+      return {
+        lessonType,
+        validLessonIds: recoveryClassNo ? [recoveryClassNo] : [],
+        valid: false,
+      };
+    }
+
+    if (size(pick(validLessons, configLessonIdentifier)) > 0) {
+      const closestClassNo: ClassNo | null = getClosestClassNo(
+        validLessons,
+        configLessonIdentifier,
+      );
+      if (closestClassNo) {
         return {
           lessonType,
           validLessonIds: closestClassNo ? [closestClassNo] : [],
           valid: false,
         };
+      }
     }
 
     try {
-      const firstLessonClassNo = deserializeLessonDetails(firstLessonId).classNo;
-      const isValidClassNo = some(validLessons, (lesson) => lesson.classNo === firstLessonClassNo);
-      const classNo = isValidClassNo ? firstLessonClassNo : getRecoveryClassNo(validLessons);
+      const firstLessonClassNo: ClassNo = deserializeLessonDetails(firstLessonId).classNo;
+      const isValidClassNo: boolean = some(
+        validLessons,
+        (lesson) => lesson.classNo === firstLessonClassNo,
+      );
+      const classNo: ClassNo | null = isValidClassNo
+        ? firstLessonClassNo
+        : getRecoveryClassNo(validLessons);
 
       return {
         lessonType,
@@ -165,7 +211,7 @@ export function validateNonTaModuleLesson(
         valid: false,
       };
     } catch {
-      const recoveryClassNo = getRecoveryClassNo(validLessons);
+      const recoveryClassNo: ClassNo | null = getRecoveryClassNo(validLessons);
       return {
         lessonType,
         validLessonIds: recoveryClassNo ? [recoveryClassNo] : [],
@@ -177,10 +223,13 @@ export function validateNonTaModuleLesson(
   const { config: validatedLessonConfig, valid: configValid } = reduce(
     lessonTypesValidationResults,
     (accumulated, { lessonType, validLessonIds, valid }) => {
+      if (validLessonIds.length !== 1) {
+        return accumulated;
+      }
       return {
         config: {
           ...accumulated.config,
-          [lessonType]: validLessonIds,
+          [lessonType]: validLessonIds as [ClassNo],
         },
         valid: accumulated.valid && valid,
       };

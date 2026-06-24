@@ -16,7 +16,7 @@ import {
 } from 'lodash-es';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
-import { LessonId, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import { ClassNo, LessonId, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 import {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -109,7 +109,7 @@ type Props = OwnProps & {
     semester: Semester,
     moduleCode: ModuleCode,
     lessonType: LessonType,
-    lessonIds: LessonId[],
+    lessonIds: [ClassNo] | LessonId[],
   ) => void;
   cancelModifyLesson: () => void;
 };

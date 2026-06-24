@@ -1,16 +1,20 @@
-import { each, flatMap, get, includes, keys, mapValues, pickBy } from 'lodash-es';
+import { each, flatMap, get, keys, mapValues, pickBy } from 'lodash-es';
 
 import type {
   ColorIndex,
   Lesson,
   ModuleLessonConfig,
   SemTimetableConfig,
+  SemTimetableConfigV1,
+  SemTimetableConfigV2,
   TimetableConfig,
   TimetableConfigV1,
+  TimetableConfigV2,
 } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { TaModulesMapV1, ColorMapping, TaModulesMap } from 'types/reducers';
 import type {
+  ClassNo,
   LessonId,
   LessonType,
   Module,
@@ -32,6 +36,7 @@ import {
   validateTimetableModules,
 } from 'utils/timetables';
 import { getModuleLessonMap, getModuleSemesterData } from 'utils/modules';
+import { isClassNo } from 'utils/timetables/lessonId';
 
 // Actions that should not be used directly outside of thunks
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
@@ -127,7 +132,7 @@ export function changeLesson(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonType: LessonType,
-  lessonIds: LessonId[],
+  lessonIds: [ClassNo] | LessonId[],
 ) {
   return {
     type: CHANGE_LESSON,
@@ -232,10 +237,12 @@ export function validateTimetable(semester: Semester) {
   return (dispatch: Dispatch, getState: GetState) => {
     const { timetables, moduleBank } = getState();
 
-    const timetableConfig = timetables.lessons as TimetableConfig | TimetableConfigV1;
-    const semTimetableConfig = timetableConfig[semester];
+    const timetableConfig: TimetableConfig | TimetableConfigV2 | TimetableConfigV1 =
+      timetables.lessons;
+    const semTimetableConfig: SemTimetableConfig | SemTimetableConfigV2 | SemTimetableConfigV1 =
+      timetableConfig[semester];
 
-    const taTimetableConfig = timetables.ta as TaModulesMap | TaModulesMapV1;
+    const taTimetableConfig: TaModulesMap | TaModulesMapV1 = timetables.ta;
     const taModulesConfig = get(taTimetableConfig, semester, {});
 
     const {
@@ -396,14 +403,13 @@ export function enableTaModule(semester: Semester, moduleCode: ModuleCode) {
 
     const taModuleLessonConfig: ModuleLessonConfig = mapValues(
       moduleLessonConfig,
-      (lessonIds, lessonType) => {
+      (lessonIdentifier, lessonType) => {
         const lessonsWithLessonType = get(semesterData.lessonMap, lessonType);
         if (!lessonsWithLessonType) return [];
 
-        const isClassNo: boolean = lessonIds.length === 1 && !includes(lessonIds[0], '|');
-        return isClassNo
-          ? keys(pickBy(lessonsWithLessonType, (lesson) => lesson.classNo === lessonIds[0]))
-          : lessonIds;
+        return isClassNo(lessonIdentifier)
+          ? keys(pickBy(lessonsWithLessonType, (lesson) => lesson.classNo === lessonIdentifier[0]))
+          : lessonIdentifier;
       },
     );
 

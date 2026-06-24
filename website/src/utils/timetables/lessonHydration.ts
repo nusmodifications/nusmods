@@ -1,6 +1,7 @@
-import { get, includes, mapValues, pick, pickBy } from 'lodash-es';
+import { get, mapValues, pick, pickBy } from 'lodash-es';
 
 import {
+  ClassNo,
   LessonId,
   LessonType,
   Module,
@@ -19,6 +20,7 @@ import {
 
 import { ModulesMap } from 'types/reducers';
 import { getModuleLessonMap } from 'utils/modules';
+import { isClassNo } from './lessonId';
 
 const EMPTY_OBJECT = {};
 
@@ -46,17 +48,19 @@ function hydrateModuleConfigWithLessons(
   semester: Semester,
 ): ModuleLessonMap<Lesson> {
   const lessonMap: Readonly<ModuleLessonMap<RawLesson>> = getModuleLessonMap(module, semester);
-  return mapValues(moduleLessonConfig, (lessonIds: LessonId[], lessonType: LessonType) => {
-    const lessonsWithLessonType: Record<LessonId, RawLesson> = get(lessonMap, lessonType, {});
+  return mapValues(
+    moduleLessonConfig,
+    (lessonIds: [ClassNo] | LessonId[], lessonType: LessonType) => {
+      const lessonsWithLessonType: Record<LessonId, RawLesson> = get(lessonMap, lessonType, {});
 
-    const isClassNo: boolean = lessonIds.length === 1 && !includes(lessonIds[0], '|');
-    const lessons: Record<LessonId, RawLesson> = isClassNo
-      ? pickBy(lessonsWithLessonType, (lesson) => lesson.classNo === lessonIds[0])
-      : pick(lessonsWithLessonType, lessonIds);
-    return mapValues(lessons, (lesson) => ({
-      ...lesson,
-      moduleCode: module.moduleCode,
-      title: module.title,
-    }));
-  });
+      const lessons: Record<LessonId, RawLesson> = isClassNo(lessonIds)
+        ? pickBy(lessonsWithLessonType, (lesson) => lesson.classNo === lessonIds[0])
+        : pick(lessonsWithLessonType, lessonIds);
+      return mapValues(lessons, (lesson) => ({
+        ...lesson,
+        moduleCode: module.moduleCode,
+        title: module.title,
+      }));
+    },
+  );
 }

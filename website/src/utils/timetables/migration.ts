@@ -39,11 +39,11 @@ import { getModuleLessonMap, getModuleTimetable } from 'utils/modules';
 import { serializeLessonDetails } from './lessonId';
 import { ModulesMap } from 'types/reducers';
 
-export function isV1(config: ClassNo | LessonIndex[] | LessonId[]): config is ClassNo {
+export function isV1(config: ClassNo | LessonIndex[] | [ClassNo] | LessonId[]): config is ClassNo {
   return !isArray(config);
 }
 
-export function isV2(config: LessonIndex[] | LessonId[]): config is LessonIndex[] {
+export function isV2(config: LessonIndex[] | [ClassNo] | LessonId[]): config is LessonIndex[] {
   return isNumber(get(config, 0, undefined));
 }
 
@@ -53,7 +53,7 @@ function migrateLessonTypeLessonsFromLessonIndicesToLessonIds(
   lessonType: LessonType,
   lessonIndices: LessonIndex[],
   isTa: boolean,
-) {
+): [ClassNo] | LessonId[] {
   const lessonsWithLessonType: Record<LessonId, RawLesson> = get(lessonMap, lessonType);
   const configLessons: Record<LessonId, RawLesson> = reduce(
     lessonIndices,
@@ -182,7 +182,7 @@ export function migrateModuleLessonConfig(
     (accumulatedModuleLessonConfig, lessonsIdentifier, lessonType) => {
       if (!isV1(lessonsIdentifier)) {
         const configIsV2 = isV2(lessonsIdentifier);
-        const migratedLessonConfig: LessonId[] = configIsV2
+        const migratedLessonConfig: [ClassNo] | LessonId[] = configIsV2
           ? migrateLessonTypeLessonsFromLessonIndicesToLessonIds(
               timetable,
               lessonMap,

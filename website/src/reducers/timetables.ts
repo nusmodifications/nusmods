@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { ModuleCode } from 'types/modules';
+import { LessonId, ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
@@ -104,14 +104,14 @@ function moduleLessonConfig(
       const { lessonIds, lessonType } = action.payload;
       return {
         ...state,
-        [lessonType]: uniq([...lessonIds, ...get(state, lessonType, [])]),
+        [lessonType]: uniq([...lessonIds, ...(get(state, lessonType, []) as LessonId[])]),
       };
     }
     case REMOVE_LESSON: {
       const { lessonIds, lessonType } = action.payload;
       return {
         ...state,
-        [lessonType]: difference(get(state, lessonType), lessonIds),
+        [lessonType]: difference(get(state, lessonType) as LessonId[], lessonIds),
       };
     }
     case ADD_TA_MODULE:

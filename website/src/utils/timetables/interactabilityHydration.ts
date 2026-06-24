@@ -84,35 +84,38 @@ export function getInteractableLessons(
               ? get(getModuleLessonMap(get(modules, moduleCode), semester), lessonType)
               : lessonsWithLessonType;
 
-          return mapValues(lessons, (lesson, lessonId: LessonId): InteractableLesson => {
-            const isActive = isSameModule && isSameLessonType && lessonId === activeLessonId;
-            const canBeSelectedAsActiveLesson =
-              !readOnly &&
-              (moduleIsTaInTimetable ||
-                areOtherClassesAvailable(moduleTimetables[moduleCode], lessonType));
+          return mapValues<Record<LessonId, Readonly<RawLesson>>, InteractableLesson>(
+            lessons,
+            (lesson, lessonId: LessonId): InteractableLesson => {
+              const isActive = isSameModule && isSameLessonType && lessonId === activeLessonId;
+              const canBeSelectedAsActiveLesson =
+                !readOnly &&
+                (moduleIsTaInTimetable ||
+                  areOtherClassesAvailable(moduleTimetables[moduleCode], lessonType));
 
-            const alreadyAddedToLessonConfig: boolean = configLessonIds.has(lessonId);
-            const isSameLessonGroupAsActiveLesson: boolean = moduleIsTaInTimetable
-              ? isActive
-              : lesson.classNo === activeLesson?.classNo;
-            const canBeAddedToLessonConfig =
-              isSameModule &&
-              (moduleIsTaInTimetable || isSameLessonType) &&
-              !alreadyAddedToLessonConfig &&
-              !isSameLessonGroupAsActiveLesson;
+              const alreadyAddedToLessonConfig: boolean = configLessonIds.has(lessonId);
+              const isSameLessonGroupAsActiveLesson: boolean = moduleIsTaInTimetable
+                ? isActive
+                : lesson.classNo === activeLesson?.classNo;
+              const canBeAddedToLessonConfig =
+                isSameModule &&
+                (moduleIsTaInTimetable || isSameLessonType) &&
+                !alreadyAddedToLessonConfig &&
+                !isSameLessonGroupAsActiveLesson;
 
-            return {
-              ...lesson,
-              moduleCode,
-              title: modules[moduleCode].title,
-              isActive,
-              isTaInTimetable: moduleIsTaInTimetable,
-              canBeAddedToLessonConfig,
-              canBeSelectedAsActiveLesson,
-              colorIndex: colors[moduleCode],
-              lessonId,
-            };
-          });
+              return {
+                ...lesson,
+                moduleCode,
+                title: modules[moduleCode].title,
+                isActive,
+                isTaInTimetable: moduleIsTaInTimetable,
+                canBeAddedToLessonConfig,
+                canBeSelectedAsActiveLesson,
+                colorIndex: colors[moduleCode],
+                lessonId,
+              };
+            },
+          );
         },
       );
     },

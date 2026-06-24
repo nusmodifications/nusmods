@@ -7,7 +7,6 @@ import {
   invert,
   isArray,
   isEmpty,
-  isEqual,
   keys,
   last,
   map,
@@ -38,7 +37,7 @@ import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { getModuleLessonMap, getModuleTimetable } from 'utils/modules';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
-import { serializeLessonDetails } from './lessonId';
+import { getRecoveryClassNo, serializeLessonDetails } from './lessonId';
 
 // Reverse lookup map of LESSON_TYPE_ABBREV
 export const LESSON_ABBREV_TYPE: { [key: string]: LessonType } = invert(LESSON_TYPE_ABBREV);
@@ -282,25 +281,21 @@ export function deserializeModuleLessonConfigV2andV3(
       if (isTa || classNos.length !== 1) {
         return {
           ...accumulatedModuleLessonConfig,
-          [lessonType]: [...get(accumulatedModuleLessonConfig, lessonType, []), ...lessonIds],
+          [lessonType]: [
+            ...(get(accumulatedModuleLessonConfig, lessonType, []) as LessonId[]),
+            ...lessonIds,
+          ],
         };
       }
 
-      const firstClassNo: ClassNo | undefined = first(classNos);
-      const lessonsWithClassNo: Record<LessonId, RawLesson> = pickBy(
-        lessonsWithLessonType,
-        (lesson) => lesson.classNo === firstClassNo,
-      );
-      if (firstClassNo && isEqual(new Set(lessonIds), new Set(keys(lessonsWithClassNo)))) {
-        return {
-          ...accumulatedModuleLessonConfig,
-          [lessonType]: [...get(accumulatedModuleLessonConfig, lessonType, []), firstClassNo],
-        };
-      }
+      const firstClassNo: ClassNo | null =
+        first(classNos) ?? getRecoveryClassNo(lessonsWithLessonType);
+
+      if (!firstClassNo) return accumulatedModuleLessonConfig;
 
       return {
         ...accumulatedModuleLessonConfig,
-        [lessonType]: [...get(accumulatedModuleLessonConfig, lessonType, []), ...lessonIds],
+        [lessonType]: [firstClassNo],
       };
     },
     moduleLessonConfig,
@@ -336,7 +331,7 @@ export function deserializeModuleLessonConfigV1(
         lessonsWithLessonType,
         (lesson) => lesson.classNo === classNo,
       );
-      const accumulatedLessonTypeLessonConfig: ClassNo[] | LessonId[] = get(
+      const accumulatedLessonTypeLessonConfig: [ClassNo] | LessonId[] = get(
         accumulatedModuleLessonConfig,
         lessonType,
         [] as string[],
@@ -350,7 +345,7 @@ export function deserializeModuleLessonConfigV1(
       if (!isTa) {
         return {
           ...accumulatedModuleLessonConfig,
-          [lessonType]: [...accumulatedLessonTypeLessonConfig, classNo],
+          [lessonType]: [classNo],
         };
       }
 
@@ -359,7 +354,7 @@ export function deserializeModuleLessonConfigV1(
       );
       return {
         ...accumulatedModuleLessonConfig,
-        [lessonType]: [...accumulatedLessonTypeLessonConfig, ...lessonIds],
+        [lessonType]: [...(accumulatedLessonTypeLessonConfig as LessonId[]), ...lessonIds],
       };
     },
     moduleLessonConfig,

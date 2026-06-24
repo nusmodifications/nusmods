@@ -174,7 +174,9 @@ describe('fillTimetableBlanks', () => {
         Lecture: ['1'],
         Tutorial: ['3'],
       },
-      CS4243: {},
+      CS4243: {
+        Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+      },
     };
     const state: any = {
       timetables: {
@@ -470,5 +472,113 @@ describe(actions.fetchTimetableModules, () => {
     const thunk = actions.fetchTimetableModules([timetable]);
     await thunk(dispatch, getState);
     expect(dispatch).not.toBeCalled();
+  });
+});
+
+describe(actions.enableTaModule, () => {
+  const semester = 1;
+  const action = actions.enableTaModule(semester, CS4243.moduleCode);
+
+  const moduleBank = { modules: { CS4243 } };
+
+  test('should add module, converting classNo to corresponding lessonId', () => {
+    const timetables: any = {
+      lessons: {
+        [semester]: {
+          CS4243: {
+            Laboratory: ['2'],
+            Lecture: ['1'],
+          },
+        },
+      },
+      ta: {
+        [semester]: [],
+      },
+    };
+
+    const state: any = { timetables, moduleBank };
+    const dispatch = jest.fn();
+    action(dispatch, () => state);
+    const [[firstAction]] = dispatch.mock.calls;
+    expect(firstAction).toStrictEqual({
+      type: 'ADD_TA_MODULE',
+      payload: {
+        semester,
+        moduleCode: CS4243.moduleCode,
+        lessonConfig: {
+          Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+          Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+        },
+      },
+    });
+  });
+
+  test('should add module and use current config if config is already lessonId', () => {
+    const timetables: any = {
+      lessons: {
+        [semester]: {
+          CS4243: {
+            Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+            Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          },
+        },
+      },
+      ta: {
+        [semester]: [],
+      },
+    };
+
+    const state: any = { timetables, moduleBank };
+    const dispatch = jest.fn();
+    action(dispatch, () => state);
+    const [[firstAction]] = dispatch.mock.calls;
+    expect(firstAction).toStrictEqual({
+      type: 'ADD_TA_MODULE',
+      payload: {
+        semester,
+        moduleCode: CS4243.moduleCode,
+        lessonConfig: {
+          Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+          Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+        },
+      },
+    });
+  });
+
+  test('should add module even when semesterData is missing', () => {
+    const moduleBank = {
+      modules: {
+        CS4243: {
+          ...CS4243,
+          semesterData: [],
+        },
+      },
+    };
+    const timetables: any = {
+      lessons: {
+        [semester]: {
+          CS4243: {
+            Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+            Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          },
+        },
+      },
+      ta: {
+        [semester]: [],
+      },
+    };
+
+    const state: any = { timetables, moduleBank };
+    const dispatch = jest.fn();
+    action(dispatch, () => state);
+    const [[firstAction]] = dispatch.mock.calls;
+    expect(firstAction).toStrictEqual({
+      type: 'ADD_TA_MODULE',
+      payload: {
+        semester,
+        moduleCode: CS4243.moduleCode,
+        lessonConfig: {},
+      },
+    });
   });
 });

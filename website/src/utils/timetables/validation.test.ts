@@ -191,5 +191,15 @@ describe(validateModuleLessons, () => {
         valid: false,
       });
     });
+
+    test('should attempt to recover if config has no lessons', () => {
+      expect(validateModuleLessons(semester, {}, CS4243, true)).toStrictEqual({
+        validatedLessonConfig: {
+          Laboratory: ['1|TUE|1400|1600|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+          Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+        },
+        valid: false,
+      });
+    });
   });
 });
