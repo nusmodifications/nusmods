@@ -45,6 +45,14 @@ test('randomModuleLessonConfig should return a random lesson config', () => {
   });
 });
 
+test('randomModuleLessonConfig should omit lesson types with no available class numbers', () => {
+  const emptyLessonMap = {
+    Lecture: {},
+    Tutorial: {},
+  } as ModuleLessonMap<RawLesson>;
+  expect(randomModuleLessonConfig(emptyLessonMap)).toEqual({});
+});
+
 test('lessonsForLessonType should return all lessons belonging to a particular lessonType', () => {
   const sem: Semester = 1;
   const moduleTimetable = getModuleTimetable(CS1010S, sem);

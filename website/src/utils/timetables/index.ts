@@ -1,5 +1,5 @@
 import { AcadWeekInfo } from 'nusmoderator';
-import { flatMap, groupBy, isEqual, keys, mapValues, pick, range, sample, values } from 'lodash-es';
+import { flatMap, groupBy, isEqual, keys, pick, range, sample, values, reduce } from 'lodash-es';
 import { addDays, min as minDate, parseISO, startOfDay } from 'date-fns';
 
 import {
@@ -28,20 +28,40 @@ export function isValidSemester(semester: Semester): boolean {
   return semester >= 1 && semester <= 4;
 }
 
-//  Returns a random configuration of a module's timetable lessons.
-//  Used when a module is first added.
-//  TODO: Suggest a configuration that does not clash with itself.
-//  {
-//    [lessonType: string]: ClassNo[],
-//  }
+/**
+ * Returns a random configuration of a module's timetable lessons.
+ * Used when a module is first added.
+ *
+ * ModuleLessonConfig has the following shape:
+ *
+ * ```ts
+ * {
+ *   [lessonType: string]: ClassNo[],
+ * }
+ * ```
+ *
+ * If a lesson type has no class numbers to choose from, it is omitted.
+ *
+ * TODO: Suggest a configuration that does not clash with itself.
+ */
 export function randomModuleLessonConfig(
   lessonMap: ModuleLessonMap<RawLesson>,
 ): ModuleLessonConfig {
-  return mapValues(lessonMap, (lessons) => {
-    const lessonsByClassNo = groupBy(lessons, 'classNo');
-    const randomClassNo = sample(keys(lessonsByClassNo));
-    return randomClassNo ? [randomClassNo] : [];
-  });
+  return reduce(
+    lessonMap,
+    (randomLessonConfig, lessons, lessonType) => {
+      const lessonsByClassNo = groupBy(lessons, 'classNo');
+      const randomClassNo = sample(keys(lessonsByClassNo));
+
+      if (!randomClassNo) return randomLessonConfig;
+
+      return {
+        ...randomLessonConfig,
+        [lessonType]: [randomClassNo],
+      };
+    },
+    {} as ModuleLessonConfig,
+  );
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
