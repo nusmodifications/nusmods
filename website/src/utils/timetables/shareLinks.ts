@@ -54,8 +54,8 @@ export const MODULE_SEP = ',';
 
 /**
  * Serializes a module's lesson config for sharing\
- * Given input `{ Lecture: [0], Tutorial: [1] }`\
- * Will output `LEC:(0),TUT:(1)`
+ * Given input `{ Lecture: ['1'], Tutorial: ['1'] }`\
+ * Will output `LEC:1,TUT:1`
  */
 function serializeModuleConfig(config: ModuleLessonConfig, isTa: boolean): string {
   return map(config, (lessonIds, lessonType) => {
@@ -70,11 +70,11 @@ function serializeModuleConfig(config: ModuleLessonConfig, isTa: boolean): strin
  * Given input
  * ```
  * {
- *   CS2104: { Lecture: [0], Tutorial: [1] },
- *   CS2107: { Lecture: [0], Tutorial: [1] },
+ *   CS2104: { Lecture: ['1'], Tutorial: ['1'] },
+ *   CS2107: { Lecture: ['1'], Tutorial: ['1'] },
  * }
  * ```
- * Will output `CS2104=LEC:(0),TUT:(1)&CS2107=LEC:(0),TUT:(1)`
+ * Will output `CS2104=LEC:1,TUT:1&CS2107=LEC:1,TUT:1`
  */
 export function serializeTimetable({
   semTimetableConfig,
