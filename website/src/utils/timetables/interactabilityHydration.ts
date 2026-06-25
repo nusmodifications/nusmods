@@ -81,7 +81,6 @@ export function isInteractable(
 function canBeAddedToLessonConfig(
   lesson: RawLesson,
   isSameModuleAsActiveLesson: boolean,
-  isSameLessonTypeAsActiveLesson: boolean,
   alreadyAddedToLessonConfig: boolean,
   moduleIsTaInTimetable: boolean,
   activeLesson: Lesson | null,
@@ -90,7 +89,7 @@ function canBeAddedToLessonConfig(
 
   if (!moduleIsTaInTimetable) return lesson.classNo !== activeLesson.classNo;
 
-  return moduleIsTaInTimetable || isSameLessonTypeAsActiveLesson;
+  return true;
 }
 
 /**
@@ -131,7 +130,6 @@ function hydrateLessonInteractability({
     canBeAddedToLessonConfig: canBeAddedToLessonConfig(
       lesson,
       isSameModuleAsActiveLesson,
-      isSameLessonTypeAsActiveLesson,
       alreadyAddedToLessonConfig,
       moduleIsTaInTimetable,
       activeLesson,
