@@ -47,6 +47,62 @@ export function isV2(config: LessonIndex[] | [ClassNo] | LessonId[]): config is 
   return isNumber(get(config, 0, undefined));
 }
 
+type ModuleLessonConfigMigrationResult = {
+  migratedModuleLessonConfig: ModuleLessonConfig;
+  alreadyMigrated: boolean;
+};
+
+/**
+ * Helper function for {@link migrateSemTimetableConfig|migrateSemTimetableConfig}\
+ * Takes the `ClassNo` from the TA module config if it exists. Otherwise, the lesson config\
+ * Then, either return the `ClassNo` or `LessonId` of the lesson indices provided,
+ * depending on whether the module is TA
+ * @returns `accumulatedMigrationResult` with the migrated lesson type
+ */
+function migrateLessonTypeLessonConfigV1(
+  accumulatedMigrationResult: ModuleLessonConfigMigrationResult,
+  lessonsIdentifier: ClassNo,
+  lessonType: LessonType,
+  taModulesConfig: ModuleCode[] | TaModulesConfigV1,
+  moduleCode: ModuleCode,
+  lessonMap: Readonly<ModuleLessonMap<RawLesson>>,
+): ModuleLessonConfigMigrationResult {
+  const taClassNos: [lessonType: LessonType, classNo: ClassNo][] = isArray(taModulesConfig)
+    ? []
+    : filter(
+        get(taModulesConfig, moduleCode, []),
+        (lessonTypeConfig) => lessonTypeConfig[0] === lessonType,
+      );
+
+  if (taClassNos.length === 0) {
+    return {
+      migratedModuleLessonConfig: {
+        ...accumulatedMigrationResult.migratedModuleLessonConfig,
+        [lessonType]: [lessonsIdentifier],
+      },
+      alreadyMigrated: false,
+    };
+  }
+
+  const classNos: Set<ClassNo> = new Set(map(taClassNos, '1'));
+  const lessonIds: LessonId[] = keys(
+    pickBy(lessonMap[lessonType], (lesson) => classNos.has(lesson.classNo)),
+  );
+
+  return {
+    migratedModuleLessonConfig: {
+      ...accumulatedMigrationResult.migratedModuleLessonConfig,
+      [lessonType]: lessonIds,
+    },
+    alreadyMigrated: false,
+  };
+}
+
+/**
+ * Converts the lesson indices of a lesson type in v2 config to `LessonId` to migrate the config from v2 to v3
+ * @param lessonIndices to migrate
+ * @returns corresponding `ClassNo` or `LessonId` of the lesson indices provided, depending on whether the module is TA
+ */
 function migrateLessonTypeLessonsFromLessonIndicesToLessonIds(
   timetable: readonly RawLesson[],
   lessonMap: Readonly<ModuleLessonMap<RawLesson>>,
@@ -88,6 +144,94 @@ function migrateLessonTypeLessonsFromLessonIndicesToLessonIds(
 }
 
 /**
+ * Helper function for {@link migrateSemTimetableConfig|migrateSemTimetableConfig}\
+ * This function is idempotent. If the config is v2, it migrates the schema from v2 to v3\
+ * Otherwise, leaves the config as is
+ * @returns `accumulatedMigrationResult` with the migrated lesson type
+ */
+function migrateLessonTypeLessonConfigV2AndV3(
+  accumulatedMigrationResult: ModuleLessonConfigMigrationResult,
+  lessonsIdentifier: LessonIndex[] | [ClassNo] | LessonId[],
+  lessonType: LessonType,
+  timetable: readonly RawLesson[],
+  lessonMap: Readonly<ModuleLessonMap<RawLesson>>,
+  isTa: boolean,
+): ModuleLessonConfigMigrationResult {
+  const configIsV2 = isV2(lessonsIdentifier);
+  const migratedLessonConfig: [ClassNo] | LessonId[] = configIsV2
+    ? migrateLessonTypeLessonsFromLessonIndicesToLessonIds(
+        timetable,
+        lessonMap,
+        lessonType,
+        lessonsIdentifier,
+        isTa,
+      )
+    : lessonsIdentifier;
+
+  return {
+    migratedModuleLessonConfig: {
+      ...accumulatedMigrationResult.migratedModuleLessonConfig,
+      [lessonType]: migratedLessonConfig,
+    },
+    alreadyMigrated: accumulatedMigrationResult.alreadyMigrated && !configIsV2,
+  };
+}
+
+/**
+ * A helper function for migrateSemTimetableConfig\
+ * Migrates a module's lesson config
+ * @param moduleLessonConfig the module lesson config to migrate
+ * @param taModulesConfig the TA lesson configs overrides the semester timetable config
+ * @param isTa non-TA modules are migrated to use `ClassNo`, TA modules are migrated to use `LessonId`
+ * @returns
+ * - the migrated config
+ * - whether it was previously migrated, to signal to skip dispatch
+ */
+export function migrateModuleLessonConfig(
+  moduleLessonConfig: ModuleLessonConfig | ModuleLessonConfigV2 | ModuleLessonConfigV1,
+  taModulesConfig: ModuleCode[] | TaModulesConfigV1,
+  moduleCode: ModuleCode,
+  timetable: readonly RawLesson[],
+  lessonMap: Readonly<ModuleLessonMap<RawLesson>>,
+  isTa: boolean,
+): {
+  migratedModuleLessonConfig: ModuleLessonConfig;
+  alreadyMigrated: boolean;
+} {
+  return reduce(
+    moduleLessonConfig,
+    (accumulatedMigrationResult, lessonsIdentifier, lessonType) => {
+      if (!isV1(lessonsIdentifier)) {
+        return migrateLessonTypeLessonConfigV2AndV3(
+          accumulatedMigrationResult,
+          lessonsIdentifier,
+          lessonType,
+          timetable,
+          lessonMap,
+          isTa,
+        );
+      }
+
+      return migrateLessonTypeLessonConfigV1(
+        accumulatedMigrationResult,
+        lessonsIdentifier,
+        lessonType,
+        taModulesConfig,
+        moduleCode,
+        lessonMap,
+      );
+    },
+    {
+      migratedModuleLessonConfig: {},
+      alreadyMigrated: true,
+    } as {
+      migratedModuleLessonConfig: ModuleLessonConfig;
+      alreadyMigrated: boolean;
+    },
+  );
+}
+
+/**
  * Migrates a semester's timetable config
  * @param semTimetableConfig the semester timetable config to migrate
  * @param taModulesConfig the TA lesson configs overrides the semester timetable config
@@ -111,19 +255,16 @@ export function migrateSemTimetableConfig(
   return reduce(
     semTimetableConfig,
     (accumulatedSemTimetableConfig, moduleLessonConfig, moduleCode) => {
-      const isTa = isArray(taModulesConfig)
+      const isTa: boolean = isArray(taModulesConfig)
         ? taModulesConfig.includes(moduleCode)
         : moduleCode in taModulesConfig;
 
-      const module: Module | undefined = get(modules, moduleCode, undefined);
+      const module: Module | undefined = get(modules, moduleCode);
       if (!module) return accumulatedSemTimetableConfig;
 
       const timetable: readonly RawLesson[] = getModuleTimetable(module, semester);
+      const lessonMap: Readonly<ModuleLessonMap<RawLesson>> = getModuleLessonMap(module, semester);
 
-      const lessonMap: Readonly<ModuleLessonMap<RawLesson>> = getModuleLessonMap(
-        modules[moduleCode],
-        semester,
-      );
       const { migratedModuleLessonConfig, alreadyMigrated } = migrateModuleLessonConfig(
         moduleLessonConfig,
         taModulesConfig,
@@ -151,92 +292,6 @@ export function migrateSemTimetableConfig(
     } as {
       migratedSemTimetableConfig: SemTimetableConfig;
       migratedTaModulesConfig: ModuleCode[];
-      alreadyMigrated: boolean;
-    },
-  );
-}
-
-/**
- * A helper function for migrateSemTimetableConfig\
- * Migrates a module's lesson config
- * @param moduleLessonConfig the module lesson config to migrate
- * @param taModulesConfig the TA lesson configs overrides the semester timetable config
- * @param moduleCode
- * @returns
- * - the migrated config
- * - whether it was previously migrated, to signal to skip dispatch
- */
-export function migrateModuleLessonConfig(
-  moduleLessonConfig: ModuleLessonConfig | ModuleLessonConfigV2 | ModuleLessonConfigV1,
-  taModulesConfig: ModuleCode[] | TaModulesConfigV1,
-  moduleCode: ModuleCode,
-  timetable: readonly RawLesson[],
-  lessonMap: Readonly<ModuleLessonMap<RawLesson>>,
-  isTa: boolean,
-): {
-  migratedModuleLessonConfig: ModuleLessonConfig;
-  alreadyMigrated: boolean;
-} {
-  return reduce(
-    moduleLessonConfig,
-    (accumulatedModuleLessonConfig, lessonsIdentifier, lessonType) => {
-      if (!isV1(lessonsIdentifier)) {
-        const configIsV2 = isV2(lessonsIdentifier);
-        const migratedLessonConfig: [ClassNo] | LessonId[] = configIsV2
-          ? migrateLessonTypeLessonsFromLessonIndicesToLessonIds(
-              timetable,
-              lessonMap,
-              lessonType,
-              lessonsIdentifier,
-              isTa,
-            )
-          : lessonsIdentifier;
-
-        return {
-          ...accumulatedModuleLessonConfig,
-          migratedModuleLessonConfig: {
-            ...accumulatedModuleLessonConfig.migratedModuleLessonConfig,
-            [lessonType]: migratedLessonConfig,
-          },
-          alreadyMigrated: accumulatedModuleLessonConfig.alreadyMigrated && !configIsV2,
-        };
-      }
-
-      const taClassNos: [lessonType: LessonType, classNo: ClassNo][] = isArray(taModulesConfig)
-        ? []
-        : filter(
-            taModulesConfig[moduleCode],
-            (lessonTypeConfig) => lessonTypeConfig[0] === lessonType,
-          );
-
-      if (taClassNos.length === 0) {
-        return {
-          migratedModuleLessonConfig: {
-            ...accumulatedModuleLessonConfig.migratedModuleLessonConfig,
-            [lessonType]: [lessonsIdentifier],
-          },
-          alreadyMigrated: false,
-        };
-      }
-
-      const classNos: Set<ClassNo> = new Set(map(taClassNos, '1'));
-      const lessonIds: LessonId[] = keys(
-        pickBy(lessonMap[lessonType], (lesson) => classNos.has(lesson.classNo)),
-      );
-
-      return {
-        migratedModuleLessonConfig: {
-          ...accumulatedModuleLessonConfig.migratedModuleLessonConfig,
-          [lessonType]: lessonIds,
-        },
-        alreadyMigrated: false,
-      };
-    },
-    {
-      migratedModuleLessonConfig: {},
-      alreadyMigrated: true,
-    } as {
-      migratedModuleLessonConfig: ModuleLessonConfig;
       alreadyMigrated: boolean;
     },
   );
