@@ -1,4 +1,4 @@
-import { get, groupBy, keys, mapValues } from 'lodash-es';
+import { get, groupBy, keys, mapValues, size } from 'lodash-es';
 
 import {
   LessonId,
@@ -17,21 +17,47 @@ import {
 } from 'types/timetables';
 
 import { ColorMapping, ModulesMap } from 'types/reducers';
-import { getModuleLessonMap, getModuleTimetable } from 'utils/modules';
+import { getModuleLessonMap } from 'utils/modules';
 import { serializeLessonDetails } from './lessonId';
 
-// Determines if a Lesson on the timetable can be modifiable / dragged around.
-// Condition: There are multiple ClassNo for all the Array<Lesson> in a lessonType.
-export function areOtherClassesAvailable(
-  lessons: readonly RawLesson[],
-  lessonType: LessonType,
-): boolean {
-  const lessonTypeGroups = groupBy<RawLesson>(lessons, (lesson) => lesson.lessonType);
-  if (!lessonTypeGroups[lessonType]) {
-    // No such lessonType.
-    return false;
-  }
-  return Object.keys(groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.classNo)).length > 1;
+/**
+ * Factors that are used to hydrate interactability shared across all modules in the timetable
+ */
+type TimetableInteractabilityProps = {
+  activeLesson: Lesson | null;
+  activeLessonId: LessonId | null;
+  modules: ModulesMap;
+  semester: Semester;
+  colors: ColorMapping;
+  readOnly: boolean;
+};
+
+/**
+ * Factors that are used to hydrate interactability shared across all lessons in a module
+ */
+type ModuleInteractabilityProps = {
+  moduleCode: ModuleCode;
+  moduleIsTaInTimetable: boolean;
+  moduleLessonMap: ModuleLessonMap<RawLesson>;
+};
+
+/**
+ * Factors that are used to hydrate interactability shared across all lessons in a module of the same lesson type
+ */
+type LessonTypeInteractabilityProps = {
+  areOtherClassesAvailable: boolean;
+  configLessonTypeLessonIds: Set<LessonId>;
+  isSameModuleAsActiveLesson: boolean;
+  isSameLessonTypeAsActiveLesson: boolean;
+};
+
+/**
+ * Determines if a Lesson on the timetable can be modifiable / dragged around
+ * Other classes are available if there are multiple ClassNo in the provided lessons
+ * @param lessonTypeLessons
+ */
+export function areOtherClassesAvailable(lessonTypeLessons: Record<LessonId, RawLesson>): boolean {
+  return size(groupBy(lessonTypeLessons, 'classNo')) > 1;
 }
 
 /**
@@ -45,11 +71,222 @@ export function isInteractable(
 }
 
 /**
+ * Determines which lessons can be added to the config\
+ * When there are no active lessons, or if the active lesson is from another module,
+ * clicking a lesson will make it the active lesson, not add it to the config\
+ * If the module is a non-TA module and the lesson has the same `ClassNo` from the active lesson, the lesson cannot be added\
+ * If the module is a TA-module, and the lesson is already in the config, it cannot be added
+ * @param lesson to check
+ * @param isSameModuleAsActiveLesson
+ * @param isSameLessonTypeAsActiveLesson
+ * @param alreadyAddedToLessonConfig
+ * @param moduleIsTaInTimetable
+ * @param activeLesson
+ * @param isActive whether the lesson to check is the active lesson
+ */
+function canBeAddedToLessonConfig(
+  lesson: RawLesson,
+  isSameModuleAsActiveLesson: boolean,
+  isSameLessonTypeAsActiveLesson: boolean,
+  alreadyAddedToLessonConfig: boolean,
+  moduleIsTaInTimetable: boolean,
+  activeLesson: Lesson | null,
+) {
+  if (!activeLesson || !isSameModuleAsActiveLesson || alreadyAddedToLessonConfig) return false;
+
+  if (!moduleIsTaInTimetable) return lesson.classNo !== activeLesson.classNo;
+
+  return moduleIsTaInTimetable || isSameLessonTypeAsActiveLesson;
+}
+
+/**
+ * Helper function for {@link getLessonTypeInteractableLessons|getLessonTypeInteractableLessons}
+ * Hydrate lesson with interactability info\
+ * See type defintion of {@link InteractableLesson} for properties added
+ * @param lesson
+ * @param lessonId
+ * @param timetableInteractabilityProps
+ * @param moduleInteractabilityProps
+ * @param lessonTypeInteractabilityProps
+ * @returns
+ */
+function hydrateLessonInteractability({
+  lesson,
+  lessonId,
+  timetableInteractabilityProps: { activeLesson, activeLessonId, modules, colors, readOnly },
+  moduleInteractabilityProps: { moduleCode, moduleIsTaInTimetable },
+  lessonTypeInteractabilityProps: {
+    areOtherClassesAvailable,
+    configLessonTypeLessonIds,
+    isSameLessonTypeAsActiveLesson,
+    isSameModuleAsActiveLesson,
+  },
+}: {
+  lesson: Readonly<RawLesson>;
+  lessonId: LessonId;
+  timetableInteractabilityProps: TimetableInteractabilityProps;
+  moduleInteractabilityProps: ModuleInteractabilityProps;
+  lessonTypeInteractabilityProps: LessonTypeInteractabilityProps;
+}): InteractableLesson {
+  const isActive: boolean =
+    isSameModuleAsActiveLesson && isSameLessonTypeAsActiveLesson && lessonId === activeLessonId;
+  const canBeSelectedAsActiveLesson: boolean =
+    !readOnly && (moduleIsTaInTimetable || areOtherClassesAvailable);
+  const alreadyAddedToLessonConfig: boolean = configLessonTypeLessonIds.has(lessonId);
+
+  return {
+    ...lesson,
+    moduleCode,
+    title: modules[moduleCode].title,
+    isActive,
+    isTaInTimetable: moduleIsTaInTimetable,
+    canBeAddedToLessonConfig: canBeAddedToLessonConfig(
+      lesson,
+      isSameModuleAsActiveLesson,
+      isSameLessonTypeAsActiveLesson,
+      alreadyAddedToLessonConfig,
+      moduleIsTaInTimetable,
+      activeLesson,
+    ),
+    canBeSelectedAsActiveLesson,
+    colorIndex: colors[moduleCode],
+    lessonId,
+  };
+}
+
+/**
+ * Helper function for {@link getLessonTypeInteractableLessons|getLessonTypeInteractableLessons}
+ * Determines what lessons from the lesson type should be shown
+ * If active lesson is not from this module, only show the lessons in the config
+ * If active lesson is from this module, and
+ * - module is non-TA, only show the lessons from the lesson type of the active lesson
+ * - module is TA, show all lessons from all lesson types of this module
+ * @param configLessonTypeLessons
+ * @param lessonTypeLessons
+ * @param isSameModuleAsActiveLesson
+ * @param isSameLessonTypeAsActiveLesson
+ * @param moduleIsTaInTimetable
+ * @param activeLesson
+ * @returns
+ */
+function getVisibleLessons(
+  configLessonTypeLessons: Record<LessonId, Lesson>,
+  lessonTypeLessons: Record<LessonId, RawLesson>,
+  isSameModuleAsActiveLesson: boolean,
+  isSameLessonTypeAsActiveLesson: boolean,
+  moduleIsTaInTimetable: boolean,
+  activeLesson: Lesson | null,
+) {
+  if (!activeLesson || !isSameModuleAsActiveLesson) return configLessonTypeLessons;
+
+  if (moduleIsTaInTimetable || isSameLessonTypeAsActiveLesson) return lessonTypeLessons;
+
+  return configLessonTypeLessons;
+}
+
+/**
+ * Helper function for {@link getModuleInteractableLessons|getModuleInteractableLessons}\
+ * Hydrate lessons with interactability info for a single `LessonType` of a `Module`
+ * @param configLessonTypeLessons
+ * @param lessonType
+ * @param timetableInteractabilityProps
+ * @param moduleInteractabilityProps
+ * @returns
+ */
+function getLessonTypeInteractableLessons({
+  configLessonTypeLessons,
+  lessonType,
+  timetableInteractabilityProps,
+  moduleInteractabilityProps,
+}: {
+  configLessonTypeLessons: Record<LessonId, Lesson>;
+  lessonType: LessonType;
+  timetableInteractabilityProps: TimetableInteractabilityProps;
+  moduleInteractabilityProps: ModuleInteractabilityProps;
+}): Record<LessonId, InteractableLesson> {
+  const { activeLesson } = timetableInteractabilityProps;
+  const { moduleCode, moduleIsTaInTimetable, moduleLessonMap } = moduleInteractabilityProps;
+
+  const isSameModuleAsActiveLesson: boolean = moduleCode === activeLesson?.moduleCode;
+  const isSameLessonTypeAsActiveLesson: boolean = lessonType === activeLesson?.lessonType;
+
+  const configLessonTypeLessonIds: Set<LessonId> = new Set(keys(configLessonTypeLessons));
+  const lessonTypeLessons: Record<LessonId, RawLesson> = get(moduleLessonMap, lessonType);
+
+  const visibleLessons: Record<LessonId, RawLesson> = getVisibleLessons(
+    configLessonTypeLessons,
+    lessonTypeLessons,
+    isSameModuleAsActiveLesson,
+    isSameLessonTypeAsActiveLesson,
+    moduleIsTaInTimetable,
+    activeLesson,
+  );
+
+  return mapValues<Record<LessonId, Readonly<RawLesson>>, InteractableLesson>(
+    visibleLessons,
+    (lesson, lessonId: LessonId) =>
+      hydrateLessonInteractability({
+        lesson,
+        lessonId,
+        timetableInteractabilityProps,
+        moduleInteractabilityProps,
+        lessonTypeInteractabilityProps: {
+          areOtherClassesAvailable: areOtherClassesAvailable(lessonTypeLessons),
+          configLessonTypeLessonIds,
+          isSameLessonTypeAsActiveLesson,
+          isSameModuleAsActiveLesson,
+        },
+      }),
+  );
+}
+
+/**
+ * Helper function for {@link getInteractableLessons|getInteractableLessons}\
+ * Get interactable lessons for a single `Module`\
+ * @param configModuleLessonMap
+ * @param moduleCode
+ * @param moduleLessonMap
+ * @param timetableInteractabilityProps
+ * @param isTaInTimetable
+ * @returns
+ */
+function getModuleInteractableLessons({
+  configModuleLessonMap,
+  moduleCode,
+  moduleLessonMap,
+  timetableInteractabilityProps,
+  isTaInTimetable,
+}: {
+  configModuleLessonMap: ModuleLessonMap<Lesson>;
+  moduleCode: ModuleCode;
+  moduleLessonMap: ModuleLessonMap<RawLesson>;
+  timetableInteractabilityProps: TimetableInteractabilityProps;
+  isTaInTimetable: (moduleCode: ModuleCode) => boolean;
+}) {
+  const moduleIsTaInTimetable: boolean = isTaInTimetable(moduleCode);
+
+  return mapValues(
+    configModuleLessonMap,
+    (configLessonTypeLessons: Record<LessonId, Lesson>, lessonType: LessonType) =>
+      getLessonTypeInteractableLessons({
+        configLessonTypeLessons: configLessonTypeLessons,
+        lessonType,
+        timetableInteractabilityProps,
+        moduleInteractabilityProps: {
+          moduleCode,
+          moduleLessonMap,
+          moduleIsTaInTimetable,
+        },
+      }),
+  );
+}
+
+/**
  * Hydrate timetable lessons with interactability info\
  * See type defintion of {@link InteractableLesson} for properties added
  */
 export function getInteractableLessons(
-  timetableLessons: SemTimetableConfigWithLessons<Lesson>,
+  semTimetableConfigLessons: SemTimetableConfigWithLessons<Lesson>,
   modules: ModulesMap,
   semester: Semester,
   colors: ColorMapping,
@@ -57,67 +294,26 @@ export function getInteractableLessons(
   isTaInTimetable: (moduleCode: ModuleCode) => boolean,
   activeLesson: Lesson | null,
 ): SemTimetableConfigWithLessons<InteractableLesson> {
-  const moduleTimetables: Record<ModuleCode, readonly RawLesson[]> = mapValues(modules, (module) =>
-    getModuleTimetable(module, semester),
-  );
   const activeLessonId: LessonId | null = activeLesson
     ? serializeLessonDetails(activeLesson)
     : null;
 
   return mapValues(
-    timetableLessons,
-    (lessonMap: ModuleLessonMap<Lesson>, moduleCode: ModuleCode) => {
-      const moduleIsTaInTimetable: boolean = isTaInTimetable(moduleCode);
-
-      return mapValues(
-        lessonMap,
-        (
-          lessonsWithLessonType: Record<LessonId, Lesson>,
-          lessonType: LessonType,
-        ): { [lessonId: LessonId]: InteractableLesson } => {
-          const isSameModule: boolean = moduleCode === activeLesson?.moduleCode;
-          const isSameLessonType: boolean = lessonType === activeLesson?.lessonType;
-
-          const configLessonIds: Set<LessonId> = new Set(keys(lessonsWithLessonType));
-          const lessons: Record<LessonId, RawLesson> =
-            activeLesson && isSameModule && (moduleIsTaInTimetable || isSameLessonType)
-              ? get(getModuleLessonMap(get(modules, moduleCode), semester), lessonType)
-              : lessonsWithLessonType;
-
-          return mapValues<Record<LessonId, Readonly<RawLesson>>, InteractableLesson>(
-            lessons,
-            (lesson, lessonId: LessonId): InteractableLesson => {
-              const isActive = isSameModule && isSameLessonType && lessonId === activeLessonId;
-              const canBeSelectedAsActiveLesson =
-                !readOnly &&
-                (moduleIsTaInTimetable ||
-                  areOtherClassesAvailable(moduleTimetables[moduleCode], lessonType));
-
-              const alreadyAddedToLessonConfig: boolean = configLessonIds.has(lessonId);
-              const isSameLessonGroupAsActiveLesson: boolean = moduleIsTaInTimetable
-                ? isActive
-                : lesson.classNo === activeLesson?.classNo;
-              const canBeAddedToLessonConfig =
-                isSameModule &&
-                (moduleIsTaInTimetable || isSameLessonType) &&
-                !alreadyAddedToLessonConfig &&
-                !isSameLessonGroupAsActiveLesson;
-
-              return {
-                ...lesson,
-                moduleCode,
-                title: modules[moduleCode].title,
-                isActive,
-                isTaInTimetable: moduleIsTaInTimetable,
-                canBeAddedToLessonConfig,
-                canBeSelectedAsActiveLesson,
-                colorIndex: colors[moduleCode],
-                lessonId,
-              };
-            },
-          );
+    semTimetableConfigLessons,
+    (configModuleLessonMap: ModuleLessonMap<Lesson>, moduleCode: ModuleCode) =>
+      getModuleInteractableLessons({
+        configModuleLessonMap: configModuleLessonMap,
+        moduleCode,
+        moduleLessonMap: getModuleLessonMap(get(modules, moduleCode), semester),
+        timetableInteractabilityProps: {
+          modules,
+          semester,
+          colors,
+          readOnly,
+          activeLesson,
+          activeLessonId,
         },
-      );
-    },
+        isTaInTimetable,
+      }),
   );
 }

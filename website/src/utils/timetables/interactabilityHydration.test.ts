@@ -1,4 +1,4 @@
-import { filter, flatMap, get, map, mapValues, shuffle, some, values } from 'lodash-es';
+import { filter, flatMap, get, map, mapValues, some, values } from 'lodash-es';
 import {
   InteractableLesson,
   Lesson,
@@ -17,33 +17,68 @@ import { hydrateSemTimetableWithLessons } from './lessonHydration';
 import { serializeLessonDetails } from './lessonId';
 import { timetableLessonsArray } from 'utils/timetables';
 
-test('areOtherClassesAvailable', () => {
-  // Lessons belong to different ClassNo.
-  const lessons1: RawLesson[] = shuffle([
-    createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
-    createGenericLesson('Monday', '1600', '1800', 'Lecture', '2'),
-    createGenericLesson('Monday', '1400', '1500', 'Lecture', '3'),
-  ]);
-  expect(areOtherClassesAvailable(lessons1, 'Lecture')).toBe(true);
-  expect(areOtherClassesAvailable(lessons1, 'Tutorial')).toBe(false);
+describe('areOtherClassesAvailable', () => {
+  test('other classes available if there are more than one classNo', () => {
+    const lessons1: Record<LessonId, RawLesson> = {
+      '1|MON|1000|1200|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13': createGenericLesson(
+        'Monday',
+        '1000',
+        '1200',
+        'Lecture',
+        '1',
+      ),
+      '2|MON|1600|1800|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13': createGenericLesson(
+        'Monday',
+        '1600',
+        '1800',
+        'Lecture',
+        '2',
+      ),
+      '3|MON|1400|1500|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13': createGenericLesson(
+        'Monday',
+        '1400',
+        '1500',
+        'Lecture',
+        '3',
+      ),
+    };
 
-  // Lessons belong to the same ClassNo.
-  const lessons2: RawLesson[] = shuffle([
-    createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
-    createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
-    createGenericLesson('Monday', '1400', '1500', 'Lecture', '1'),
-  ]);
-  expect(areOtherClassesAvailable(lessons2, 'Lecture')).toBe(false);
+    expect(areOtherClassesAvailable(lessons1)).toBe(true);
+  });
 
-  // Lessons belong to different lessonType.
-  const lessons3: RawLesson[] = shuffle([
-    createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
-    createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
-    createGenericLesson('Monday', '1400', '1500', 'Tutorial', '1'),
-    createGenericLesson('Monday', '1400', '1500', 'Tutorial', '2'),
-  ]);
-  expect(areOtherClassesAvailable(lessons3, 'Lecture')).toBe(false);
-  expect(areOtherClassesAvailable(lessons3, 'Tutorial')).toBe(true);
+  test('other classes not available if there is only one classNo', () => {
+    const lessons2: Record<LessonId, RawLesson> = {
+      '1|MON|1000|1200|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13': createGenericLesson(
+        'Monday',
+        '1000',
+        '1200',
+        'Lecture',
+        '1',
+      ),
+      '1|MON|1600|1800|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13': createGenericLesson(
+        'Monday',
+        '1600',
+        '1800',
+        'Lecture',
+        '1',
+      ),
+      '1|MON|1400|1500|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13': createGenericLesson(
+        'Monday',
+        '1400',
+        '1500',
+        'Lecture',
+        '1',
+      ),
+    };
+
+    expect(areOtherClassesAvailable(lessons2)).toBe(false);
+  });
+
+  test('other classes not available if there is no classes', () => {
+    const lessons3: Record<LessonId, RawLesson> = {};
+
+    expect(areOtherClassesAvailable(lessons3)).toBe(false);
+  });
 });
 
 describe('getInteractableLessons', () => {
