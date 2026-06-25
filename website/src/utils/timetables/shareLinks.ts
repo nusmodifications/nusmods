@@ -6,6 +6,7 @@ import {
   invert,
   isArray,
   isEmpty,
+  isEqual,
   keys,
   last,
   map,
@@ -315,11 +316,20 @@ export function deserializeModuleLessonConfigV2AndV3(
       if (!isEmpty(lessonIds)) {
         const firstClassNo: ClassNo | undefined = get(lessonsWithLessonType, lessonIds[0])?.classNo;
 
-        if (firstClassNo)
-          return {
-            ...accumulatedModuleLessonConfig,
-            [lessonType]: [firstClassNo],
-          };
+        if (firstClassNo) {
+          const lessonsWithFirstClassNo = pickBy(
+            lessonsWithLessonType,
+            (lesson) => lesson.classNo === firstClassNo,
+          );
+
+          // The set of lessons deserialized must be identical to the lessons with that classNo
+          // If any of the lessons is invalid, the module timetable must have changed, so we cannot reliably deserialize the share link
+          if (isEqual(new Set(lessonIds), new Set(keys(lessonsWithFirstClassNo))))
+            return {
+              ...accumulatedModuleLessonConfig,
+              [lessonType]: [firstClassNo],
+            };
+        }
       }
 
       // We do not attempt to recover an empty lesson config because it would be inventing data that is not in the shared link
