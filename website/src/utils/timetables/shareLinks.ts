@@ -1,7 +1,6 @@
 import {
   castArray,
   filter,
-  first,
   get,
   includes,
   invert,
@@ -30,6 +29,7 @@ import {
   ModuleCode,
   ModuleLessonMap,
   RawLesson,
+  Semester,
 } from 'types/modules';
 import { ModulesMap } from 'types/reducers';
 
@@ -37,7 +37,7 @@ import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { getModuleLessonMap, getModuleTimetable } from 'utils/modules';
 
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
-import { getRecoveryClassNo, serializeLessonDetails } from './lessonId';
+import { serializeLessonDetails } from './lessonId';
 
 // Reverse lookup map of LESSON_TYPE_ABBREV
 export const LESSON_ABBREV_TYPE: { [key: string]: LessonType } = invert(LESSON_TYPE_ABBREV);
@@ -205,13 +205,67 @@ function deserializeTaModulesConfigV1(
   return taModuleLessonConfigs;
 }
 
-export function deserializeTaModulesConfigV2orV3(taSerialized: string) {
+export function deserializeTaModulesConfigV2AndV3(taSerialized: string) {
   return taSerialized.split(/(?<=\)),/);
 }
 
 /**
- * Deserializes a serialized v2 or v3 format lesson config string to a module lesson config
+ * Unwraps V2 and V3 serialization of a lesson type, into its lesson type and lesson identifiers
+ */
+function unwrapSerializedLessonTypeConfig(lessonTypeSerialized: string): {
+  lessonType: LessonType;
+  serializedLessons: string;
+} | null {
+  // LAB:(1)
+  const [lessonTypeAbbr, serializedLessonTypeConfig] =
+    lessonTypeSerialized.split(LESSON_TYPE_KEY_VALUE_SEP);
+  const lessonType: LessonType = get(LESSON_ABBREV_TYPE, lessonTypeAbbr);
+  if (!lessonType) return null;
 
+  const unwrappedLessonType: RegExpMatchArray | null =
+    serializedLessonTypeConfig.match(/(?<=\()(.*)(?=\))/);
+  if (!unwrappedLessonType) return null;
+
+  return {
+    lessonType,
+    serializedLessons: unwrappedLessonType[0],
+  };
+}
+
+/**
+ * Deserializes lesson identifiers from V2 and V3 serialization, converting V2 lesson indices to V3 `LessonId`s
+ * @param timetable used to get lesson from lesson index
+ * @param lessonType used to that the lesson at that lesson index belongs to the `LessonType`
+ * @param lessonsWithLessonType used to obtain
+ * @returns
+ */
+function deserializeLessonIdentifiers(
+  serializedLessonIdentifiers: string,
+  timetable: readonly RawLesson[],
+  lessonType: LessonType,
+): LessonId[] {
+  return reduce(
+    serializedLessonIdentifiers.split(LESSON_SEP),
+    (accumulatedDeserializedLessons, lessonIdentifier) => {
+      const isLessonIndex: boolean = /^\d+$/.test(lessonIdentifier); // parseInt coerces "1|..." to 1
+
+      if (isLessonIndex) {
+        const lessonIndex: LessonIndex = parseInt(lessonIdentifier, 10);
+        const lesson: RawLesson | undefined = nth(timetable, lessonIndex);
+
+        if (!lesson || lesson.lessonType !== lessonType) return accumulatedDeserializedLessons;
+
+        return [...accumulatedDeserializedLessons, serializeLessonDetails(lesson)];
+      }
+
+      return [...accumulatedDeserializedLessons, lessonIdentifier];
+    },
+    [] as LessonId[],
+  );
+}
+
+/**
+ * Deserializes a serialized v2 or v3 format lesson config string to a module lesson config
  * @param moduleLessonConfig moduleLessonConfig from previously parsed params to combine with, if any
  * @param serializedModuleLessonConfig
  * v2: `CS4243=LAB:(1);LEC:(5)`\
@@ -219,7 +273,7 @@ export function deserializeTaModulesConfigV2orV3(taSerialized: string) {
  * @param timetable Array of valid lessons
  * @returns Combined moduleLessonConfig
  */
-export function deserializeModuleLessonConfigV2andV3(
+export function deserializeModuleLessonConfigV2AndV3(
   moduleLessonConfig: ModuleLessonConfig,
   serializedModuleLessonConfig: string,
   lessonMap: Readonly<ModuleLessonMap<RawLesson>>,
@@ -232,70 +286,47 @@ export function deserializeModuleLessonConfigV2andV3(
     serializedModuleLessonConfig.split(V2_LESSON_TYPE_SEP),
     (accumulatedModuleLessonConfig, lessonTypeSerialized) => {
       // LAB:(1)
-      const [lessonTypeAbbr, serializedLessonTypeConfig] =
-        lessonTypeSerialized.split(LESSON_TYPE_KEY_VALUE_SEP);
-      const lessonType: LessonType = get(LESSON_ABBREV_TYPE, lessonTypeAbbr);
-      if (!lessonType) return accumulatedModuleLessonConfig;
-      const unwrappedLessonType: RegExpMatchArray | null =
-        serializedLessonTypeConfig.match(/(?<=\()(.*)(?=\))/);
-      // ["LAB", "1"]
-      // ["LAB", "2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13"]
-      if (!unwrappedLessonType) {
-        return {
-          ...accumulatedModuleLessonConfig,
-          [lessonType]: [],
-        };
-      }
+      const unwrappedLessonType = unwrapSerializedLessonTypeConfig(lessonTypeSerialized);
+      if (!unwrappedLessonType) return accumulatedModuleLessonConfig;
 
+      const lessonType: LessonType = unwrappedLessonType.lessonType;
       const lessonsWithLessonType: Record<LessonId, RawLesson> = get(lessonMap, lessonType);
       if (!lessonsWithLessonType) return accumulatedModuleLessonConfig;
 
-      const deserializedLessons: Record<LessonId, RawLesson> = reduce(
-        unwrappedLessonType[0].split(LESSON_SEP),
-        (accumulatedDeserializedLessons, lessonIdentifier) => {
-          const isLessonIndex: boolean = /^\d+$/.test(lessonIdentifier); // parseInt coerces "1|..." to 1
-
-          if (isLessonIndex) {
-            const lessonIndex: LessonIndex = parseInt(lessonIdentifier, 10);
-            const lesson: RawLesson | undefined = nth(timetable, lessonIndex);
-            if (!lesson || lesson.lessonType !== lessonType) return accumulatedDeserializedLessons;
-            const lessonId: LessonId = serializeLessonDetails(lesson);
-            return {
-              ...accumulatedDeserializedLessons,
-              [lessonId]: lesson,
-            };
-          }
-
-          const lesson: Readonly<RawLesson> = get(lessonsWithLessonType, lessonIdentifier);
-          if (!lesson) return accumulatedDeserializedLessons;
-
-          return {
-            ...accumulatedDeserializedLessons,
-            [lessonIdentifier]: lesson,
-          };
-        },
-        {} as Record<LessonId, RawLesson>,
+      const lessonIds: LessonId[] = deserializeLessonIdentifiers(
+        unwrappedLessonType.serializedLessons,
+        timetable,
+        lessonType,
       );
-      const classNos: ClassNo[] = uniq(map(deserializedLessons, 'classNo'));
-      const lessonIds: LessonId[] = keys(deserializedLessons);
-      if (isTa || classNos.length !== 1) {
+
+      if (isTa) {
+        const validLessonIds = new Set(keys(lessonsWithLessonType));
+        const validatedLessonIds = filter(lessonIds, (lessonId) => validLessonIds.has(lessonId));
+
         return {
           ...accumulatedModuleLessonConfig,
           [lessonType]: [
             ...(get(accumulatedModuleLessonConfig, lessonType, []) as LessonId[]),
-            ...lessonIds,
+            ...validatedLessonIds,
           ],
         };
       }
 
-      const firstClassNo: ClassNo | null =
-        first(classNos) ?? getRecoveryClassNo(lessonsWithLessonType);
+      if (!isEmpty(lessonIds)) {
+        const firstClassNo: ClassNo | undefined = get(lessonsWithLessonType, lessonIds[0])?.classNo;
 
-      if (!firstClassNo) return accumulatedModuleLessonConfig;
+        if (firstClassNo)
+          return {
+            ...accumulatedModuleLessonConfig,
+            [lessonType]: [firstClassNo],
+          };
+      }
 
+      // We do not attempt to recover an empty lesson config because it would be inventing data that is not in the shared link
+      // Allow validation logic to recover the config instead
       return {
         ...accumulatedModuleLessonConfig,
-        [lessonType]: [firstClassNo],
+        [lessonType]: [],
       };
     },
     moduleLessonConfig,
@@ -372,6 +403,10 @@ function deserializeHiddenOrTaConfig(paramsValue: string | string[] | null): Mod
   return serializedModuleList.split(LESSON_SEP);
 }
 
+function isV1Config(serializedModuleLessonConfig: string) {
+  return last(serializedModuleLessonConfig) !== ')';
+}
+
 /**
  * Helper function for {@link deserializeTimetable|deserializeTimetable}
  * It parses the serialization string of each module.
@@ -403,8 +438,8 @@ function parseLessonConfigParams(
       // If using the lesson group serialization (v2) or the lesson details serialization (v3)
       // paramsKey = CS4243
       // paramsValue = LAB:(1);LEC:(5)
-      if (serializedModuleLessonConfig && last(serializedModuleLessonConfig) === ')')
-        return deserializeModuleLessonConfigV2andV3(
+      if (serializedModuleLessonConfig && !isV1Config(serializedModuleLessonConfig))
+        return deserializeModuleLessonConfigV2AndV3(
           accumulatedModuleLessonConfig,
           serializedModuleLessonConfig,
           lessonMap,
@@ -449,7 +484,7 @@ function parseLessonConfigParams(
 export function deserializeTimetable(
   serialized: string,
   modules: ModulesMap,
-  semester: number,
+  semester: Semester,
 ): {
   semTimetableConfig: SemTimetableConfig;
   ta: ModuleCode[];
