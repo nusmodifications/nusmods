@@ -143,6 +143,8 @@ class ReqTreeVisitor
       .PROGRAMS_VALUE()
       .map((node) => node.text);
     const courseCount = ctx.contains_number();
+    // Previously assumed: if there is no course count, then all courses are
+    // required.
     // Update 26/06/2026: upstream prerequisite-rule semantics clarified that an
     // omitted course count is equivalent to (1).
     if (courseCount === undefined) {

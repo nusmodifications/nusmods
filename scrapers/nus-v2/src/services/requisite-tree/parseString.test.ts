@@ -434,6 +434,8 @@ THEN
     ).toEqual(result);
   });
 
+  // Previously assumed: if there is no course count, then all courses are
+  // required.
   // Update 26/06/2026: upstream prerequisite-rule semantics clarified that an
   // omitted course count is equivalent to COURSES (1).
   it('allows omitted courses count', () => {
