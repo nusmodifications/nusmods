@@ -143,10 +143,10 @@ class ReqTreeVisitor
       .PROGRAMS_VALUE()
       .map((node) => node.text);
     const courseCount = ctx.contains_number();
-    // According to NUS documentation, if there is no course count, then ALL the
-    // courses are required.
+    // According to upstream prerequisite-rule semantics, an omitted course count
+    // is equivalent to (1).
     if (courseCount === undefined) {
-      return generateAndBranch(courses);
+      return generateOrBranch(courses);
     }
     const n = Number.parseInt(courseCount.NUMBER().text, 10);
     if (n === 1) {
