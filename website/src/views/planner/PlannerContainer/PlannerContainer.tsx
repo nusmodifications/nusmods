@@ -146,6 +146,20 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
   onAddModuleToTimetable = (semester: Semester, module: ModuleCode) =>
     this.props.fetchModule(module).then(() => this.props.addModuleToTimetable(semester, module));
 
+  onImportPlanner = (importedState: PlannerState) => {
+    this.props.importPlanner(importedState);
+
+    // Fetch the details of each imported module so they display correctly
+    // without requiring a page refresh (componentDidMount only fetches on load)
+    values(importedState.modules).forEach((module) => {
+      if (module.moduleCode) {
+        this.props.fetchModule(module.moduleCode).catch(() => {
+          // TODO: Handle error
+        });
+      }
+    });
+  };
+
   closeAddCustomData = () => this.setState({ showCustomModule: null });
 
   closeSettingsModal = () => this.setState({ showSettings: false });
@@ -171,7 +185,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
           <div className={classnames(styles.buttonGroup)}>
             <PlannerClearButton clearPlanner={this.props.clearPlanner} />
-            <PlannerImportButton importPlanner={this.props.importPlanner} />
+            <PlannerImportButton importPlanner={this.onImportPlanner} />
             <PlannerExportButton downloadPlanner={this.props.downloadPlanner} />
 
             <button
