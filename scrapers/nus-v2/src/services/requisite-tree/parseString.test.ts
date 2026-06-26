@@ -434,8 +434,8 @@ THEN
     ).toEqual(result);
   });
 
-  // According to upstream prerequisite-rule semantics, omitting the course count
-  // is equivalent to COURSES (1).
+  // Update 26/06/2026: upstream prerequisite-rule semantics clarified that an
+  // omitted course count is equivalent to COURSES (1).
   it('allows omitted courses count', () => {
     const result: PrereqTree = 'NTW%:D';
     expect(

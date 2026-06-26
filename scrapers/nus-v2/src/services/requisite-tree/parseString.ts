@@ -143,8 +143,8 @@ class ReqTreeVisitor
       .PROGRAMS_VALUE()
       .map((node) => node.text);
     const courseCount = ctx.contains_number();
-    // According to upstream prerequisite-rule semantics, an omitted course count
-    // is equivalent to (1).
+    // Update 26/06/2026: upstream prerequisite-rule semantics clarified that an
+    // omitted course count is equivalent to (1).
     if (courseCount === undefined) {
       return generateOrBranch(courses);
     }
