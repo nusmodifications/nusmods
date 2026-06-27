@@ -26,13 +26,32 @@ export type WeekRange = {
   weeks?: number[];
 };
 export type LessonIndex = number;
+/**
+ * `LessonId`s identify a singular lesson from a list of lessons of a `LessonType`.
+ * `LessonType` is excluded from the `LessonId` because lessons of different `LessonType`s are serialized separately in sharing links.
+ */
+export type LessonId = string;
+
+// Whether a cohort condition includes (IF_IN/MUST_BE_IN) or excludes
+// (IF_NOT_IN/MUST_NOT_BE_IN) the listed cohort years.
+export type CohortRule = 'IF_IN' | 'IF_NOT_IN' | 'MUST_BE_IN' | 'MUST_NOT_BE_IN';
+
+// A cohort-year predicate that gates a subtree. `years` holds the raw YEARS
+// tokens, each prefixed by a bound: "S:" = start/from (inclusive), "E:" =
+// end/until (inclusive). The year part may be a calendar year ("2022") or an
+// academic year ("2019/20"). Two tokens form a closed range.
+export type CohortCondition = { rule: CohortRule; years: string[] };
 
 // Recursive tree of module codes and boolean operators for the prereq tree
 export type PrereqTree =
   | string
   | { and: PrereqTree[] }
   | { or: PrereqTree[] }
-  | { nOf: [number, PrereqTree[]] };
+  | { nOf: [number, PrereqTree[]] }
+  // A cohort predicate. With `then`, it gates that requirement to the matching
+  // cohorts; without `then`, it is a bare eligibility constraint (the student
+  // must be in the cohort to take the module).
+  | { cohort: CohortCondition; then?: PrereqTree };
 
 // Auxiliary data types
 export type Day =
@@ -147,10 +166,20 @@ export type LessonIndicesMap = {
   };
 };
 
+/**
+ * Mapping of lessons to their respective lesson ID and lesson type\
+ */
+export type ModuleLessonMap<T extends RawLesson> = {
+  [lessonType: LessonType]: {
+    [lessonId: LessonId]: T;
+  };
+};
+
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
   timetable: readonly RawLessonWithIndex[];
+  readonly lessonMap: ModuleLessonMap<RawLesson>;
 
   // Exam
   examDate?: string;

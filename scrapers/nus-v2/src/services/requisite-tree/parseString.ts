@@ -3,7 +3,7 @@
 import * as R from 'ramda';
 
 import { NusModsLexer, NusModsVisitor } from './antlr4';
-import { PrereqTree } from '../../types/modules';
+import { CohortCondition, CohortRule, PrereqTree } from '../../types/modules';
 import { Logger } from '../logger';
 import {
   NusModsParser,
@@ -17,6 +17,9 @@ import {
   PrimitiveContext,
   ProgramsContext,
   Cohort_yearsContext,
+  Cohort_conditionalContext,
+  Subject_yearsContext,
+  Subject_years_conditionalContext,
   Program_typesContext,
 } from './antlr4/NusModsParser';
 import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
@@ -174,6 +177,80 @@ class ReqTreeVisitor
     }
     return '';
   };
+
+  // A bare cohort predicate (no THEN, e.g. an AND-ed "COHORT_YEARS MUST_BE_IN
+  // S:2017") is an eligibility constraint: the student must be in the cohort to
+  // take the module. It gates no requirement, so it has no `then`.
+  // @ts-ignore
+  visitCohort_years?: ((ctx: Cohort_yearsContext) => PrereqTree) | undefined = (ctx) => {
+    const cohort = this.cohortCondition(ctx);
+    return cohort === undefined ? '' : { cohort };
+  };
+
+  // A cohort that gates a requirement: the requirement only applies to the
+  // matching cohorts.
+  // @ts-ignore
+  visitCohort_conditional?: ((ctx: Cohort_conditionalContext) => PrereqTree) | undefined = (
+    ctx,
+  ) => {
+    const then = ctx.compound()?.accept(this);
+    // If the gated requirement simplifies away, there is nothing to require.
+    if (then === undefined || then === '') {
+      return '';
+    }
+
+    const cohort = this.cohortCondition(ctx.cohort_years());
+    return cohort === undefined ? '' : { cohort, then };
+  };
+
+  // A bare subject-year predicate (no THEN) is an eligibility constraint, the
+  // same as a bare cohort. SUBJECT_YEARS only supports IF_IN (see the grammar)
+  // and shares COHORT_YEARS' S:/E: year-bound format, so it is surfaced as a
+  // cohort-style { cohort } node, mirroring visitCohort_years. No current module
+  // uses this bare form, but handling it keeps subject_years from being silently
+  // dropped if the data ever does.
+  // @ts-ignore
+  visitSubject_years?: ((ctx: Subject_yearsContext) => PrereqTree) | undefined = (ctx) => {
+    const years = ctx.YEARS().map((node) => node.text);
+    return { cohort: { rule: 'IF_IN', years } };
+  };
+
+  // A subject-year-gated requirement. SUBJECT_YEARS shares the S:/E: year-bound
+  // format of COHORT_YEARS and there is no separate planner input for it, so it
+  // is carried as a cohort-style gate evaluated against the matriculation year.
+  // @ts-ignore
+  visitSubject_years_conditional?:
+    | ((ctx: Subject_years_conditionalContext) => PrereqTree)
+    | undefined = (ctx) => {
+    const then = ctx.compound()?.accept(this);
+    // If the gated requirement simplifies away, there is nothing to require.
+    if (then === undefined || then === '') {
+      return '';
+    }
+    // subject_years only supports IF_IN (see the grammar).
+    const years = ctx
+      .subject_years()
+      .YEARS()
+      .map((node) => node.text);
+    return { cohort: { rule: 'IF_IN', years }, then };
+  };
+
+  cohortCondition(ctx: Cohort_yearsContext): CohortCondition | undefined {
+    let rule: CohortRule;
+    if (ctx.if_in() !== undefined) {
+      rule = 'IF_IN';
+    } else if (ctx.if_not_in() !== undefined) {
+      rule = 'IF_NOT_IN';
+    } else if (ctx.must_be_in() !== undefined) {
+      rule = 'MUST_BE_IN';
+    } else if (ctx.must_not_be_in() !== undefined) {
+      rule = 'MUST_NOT_BE_IN';
+    } else {
+      this.errors.push(new Error('Cohort years missing a condition'));
+      return undefined;
+    }
+    return { rule, years: ctx.YEARS().map((node) => node.text) };
+  }
 }
 
 /**

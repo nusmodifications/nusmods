@@ -52,12 +52,12 @@ export function filterModuleForSemester(
  * Checks if a module has unfulfilled prereqs
  */
 const prereqConflict =
-  (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) =>
+  (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>, cohortYear?: number) =>
   (moduleCode: ModuleCode): Conflict | null => {
     const prereqs = get(modulesMap, [moduleCode, 'prereqTree']);
     if (!prereqs) return null;
 
-    const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs);
+    const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs, cohortYear);
     if (!unfulfilledPrereqs.length) return null;
 
     return { type: 'prereq', unfulfilledPrereqs };
@@ -235,7 +235,10 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
       ];
 
       if (!planner.ignorePrereqCheck) {
-        conflictChecks.push(prereqConflict(moduleBank.modules, modulesTaken));
+        // planner.minYear is the matriculation year set in planner settings,
+        // e.g. '2022/2023' -> cohort 2022, used to evaluate cohort-gated prereqs.
+        const cohortYear = parseInt(planner.minYear, 10);
+        conflictChecks.push(prereqConflict(moduleBank.modules, modulesTaken, cohortYear));
       }
 
       modules[year][semester] = moduleTimes.map((moduleCode) =>

@@ -8,6 +8,7 @@ import { getModuleCondensed } from 'selectors/moduleBank';
 import { ModuleCode, PrereqTree, ModuleCondensed } from 'types/modules';
 import { State } from 'types/state';
 import { notNull } from 'types/utils';
+import { formatCohortCondition } from 'utils/planner';
 
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import ConditionalReverse from 'views/components/ConditionalReverse';
@@ -42,6 +43,9 @@ const formatConditional = (node: PrereqTree, prereqTreeOnLeft?: boolean) => {
   }
   if ('or' in node) {
     return prereqTreeOnLeft ? 'take one' : `one of`;
+  }
+  if ('cohort' in node) {
+    return `For ${formatCohortCondition(node.cohort)}`;
   }
   return prereqTreeOnLeft ? 'take all' : `all of`;
 };
@@ -79,6 +83,12 @@ const unwrapLayer = (node: PrereqTree) => {
   if ('nOf' in node) {
     return node.nOf[1];
   }
+  if ('cohort' in node) {
+    // Only the gated requirement is a child branch; the condition is rendered
+    // as this node's label via formatConditional. A bare cohort constraint has
+    // no requirement, so it renders as a childless label.
+    return node.then === undefined ? [] : [node.then];
+  }
   return flatten(values(node).filter(notNull));
 };
 
@@ -112,15 +122,22 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   const { prefix, name } = nodeName(node);
 
   if (isConditional) {
+    const children = unwrapLayer(node);
     return (
       <ConditionalReverse reverse={!prereqTreeOnLeft}>
         <Branch
-          nodes={unwrapLayer(node)}
+          nodes={children}
           layer={layer + 1}
           prereqTreeOnLeft={prereqTreeOnLeft}
           getModuleCondensed={props.getModuleCondensed}
         />
-        <div className={classnames(styles.node, styles.conditional)}>
+        <div
+          className={classnames(styles.node, styles.conditional, {
+            // A childless conditional (e.g. a bare cohort constraint) has no
+            // branch to connect to, so drop the dangling connector line.
+            [styles.childless]: children.length === 0,
+          })}
+        >
           {formatConditional(node, prereqTreeOnLeft)}
         </div>
       </ConditionalReverse>
