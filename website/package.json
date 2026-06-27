@@ -17,6 +17,8 @@
     "lint": "run-p \"lint:**\"",
     "lint:code": "oxlint -c oxlint.config.mjs api scripts src webpack",
     "lint:styles": "stylelint \"src/**/*.scss\" --syntax scss",
+    "lint:optimiser:code": "cd api/optimiser && golangci-lint run . ./_*/",
+    "lint:optimiser:styles": "cd api/optimiser && golangci-lint fmt",
     "test": "vitest run --coverage",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:watch": "vitest",

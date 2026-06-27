@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -10,10 +11,10 @@ type LessonType = string
 type ClassNo = string
 type LessonIndex = int
 
-// ModuleTimetableMap organises module slots by Module -> LessonType -> ClassNo -> []ModuleSlot
+// ModuleTimetableMap organises module slots by Module -> LessonType -> ClassNo -> []ModuleSlot.
 type ModuleTimetableMap = map[string]map[LessonType]map[ClassNo][]ModuleSlot
 
-// ModuleDefaultSlotsMap organises default/backup slots by Module -> LessonType -> []ModuleSlot
+// ModuleDefaultSlotsMap organises default/backup slots by Module -> LessonType -> []ModuleSlot.
 type ModuleDefaultSlotsMap = map[string]map[LessonType][]ModuleSlot
 
 type OptimiserRequest struct {
@@ -38,7 +39,7 @@ type OptimiserRequest struct {
 // ParseOptimiserRequestFields validates and parses time fields into minutes.
 func (r *OptimiserRequest) ParseOptimiserRequestFields() error {
 	if len(r.Modules) == 0 {
-		return fmt.Errorf("at least one module must be provided")
+		return errors.New("at least one module must be provided")
 	}
 	var err error
 	r.EarliestMin, err = ParseTimeToMinutes(r.EarliestTime)
@@ -65,7 +66,7 @@ func (r *OptimiserRequest) ParseOptimiserRequestFields() error {
 }
 
 // SolveError is returned by Solve to communicate both the error message and the
-// appropriate HTTP status code to the handler
+// appropriate HTTP status code to the handler.
 type SolveError struct {
 	Code    int
 	Message string
@@ -75,6 +76,7 @@ func (e *SolveError) Error() string { return e.Message }
 
 type SolveResponse struct {
 	TimetableState
+
 	ShareableLink        string `json:"shareableLink"`
 	DefaultShareableLink string `json:"defaultShareableLink"`
 }
@@ -109,7 +111,7 @@ type ModuleSlot struct {
 	LessonIndex LessonIndex      `json:"LessonIndex"`
 }
 
-// ParseModuleSlotFields parses and populates the parsed fields in ModuleSlot for faster computation
+// ParseModuleSlotFields parses and populates the parsed fields in ModuleSlot for faster computation.
 func (slot *ModuleSlot) ParseModuleSlotFields(lessonKey string) error {
 	startMin, err1 := ParseTimeToMinutes(slot.StartTime)
 	endMin, err2 := ParseTimeToMinutes(slot.EndTime)
@@ -156,13 +158,13 @@ func ParseTimeToMinutes(timeStr string) (int, error) {
 	if len(timeStr) != 4 {
 		return 0, fmt.Errorf("invalid time format: %s", timeStr)
 	}
-	hour, err1 := strconv.Atoi(timeStr[:2])
-	min, err2 := strconv.Atoi(timeStr[2:])
+	hours, err1 := strconv.Atoi(timeStr[:2])
+	mins, err2 := strconv.Atoi(timeStr[2:])
 	if err1 != nil || err2 != nil {
 		return 0, fmt.Errorf("invalid time format: %s", timeStr)
 	}
-	if hour < 0 || hour > 23 || min < 0 || min > 59 {
+	if hours < 0 || hours > 23 || mins < 0 || mins > 59 {
 		return 0, fmt.Errorf("time out of range: %s", timeStr)
 	}
-	return hour*60 + min, nil
+	return hours*60 + mins, nil
 }

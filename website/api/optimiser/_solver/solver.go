@@ -1,6 +1,7 @@
 package solver
 
 import (
+	"maps"
 	"net/http"
 	"sort"
 	"strings"
@@ -96,11 +97,10 @@ func beamSearch(
 	branchingFactor int,
 	recordings map[string]struct{},
 	optimiserRequest models.OptimiserRequest) models.TimetableState {
-
 	initial := models.TimetableState{
 		Assignments: make(map[string]string),
 	}
-	for d := 0; d < constants.DaysPerWeek; d++ {
+	for d := range constants.DaysPerWeek {
 		initial.DaySlots[d] = make([]models.ModuleSlot, 0)
 	}
 	beam := []models.TimetableState{initial}
@@ -112,7 +112,7 @@ func beamSearch(
 
 		// Filter valid slot groups
 		validGroups := make([][]models.ModuleSlot, 0, limit)
-		for i := 0; i < limit; i++ {
+		for i := range limit {
 			group := slotGroups[i]
 			validGroup := make([]models.ModuleSlot, 0, len(group))
 			for slotIdx := range group {
@@ -128,7 +128,6 @@ func beamSearch(
 
 		// iterate over all partial timetables in the beam
 		for _, state := range beam {
-
 			// iterate over all pre-filtered slot groups for the current lesson
 			for _, validGroup := range validGroups {
 				if hasConflict(state, validGroup) {
@@ -189,7 +188,6 @@ func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool
 		for _, oldSlot := range state.DaySlots[newSlot.DayIndex] {
 			// Check if slots overlap in time
 			if newSlot.StartMin < oldSlot.EndMin && oldSlot.StartMin < newSlot.EndMin {
-
 				// if weeks is not a []int, then skip checking for week conflict
 				if newSlot.WeeksSet == nil || oldSlot.WeeksSet == nil {
 					return true
@@ -218,12 +216,10 @@ func copyState(src models.TimetableState) models.TimetableState {
 	}
 
 	// Copy assignments
-	for k, v := range src.Assignments {
-		newState.Assignments[k] = v
-	}
+	maps.Copy(newState.Assignments, src.Assignments)
 
 	// Copy day slots
-	for i := 0; i < constants.DaysPerWeek; i++ {
+	for i := range constants.DaysPerWeek {
 		if len(src.DaySlots[i]) > 0 {
 			newState.DaySlots[i] = make([]models.ModuleSlot, len(src.DaySlots[i]))
 			copy(newState.DaySlots[i], src.DaySlots[i])
@@ -309,7 +305,7 @@ func isLessonRecorded(lessonKey string, recordings map[string]struct{}) bool {
 	return ok
 }
 
-// isInvalidCoordinates checks if coordinates passed are valid
+// isInvalidCoordinates checks if coordinates passed are valid.
 func isInvalidCoordinates(coord models.Coordinates) bool {
 	return coord == constants.InvalidCoordinates
 }
@@ -328,7 +324,7 @@ func scoreTimetableState(
 	optimiserRequest models.OptimiserRequest,
 ) float64 {
 	var totalScore float64
-	for d := 0; d < constants.DaysPerWeek; d++ {
+	for d := range constants.DaysPerWeek {
 		if len(state.DaySlots[d]) == 0 {
 			continue
 		}
@@ -457,7 +453,7 @@ func scoreConsecutiveHoursOfStudy(physicalSlots []models.ModuleSlot, maxConsecut
 	score := 0
 	consecutiveMinutes := 0
 
-	for i := 0; i < len(physicalSlots); i++ {
+	for i := range physicalSlots {
 		currentSlot := physicalSlots[i]
 		currentSlotStartMin := currentSlot.StartMin
 		currentSlotEndMin := currentSlot.EndMin

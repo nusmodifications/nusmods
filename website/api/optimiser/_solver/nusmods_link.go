@@ -35,7 +35,7 @@ func FillDefaultsAndGenerateShareableLinks(
 	defaultConfig := createConfig(assignments, lessonToSlots)
 	defaultSerializedConfig := serializeConfig(defaultConfig)
 
-	semesterPath := ""
+	var semesterPath string
 	switch req.AcadSem {
 	case 1:
 		semesterPath = "sem-1"
@@ -61,7 +61,7 @@ func FillDefaultsAndGenerateShareableLinks(
 	return shareableURL, defaultShareableURL
 }
 
-// Parses the assignments into a map of module codes to lesson types to class numbers
+// Parses the assignments into a map of module codes to lesson types to class numbers.
 func createConfig(
 	assignments map[string]string,
 	lessonToSlots map[string][][]models.ModuleSlot,
@@ -98,7 +98,7 @@ func createConfig(
 	return config
 }
 
-// Constructs the URL
+// Constructs the URL.
 func serializeConfig(config map[string]map[string][]models.LessonIndex) string {
 	var moduleParams []string
 
@@ -126,7 +126,7 @@ func serializeConfig(config map[string]map[string][]models.LessonIndex) string {
 
 // Serializes an array of lesson indices into the format used in timetable share links
 //
-// Returns "1,2,3" with input [1, 2, 3]
+// Returns "1,2,3" with input [1, 2, 3].
 func serializeLessonIndices(lessonIndex []models.LessonIndex) string {
 	parts := make([]string, len(lessonIndex))
 	for i, idx := range lessonIndex {

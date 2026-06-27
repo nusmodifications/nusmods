@@ -98,7 +98,6 @@ func TestOptimiser_NoCollisionBetween2Lessons(t *testing.T) {
 
 	t.Logf("✅ No Collision Between 2 Lessons Passed. Assignments: %v", result.Assignments)
 	t.Logf("   Shareable link: %s", result.ShareableLink)
-
 }
 
 func TestOptimiser_MultipleModulesWithFreeDays(t *testing.T) {
@@ -305,14 +304,14 @@ func TestOptimiser_AllSlotsHaveAssignments(t *testing.T) {
 
 // helpers
 
-// Day name constants for mapping
+// Day name constants for mapping.
 var dayNames = []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
 
 // validate checks that the timetable satisfies all constraints:
 // - No time collisions between lessons on the same day
 // - All lessons are within earliestTime and latestTime bounds
 // - Free days have no lessons scheduled
-// - Lessons marked as recordings should not appear in physical timetable
+// - Lessons marked as recordings should not appear in physical timetable.
 func validateTimetable(t *testing.T, result models.SolveResponse, req models.OptimiserRequest) {
 	t.Helper()
 

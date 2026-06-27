@@ -6,7 +6,7 @@ import (
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
-// Ensure in sync with all E-Venues in NUSMods
+// EVenues lists all virtual venue identifiers. Keep in sync with all E-Venues in NUSMods.
 var EVenues = map[string]struct{}{
 	"E-Learn_A":  {},
 	"E-Learn_B":  {},
@@ -18,7 +18,7 @@ var EVenues = map[string]struct{}{
 	"E-Hybrid_D": {},
 }
 
-// Ensure this is in sync with website/src/utils/timetables.ts
+// LessonTypeAbbrev maps full lesson type names to their abbreviations. Keep in sync with website/src/utils/timetables.ts.
 var LessonTypeAbbrev = map[string]string{
 	"DESIGN LECTURE":             "DLEC",
 	"LABORATORY":                 "LAB",
@@ -35,13 +35,13 @@ var LessonTypeAbbrev = map[string]string{
 }
 
 //go:embed venues.json
-var VenuesJson []byte
+var VenuesJSON []byte
 
 const ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 
 const NUSModsTimetableBaseURL = "https://nusmods.com/timetable"
 
-// Heuristics for scoring function
+// Heuristics for scoring function.
 const (
 	MaxWalkDistance             = 0.250 // 250 meters
 	NoVenuePenalty              = 100.0
@@ -53,15 +53,15 @@ const (
 	ConsecutiveHoursPenaltyRate = 100
 )
 
-// This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client
+// ModuleCodeSeparator is used by [nusmods_link.SerializeLessonIndices] to serialize the optimiser result into a timetable share link.
 const ModuleCodeSeparator = ";"
 
-// Beam search parameters
+// Beam search parameters.
 const (
 	BeamWidth       = 5000
 	BranchingFactor = 100
 	DaysPerWeek     = 6
 )
 
-// Indicates that a Coordinate was invalid
+// InvalidCoordinates indicates that a venue coordinate is invalid.
 var InvalidCoordinates = models.Coordinates{X: -1, Y: -1}
