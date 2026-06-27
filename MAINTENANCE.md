@@ -13,12 +13,13 @@ Create a new issue on GitHub with this checklist after the finals every semester
 - **Prepare "PR1"**
   - [ ] Update with next year's holiday data from academic calendar to `website/src/data/holidays.json` - Singapore & NUS Holidays (e.g. Well-Being day): <https://www.nus.edu.sg/registrar/calendar>
   - [ ] Update academic year in `scrapers/nus-v2/src/config.ts`
+
 - **Prepare "PR2"**
   - [ ] In `app-config.json`, update `academicYear` and `examAvailability` to include only the semesters where exam information is available
   - [ ] Update `packages/nusmods-academic-calendar/academic-calendar.json` with data for the new academic year
   - [ ] Add announcement to website by updating `website/src/data/holidays.json`
-  - [ ] Leave `specialTermAcademicYear` as `null` — overlap with previous AY Special Term I and II is handled automatically until new AY Semester 1 starts (see PR3). Set manually (e.g. `"2024/2025"`) only if auto-detection from the academic calendar is insufficient.
-  - [] See [Every Semester](#every-semester)
+  - [ ] Leave `specialTermAcademicYear` as `null` — overlap with previous AY Special Term I and II is handled automatically until new AY Semester 1 starts (see PR3). Set manually (e.g. `"2024/2025"`) only if auto-detection from the academic calendar is insufficient
+  - [ ] Update ModReg schedule (see [Every Semester](#every-semester))
 
 ### 1-2 days before NUS IT Data Update
 
