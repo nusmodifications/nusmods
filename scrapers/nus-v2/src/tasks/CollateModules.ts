@@ -8,7 +8,13 @@ import {
   SemesterModule,
   SemesterModuleData,
 } from '../types/mapper';
-import { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
+import {
+  Module,
+  ModuleCode,
+  ModuleCondensed,
+  ModuleInformation,
+  SemesterData,
+} from '../types/modules';
 import type { MPEModule } from '../types/mpe';
 
 import BaseTask from './BaseTask';
@@ -21,6 +27,7 @@ import { isModuleInMPE } from '../utils/mpe';
 
 interface Input {
   aliases: Array<ModuleAliases>;
+  preserveModuleInfoSemesters?: ReadonlySet<number>;
   semesterData: Array<Array<SemesterModuleData>>;
 }
 type Output = Array<Module>;
@@ -75,6 +82,19 @@ export function moduleDataCheck(
   };
 }
 
+export function upsertSemesterData(
+  semesterData: Array<SemesterData>,
+  incoming: SemesterData,
+): Array<SemesterData> {
+  return [...semesterData.filter((data) => data.semester !== incoming.semester), incoming].sort(
+    (left, right) => left.semester - right.semester,
+  );
+}
+
+type CombineModulesOptions = {
+  preserveModuleInfoSemesters?: ReadonlySet<number>;
+};
+
 /**
  * Combine modules from multiple semesters into one
  */
@@ -82,7 +102,9 @@ export function combineModules(
   semesters: Array<Array<SemesterModuleData>>,
   aliases: { [moduleCode: string]: Array<ModuleCode> },
   logger: Logger,
+  options: CombineModulesOptions = {},
 ): Array<ModuleWithoutTree> {
+  const { preserveModuleInfoSemesters } = options;
   const modules: { [moduleCode: string]: ModuleWithoutTree } = {};
 
   // 1. Iterate over each module
@@ -105,6 +127,15 @@ export function combineModules(
 
         if (difference) {
           logger.warn(difference, 'Module with different module info between semesters');
+        }
+
+        if (semesterData && preserveModuleInfoSemesters?.has(semesterData.semester)) {
+          modules[moduleCode] = {
+            ...existingData,
+            aliases: aliases[moduleCode] ?? existingData.aliases,
+            semesterData: upsertSemesterData(existingData.semesterData, semesterData),
+          };
+          continue;
         }
 
         // 4. Always use the latest semester's data. In case the two semester's data
@@ -208,12 +239,13 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
   async run(input: Input) {
     this.logger.info(`Collating modules for ${this.academicYear}`);
 
-    const { aliases, semesterData } = input;
+    const { aliases, preserveModuleInfoSemesters, semesterData } = input;
     const combinedAliases = mergeAliases(aliases);
     const modulesWithoutTree: Array<ModuleWithoutTree> = combineModules(
       semesterData,
       combinedAliases,
       this.logger,
+      { preserveModuleInfoSemesters },
     );
 
     // Insert prerequisite trees into the modules and order them by module code

@@ -1,4 +1,4 @@
-import { Semester } from 'types/modules';
+import { CohortRule, PrereqTree, Semester } from 'types/modules';
 import { Conflict, DuplicateConflict, PrereqConflict } from 'types/planner';
 import { CS1010S } from '__mocks__/modules';
 
@@ -132,11 +132,96 @@ describe(checkPrerequisite, () => {
       },
     ]);
   });
+
+  describe('cohort-gated requirements', () => {
+    const gate = (
+      years: string[],
+      then: PrereqTree = 'LC1016:D',
+      rule: CohortRule = 'IF_IN',
+    ): PrereqTree => ({ cohort: { rule, years }, then });
+
+    test('enforces the requirement when the cohort matches (S: lower bound)', () => {
+      expect(checkPrerequisite(moduleSet, gate(['S:2022']), 2022)).toEqual(['LC1016:D']);
+    });
+
+    test('skips the requirement when the cohort is outside the range', () => {
+      // Matriculated 2020, requirement only applies from cohort 2022 onwards.
+      expect(checkPrerequisite(moduleSet, gate(['S:2022']), 2020)).toHaveLength(0);
+    });
+
+    test('conservatively enforces when the cohort year is unknown', () => {
+      expect(checkPrerequisite(moduleSet, gate(['S:2022']))).toEqual(['LC1016:D']);
+    });
+
+    test('treats E: as an upper bound (cohorts up to and including)', () => {
+      expect(checkPrerequisite(moduleSet, gate(['E:2019']), 2018)).toEqual(['LC1016:D']);
+      expect(checkPrerequisite(moduleSet, gate(['E:2019']), 2022)).toHaveLength(0);
+    });
+
+    test('treats two tokens as a closed range, parsing academic-year tokens', () => {
+      const range = gate(['S:2020/21', 'E:2022/23']);
+      expect(checkPrerequisite(moduleSet, range, 2021)).toEqual(['LC1016:D']);
+      expect(checkPrerequisite(moduleSet, range, 2024)).toHaveLength(0);
+    });
+
+    test('inverts the match for IF_NOT_IN', () => {
+      expect(checkPrerequisite(moduleSet, gate(['S:2022'], 'LC1016:D', 'IF_NOT_IN'), 2020)).toEqual(
+        ['LC1016:D'],
+      );
+      expect(
+        checkPrerequisite(moduleSet, gate(['S:2022'], 'LC1016:D', 'IF_NOT_IN'), 2022),
+      ).toHaveLength(0);
+    });
+
+    test('reports the gated requirement as fulfilled when it is met', () => {
+      // moduleSet contains NTW2006, fulfilling the NTW% wildcard.
+      expect(checkPrerequisite(moduleSet, gate(['S:2020'], 'NTW%'), 2022)).toHaveLength(0);
+    });
+
+    describe('bare cohort constraint (no `then`)', () => {
+      const constraint: PrereqTree = { cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } };
+
+      test('is satisfied when the matriculation year matches', () => {
+        expect(checkPrerequisite(moduleSet, constraint, 2018)).toHaveLength(0);
+      });
+
+      test('is unfulfilled when the matriculation year does not match', () => {
+        expect(checkPrerequisite(moduleSet, constraint, 2016)).toEqual([constraint]);
+      });
+
+      test('is conservatively satisfied when the cohort year is unknown', () => {
+        expect(checkPrerequisite(moduleSet, constraint)).toHaveLength(0);
+      });
+
+      test('surfaces as a conflict alongside an unmet course requirement', () => {
+        // The DBA3702 shape: one of the courses AND a cohort constraint.
+        const tree: PrereqTree = {
+          and: [{ or: ['CS9999'] }, constraint],
+        };
+        expect(checkPrerequisite(moduleSet, tree, 2016)).toEqual([{ or: ['CS9999'] }, constraint]);
+      });
+    });
+  });
 });
 
 describe(conflictToText, () => {
   test('should describe single modules', () => {
     expect(conflictToText('CS1010S')).toEqual('CS1010S');
+  });
+
+  test('describes the gated requirement of a cohort node', () => {
+    expect(
+      conflictToText({
+        cohort: { rule: 'IF_IN', years: ['S:2022'] },
+        then: { or: ['CS1010:D', 'CS1101S:D'] },
+      }),
+    ).toEqual('CS1010 or CS1101S');
+  });
+
+  test('describes a bare cohort constraint', () => {
+    expect(conflictToText({ cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } })).toEqual(
+      'cohort 2017 onwards',
+    );
   });
 });
 

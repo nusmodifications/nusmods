@@ -8,19 +8,15 @@ import {
   map,
   mapValues,
   maxBy,
-  pick,
   reduce,
-  values,
 } from 'lodash-es';
 import {
   ClassNo,
   LessonIndex,
   LessonIndicesMap,
   LessonType,
-  Module,
   RawLessonWithIndex,
 } from 'types/modules';
-import { ModulesMap } from 'types/reducers';
 import { ModuleLessonConfig } from 'types/timetables';
 
 /**
@@ -73,14 +69,6 @@ export const getLessonIndices = (
   lessonType: LessonType,
   classNo: ClassNo,
 ): LessonIndex[] => get(get(lessonIndicesMap, lessonType), classNo);
-
-// Get information for all modules present in a semester timetable config
-export function getSemesterModules(
-  timetable: { [moduleCode: string]: unknown },
-  modules: ModulesMap,
-): Module[] {
-  return values(pick(modules, Object.keys(timetable)));
-}
 
 /**
  * Based on what lessons are currently in the lesson config, find the classNo that most of the lessons belong to
