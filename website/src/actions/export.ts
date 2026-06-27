@@ -47,8 +47,8 @@ export function downloadAsIcal(semester: Semester) {
           taModules,
         );
         const cal = ical.default({
-          domain: 'nusmods.com',
           prodId: '//NUSMods//NUSMods//EN',
+          timezone: icalUtils.singaporeTimezone,
           events,
         });
 
