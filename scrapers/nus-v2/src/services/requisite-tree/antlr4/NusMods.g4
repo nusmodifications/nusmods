@@ -10,13 +10,25 @@ program_types:
 		COMMA PROGRAM_TYPES_VALUE
 	)*;
 
-compound: | '(' compound ')' | cohort_conditional | binop | op;
+compound:
+	| '(' compound ')'
+	| cohort_conditional
+	| subject_years_conditional
+	| binop
+	| op;
 
 // A cohort-gated requirement. The consequence is a full compound (placed above
 // binop) so that trailing AND/OR clauses are absorbed into the gate, i.e.
 // `COHORT_YEARS ... THEN a AND b` parses as the gate over `(a AND b)` rather
 // than `(gate over a) AND b`.
 cohort_conditional: cohort_years THEN compound;
+
+// A subject-year-gated requirement. SUBJECT_YEARS uses the same S:/E: year
+// bounds as COHORT_YEARS, and the planner has only the matriculation year to
+// evaluate against, so it is carried as a cohort-style gate. Lifted to compound
+// level (above binop) so trailing AND/OR clauses are absorbed into the gate,
+// matching cohort_conditional.
+subject_years_conditional: subject_years THEN compound;
 
 binop: | op boolean_expr compound;
 
