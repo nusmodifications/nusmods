@@ -81,12 +81,12 @@ export function validateExportData(data: ExportData) {
 
   /**
    * type ModuleLessonConfig = {
-   *   [lessonType: LessonType]: LessonIndex[];
+   *   [lessonType: LessonType]: LessonId[];
    * };
    */
   const moduleLessonConfigSchema = Joi.object().pattern(
     Joi.string(),
-    Joi.array().items(Joi.number().integer().min(0)),
+    Joi.array().items(Joi.string()),
   );
 
   /**

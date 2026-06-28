@@ -464,11 +464,14 @@ THEN
       ),
     ).toEqual({
       cohort: { rule: 'IF_IN', years: ['S:2022'] },
-      then: { and: ['NTW%:D', 'LC1016:D', 'NSW%:D'] },
+      then: { and: [{ or: ['NTW%:D', 'LC1016:D'] }, 'NSW%:D'] },
     });
   });
 
-  // According to NUS docs, this means ALL courses are required.
+  // Previously assumed: if there is no course count, then all courses are
+  // required.
+  // Update 26/06/2026: upstream prerequisite-rule semantics clarified that an
+  // omitted course count is equivalent to COURSES (1).
   it('allows omitted courses count, keeping the cohort gate', () => {
     const result: PrereqTree = {
       cohort: { rule: 'IF_IN', years: ['S:2022'] },
@@ -478,6 +481,33 @@ THEN
       parse(
         `
         PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COHORT_YEARS IF_IN S:2022 THEN COURSES NTW%:D )
+      `,
+      ),
+    ).toEqual(result);
+  });
+
+  it('defaults omitted courses count to one of the listed courses', () => {
+    const result: PrereqTree = { or: ['EE2012:D', 'ST2334:D'] };
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN COURSES EE2012:D, ST2334:D
+      `,
+      ),
+    ).toEqual(result);
+  });
+
+  it('parses omitted course counts in separate clauses as one-of groups', () => {
+    const result: PrereqTree = {
+      and: [
+        { or: ['EE2012:D', 'ST2334:D'] },
+        { or: ['EE2023:D', 'CG2023:D'] },
+      ],
+    };
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COURSES EE2012:D, ST2334:D) AND (COURSES EE2023:D, CG2023:D)
       `,
       ),
     ).toEqual(result);
@@ -533,6 +563,51 @@ THEN
         { or: ['DAO1704%:D', 'DSC1007:D'] },
         { cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } },
       ],
+    });
+  });
+
+  it('keeps a subject-year gate as a cohort-style predicate (the NHS2045 shape)', () => {
+    // SUBJECT_YEARS shares COHORT_YEARS' S:/E: year-bound format, so it is
+    // carried as a cohort-style gate evaluated against the matriculation year.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN (SUBJECT_YEARS IF_IN S:2022/23 THEN COURSES NTW%:D)
+        `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_IN', years: ['S:2022/23'] },
+      then: 'NTW%:D',
+    });
+  });
+
+  it('keeps a two-year subject-year range gate (parallels the cohort range)', () => {
+    // subject_years allows an optional second YEARS bound (S: ... E: ...), the
+    // same closed-range syntax as cohort_years; both bounds must be preserved.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN (SUBJECT_YEARS IF_IN S:2022/23 E:2023/24 THEN COURSES NTW%:D)
+        `,
+      ),
+    ).toEqual({
+      cohort: { rule: 'IF_IN', years: ['S:2022/23', 'E:2023/24'] },
+      then: 'NTW%:D',
+    });
+  });
+
+  it('keeps a bare subject-year constraint (no THEN) as an eligibility requirement', () => {
+    // No current module presents a bare SUBJECT_YEARS, but it should be surfaced
+    // as a cohort-style { cohort } node rather than silently dropped, mirroring
+    // the bare COHORT_YEARS handling.
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COURSES (1) CS1010:D AND SUBJECT_YEARS IF_IN S:2022/23 )
+      `,
+      ),
+    ).toEqual({
+      and: ['CS1010:D', { cohort: { rule: 'IF_IN', years: ['S:2022/23'] } }],
     });
   });
 
