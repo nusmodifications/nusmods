@@ -22,6 +22,10 @@ export type Config = Readonly<{
   // Config to connect to elasticsearch
   elasticConfig?: ClientOptions;
 
+  // When set, source Special Term I and II data from this AY instead of academicYear.
+  // When null, auto-detects the overlap window after AY migration.
+  specialTermAcademicYear: string | null;
+
   studentKey: string;
 
   ttApiKey: string;
@@ -54,6 +58,7 @@ const config: Config = {
   // Other config
   academicYear: '2025/2026',
   dataPath: path.resolve(__dirname, '../data'),
+  specialTermAcademicYear: env.specialTermAcademicYear ?? null,
 };
 
 export default config;

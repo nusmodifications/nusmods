@@ -1,16 +1,26 @@
-import { map, mapValues } from 'lodash-es';
-
-import { LessonIndex, RawLessonWithIndex, Module, ModuleCode, Semester } from 'types/modules';
+import { get, mapValues, pick, pickBy } from 'lodash-es';
 
 import {
+  ClassNo,
+  LessonId,
+  LessonType,
+  Module,
+  ModuleCode,
+  ModuleLessonMap,
+  RawLesson,
+  Semester,
+} from 'types/modules';
+
+import {
+  Lesson,
   ModuleLessonConfig,
-  ModuleLessonConfigWithLessons,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
 } from 'types/timetables';
 
 import { ModulesMap } from 'types/reducers';
-import { getModuleTimetable } from 'utils/modules';
+import { getModuleLessonMap } from 'utils/modules';
+import { isClassNo } from './lessonId';
 
 const EMPTY_OBJECT = {};
 
@@ -19,7 +29,7 @@ export function hydrateSemTimetableWithLessons(
   semTimetableConfig: SemTimetableConfig,
   modules: ModulesMap,
   semester: Semester,
-): SemTimetableConfigWithLessons {
+): SemTimetableConfigWithLessons<Lesson> {
   return mapValues(
     semTimetableConfig,
     (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
@@ -36,17 +46,21 @@ function hydrateModuleConfigWithLessons(
   moduleLessonConfig: ModuleLessonConfig,
   module: Module,
   semester: Semester,
-): ModuleLessonConfigWithLessons {
-  return mapValues(moduleLessonConfig, (lessonIndices: LessonIndex[]) => {
-    const lessons = getModuleTimetable(module, semester);
-    const lessonsWithIndices = map(lessons, (lesson, lessonIndex) => ({ ...lesson, lessonIndex }));
-    const newLessons = lessonsWithIndices.filter((lesson: RawLessonWithIndex) =>
-      lessonIndices.includes(lesson.lessonIndex),
-    );
-    return newLessons.map((lesson: RawLessonWithIndex) => ({
-      ...lesson,
-      moduleCode: module.moduleCode,
-      title: module.title,
-    }));
-  });
+): ModuleLessonMap<Lesson> {
+  const lessonMap: Readonly<ModuleLessonMap<RawLesson>> = getModuleLessonMap(module, semester);
+  return mapValues(
+    moduleLessonConfig,
+    (lessonIds: [ClassNo] | LessonId[], lessonType: LessonType) => {
+      const lessonsWithLessonType: Record<LessonId, RawLesson> = get(lessonMap, lessonType, {});
+
+      const lessons: Record<LessonId, RawLesson> = isClassNo(lessonIds)
+        ? pickBy(lessonsWithLessonType, (lesson) => lesson.classNo === lessonIds[0])
+        : pick(lessonsWithLessonType, lessonIds);
+      return mapValues(lessons, (lesson) => ({
+        ...lesson,
+        moduleCode: module.moduleCode,
+        title: module.title,
+      }));
+    },
+  );
 }
