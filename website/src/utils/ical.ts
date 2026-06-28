@@ -9,6 +9,7 @@ import {
   Module,
   ModuleCode,
   NumericWeeks,
+  DayText,
   RawLesson,
   Semester,
   StartTime,
@@ -19,7 +20,7 @@ import { Lesson, SemTimetableConfigWithLessons } from 'types/timetables';
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
 import { getExamDate, getExamDuration } from 'utils/modules';
-import { getLessonTimeHours, getLessonTimeMinutes, parseDate } from './timify';
+import { getLessonTimeHours, getLessonTimeMinutes, parseDate, SCHOOLDAYS } from './timify';
 
 const SG_UTC_OFFSET_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
@@ -56,17 +57,22 @@ export const singaporeTimezone: ICalTimezone = {
   generator: () => SINGAPORE_VTIMEZONE,
 };
 
-// Monday–Friday in ical-generator's weekday enum, indexed to match dayIndex below.
-const WEEKDAYS: ICalWeekday[] = [
-  ICalWeekday.MO,
-  ICalWeekday.TU,
-  ICalWeekday.WE,
-  ICalWeekday.TH,
-  ICalWeekday.FR,
-];
+// ical-generator weekday enum for each day of the week, used to build the RRULE's
+// BYDAY rule. Covers every day so Saturday (and Sunday) lessons get a valid weekday.
+const WEEKDAY_FOR_DAY: Record<DayText, ICalWeekday> = {
+  Monday: ICalWeekday.MO,
+  Tuesday: ICalWeekday.TU,
+  Wednesday: ICalWeekday.WE,
+  Thursday: ICalWeekday.TH,
+  Friday: ICalWeekday.FR,
+  Saturday: ICalWeekday.SA,
+  Sunday: ICalWeekday.SU,
+};
 
-function dayIndex(weekday: string) {
-  return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].indexOf(weekday.toLowerCase());
+// Offset (in days) of a lesson's day from the Monday that starts week 1. Reuses
+// SCHOOLDAYS (Monday-indexed) so it stays in sync with the rest of the app.
+function dayIndex(day: DayText) {
+  return SCHOOLDAYS.indexOf(day);
 }
 
 /**
@@ -170,7 +176,7 @@ export function calculateNumericWeek(
     repeating: {
       freq: ICalEventRepeatingFreq.WEEKLY,
       count: NUM_WEEKS_IN_A_SEM,
-      byDay: [WEEKDAYS[dayIndex(lesson.day)]],
+      byDay: [WEEKDAY_FOR_DAY[lesson.day]],
       exclude: [
         ...excludedWeeks.map((week) => datesForAcademicWeeks(start, week)),
         ...holidaysForYear(lesson.startTime),
@@ -213,7 +219,7 @@ export function calculateWeekRange(
       interval,
       freq: ICalEventRepeatingFreq.WEEKLY,
       until: lastLesson.end,
-      byDay: [WEEKDAYS[dayIndex(lesson.day)]],
+      byDay: [WEEKDAY_FOR_DAY[lesson.day]],
       exclude: [...exclusions, ...holidaysForYear(lesson.startTime)],
     },
   };

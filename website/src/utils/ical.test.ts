@@ -181,6 +181,20 @@ describe(calculateNumericWeek, () => {
       expect.arrayContaining([new Date(2016, 0, 1, 14, 0)]),
     );
   });
+
+  test('uses the correct weekday and start date for Saturday lessons', () => {
+    const event = calculateNumericWeek(
+      rawLesson({ day: 'Saturday' }),
+      1,
+      [1, 2, 3, 4, 5, 6],
+      firstDay,
+    );
+    const repeating = event.repeating as ICalRepeatingOptions;
+
+    expect(repeating.byDay).toEqual(['SA']);
+    // First occurrence is the Saturday of week 1 (13 Aug 2016)
+    expect(event.start).toEqual(new Date(2016, 7, 13, 14, 0));
+  });
 });
 
 describe(calculateWeekRange, () => {
