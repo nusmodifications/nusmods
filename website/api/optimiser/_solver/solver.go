@@ -58,7 +58,6 @@ func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 	shareableLink, defaultShareableLink := FillDefaultsAndGenerateShareableLinks(
 		best.Assignments,
 		defaultSlots,
-		lessonToSlots,
 		req,
 	)
 	response := models.SolveResponse{
