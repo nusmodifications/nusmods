@@ -1,7 +1,7 @@
 import { PureComponent } from 'react';
 import { groupBy, range } from 'lodash-es';
 import classnames from 'classnames';
-import { addDays } from 'date-fns';
+import { differenceInCalendarWeeks, startOfWeek } from 'date-fns';
 
 import { Semester, DaysOfWeek } from 'types/modules';
 import { ModuleWithColor, ModuleWithExamTime, TimeSegment } from 'types/views';
@@ -51,11 +51,11 @@ export default class ExamCalendar extends PureComponent<Props> {
     const firstExamDate = examDates.reduce((a, b) => (a < b ? a : b));
     const lastExamDate = examDates.reduce((a, b) => (a > b ? a : b));
 
-    const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
-    const firstDayOfExams = addDays(firstExamDate, -firstExamDate.getDay() + 1);
-    const lastMondayOfExams = addDays(lastExamDate, -lastExamDate.getDay() + 1);
+    const firstDayOfExams = startOfWeek(firstExamDate, { weekStartsOn: 1 });
     const weekCount =
-      Math.round((lastMondayOfExams.getTime() - firstDayOfExams.getTime()) / MS_PER_WEEK) + 1;
+      differenceInCalendarWeeks(lastExamDate, firstExamDate, {
+        weekStartsOn: 1,
+      }) + 1;
 
     return [firstDayOfExams, weekCount];
   }

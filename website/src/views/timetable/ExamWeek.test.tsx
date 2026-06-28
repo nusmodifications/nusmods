@@ -46,6 +46,11 @@ describe(ExamWeek, () => {
     expect(weekOfDec3.find('th time').first().text()).toEqual('Dec 3');
   });
 
+  test('render dates using local calendar time', () => {
+    const wrapper = make({ firstDayOfExams: new Date('2020-05-03T16:00:00Z') });
+    expect(wrapper.find('th time').first().text()).toEqual('May 4');
+  });
+
   test('highlight today', () => {
     const weekOfToday = make();
     expect(weekOfToday.find('th span').first().text()).toEqual('Today');
