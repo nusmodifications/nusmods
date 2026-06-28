@@ -255,6 +255,27 @@ describe(checkPrerequisite, () => {
       // Graduate: only the grad branch applies; CS9999 is missing -> unfulfilled.
       expect(checkPrerequisite(moduleSet, tree, undefined, 'Graduate')).toEqual(['CS9999']);
     });
+
+    test('clamps the nOf count when a gated option is pruned (defensive)', () => {
+      // nOf options are course-code strings in real data, but guard against an
+      // nOf whose count would otherwise exceed the surviving pool after pruning,
+      // which would make it permanently unsatisfiable.
+      const tree: PrereqTree = {
+        nOf: [
+          2,
+          [
+            {
+              programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+              then: 'CS9999',
+            },
+            'CS1010S',
+          ],
+        ],
+      };
+      // Undergraduate: the grad option is pruned and the count clamps 2 -> 1, so
+      // CS1010S (present) satisfies it instead of being permanently unmet.
+      expect(checkPrerequisite(moduleSet, tree, undefined, 'Undergraduate')).toHaveLength(0);
+    });
   });
 });
 

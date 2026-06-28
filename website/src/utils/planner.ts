@@ -180,7 +180,10 @@ function resolveProgramTypes(tree: PrereqTree, scheduleType?: ScheduleType): Pre
       .map((option) => resolveProgramTypes(option, scheduleType))
       .filter((option): option is PrereqTree => option !== null);
     if (kept.length === 0) return null;
-    return { nOf: [n, kept] };
+    // Clamp the count to the surviving pool so pruning a gated option can never
+    // leave an unsatisfiable "n of fewer-than-n". nOf options are course-code
+    // leaves today, so this is defensive and a no-op on real data.
+    return { nOf: [Math.min(n, kept.length), kept] };
   }
 
   return tree;
@@ -298,8 +301,10 @@ export function conflictToText(rootConflict: PrereqTree): string {
     }
 
     if ('programType' in conflict) {
-      // Program-type gates are not evaluated, so they should not surface as a
-      // conflict on their own; describe the gated requirement defensively.
+      // Unreachable in practice: resolveProgramTypes strips every program-type
+      // gate before checkPrerequisite returns, so a conflict never contains one.
+      // Kept as a safety net for type exhaustiveness; defensively render the
+      // gated requirement should one ever reach here.
       return walkTree(conflict.then);
     }
 
