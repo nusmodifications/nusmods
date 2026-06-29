@@ -1,6 +1,6 @@
 // Components within a module:
 export type AcadYear = string;
-export type ClassNo = string;
+export type ClassNo = string & { __brand?: 'ClassNo' };
 export type DayText = string;
 export type StartTime = string;
 export type EndTime = string;
@@ -25,12 +25,22 @@ export type WeekRange = {
   // Week intervals for modules with uneven spacing between lessons
   weeks?: number[];
 };
+
+/**
+ * LessonIndex was previously used to disambiguate lessons.
+ * However, it was fragile and caused several issues.
+ * See https://github.com/nusmodifications/nusmods/issues/4283.
+ *
+ * @deprecated LessonIndex has been replaced by LessonId.
+ * This type is preserved for backwards compatability. Do not use this.
+ */
 export type LessonIndex = number;
+
 /**
  * `LessonId`s identify a singular lesson from a list of lessons of a `LessonType`.
  * `LessonType` is excluded from the `LessonId` because lessons of different `LessonType`s are serialized separately in sharing links.
  */
-export type LessonId = string;
+export type LessonId = string & { __brand?: 'LessonId' };
 
 // Whether a cohort condition includes (IF_IN/MUST_BE_IN) or excludes
 // (IF_NOT_IN/MUST_NOT_BE_IN) the listed cohort years.
@@ -158,14 +168,6 @@ export type RawLesson = Readonly<{
   weeks: Weeks;
 }>;
 
-export type RawLessonWithIndex = RawLesson & { readonly lessonIndex: LessonIndex };
-
-export type LessonIndicesMap = {
-  [lessonType: LessonType]: {
-    [classNo: ClassNo]: LessonIndex[];
-  };
-};
-
 /**
  * Mapping of lessons to their respective lesson ID and lesson type\
  */
@@ -178,7 +180,7 @@ export type ModuleLessonMap<T extends RawLesson> = {
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
-  timetable: readonly RawLessonWithIndex[];
+  timetable: readonly RawLesson[];
   readonly lessonMap: ModuleLessonMap<RawLesson>;
 
   // Exam

@@ -1,8 +1,8 @@
-import { each, isEmpty, kebabCase } from 'lodash-es';
+import { each, kebabCase } from 'lodash-es';
 import { ModuleTitle, Semester, ModuleCode } from 'types/modules';
 import { Venue } from 'types/venues';
 import { SemTimetableConfig } from 'types/timetables';
-import { serializeModuleList, serializeTimetable } from 'utils/timetables';
+import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
@@ -28,17 +28,13 @@ export function timetableShare(
   hiddenModules: ModuleCode[],
   taModules: ModuleCode[],
 ): string {
-  // Convert the list of hidden modules to a comma-separated string, if there are any
-  const serializedHidden = isEmpty(hiddenModules)
-    ? ''
-    : `&hidden=${serializeModuleList(hiddenModules)}`;
-  const serializedTa = isEmpty(taModules) ? '' : `&ta=${serializeModuleList(taModules)}`;
-
   return (
     `${timetablePage(semester)}/${TIMETABLE_SHARE}` +
-    `?${serializeTimetable(timetable)}` +
-    `${serializedHidden}` +
-    `${serializedTa}`
+    `?${serializeTimetable({
+      semTimetableConfig: timetable,
+      hidden: hiddenModules,
+      ta: taModules,
+    })}`
   );
 }
 

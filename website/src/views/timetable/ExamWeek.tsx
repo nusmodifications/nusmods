@@ -53,9 +53,9 @@ const ExamWeekComponent: React.FC<Props> = (props) => {
     <tr className={styles.timeRow}>
       {dayDates.map((date) => {
         // Show the month name when the month changes on the calendar
-        let examDateString = String(date.getUTCDate());
+        let examDateString = String(date.getDate());
         if (currentMonth !== date.getMonth()) {
-          examDateString = `${MONTHS[date.getUTCMonth()]} ${examDateString}`;
+          examDateString = `${MONTHS[date.getMonth()]} ${examDateString}`;
           currentMonth = date.getMonth();
         }
         return (
