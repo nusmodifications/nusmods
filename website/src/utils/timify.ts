@@ -122,18 +122,6 @@ export function getCurrentHours(
   return now.getHours();
 }
 
-/**
- * Gets the current time in hours, 0915 -> 15, 1345 -> 45
- * Current time to always match Singapore's
- *
- * @deprecated Use date injected by withTimer instead
- */
-export function getCurrentMinutes(
-  now: Date = new Date(), // Used for tests only
-): number {
-  return now.getMinutes();
-}
-
 // Monday = 0, Friday = 4, Sunday = 6
 export function getDayIndex(date: Date = new Date()): number {
   return getISODay(date) - 1;
