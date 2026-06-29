@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { range } from 'lodash-es';
 
 import { VenueSearchOptions } from 'types/venues';
-import { SCHOOLDAYS, formatHour, getDayIndex, getCurrentHours } from 'utils/timify';
+import { SCHOOLDAYS, formatHour, getDayIndex } from 'utils/timify';
 import { FIRST_CLASS_HOUR, LAST_CLASS_HOUR } from 'utils/venues';
 import styles from './AvailabilitySearch.scss';
 
@@ -24,7 +24,7 @@ export function defaultSearchOptions(
 
   // Set time - if the current time is outside class hours, set it to the
   // time of the earliest lesson
-  const time = Math.max(getCurrentHours(now), FIRST_CLASS_HOUR);
+  const time = Math.max(now.getHours(), FIRST_CLASS_HOUR);
 
   return {
     time,
