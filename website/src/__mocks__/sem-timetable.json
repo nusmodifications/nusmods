@@ -1,7 +1,7 @@
 {
   "CS1010S": {
-    "Lecture": [
-      {
+    "Lecture": {
+      "1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13": {
         "classNo": "1",
         "lessonType": "Lecture",
         "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
@@ -10,12 +10,11 @@
         "endTime": "1200",
         "venue": "LT26",
         "moduleCode": "CS1010S",
-        "title": "Programming Methodology",
-        "lessonIndex": 0
+        "title": "Programming Methodology"
       }
-    ],
-    "Recitation": [
-      {
+    },
+    "Recitation": {
+      "1|THU|1000|1100|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13": {
         "classNo": "1",
         "lessonType": "Recitation",
         "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
@@ -24,10 +23,9 @@
         "endTime": "1100",
         "venue": "VCRm",
         "moduleCode": "CS1010S",
-        "title": "Programming Methodology",
-        "lessonIndex": 1
+        "title": "Programming Methodology"
       },
-      {
+      "1|THU|1200|1300|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13": {
         "classNo": "1",
         "lessonType": "Recitation",
         "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
@@ -36,12 +34,11 @@
         "endTime": "1300",
         "venue": "VCRm",
         "moduleCode": "CS1010S",
-        "title": "Programming Methodology",
-        "lessonIndex": 2
+        "title": "Programming Methodology"
       }
-    ],
-    "Tutorial": [
-      {
+    },
+    "Tutorial": {
+      "2|MON|0900|1000|COM1-0203|1_2_3_4_5_6_7_8_9_10_11_12_13": {
         "classNo": "2",
         "lessonType": "Tutorial",
         "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
@@ -50,10 +47,9 @@
         "endTime": "1000",
         "venue": "COM1-0203",
         "moduleCode": "CS1010S",
-        "title": "Programming Methodology",
-        "lessonIndex": 3
+        "title": "Programming Methodology"
       },
-      {
+      "2|TUE|0900|1000|COM1-0216|1_2_3_4_5_6_7_8_9_10_11_12_13": {
         "classNo": "2",
         "lessonType": "Tutorial",
         "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
@@ -62,14 +58,13 @@
         "endTime": "1000",
         "venue": "COM1-0216",
         "moduleCode": "CS1010S",
-        "title": "Programming Methodology",
-        "lessonIndex": 4
+        "title": "Programming Methodology"
       }
-    ]
+    }
   },
   "CS3216": {
-    "Lecture": [
-      {
+    "Lecture": {
+      "1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13": {
         "classNo": "1",
         "lessonType": "Lecture",
         "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
@@ -78,9 +73,8 @@
         "endTime": "2030",
         "venue": "VCRm",
         "moduleCode": "CS3216",
-        "title": "Application Development on Evolving Platforms",
-        "lessonIndex": 0
+        "title": "Application Development on Evolving Platforms"
       }
-    ]
+    }
   }
 }
