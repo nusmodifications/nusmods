@@ -24,5 +24,11 @@ export function flattenTree(tree: PrereqTree | Array<PrereqTree>): Array<string>
     return tree.then === undefined ? [] : flattenTree(tree.then);
   }
 
+  // Like cohort: only the gated requirement holds module codes; the program-type
+  // condition itself (rule + type names) must not be walked as a subtree.
+  if ('programType' in tree) {
+    return flattenTree(tree.then);
+  }
+
   return flatMap(Object.values(tree), (t) => flattenTree(t as PrereqTree));
 }

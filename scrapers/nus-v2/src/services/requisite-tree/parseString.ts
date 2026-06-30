@@ -3,7 +3,13 @@
 import * as R from 'ramda';
 
 import { NusModsLexer, NusModsVisitor } from './antlr4';
-import { CohortCondition, CohortRule, PrereqTree } from '../../types/modules';
+import {
+  CohortCondition,
+  CohortRule,
+  PrereqTree,
+  ProgramTypeCondition,
+  ProgramTypeRule,
+} from '../../types/modules';
 import { Logger } from '../logger';
 import {
   NusModsParser,
@@ -21,6 +27,8 @@ import {
   Subject_yearsContext,
   Subject_years_conditionalContext,
   Program_typesContext,
+  Program_types_conditionalContext,
+  Program_types_gateContext,
 } from './antlr4/NusModsParser';
 import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
@@ -56,6 +64,13 @@ function generateOrBranch(modules: Array<PrereqTree>) {
   return { or: result };
 }
 
+// Flatten a program-type gate (which may be parenthesised and/or a disjunction
+// of program types) down to its list of program types.
+function collectGateProgramTypes(gate: Program_types_gateContext): Array<Program_typesContext> {
+  const inner = gate.program_types_gate();
+  return inner !== undefined ? collectGateProgramTypes(inner) : gate.program_types();
+}
+
 /**
  * ReqTreeVisitor, implements the visitor design pattern using
  * the auto generated visitor from ANTLR4.
@@ -65,12 +80,9 @@ class ReqTreeVisitor
   implements NusModsVisitor<PrereqTree>
 {
   errors: Array<Error>;
-  // If any of these are seen more than once, bail, because the prereq tree is too complex.
-  specialVisited: { programType: number };
   constructor() {
     super();
     this.errors = [];
-    this.specialVisited = { programType: 0 };
   }
 
   protected defaultResult(): PrereqTree {
@@ -170,15 +182,11 @@ class ReqTreeVisitor
 
   // @ts-ignore
 
+  // A bare program-type predicate (no THEN) carries no requirement, and the
+  // planner has no program-type input, so it is dropped. Program-type *gates*
+  // (with a THEN consequence) are handled by visitProgram_types_conditional.
   // @ts-ignore
-  visitProgram_types?: ((ctx: Program_typesContext) => PrereqTree) | undefined = (ctx) => {
-    this.specialVisited.programType++;
-    if (this.specialVisited.programType > 1) {
-      this.errors.push(new Error('Visitor saw too many program types'));
-      return '';
-    }
-    return '';
-  };
+  visitProgram_types?: ((ctx: Program_typesContext) => PrereqTree) | undefined = () => '';
 
   // A bare cohort predicate (no THEN, e.g. an AND-ed "COHORT_YEARS MUST_BE_IN
   // S:2017") is an eligibility constraint: the student must be in the cohort to
@@ -237,6 +245,22 @@ class ReqTreeVisitor
     return { cohort: { rule: 'IF_IN', years }, then };
   };
 
+  // A program-type-gated requirement: the requirement only applies to students
+  // in the matching program type(s). Carried for display; the planner has no
+  // program-type input and does not evaluate it.
+  // @ts-ignore
+  visitProgram_types_conditional?:
+    | ((ctx: Program_types_conditionalContext) => PrereqTree)
+    | undefined = (ctx) => {
+    const then = ctx.compound()?.accept(this);
+    // If the gated requirement simplifies away, there is nothing to require.
+    if (then === undefined || then === '') {
+      return '';
+    }
+    const programType = this.programTypeGateCondition(ctx.program_types_gate());
+    return programType === undefined ? '' : { programType, then };
+  };
+
   cohortCondition(ctx: Cohort_yearsContext): CohortCondition | undefined {
     let rule: CohortRule;
     if (ctx.if_in() !== undefined) {
@@ -253,6 +277,113 @@ class ReqTreeVisitor
     }
     return { rule, years: ctx.YEARS().map((node) => node.text) };
   }
+
+  programTypeCondition(ctx: Program_typesContext): ProgramTypeCondition | undefined {
+    let rule: ProgramTypeRule;
+    if (ctx.if_in() !== undefined) {
+      rule = 'IF_IN';
+    } else if (ctx.must_be_in() !== undefined) {
+      rule = 'MUST_BE_IN';
+    } else {
+      this.errors.push(new Error('Program types missing a condition'));
+      return undefined;
+    }
+    return { rule, types: ctx.PROGRAM_TYPES_VALUE().map((node) => node.text) };
+  }
+
+  // A gate may be a disjunction of program types, e.g.
+  // `(Undergraduate OR Graduate Coursework)`. Since `IF_IN X OR IF_IN Y` is just
+  // `IF_IN X, Y`, collapse the disjunction into a single condition over the
+  // union of types. (Real data only uses IF_IN here; the first rule is kept if
+  // they ever differ.)
+  programTypeGateCondition(ctx: Program_types_gateContext): ProgramTypeCondition | undefined {
+    const conditions = collectGateProgramTypes(ctx)
+      .map((pt) => this.programTypeCondition(pt))
+      .filter((condition): condition is ProgramTypeCondition => condition !== undefined);
+    if (conditions.length === 0) {
+      this.errors.push(new Error('Program types gate has no conditions'));
+      return undefined;
+    }
+    return {
+      rule: conditions[0].rule,
+      types: R.uniq(conditions.flatMap((condition) => condition.types)),
+    };
+  }
+}
+
+/**
+ * Two program-type conditions describe the same gate when they share a rule and
+ * the same set of program types.
+ */
+function sameProgramType(a: ProgramTypeCondition, b: ProgramTypeCondition): boolean {
+  if (a.rule !== b.rule || a.types.length !== b.types.length) {
+    return false;
+  }
+  const others = new Set(b.types);
+  return a.types.every((type) => others.has(type));
+}
+
+/**
+ * Flatten redundant program-type repeats. Because the THEN consequence is
+ * greedy, `pt THEN A OR pt THEN B` parses as `pt THEN (A OR (pt THEN B))`.
+ * Inside a gate the same gate is always satisfied, so a descendant gate that
+ * repeats the enclosing program type is unwrapped to its consequence,
+ * recovering the symmetric `pt THEN (A OR B)`. `enclosing` is the nearest
+ * ancestor program type, if any.
+ */
+function normalizeProgramTypes(tree: PrereqTree, enclosing?: ProgramTypeCondition): PrereqTree {
+  if (typeof tree !== 'object') {
+    return tree;
+  }
+  if ('programType' in tree) {
+    if (enclosing !== undefined && sameProgramType(tree.programType, enclosing)) {
+      return normalizeProgramTypes(tree.then, enclosing);
+    }
+    return {
+      programType: tree.programType,
+      then: normalizeProgramTypes(tree.then, tree.programType),
+    };
+  }
+  if ('cohort' in tree) {
+    return tree.then === undefined
+      ? tree
+      : { cohort: tree.cohort, then: normalizeProgramTypes(tree.then, enclosing) };
+  }
+  if ('and' in tree && tree.and !== undefined) {
+    return { and: tree.and.map((child) => normalizeProgramTypes(child, enclosing)) };
+  }
+  if ('or' in tree && tree.or !== undefined) {
+    return { or: tree.or.map((child) => normalizeProgramTypes(child, enclosing)) };
+  }
+  if ('nOf' in tree && tree.nOf !== undefined) {
+    const [n, options] = tree.nOf;
+    return { nOf: [n, options.map((child) => normalizeProgramTypes(child, enclosing))] };
+  }
+  return tree;
+}
+
+// The lone "Undergraduate Degree" gate is the ubiquitous wrapper almost every
+// prereq carries; undergraduates are NUSMods' default audience, so it is assumed
+// and carries no information. Any gate naming more — a graduate/CPE type, or
+// undergraduate alongside other types — is a real restriction worth keeping.
+function isAssumedUndergraduateGate({ types }: ProgramTypeCondition): boolean {
+  return types.length === 1 && types[0].toLowerCase() === 'undergraduate degree';
+}
+
+/**
+ * Drop the single outermost program-type gate only when it is the assumed
+ * "Undergraduate Degree THEN ..." wrapper (matching the historical behaviour of
+ * ignoring that top-level program type). Any more specific outermost gate — a
+ * graduate/CPE-only module, or an "Undergraduate or Graduate" disjunction — is
+ * kept and labelled, as it is meaningful signal. Nested or combined (differing)
+ * program-type gates are always kept and modelled.
+ */
+function dropOuterProgramType(tree: PrereqTree): PrereqTree {
+  return typeof tree === 'object' &&
+    'programType' in tree &&
+    isAssumedUndergraduateGate(tree.programType)
+    ? tree.then
+    : tree;
 }
 
 /**
@@ -280,5 +411,5 @@ export default function parseString(prerequisite: string, logger: Logger): Prere
     );
     return null;
   }
-  return result;
+  return dropOuterProgramType(normalizeProgramTypes(result));
 }
