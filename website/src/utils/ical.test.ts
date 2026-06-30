@@ -1,10 +1,9 @@
-import { EventOption } from 'ical-generator';
+import { ICalEventData, ICalRepeatingOptions } from 'ical-generator';
 import config from 'config';
 import iCalForTimetable, {
   calculateNumericWeek,
   calculateWeekRange,
   datesForAcademicWeeks,
-  getTimeHour,
   iCalEventForExam,
   iCalEventForLesson,
   RECESS_WEEK,
@@ -15,6 +14,10 @@ import { EVEN_WEEK, EVERY_WEEK, ODD_WEEK } from 'test-utils/timetable';
 
 import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import mockTimetable from '__mocks__/sem-timetable.json';
+
+// Dates are encoded into local clock-fields so that ical-generator renders them as
+// Singapore wall-clock times (see utils/ical). The `new Date(year, monthIndex, ...)`
+// constructor sets local clock-fields directly, matching that representation.
 
 const rawLesson = (override: Partial<RawLesson> = {}): RawLesson => ({
   classNo: 'A1',
@@ -38,38 +41,31 @@ afterAll(() => {
 });
 
 test('datesForAcademicWeeks should return correct dates', () => {
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 1)).toEqual(
-    new Date('2016-08-10T10:00+0800'),
+  expect(datesForAcademicWeeks(new Date(2016, 7, 10, 10, 0), 1)).toEqual(
+    new Date(2016, 7, 10, 10, 0),
   );
 
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 3)).toEqual(
-    new Date('2016-08-24T10:00+0800'),
+  expect(datesForAcademicWeeks(new Date(2016, 7, 10, 10, 0), 3)).toEqual(
+    new Date(2016, 7, 24, 10, 0),
   );
 
   // recess week
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), RECESS_WEEK)).toEqual(
-    new Date('2016-09-21T10:00+0800'),
+  expect(datesForAcademicWeeks(new Date(2016, 7, 10, 10, 0), RECESS_WEEK)).toEqual(
+    new Date(2016, 8, 21, 10, 0),
   );
 
   // week 7 is after recess week, so it is 8 weeks after the start
-  expect(datesForAcademicWeeks(new Date('2016-08-10T10:00+0800'), 7)).toEqual(
-    new Date('2016-09-28T10:00+0800'),
+  expect(datesForAcademicWeeks(new Date(2016, 7, 10, 10, 0), 7)).toEqual(
+    new Date(2016, 8, 28, 10, 0),
   );
-});
-
-test('getTimeHour should return number of hours represented by a time string', () => {
-  expect(getTimeHour('0000')).toEqual(0);
-  expect(getTimeHour('1000')).toEqual(10);
-  expect(getTimeHour('1200')).toEqual(12);
-  expect(getTimeHour('2000')).toEqual(20);
-  expect(getTimeHour('1030')).toEqual(10.5);
 });
 
 describe(iCalEventForExam, () => {
   test('should generate event', () => {
-    const expected: EventOption = {
-      start: new Date('2017-11-29T17:00+0800'),
-      end: new Date('2017-11-29T19:00+0800'),
+    const expected: ICalEventData = {
+      start: new Date(2017, 10, 29, 17, 0),
+      end: new Date(2017, 10, 29, 19, 0),
+      timezone: 'Asia/Singapore',
       summary: 'CS1010S Exam',
       description: 'Programming Methodology',
     };
@@ -90,9 +86,10 @@ describe(iCalEventForExam, () => {
       ],
     } as any;
 
-    const expected: EventOption = {
-      start: new Date('2017-11-29T17:00+0800'),
-      end: new Date('2017-11-29T18:30+0800'),
+    const expected: ICalEventData = {
+      start: new Date(2017, 10, 29, 17, 0),
+      end: new Date(2017, 10, 29, 18, 30),
+      timezone: 'Asia/Singapore',
       summary: 'CS1010S Exam',
       description: 'Programming Methodology',
     };
@@ -119,28 +116,30 @@ describe(iCalEventForExam, () => {
 // E2 28 29 30          |
 
 describe(calculateNumericWeek, () => {
-  const firstDay = new Date('2016-08-08T00:00+0800');
+  const firstDay = new Date(2016, 7, 8);
   const testCalculateNumericWeek = (weeks: number[]) =>
-    calculateNumericWeek(
-      rawLesson({
+    (
+      calculateNumericWeek(
+        rawLesson({
+          weeks,
+        }),
+        1,
         weeks,
-      }),
-      1,
-      weeks,
-      firstDay,
-    ).repeating!.exclude;
+        firstDay,
+      ).repeating as ICalRepeatingOptions
+    ).exclude;
 
   test('generates exclusion for comma separated weeks', () => {
     expect(testCalculateNumericWeek([1, 2, 3, 4, 5, 6])).toEqual(
       expect.arrayContaining([
-        new Date('2016-09-19T14:00+0800'), // Recess
-        new Date('2016-09-26T14:00+0800'), // 7
-        new Date('2016-10-03T14:00+0800'), // 8
-        new Date('2016-10-10T14:00+0800'), // 9
-        new Date('2016-10-17T14:00+0800'), // 10
-        new Date('2016-10-24T14:00+0800'), // 11
-        new Date('2016-10-31T14:00+0800'), // 12
-        new Date('2016-11-07T14:00+0800'), // 13
+        new Date(2016, 8, 19, 14, 0), // Recess
+        new Date(2016, 8, 26, 14, 0), // 7
+        new Date(2016, 9, 3, 14, 0), // 8
+        new Date(2016, 9, 10, 14, 0), // 9
+        new Date(2016, 9, 17, 14, 0), // 10
+        new Date(2016, 9, 24, 14, 0), // 11
+        new Date(2016, 9, 31, 14, 0), // 12
+        new Date(2016, 10, 7, 14, 0), // 13
       ]),
     );
   });
@@ -149,14 +148,14 @@ describe(calculateNumericWeek, () => {
     // Exclusions should be odd week lessons
     expect(testCalculateNumericWeek(EVEN_WEEK)).toEqual(
       expect.arrayContaining([
-        new Date('2016-08-08T14:00+0800'), // 1
-        new Date('2016-08-22T14:00+0800'), // 3
-        new Date('2016-09-05T14:00+0800'), // 5
-        new Date('2016-09-19T14:00+0800'), // Recess
-        new Date('2016-09-26T14:00+0800'), // 7
-        new Date('2016-10-10T14:00+0800'), // 9
-        new Date('2016-10-24T14:00+0800'), // 11
-        new Date('2016-11-07T14:00+0800'), // 13
+        new Date(2016, 7, 8, 14, 0), // 1
+        new Date(2016, 7, 22, 14, 0), // 3
+        new Date(2016, 8, 5, 14, 0), // 5
+        new Date(2016, 8, 19, 14, 0), // Recess
+        new Date(2016, 8, 26, 14, 0), // 7
+        new Date(2016, 9, 10, 14, 0), // 9
+        new Date(2016, 9, 24, 14, 0), // 11
+        new Date(2016, 10, 7, 14, 0), // 13
       ]),
     );
   });
@@ -165,13 +164,13 @@ describe(calculateNumericWeek, () => {
     // Exclusions should be even week lessons
     expect(testCalculateNumericWeek(ODD_WEEK)).toEqual(
       expect.arrayContaining([
-        new Date('2016-08-15T14:00+0800'), // 2
-        new Date('2016-08-29T14:00+0800'), // 4
-        new Date('2016-09-12T14:00+0800'), // 6
-        new Date('2016-09-19T14:00+0800'), // Recess
-        new Date('2016-10-03T14:00+0800'), // 8
-        new Date('2016-10-17T14:00+0800'), // 10
-        new Date('2016-10-31T14:00+0800'), // 12
+        new Date(2016, 7, 15, 14, 0), // 2
+        new Date(2016, 7, 29, 14, 0), // 4
+        new Date(2016, 8, 12, 14, 0), // 6
+        new Date(2016, 8, 19, 14, 0), // Recess
+        new Date(2016, 9, 3, 14, 0), // 8
+        new Date(2016, 9, 17, 14, 0), // 10
+        new Date(2016, 9, 31, 14, 0), // 12
       ]),
     );
   });
@@ -179,8 +178,22 @@ describe(calculateNumericWeek, () => {
   test('generates exclusions for holidays', () => {
     // 2016 holidays
     expect(testCalculateNumericWeek(EVERY_WEEK)).toEqual(
-      expect.arrayContaining([new Date('2016-01-01T14:00+0800')]),
+      expect.arrayContaining([new Date(2016, 0, 1, 14, 0)]),
     );
+  });
+
+  test('uses the correct weekday and start date for Saturday lessons', () => {
+    const event = calculateNumericWeek(
+      rawLesson({ day: 'Saturday' }),
+      1,
+      [1, 2, 3, 4, 5, 6],
+      firstDay,
+    );
+    const repeating = event.repeating as ICalRepeatingOptions;
+
+    expect(repeating.byDay).toEqual(['SA']);
+    // First occurrence is the Saturday of week 1 (13 Aug 2016)
+    expect(event.start).toEqual(new Date(2016, 7, 13, 14, 0));
   });
 });
 
@@ -192,7 +205,7 @@ describe(calculateWeekRange, () => {
       }),
       1,
       weekRange,
-    ).repeating!;
+    ).repeating as ICalRepeatingOptions;
 
   test('generate correct until date', () => {
     const { until } = testCalculateWeekRange({
@@ -200,7 +213,7 @@ describe(calculateWeekRange, () => {
       end: '2016-11-28', // Exam week 2
     });
 
-    expect(until).toEqual(new Date('2016-11-28T17:00+0800'));
+    expect(until).toEqual(new Date(2016, 10, 28, 17, 0));
   });
 
   test('generate correct interval for week intervals', () => {
@@ -212,7 +225,7 @@ describe(calculateWeekRange, () => {
 
     expect(interval).toEqual(2);
 
-    expect(until).toEqual(new Date('2016-11-28T17:00+0800'));
+    expect(until).toEqual(new Date(2016, 10, 28, 17, 0));
   });
 
   test('generate correct exclusion for irregular weeks', () => {
@@ -226,10 +239,7 @@ describe(calculateWeekRange, () => {
     });
 
     expect(exclude).toEqual(
-      expect.arrayContaining([
-        new Date('2016-09-12T14:00+0800'),
-        new Date('2016-10-10T14:00+0800'),
-      ]),
+      expect.arrayContaining([new Date(2016, 8, 12, 14, 0), new Date(2016, 9, 10, 14, 0)]),
     );
     expect(interval).toEqual(2);
   });
@@ -237,7 +247,7 @@ describe(calculateWeekRange, () => {
 
 describe(iCalEventForLesson, () => {
   test('generates correct output', () => {
-    const actual: EventOption = iCalEventForLesson(
+    const actual: ICalEventData = iCalEventForLesson(
       {
         classNo: 'A1',
         day: 'Monday',
@@ -249,20 +259,21 @@ describe(iCalEventForLesson, () => {
       },
       BFS1001 as Module,
       1,
-      new Date('2016-08-08T00:00+0800'),
+      new Date(2016, 7, 8),
       false,
     );
 
     const expected = {
-      start: new Date('2016-08-08T14:00+0800'),
-      end: new Date('2016-08-08T17:00+0800'),
+      start: new Date(2016, 7, 8, 14, 0),
+      end: new Date(2016, 7, 8, 17, 0),
+      timezone: 'Asia/Singapore',
       summary: 'BFS1001 Sectional Teaching',
       description: 'Personal Development & Career Management\nSectional Teaching Group A1',
       location: 'BIZ1-0303',
       repeating: {
         freq: 'WEEKLY',
         count: 14,
-        byDay: ['Mo'],
+        byDay: ['MO'],
         exclude: expect.arrayContaining([]), // Tested in previous tests
       },
     };
@@ -271,7 +282,7 @@ describe(iCalEventForLesson, () => {
   });
 
   test('generates correct output for TA lesson', () => {
-    const actual: EventOption = iCalEventForLesson(
+    const actual: ICalEventData = iCalEventForLesson(
       {
         classNo: 'A1',
         day: 'Monday',
@@ -283,20 +294,21 @@ describe(iCalEventForLesson, () => {
       },
       BFS1001 as Module,
       1,
-      new Date('2016-08-08T00:00+0800'),
+      new Date(2016, 7, 8),
       true,
     );
 
     const expected = {
-      start: new Date('2016-08-08T14:00+0800'),
-      end: new Date('2016-08-08T17:00+0800'),
+      start: new Date(2016, 7, 8, 14, 0),
+      end: new Date(2016, 7, 8, 17, 0),
+      timezone: 'Asia/Singapore',
       summary: 'BFS1001 Sectional Teaching (TA)',
       description: 'Personal Development & Career Management\nSectional Teaching Group A1',
       location: 'BIZ1-0303',
       repeating: {
         freq: 'WEEKLY',
         count: 14,
-        byDay: ['Mo'],
+        byDay: ['MO'],
         exclude: expect.arrayContaining([]), // Tested in previous tests
       },
     };
@@ -305,7 +317,7 @@ describe(iCalEventForLesson, () => {
   });
 
   test('work for half hour lesson offsets', () => {
-    const actual: EventOption = iCalEventForLesson(
+    const actual: ICalEventData = iCalEventForLesson(
       {
         classNo: 'A1',
         day: 'Monday',
@@ -317,20 +329,21 @@ describe(iCalEventForLesson, () => {
       },
       BFS1001 as Module,
       1,
-      new Date('2016-08-08T00:00+0800'),
+      new Date(2016, 7, 8),
       false,
     );
 
     const expected = {
-      start: new Date('2016-08-08T18:30+0800'),
-      end: new Date('2016-08-08T20:30+0800'),
+      start: new Date(2016, 7, 8, 18, 30),
+      end: new Date(2016, 7, 8, 20, 30),
+      timezone: 'Asia/Singapore',
       summary: 'BFS1001 Sectional Teaching',
       description: 'Personal Development & Career Management\nSectional Teaching Group A1',
       location: 'BIZ1-0303',
       repeating: {
         freq: 'WEEKLY',
         count: 14,
-        byDay: ['Mo'],
+        byDay: ['MO'],
         exclude: expect.arrayContaining([]), // Tested in previous tests
       },
     };

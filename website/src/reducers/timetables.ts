@@ -1,9 +1,9 @@
-import { get, omit, uniq, values } from 'lodash-es';
+import { difference, get, omit, uniq, values } from 'lodash-es';
 import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { LessonIndex, ModuleCode } from 'types/modules';
+import { LessonId, ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
@@ -94,33 +94,27 @@ function moduleLessonConfig(
 
   switch (action.type) {
     case CHANGE_LESSON: {
-      const { lessonIndices, lessonType } = action.payload;
-      if (!(lessonIndices && lessonType)) return state;
+      const { lessonIds, lessonType } = action.payload;
       return {
         ...state,
-        [lessonType]: lessonIndices,
+        [lessonType]: lessonIds,
       };
     }
     case ADD_LESSON: {
-      const { lessonIndices, lessonType } = action.payload;
-      if (!(lessonIndices && lessonType)) return state;
+      const { lessonIds, lessonType } = action.payload;
       return {
         ...state,
-        [lessonType]: uniq([...lessonIndices, ...state[lessonType]]),
+        [lessonType]: uniq([...lessonIds, ...(get(state, lessonType, []) as LessonId[])]),
       };
     }
     case REMOVE_LESSON: {
-      const { lessonIndices: lessonIndicesToExclude, lessonType } = action.payload;
-      if (!(lessonIndicesToExclude && lessonType)) return state;
+      const { lessonIds, lessonType } = action.payload;
       return {
         ...state,
-        [lessonType]: [
-          ...state[lessonType].filter(
-            (lessonIndex: LessonIndex) => !lessonIndicesToExclude.includes(lessonIndex),
-          ),
-        ],
+        [lessonType]: difference(get(state, lessonType) as LessonId[], lessonIds),
       };
     }
+    case ADD_TA_MODULE:
     case REMOVE_TA_MODULE:
     case SET_LESSON_CONFIG:
       return action.payload.lessonConfig;
@@ -150,6 +144,7 @@ function semTimetable(
     case CHANGE_LESSON:
     case ADD_LESSON:
     case REMOVE_LESSON:
+    case ADD_TA_MODULE:
     case REMOVE_TA_MODULE:
     case SET_LESSON_CONFIG:
       return {

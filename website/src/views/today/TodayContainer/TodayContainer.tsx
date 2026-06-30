@@ -65,7 +65,7 @@ export type OwnProps = TimerData;
 
 export type Props = OwnProps &
   Readonly<{
-    timetableWithLessons: SemTimetableConfigWithLessons;
+    timetableWithLessons: SemTimetableConfigWithLessons<Lesson>;
     colors: ColorMapping;
     matchBreakpoint: boolean;
   }>;

@@ -1,12 +1,10 @@
 import { PureComponent } from 'react';
-import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash-es';
 import classnames from 'classnames';
-import { addDays } from 'date-fns';
+import { differenceInCalendarWeeks, startOfWeek } from 'date-fns';
 
-import { Semester, WorkingDays } from 'types/modules';
+import { Semester, DaysOfWeek } from 'types/modules';
 import { ModuleWithColor, ModuleWithExamTime, TimeSegment } from 'types/views';
-import config from 'config';
 import { formatExamDate, getExamDate } from 'utils/modules';
 import { toSingaporeTime } from 'utils/timify';
 import elements from 'views/elements';
@@ -40,32 +38,24 @@ export default class ExamCalendar extends PureComponent<Props> {
   // Utility function to get the first day of exams and calculate the number of weeks
   getExamCalendar(): [Date, number] {
     const { semester } = this.props;
-    const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
-    let firstDayOfExams = NUSModerator.academicCalendar.getExamWeek(year, semester);
-    firstDayOfExams = new Date(
-      firstDayOfExams.getTime() - firstDayOfExams.getTimezoneOffset() * 60 * 1000,
-    );
 
-    let weekCount = 0;
-    let lastDayOfExams = addDays(firstDayOfExams, 0);
+    const examDates = this.getVisibleModules()
+      .map((module) => getExamDate(module, semester))
+      .filter(Boolean as unknown as (dateString: string | null) => dateString is string)
+      .map((dateString) => toSingaporeTime(dateString));
 
-    // Check modules for outliers, eg. GER1000 that has exams on the Saturday before the exam week
-    // and expand the range accordingly
-    this.getVisibleModules().forEach((module) => {
-      const dateString = getExamDate(module, semester);
-      if (!dateString) return;
+    if (examDates.length === 0) {
+      return [new Date(), 0];
+    }
 
-      const date = toSingaporeTime(dateString);
-      while (date < firstDayOfExams) {
-        firstDayOfExams = addDays(firstDayOfExams, -7);
-        weekCount += 1;
-      }
+    const firstExamDate = examDates.reduce((a, b) => (a < b ? a : b));
+    const lastExamDate = examDates.reduce((a, b) => (a > b ? a : b));
 
-      while (date > lastDayOfExams) {
-        lastDayOfExams = addDays(lastDayOfExams, 7);
-        weekCount += 1;
-      }
-    });
+    const firstDayOfExams = startOfWeek(firstExamDate, { weekStartsOn: 1 });
+    const weekCount =
+      differenceInCalendarWeeks(lastExamDate, firstExamDate, {
+        weekStartsOn: 1,
+      }) + 1;
 
     return [firstDayOfExams, weekCount];
   }
@@ -111,12 +101,14 @@ export default class ExamCalendar extends PureComponent<Props> {
 
     const modulesWithExams = this.modulesWithExamDate();
 
-    // Get the number of days of the week which have exams on them. Default to Monday to Friday
-    // (5 days), and expand as necessary
-    const daysWithExams = Math.max(
-      5,
-      ...modulesWithExams.map((module) => toSingaporeTime(module.dateTime).getDay()),
-    );
+    const minDisplayDays = 5;
+    const maxDisplayDays = 7;
+
+    const daysToDisplay = modulesWithExams
+      .map((module) => toSingaporeTime(module.dateTime).getDay())
+      .some((day) => day === 6)
+      ? maxDisplayDays
+      : minDisplayDays;
 
     const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);
 
@@ -132,9 +124,9 @@ export default class ExamCalendar extends PureComponent<Props> {
         <table>
           <thead>
             <tr>
-              {range(daysWithExams).map((day) => (
+              {range(daysToDisplay).map((day) => (
                 <th key={day} className={styles.dayName}>
-                  {WorkingDays[day].slice(0, 3)}
+                  {DaysOfWeek[day].slice(0, 3)}
                 </th>
               ))}
             </tr>
@@ -144,7 +136,7 @@ export default class ExamCalendar extends PureComponent<Props> {
             {range(weekCount).map((week) => (
               <ExamWeek
                 key={week}
-                days={daysWithExams}
+                days={daysToDisplay}
                 weekNumber={week}
                 firstDayOfExams={firstDayOfExams}
                 modules={modulesByExamDate}
