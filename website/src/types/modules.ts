@@ -52,6 +52,15 @@ export type CohortRule = 'IF_IN' | 'IF_NOT_IN' | 'MUST_BE_IN' | 'MUST_NOT_BE_IN'
 // academic year ("2019/20"). Two tokens form a closed range.
 export type CohortCondition = { rule: CohortRule; years: string[] };
 
+// Whether a program-type condition includes (IF_IN) or requires (MUST_BE_IN)
+// the listed program types. NUS only emits these two for PROGRAM_TYPES.
+export type ProgramTypeRule = 'IF_IN' | 'MUST_BE_IN';
+
+// A program-type predicate that gates a subtree, e.g. ["Undergraduate Degree"]
+// or ["Graduate Degree Coursework", "Graduate Degree Research"]. The planner
+// has no program-type input, so this is carried for display only.
+export type ProgramTypeCondition = { rule: ProgramTypeRule; types: string[] };
+
 // Recursive tree of module codes and boolean operators for the prereq tree
 export type PrereqTree =
   | string
@@ -61,7 +70,10 @@ export type PrereqTree =
   // A cohort predicate. With `then`, it gates that requirement to the matching
   // cohorts; without `then`, it is a bare eligibility constraint (the student
   // must be in the cohort to take the module).
-  | { cohort: CohortCondition; then?: PrereqTree };
+  | { cohort: CohortCondition; then?: PrereqTree }
+  // A program-type-gated requirement, carried for display only (the planner has
+  // no program-type input and does not evaluate it).
+  | { programType: ProgramTypeCondition; then: PrereqTree };
 
 // Auxiliary data types
 export type Day =

@@ -202,6 +202,81 @@ describe(checkPrerequisite, () => {
       });
     });
   });
+
+  describe('program-type-gated requirements', () => {
+    // The gated course (CS9999) is not in moduleSet, so the requirement is unmet
+    // whenever it is enforced.
+    const gradGate: PrereqTree = {
+      programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+      then: 'CS9999',
+    };
+
+    test('enforces the requirement for a student in the gated program type', () => {
+      expect(checkPrerequisite(moduleSet, gradGate, undefined, 'Graduate')).toEqual(['CS9999']);
+    });
+
+    test('skips the requirement for a student not in the gated program type', () => {
+      expect(checkPrerequisite(moduleSet, gradGate, undefined, 'Undergraduate')).toHaveLength(0);
+    });
+
+    test('maps Graduate to both graduate program types', () => {
+      const researchGate: PrereqTree = {
+        programType: { rule: 'IF_IN', types: ['Graduate Degree Research'] },
+        then: 'CS9999',
+      };
+      expect(checkPrerequisite(moduleSet, researchGate, undefined, 'Graduate')).toEqual(['CS9999']);
+    });
+
+    test('a CPE-only gate applies to neither schedule type', () => {
+      const cpeGate: PrereqTree = {
+        programType: { rule: 'IF_IN', types: ['CPE (Certificate)'] },
+        then: 'CS9999',
+      };
+      expect(checkPrerequisite(moduleSet, cpeGate, undefined, 'Undergraduate')).toHaveLength(0);
+      expect(checkPrerequisite(moduleSet, cpeGate, undefined, 'Graduate')).toHaveLength(0);
+    });
+
+    test('conservatively enforces when the schedule type is unknown', () => {
+      expect(checkPrerequisite(moduleSet, gradGate)).toEqual(['CS9999']);
+    });
+
+    test('enforces only the branch matching the schedule type in an OR', () => {
+      // The differing-degree shape, e.g. MA5202: each branch gated by program
+      // type. Only the branch matching the student is enforced; the others are
+      // removed rather than vacuously satisfying the OR.
+      const tree: PrereqTree = {
+        or: [
+          { programType: { rule: 'IF_IN', types: ['Undergraduate Degree'] }, then: 'CS1010S' },
+          gradGate,
+        ],
+      };
+      // Undergraduate: only the UG branch applies; CS1010S is present -> satisfied.
+      expect(checkPrerequisite(moduleSet, tree, undefined, 'Undergraduate')).toHaveLength(0);
+      // Graduate: only the grad branch applies; CS9999 is missing -> unfulfilled.
+      expect(checkPrerequisite(moduleSet, tree, undefined, 'Graduate')).toEqual(['CS9999']);
+    });
+
+    test('clamps the nOf count when a gated option is pruned (defensive)', () => {
+      // nOf options are course-code strings in real data, but guard against an
+      // nOf whose count would otherwise exceed the surviving pool after pruning,
+      // which would make it permanently unsatisfiable.
+      const tree: PrereqTree = {
+        nOf: [
+          2,
+          [
+            {
+              programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+              then: 'CS9999',
+            },
+            'CS1010S',
+          ],
+        ],
+      };
+      // Undergraduate: the grad option is pruned and the count clamps 2 -> 1, so
+      // CS1010S (present) satisfies it instead of being permanently unmet.
+      expect(checkPrerequisite(moduleSet, tree, undefined, 'Undergraduate')).toHaveLength(0);
+    });
+  });
 });
 
 describe(conflictToText, () => {
@@ -222,6 +297,15 @@ describe(conflictToText, () => {
     expect(conflictToText({ cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } })).toEqual(
       'cohort 2017 onwards',
     );
+  });
+
+  test('describes the gated requirement of a program-type node', () => {
+    expect(
+      conflictToText({
+        programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+        then: { or: ['CS1010:D', 'CS1101S:D'] },
+      }),
+    ).toEqual('CS1010 or CS1101S');
   });
 });
 
