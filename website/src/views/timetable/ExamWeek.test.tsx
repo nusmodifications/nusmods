@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 
 import ExamWeek from './ExamWeek';
+import { toSingaporeTime } from 'utils/timify';
 
 function make(props = {}) {
   const propsWithDefaults = {
@@ -30,7 +31,9 @@ describe(ExamWeek, () => {
   });
 
   test('show month name when the months changes', () => {
-    const weekOfApril29 = make({ firstDayOfExams: new Date('2019-04-29T00:00:00Z') });
+    const weekOfApril29 = make({
+      firstDayOfExams: toSingaporeTime('2019-04-29T00:00:00Z'),
+    });
     expect(weekOfApril29.find('th time').map((ele) => ele.text())).toEqual([
       'Apr 29',
       '30',
@@ -41,9 +44,14 @@ describe(ExamWeek, () => {
 
     const weekOfDec3 = make({
       weekNumber: 1,
-      firstDayOfExams: new Date(new Date('2018-11-26T00:00:00Z')),
+      firstDayOfExams: toSingaporeTime('2018-11-26T00:00:00Z'),
     });
     expect(weekOfDec3.find('th time').first().text()).toEqual('Dec 3');
+  });
+
+  test('render dates using local calendar time', () => {
+    const wrapper = make({ firstDayOfExams: toSingaporeTime('2020-05-03T16:00:00Z') });
+    expect(wrapper.find('th time').first().text()).toEqual('May 4');
   });
 
   test('highlight today', () => {
