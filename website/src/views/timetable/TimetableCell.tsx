@@ -33,6 +33,9 @@ type Props = {
 
 const lessonDateFormat = 'MMM dd';
 
+const mountToReferenceRoot = (ref: Element): Element =>
+  ref.ownerDocument.body ?? ref.ownerDocument.documentElement ?? ref;
+
 function formatWeekInfo(weekInfo: AcadWeekInfo) {
   if (weekInfo.type === 'Instructional') return `Week ${weekInfo.num}`;
   return weekInfo.type;
@@ -100,7 +103,7 @@ function formatWeekRange(weekRange: WeekRange) {
   );
 
   return (
-    <Tooltip content={table} interactive arrow>
+    <Tooltip content={table} interactive arrow appendTo={mountToReferenceRoot}>
       <span className={styles.weeksSpecial}>{dateRange}</span>
     </Tooltip>
   );

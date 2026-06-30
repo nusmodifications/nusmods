@@ -1,7 +1,13 @@
 import { sum } from 'lodash-es';
-import { CohortCondition, ModuleCode, PrereqTree, Semester } from 'types/modules';
+import {
+  CohortCondition,
+  ModuleCode,
+  PrereqTree,
+  ProgramTypeCondition,
+  Semester,
+} from 'types/modules';
 import { PlannerModuleInfo, Conflict } from 'types/planner';
-import config from 'config';
+import config, { ScheduleType } from 'config';
 import { assertNever } from 'types/utils';
 import { count, isEmpty } from './array';
 
@@ -92,15 +98,110 @@ export function formatCohortCondition({ rule, years }: CohortCondition): string 
 }
 
 /**
+ * Human-readable description of a program-type condition, e.g.
+ * "Undergraduate Degree" or "Graduate Degree Coursework or Graduate Degree
+ * Research".
+ */
+export function formatProgramTypeCondition({ types }: ProgramTypeCondition): string {
+  return types.join(' or ');
+}
+
+/**
+ * Map a PROGRAM_TYPES value (e.g. "Undergraduate Degree", "Graduate Degree
+ * Coursework") to the planner's coarser schedule type. "CPE (Certificate)" and
+ * anything unrecognised map to neither.
+ */
+function programScheduleType(type: string): ScheduleType | undefined {
+  const normalized = type.toLowerCase();
+  if (normalized === 'undergraduate degree') return 'Undergraduate';
+  if (normalized.startsWith('graduate degree')) return 'Graduate';
+  return undefined;
+}
+
+/**
+ * Determine whether a program-type-gated requirement applies to a student with
+ * the given schedule type. "Graduate" matches both graduate program types;
+ * "CPE (Certificate)" gates match neither schedule type. When the schedule type
+ * is unknown we conservatively assume it applies, matching cohortConditionApplies.
+ */
+export function programTypeConditionApplies(
+  { types }: ProgramTypeCondition,
+  scheduleType?: ScheduleType,
+): boolean {
+  if (scheduleType === undefined) return true;
+  return types.some((type) => programScheduleType(type) === scheduleType);
+}
+
+/**
+ * Resolve program-type gates for a student's schedule type. An applicable gate
+ * is replaced by its requirement; a non-applicable one is removed (returns
+ * null), so it neither imposes a requirement nor vacuously satisfies an
+ * enclosing OR. Cohort gates pass through for checkPrerequisite to evaluate.
+ * Returns null when nothing in the tree applies to the student.
+ */
+function resolveProgramTypes(tree: PrereqTree, scheduleType?: ScheduleType): PrereqTree | null {
+  if (typeof tree === 'string') return tree;
+
+  if ('programType' in tree) {
+    return programTypeConditionApplies(tree.programType, scheduleType)
+      ? resolveProgramTypes(tree.then, scheduleType)
+      : null;
+  }
+
+  if ('cohort' in tree) {
+    if (tree.then === undefined) return tree;
+    const then = resolveProgramTypes(tree.then, scheduleType);
+    return then === null ? null : { cohort: tree.cohort, then };
+  }
+
+  if ('or' in tree) {
+    const children = tree.or
+      .map((child) => resolveProgramTypes(child, scheduleType))
+      .filter((child): child is PrereqTree => child !== null);
+    if (children.length === 0) return null;
+    // Preserve the node shape when nothing was pruned; collapse to the sole
+    // survivor only when branches were actually removed.
+    if (children.length === tree.or.length) return { or: children };
+    return children.length === 1 ? children[0] : { or: children };
+  }
+
+  if ('and' in tree) {
+    const children = tree.and
+      .map((child) => resolveProgramTypes(child, scheduleType))
+      .filter((child): child is PrereqTree => child !== null);
+    if (children.length === 0) return null;
+    if (children.length === tree.and.length) return { and: children };
+    return children.length === 1 ? children[0] : { and: children };
+  }
+
+  if ('nOf' in tree) {
+    const [n, options] = tree.nOf;
+    const kept = options
+      .map((option) => resolveProgramTypes(option, scheduleType))
+      .filter((option): option is PrereqTree => option !== null);
+    if (kept.length === 0) return null;
+    // Clamp the count to the surviving pool so pruning a gated option can never
+    // leave an unsatisfiable "n of fewer-than-n". nOf options are course-code
+    // leaves today, so this is defensive and a no-op on real data.
+    return { nOf: [Math.min(n, kept.length), kept] };
+  }
+
+  return tree;
+}
+
+/**
  * Check if a prereq tree is fulfilled given a set of modules that have already
  * been taken. An array of unfulfilled requirements is returned. An empty array
  * means that the prereq tree is fulfilled. `cohortYear` is the student's
- * matriculation year, used to evaluate cohort-gated requirements.
+ * matriculation year, used to evaluate cohort-gated requirements. `scheduleType`
+ * is the student's Undergraduate/Graduate setting, used to evaluate
+ * program-type-gated requirements.
  */
 export function checkPrerequisite(
   moduleSet: Set<ModuleCode>,
   tree: PrereqTree,
   cohortYear?: number,
+  scheduleType?: ScheduleType,
 ): PrereqTree[] {
   const moduleArray = Array.from(moduleSet);
 
@@ -131,6 +232,14 @@ export function checkPrerequisite(
       return applies ? walkTree(fragment.then) : [];
     }
 
+    if ('programType' in fragment) {
+      // Program-type gates are resolved against the student's schedule type by
+      // resolveProgramTypes before walkTree runs (so non-applicable branches are
+      // removed rather than vacuously satisfying an enclosing OR). This is only a
+      // defensive fallback.
+      return [];
+    }
+
     if ('nOf' in fragment) {
       const [requiredCount, options] = fragment.nOf;
       let fulfilledCount = 0;
@@ -156,7 +265,10 @@ export function checkPrerequisite(
     return assertNever(fragment);
   }
 
-  return walkTree(tree);
+  // Resolve program-type gates against the student's schedule type first, so
+  // non-applicable branches are removed before the tree is checked.
+  const applicable = resolveProgramTypes(tree, scheduleType);
+  return applicable === null ? [] : walkTree(applicable);
 }
 
 /**
@@ -186,6 +298,14 @@ export function conflictToText(rootConflict: PrereqTree): string {
       return conflict.then === undefined
         ? formatCohortCondition(conflict.cohort)
         : walkTree(conflict.then);
+    }
+
+    if ('programType' in conflict) {
+      // Unreachable in practice: resolveProgramTypes strips every program-type
+      // gate before checkPrerequisite returns, so a conflict never contains one.
+      // Kept as a safety net for type exhaustiveness; defensively render the
+      // gated requirement should one ever reach here.
+      return walkTree(conflict.then);
     }
 
     if ('nOf' in conflict) {
