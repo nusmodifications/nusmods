@@ -5,7 +5,6 @@ import type {
   ModuleCode,
   ModuleLessonMap,
   RawLesson,
-  RawLessonWithIndex,
   Semester,
   SemesterData,
   SemesterDataCondensed,
@@ -31,10 +30,7 @@ export function getModuleSemesterData(
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(
-  module: Module,
-  semester: Semester,
-): readonly RawLessonWithIndex[] {
+export function getModuleTimetable(module: Module, semester: Semester): readonly RawLesson[] {
   return get(getModuleSemesterData(module, semester), 'timetable', []);
 }
 

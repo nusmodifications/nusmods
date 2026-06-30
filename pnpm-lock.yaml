@@ -458,8 +458,8 @@ importers:
         specifier: 4.10.1
         version: 4.10.1
       ical-generator:
-        specifier: https://github.com/nusmodifications/ical-generator.git#a2aa62ed
-        version: https://codeload.github.com/nusmodifications/ical-generator/tar.gz/a2aa62ed82a7c947b3f02172ac2c8ed5a9e32eb8
+        specifier: 11.0.0
+        version: 11.0.0(@types/node@22.19.19)(moment@2.30.1)
       immer:
         specifier: 10.1.1
         version: 10.1.1
@@ -6105,9 +6105,38 @@ packages:
     resolution: {integrity: sha512-Y93lCzHYgGWdrJ66yIktxiaGULYc6oGiABxhcO5AufBeOyoIdZF7bIfLaOrbM0iGIOXQQgxxRrFEnb+Y6w1n4A==}
     engines: {node: '>=10.18'}
 
-  ical-generator@https://codeload.github.com/nusmodifications/ical-generator/tar.gz/a2aa62ed82a7c947b3f02172ac2c8ed5a9e32eb8:
-    resolution: {tarball: https://codeload.github.com/nusmodifications/ical-generator/tar.gz/a2aa62ed82a7c947b3f02172ac2c8ed5a9e32eb8}
-    version: 0.2.10
+  ical-generator@11.0.0:
+    resolution: {integrity: sha512-OScZbXduIbjqtJzq0WLyPpAuKnc106+l28wszD+Wi2O9jXn76NVBfr4Ksv2XFyQn4JNZ9vWr5xAac0uT/FhVag==}
+    engines: {node: 22 || >=24.0.0}
+    peerDependencies:
+      '@touch4it/ical-timezones': '>=1.6.0'
+      '@types/luxon': '>= 1.26.0'
+      '@types/mocha': '>= 8.2.1'
+      '@types/node': '*'
+      dayjs: '>= 1.10.0'
+      luxon: '>= 1.26.0'
+      moment: '>= 2.29.0'
+      moment-timezone: '>= 0.5.33'
+      rrule: '>= 2.6.8'
+    peerDependenciesMeta:
+      '@touch4it/ical-timezones':
+        optional: true
+      '@types/luxon':
+        optional: true
+      '@types/mocha':
+        optional: true
+      '@types/node':
+        optional: true
+      dayjs:
+        optional: true
+      luxon:
+        optional: true
+      moment:
+        optional: true
+      moment-timezone:
+        optional: true
+      rrule:
+        optional: true
 
   icalendar@0.7.1:
     resolution: {integrity: sha512-dvvNVR/8hb2V2ZpCR28Iajihh97C5kfVRNnoHh4o1NerKOQzlGIA6rYn/6c2AfjCujKyrIE34ArlamwNX9jWIg==}
@@ -16324,7 +16353,10 @@ snapshots:
 
   hyperdyperid@1.2.0: {}
 
-  ical-generator@https://codeload.github.com/nusmodifications/ical-generator/tar.gz/a2aa62ed82a7c947b3f02172ac2c8ed5a9e32eb8: {}
+  ical-generator@11.0.0(@types/node@22.19.19)(moment@2.30.1):
+    optionalDependencies:
+      '@types/node': 22.19.19
+      moment: 2.30.1
 
   icalendar@0.7.1: {}
 

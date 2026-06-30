@@ -8,7 +8,6 @@ import (
 
 type LessonType = string
 type ClassNo = string
-type LessonIndex = int
 
 // ModuleTimetableMap organises module slots by Module -> LessonType -> ClassNo -> []ModuleSlot
 type ModuleTimetableMap = map[string]map[LessonType]map[ClassNo][]ModuleSlot
@@ -106,7 +105,6 @@ type ModuleSlot struct {
 	LessonKey   string           `json:"LessonKey"` // "MODULE|LessonType"
 	WeeksSet    map[int]struct{} `json:"WeeksSet"`
 	WeeksString string           `json:"WeeksString"`
-	LessonIndex LessonIndex      `json:"LessonIndex"`
 }
 
 // ParseModuleSlotFields parses and populates the parsed fields in ModuleSlot for faster computation
