@@ -112,42 +112,9 @@ export function calculateBorderTimings(
   };
 }
 
-/**
- * Gets the current time in hours, 0915 -> 9, 1315 -> 13
- * @deprecated Use date injected by withTimer instead
- */
-export function getCurrentHours(
-  now: Date = new Date(), // Used for tests only
-): number {
-  return now.getHours();
-}
-
-/**
- * Gets the current time in hours, 0915 -> 15, 1345 -> 45
- * Current time to always match Singapore's
- *
- * @deprecated Use date injected by withTimer instead
- */
-export function getCurrentMinutes(
-  now: Date = new Date(), // Used for tests only
-): number {
-  return now.getMinutes();
-}
-
 // Monday = 0, Friday = 4, Sunday = 6
 export function getDayIndex(date: Date = new Date()): number {
   return getISODay(date) - 1;
-}
-
-/**
- * Return a copy of the original Date incremented by the given number of days
- *
- * @deprecated Use addDays from date-fns
- */
-export function daysAfter(startDate: Date, days: number): Date {
-  const d = new Date(startDate.valueOf());
-  d.setUTCDate(d.getUTCDate() + days);
-  return d;
 }
 
 /**

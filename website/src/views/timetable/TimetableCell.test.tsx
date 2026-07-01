@@ -5,8 +5,8 @@ import { EVERY_WEEK } from 'test-utils/timetable';
 import TimetableCell from './TimetableCell';
 
 const jest = vi;
-const NON_TA_LESSON: InteractableLesson = {
-  moduleCode: 'CS1010',
+const LESSON: InteractableLesson = {
+  moduleCode: 'CS1010S',
   title: 'Intro',
   classNo: '1',
   lessonType: 'Lecture',
@@ -16,7 +16,11 @@ const NON_TA_LESSON: InteractableLesson = {
   endTime: '1200',
   venue: 'LT26',
   colorIndex: 1,
-  lessonIndex: 1,
+  lessonId: '1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
+  canBeSelectedAsActiveLesson: false,
+  canBeAddedToLessonConfig: false,
+  isActive: false,
+  isTaInTimetable: false,
 };
 
 type Props = {
@@ -47,7 +51,7 @@ const makeFactory =
   };
 
 describe(TimetableCell, () => {
-  const make = makeFactory(NON_TA_LESSON);
+  const make = makeFactory(LESSON);
   it('simulates click events and renders a button', () => {
     const { onClick, wrapper } = make();
 
@@ -69,10 +73,10 @@ describe(TimetableCell, () => {
   it('should highlight lesson when module code, classNo and lessonType matches', () => {
     const { wrapper } = make({
       hoverLesson: {
-        moduleCode: 'CS1010',
+        moduleCode: 'CS1010S',
         classNo: '1',
         lessonType: 'Lecture',
-        lessonIndex: 1,
+        lessonId: '1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
       },
     });
 
@@ -85,10 +89,10 @@ describe(TimetableCell, () => {
 
     button = make({
       hoverLesson: {
-        moduleCode: 'CS1010',
+        moduleCode: 'CS1010S',
         classNo: '1',
         lessonType: 'Tutorial',
-        lessonIndex: 2,
+        lessonId: '1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13',
       },
     })
       .wrapper.find('button')
@@ -98,10 +102,10 @@ describe(TimetableCell, () => {
 
     button = make({
       hoverLesson: {
-        moduleCode: 'CS1010',
+        moduleCode: 'CS1010S',
         classNo: '2',
         lessonType: 'Lecture',
-        lessonIndex: 3,
+        lessonId: '2|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
       },
     })
       .wrapper.find('button')
@@ -114,7 +118,7 @@ describe(TimetableCell, () => {
         moduleCode: 'CS1101S',
         classNo: '1',
         lessonType: 'Lecture',
-        lessonIndex: 0,
+        lessonId: '1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
       },
     })
       .wrapper.find('button')
@@ -126,9 +130,10 @@ describe(TimetableCell, () => {
 
 describe(TimetableCell, () => {
   const TA_LESSON: InteractableLesson = {
-    ...NON_TA_LESSON,
+    ...LESSON,
     isTaInTimetable: true,
   };
+
   const make = makeFactory(TA_LESSON);
   it('simulates click events and renders a button', () => {
     const { onClick, wrapper } = make();
@@ -148,13 +153,13 @@ describe(TimetableCell, () => {
     expect(button.hasClass('clickable')).toBe(true);
   });
 
-  it('should highlight lesson when module code, classNo, lessonType and lessonIndex matches', () => {
+  it('should highlight lesson when module code, classNo, lessonType and lessonId matches', () => {
     const { wrapper } = make({
       hoverLesson: {
-        moduleCode: 'CS1010',
+        moduleCode: 'CS1010S',
         classNo: '1',
         lessonType: 'Lecture',
-        lessonIndex: 1,
+        lessonId: '1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
       },
     });
 
@@ -165,10 +170,10 @@ describe(TimetableCell, () => {
   it('should highlight lesson when only module code, classNo and lessonType matches', () => {
     const { wrapper } = make({
       hoverLesson: {
-        moduleCode: 'CS1010',
+        moduleCode: 'CS1010S',
         classNo: '1',
         lessonType: 'Lecture',
-        lessonIndex: 2,
+        lessonId: '2|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
       },
     });
 
@@ -181,10 +186,10 @@ describe(TimetableCell, () => {
 
     button = make({
       hoverLesson: {
-        moduleCode: 'CS1010',
+        moduleCode: 'CS1010S',
         classNo: '1',
         lessonType: 'Tutorial',
-        lessonIndex: 2,
+        lessonId: '1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13',
       },
     })
       .wrapper.find('button')
@@ -194,10 +199,10 @@ describe(TimetableCell, () => {
 
     button = make({
       hoverLesson: {
-        moduleCode: 'CS1010',
+        moduleCode: 'CS1010S',
         classNo: '2',
         lessonType: 'Lecture',
-        lessonIndex: 3,
+        lessonId: '2|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
       },
     })
       .wrapper.find('button')
@@ -210,7 +215,7 @@ describe(TimetableCell, () => {
         moduleCode: 'CS1101S',
         classNo: '1',
         lessonType: 'Lecture',
-        lessonIndex: 0,
+        lessonId: '1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
       },
     })
       .wrapper.find('button')

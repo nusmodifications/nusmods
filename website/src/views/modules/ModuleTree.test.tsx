@@ -128,6 +128,27 @@ describe(ModuleTreeComponent, () => {
     expect(component).toMatchSnapshot('DBA3702');
   });
 
+  test('should render a program-type-gated prereq tree', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="IT5003"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
+        prereqTree={{
+          or: [
+            { programType: { rule: 'IF_IN', types: ['CPE (Certificate)'] }, then: 'IT5003:D' },
+            {
+              programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+              then: 'IT5003:D',
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('IT5003');
+  });
+
   test('should render a prereq tree with multiple cohort gates', () => {
     const component = render(
       <ModuleTreeComponent

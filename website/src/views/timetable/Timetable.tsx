@@ -12,12 +12,11 @@ import { OnModifyCell } from 'types/views';
 
 import {
   calculateBorderTimings,
-  getCurrentHours,
-  getCurrentMinutes,
   getDayIndex,
   INTERVAL_DURATION_MINS,
   NUM_INTERVALS_PER_HOUR,
   SCHOOLDAYS,
+  toSingaporeTime,
 } from 'utils/timify';
 import elements from 'views/elements';
 import withTimer, { TimerData } from 'views/hocs/withTimer';
@@ -65,7 +64,7 @@ class Timetable extends React.PureComponent<Props, State> {
   };
 
   override render() {
-    const { highlightPeriod } = this.props;
+    const { highlightPeriod, currentTime } = this.props;
 
     const schoolDays = SCHOOLDAYS.filter(
       (day) => day !== 'Saturday' || this.props.lessons.Saturday,
@@ -73,12 +72,16 @@ class Timetable extends React.PureComponent<Props, State> {
 
     const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons, highlightPeriod);
-    const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
+
+    // The timetable always reflects Singapore time, so derive the current day and
+    // time from the SGT wall-clock rather than the viewer's local timezone.
+    const singaporeTime = toSingaporeTime(currentTime);
+    const currentDayIndex = getDayIndex(singaporeTime); // Monday = 0, Friday = 4
 
     // Calculate the margin offset for the CurrentTimeIndicator
     const columns = endingIndex - startingIndex;
-    const currentHours = getCurrentHours();
-    const currentMinutes = getCurrentMinutes();
+    const currentHours = singaporeTime.getHours();
+    const currentMinutes = singaporeTime.getMinutes();
     const hoursMarginOffset =
       ((currentHours * NUM_INTERVALS_PER_HOUR - startingIndex) / columns) * 100;
     const minutesMarginOffset = (currentMinutes / INTERVAL_DURATION_MINS / columns) * 100;

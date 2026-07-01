@@ -5,7 +5,7 @@ import CN4205ETimetable from './fixtures/api-timetable/CN4205E.json';
 import CS1010XTimetable from './fixtures/api-timetable/CS1010X.json';
 import RE5001Timetable from './fixtures/api-timetable/RE5001.json';
 
-import GetSemesterTimetable, { transformModgrpToClassNo } from './GetSemesterTimetable';
+import GetSemesterTimetable, { mapLessonWeeks, transformModgrpToClassNo } from './GetSemesterTimetable';
 import { TimetableLesson } from '../types/api';
 import { Semester } from '../types/modules';
 
@@ -1685,5 +1685,21 @@ describe(GetSemesterTimetable, () => {
         ],
       }
     `);
+  });
+
+  test('should ignore duplicate lesson dates when mapping weeks', () => {
+    const logger = { error: vi.fn() };
+
+    const weeks = mapLessonWeeks(
+      ['2026-08-03', '2026-08-03', '2026-08-03'],
+      1,
+      logger as any,
+    );
+
+    expect(logger.error).toHaveBeenCalledWith('Lesson has duplicate dates');
+    expect(weeks).toEqual({
+      end: '2026-08-03',
+      start: '2026-08-03',
+    });
   });
 });

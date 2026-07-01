@@ -3,6 +3,7 @@ import {
   fromPairs,
   get,
   groupBy,
+  includes,
   intersection,
   invert,
   isEmpty,
@@ -15,6 +16,7 @@ import {
   omitBy,
   pick,
   pickBy,
+  reduce,
   size,
   some,
   split,
@@ -32,7 +34,7 @@ import {
   Weeks,
 } from 'types/modules';
 
-import { Lesson } from 'types/timetables';
+import { Lesson, ModuleLessonConfig } from 'types/timetables';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
 export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
@@ -119,6 +121,18 @@ export const serializeWeekRange = ({ start, end, weekInterval, weeks }: WeekRang
 };
 
 /**
+ * Checks whether the provided lesson identifiers represent a single `ClassNo`.
+ *
+ * This assumes `lessonIdentifiers` is already a valid `([ClassNo] | LessonId[])` value,
+ * so we only need to distinguish the one-item class number case from serialized lesson IDs.
+ */
+export const isClassNo = (
+  lessonIdentifiers: [ClassNo] | LessonId[],
+): lessonIdentifiers is [ClassNo] => {
+  return lessonIdentifiers.length === 1 && !includes(lessonIdentifiers[0], '|');
+};
+
+/**
  * Given a {@link RawLesson|RawLesson}
  * ```ts
  * {
@@ -137,7 +151,7 @@ export const serializeWeekRange = ({ start, end, weekInterval, weeks }: WeekRang
  */
 export const serializeLessonDetails = <T extends Omit<RawLesson, 'lessonType'>>(
   lesson: T,
-): string => {
+): LessonId => {
   const { classNo, day, startTime, endTime, venue, weeks } = lesson;
 
   const abbreviatedDayOfWeek = DAY_OF_WEEK_ABBREV[day as DayOfWeek];
@@ -274,19 +288,23 @@ export function getRecoveryClassNo(
  */
 export function getRecoverySerializedLessonDetails(
   lessonsWithLessonType: Record<LessonId, RawLesson>,
-  configLessonTypeLessonIds: LessonId[],
+  configLessonTypeLessonIds: [ClassNo] | LessonId[],
 ): LessonId[] {
-  const lessonsWithValidLessonIds = intersection(
+  const lessonsWithValidLessonIds: LessonId[] = intersection(
     keys(lessonsWithLessonType),
     configLessonTypeLessonIds,
   );
   if (!isEmpty(lessonsWithValidLessonIds)) return lessonsWithValidLessonIds;
 
-  const configLessonTypeLessonIdsSet = new Set(configLessonTypeLessonIds);
-  const lessonsWithClassNo = pickBy(lessonsWithLessonType, (lesson) =>
-    configLessonTypeLessonIdsSet.has(lesson.classNo),
-  );
-  if (size(lessonsWithClassNo) > 0) return keys(lessonsWithClassNo);
+  if (isClassNo(configLessonTypeLessonIds)) {
+    const classNo: ClassNo = first(configLessonTypeLessonIds);
+    const lessonsWithClassNo = pickBy(
+      lessonsWithLessonType,
+      (lesson) => lesson.classNo === classNo,
+    );
+
+    if (size(lessonsWithClassNo) > 0) return keys(lessonsWithClassNo);
+  }
 
   const firstLessonId = first(keys(lessonsWithLessonType));
   if (!firstLessonId) {
@@ -304,8 +322,8 @@ export function getRecoverySerializedLessonDetails(
  */
 export function getClosestClassNo(
   lessonTypeLessons: Record<LessonId, RawLesson>,
-  configLessonTypeLessonIds: LessonId[],
-) {
+  configLessonTypeLessonIds: [ClassNo] | LessonId[],
+): ClassNo | null {
   const configLessonsByClassNo = groupBy(
     pick(lessonTypeLessons, configLessonTypeLessonIds),
     'classNo',
@@ -317,4 +335,33 @@ export function getClosestClassNo(
 
   if (!closestLessons) return null;
   return closestLessons[0];
+}
+
+/**
+ * Based on what lessons are currently in the lesson config, find the classNo that most of the lessons belong to
+ * @param moduleLessonMap {@link moduleLessonMap|ModuleLessonMap} of the module
+ * @param moduleLessonConfig current {@link moduleLessonConfig|ModuleLessonConfig}
+ * @returns a non-TA module lesson config that best matches the current module lesson config
+ */
+export function getClosestLessonConfig(
+  moduleLessonMap: ModuleLessonMap<RawLesson>,
+  moduleLessonConfig: ModuleLessonConfig,
+): ModuleLessonConfig {
+  return reduce(
+    moduleLessonMap,
+    (accumulatedModuleLessonConfig, lessonTypeLessons, lessonType) => {
+      const configLessonTypeLessonIds: [ClassNo] | LessonId[] = get(moduleLessonConfig, lessonType);
+      const closestClassNo: ClassNo | null = getClosestClassNo(
+        lessonTypeLessons,
+        configLessonTypeLessonIds,
+      );
+      if (!closestClassNo) return accumulatedModuleLessonConfig;
+
+      return {
+        ...accumulatedModuleLessonConfig,
+        [lessonType]: [closestClassNo],
+      };
+    },
+    {} as ModuleLessonConfig,
+  );
 }

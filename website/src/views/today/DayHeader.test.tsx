@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
-import { daysAfter } from 'utils/timify';
 import DayHeader, { HeaderDate } from './DayHeader';
 import styles from './DayHeader.scss';
+import { addDays } from 'date-fns';
 
 describe(DayHeader, () => {
   const today = new Date('2016-11-23T09:00+0800');
@@ -12,10 +12,10 @@ describe(DayHeader, () => {
   });
 
   test('render two date when more than one date is specified', () => {
-    const wrapperOne = shallow(<DayHeader date={[today, daysAfter(today, 1)]} offset={0} />);
+    const wrapperOne = shallow(<DayHeader date={[today, addDays(today, 1)]} offset={0} />);
 
     const wrapperTwo = shallow(
-      <DayHeader date={[today, daysAfter(today, 1), daysAfter(today, 2)]} offset={0} />,
+      <DayHeader date={[today, addDays(today, 1), addDays(today, 2)]} offset={0} />,
     );
 
     expect(wrapperOne.find(HeaderDate)).toHaveLength(2);
