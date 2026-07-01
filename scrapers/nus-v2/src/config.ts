@@ -56,7 +56,7 @@ const config: Config = {
   ttApiKey: env.ttApiKey,
 
   // Other config
-  academicYear: '2025/2026',
+  academicYear: '2026/2027',
   dataPath: path.resolve(__dirname, '../data'),
   specialTermAcademicYear: env.specialTermAcademicYear ?? null,
 };

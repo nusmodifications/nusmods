@@ -2,6 +2,7 @@ import { each, get } from 'lodash-es';
 import {
   deserializeLessonDetails,
   getRecoverySerializedLessonDetails,
+  isClassNo,
   makeModuleLessonMap,
   parseWeeks,
   serializeLessonDetails,
@@ -73,6 +74,24 @@ describe('makeModuleLessonMap', () => {
     };
 
     expect(makeModuleLessonMap(lessons)).toStrictEqual(expectedLessonMap);
+  });
+});
+
+describe('isClassNo', () => {
+  test('should return true for classNo', () => {
+    expect(isClassNo(['1'])).toBe(true);
+    expect(isClassNo(['67'])).toBe(true);
+  });
+
+  test('should return false for serialized lessonIds', () => {
+    expect(isClassNo([])).toBe(false);
+    expect(isClassNo(['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'])).toBe(false);
+    expect(
+      isClassNo([
+        '1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13',
+        '1|MON|1830|2030|VCRm|2026-06-18_2026-05-21_2_1_3_5_7_9_11_13',
+      ]),
+    ).toBe(false);
   });
 });
 

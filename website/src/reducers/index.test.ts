@@ -4,6 +4,7 @@ import reducers from 'reducers';
 import { setExportedData } from 'actions/export';
 import modules from '__mocks__/modules/index';
 import { DARK_COLOR_SCHEME, DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
+import { SemTimetableConfig, TimetableConfig } from 'types/timetables';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -11,18 +12,18 @@ const exportData: ExportData = {
   semester: 1,
   timetable: {
     CS3216: {
-      Lecture: [0],
+      Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
     },
     CS1010S: {
-      Lecture: [0],
-      Tutorial: [11],
-      Recitation: [1],
+      Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+      Tutorial: ['1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13'],
+      Recitation: ['1|THU|1200|1300|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
     },
     PC1222: {
-      Lecture: [4],
-      Tutorial: [6],
+      Lecture: ['SL1|TUE|1000|1200|LT31|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+      Tutorial: ['ST1|MON|1700|1800|S12-0401|1_2_3_4_5_6_7_8_9_10_11_12_13'],
     },
-  },
+  } satisfies SemTimetableConfig,
   colors: {
     CS3216: 1,
     CS1010S: 0,
@@ -51,19 +52,19 @@ test('reducers should set export data state', () => {
     lessons: {
       [1]: {
         CS3216: {
-          Lecture: [0],
+          Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
         },
         CS1010S: {
-          Lecture: [0],
-          Tutorial: [11],
-          Recitation: [1],
+          Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Tutorial: ['1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13'],
+          Recitation: ['1|THU|1200|1300|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
         },
         PC1222: {
-          Lecture: [4],
-          Tutorial: [6],
+          Lecture: ['SL1|TUE|1000|1200|LT31|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Tutorial: ['ST1|MON|1700|1800|S12-0401|1_2_3_4_5_6_7_8_9_10_11_12_13'],
         },
       },
-    },
+    } satisfies TimetableConfig,
     colors: {
       [1]: {
         CS3216: 1,
