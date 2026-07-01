@@ -40,7 +40,7 @@ import withTimer, { TimerData } from 'views/hocs/withTimer';
 import makeResponsive from 'views/hocs/makeResponsive';
 import NoFooter from 'views/layout/NoFooter';
 import MapContext from 'views/components/map/MapContext';
-import { formatTime, getDayIndex } from 'utils/timify';
+import { formatTime, getDayIndex, toSingaporeTime } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { State as StoreState } from 'types/state';
 
@@ -276,7 +276,11 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     let beforeFirstLessonCard = null;
 
     if (isToday) {
-      const { currentTime } = this.props;
+      // Lesson times are in Singapore time, so reason about "now" using the SGT
+      // wall-clock instead of the viewer's local timezone. This keeps which
+      // lessons are past, whether the next one is ongoing, the now marker, and
+      // the countdown in BeforeLessonCard accurate for overseas students.
+      const currentTime = toSingaporeTime(this.props.currentTime);
       // Don't show any lessons in the past, and add the current time marker
       const time = getHours(currentTime) * 100 + getMinutes(currentTime);
       // eslint-disable-next-line no-param-reassign
