@@ -1,7 +1,7 @@
 {
   "brandName": "NUSMods",
   "defaultDescription": "NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.",
-  "academicYear": "2025/2026",
+  "academicYear": "2026/2027",
   "specialTermAcademicYear": null,
   "apiBaseUrl": "https://api.nusmods.com",
   "elasticsearchBaseUrl": "https://nusmods-search.es.ap-southeast-1.aws.found.io:9243",
