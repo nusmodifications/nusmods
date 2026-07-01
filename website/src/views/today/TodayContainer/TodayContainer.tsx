@@ -178,7 +178,15 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   };
 
   groupLessons() {
-    const { colors, currentTime, timetableWithLessons } = this.props;
+    const { colors, timetableWithLessons } = this.props;
+
+    // The Today view is Singapore-centric: lesson times are in SGT, so derive
+    // "today" and each subsequent day from the SGT wall-clock rather than the
+    // viewer's local timezone. Without this, a viewer whose local date differs
+    // from Singapore's (e.g. still Monday evening in the US while it is already
+    // Tuesday in Singapore) would see the wrong day marked as today and an
+    // incorrect "time till next class" countdown.
+    const currentTime = toSingaporeTime(this.props.currentTime);
 
     const timetableLessons: Lesson[] = timetableLessonsArray(timetableWithLessons);
 
