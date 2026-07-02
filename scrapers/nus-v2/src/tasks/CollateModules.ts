@@ -109,6 +109,20 @@ export function combineModules(
 
   // 1. Iterate over each module
   for (const semesterModules of semesters) {
+    // Every module in a batch comes from the same semester's fetch. When that
+    // semester's data is sourced from a previous academic year (the special-term
+    // fallback during an AY migration), its module info must not override the
+    // current year's. We detect this per-batch from any offered module's semester,
+    // because modules that exist in the catalog but are not offered this semester
+    // carry no semesterData - and hence no semester - of their own, yet they still
+    // must be preserved. (Previously this was checked per-entry via
+    // semesterData.semester, so those timetable-less entries bypassed the check and
+    // clobbered the current year's module info with stale previous-AY data.)
+    const isPreservedSemester = semesterModules.some(
+      ({ semesterData }) =>
+        semesterData != null && (preserveModuleInfoSemesters?.has(semesterData.semester) ?? false),
+    );
+
     for (const semesterModule of semesterModules) {
       const { moduleCode, semesterData } = semesterModule;
 
@@ -129,18 +143,24 @@ export function combineModules(
           logger.warn(difference, 'Module with different module info between semesters');
         }
 
-        if (semesterData && preserveModuleInfoSemesters?.has(semesterData.semester)) {
+        // 4. For preserved semesters (previous-AY special terms), keep the existing
+        //    current-year module info and only merge in this semester's timetable,
+        //    if the module is actually offered. This applies to every module in the
+        //    batch, including those with no timetable this semester.
+        if (isPreservedSemester) {
           modules[moduleCode] = {
             ...existingData,
             aliases: aliases[moduleCode] ?? existingData.aliases,
-            semesterData: upsertSemesterData(existingData.semesterData, semesterData),
+            semesterData: semesterData
+              ? upsertSemesterData(existingData.semesterData, semesterData)
+              : existingData.semesterData,
           };
           continue;
         }
 
-        // 4. Always use the latest semester's data. In case the two semester's data
-        //    diverge we trust the latest semester's data to be canonical as most
-        //    changes are additive, eg. adding more prereq options
+        // 5. Otherwise always use the latest semester's data. In case the two
+        //    semesters' data diverge we trust the latest semester's data to be
+        //    canonical as most changes are additive, eg. adding more prereq options
         module.semesterData.unshift(...existingData.semesterData);
       }
 

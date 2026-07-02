@@ -182,6 +182,103 @@ describe(combineModules, () => {
       },
     ]);
   });
+
+  test('should keep current-year module info for modules not offered in a preserved semester', () => {
+    // Reproduces the AY-migration bug: a module offered in the current year
+    // (Semester 1) that also exists in the previous year's catalog but is NOT
+    // offered in the previous-AY special term. Its timetable-less special-term
+    // entry must not overwrite the current year's module info.
+    const currentYearModule = {
+      acadYear: '2026/2027',
+      department: 'Geography',
+      description: 'New description',
+      faculty: 'Arts and Social Science',
+      moduleCode: 'GE4204',
+      moduleCredit: '4',
+      title: "'Slumdog' Cities: Urban Theory from the Margins",
+      workload: [0, 0, 0, 3, 7],
+    };
+
+    // Same module code, stale info from the previous academic year.
+    const previousYearModule = {
+      ...currentYearModule,
+      acadYear: '2025/2026',
+      description: 'Old description',
+      title: 'New Geographies of Urban Theory',
+    };
+
+    const semesterOneData: SemesterData = {
+      covidZones: ['C'],
+      semester: 1,
+      timetable: [
+        {
+          classNo: '1',
+          covidZone: 'C',
+          day: 'Thursday',
+          endTime: '1500',
+          lessonType: 'Seminar-Style Module Class',
+          size: 40,
+          startTime: '1200',
+          venue: 'AS2-0302',
+          weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        },
+      ],
+    };
+
+    // A different module that IS offered in the preserved special term, so the
+    // Sem 3 batch is correctly recognised as a preserved (previous-AY) batch even
+    // though the module under test has no timetable there.
+    const offeredInSpecialTerm = {
+      acadYear: '2025/2026',
+      department: 'Geography',
+      description: 'A special term module',
+      faculty: 'Arts and Social Science',
+      moduleCode: 'GE3000',
+      moduleCredit: '4',
+      title: 'Some Special Term Module',
+      workload: [2, 1, 0, 0, 3],
+    };
+
+    const semesterThreeData: SemesterData = {
+      covidZones: ['A'],
+      semester: 3,
+      timetable: [
+        {
+          classNo: '1',
+          covidZone: 'A',
+          day: 'Monday',
+          endTime: '1200',
+          lessonType: 'Lecture',
+          size: 20,
+          startTime: '1000',
+          venue: 'LT19',
+          weeks: [1, 2, 3, 4, 5, 6],
+        },
+      ],
+    };
+
+    const result = combineModules(
+      [
+        // Semester 1 (current AY): GE4204 offered with the new title.
+        [{ module: currentYearModule, moduleCode: 'GE4204', semesterData: semesterOneData }],
+        // Semester 3 (previous-AY special term): GE4204 present but not offered
+        // (no timetable) with stale info, alongside a module that is offered.
+        [
+          { module: previousYearModule, moduleCode: 'GE4204', semesterData: undefined },
+          { module: offeredInSpecialTerm, moduleCode: 'GE3000', semesterData: semesterThreeData },
+        ],
+      ],
+      {},
+      logger,
+      { preserveModuleInfoSemesters: new Set([3, 4]) },
+    );
+
+    const ge4204 = result.find((module) => module.moduleCode === 'GE4204');
+    expect(ge4204).toEqual({
+      ...currentYearModule,
+      semesterData: [semesterOneData],
+    });
+  });
 });
 
 describe(moduleDataCheck, () => {
