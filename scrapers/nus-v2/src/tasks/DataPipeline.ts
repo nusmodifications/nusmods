@@ -105,11 +105,11 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
           await new CollateVenues(semester, this.academicYear).run(modules);
         }
 
-        return { aliases, modules };
+        return { aliases, modules, semester };
       }),
     );
 
-    const semesterData = semesterResults.map((r) => r.modules);
+    const semesterData = semesterResults.map((r) => ({ modules: r.modules, semester: r.semester }));
     const allAliases = semesterResults.map((r) => r.aliases);
 
     const collateModules = new CollateModules(this.academicYear);
