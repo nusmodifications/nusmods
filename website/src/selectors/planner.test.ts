@@ -39,7 +39,12 @@ describe(getAcadYearModules, () => {
         modules: {},
         moduleCodes: {},
       },
+      settings,
     }) as any;
+
+  // The Undergraduate/Graduate setting, read by getAcadYearModules to evaluate
+  // program-type-gated prereqs.
+  const settings = { modRegNotification: { scheduleType: 'Undergraduate' } };
 
   const expectModuleCodes = (modules: ModuleCode[]) =>
     modules.map((moduleCode) =>
@@ -148,7 +153,7 @@ describe(getAcadYearModules, () => {
       moduleCodes: { CS3216: { semesters: [1] } },
     };
 
-    const state: any = { planner, moduleBank };
+    const state: any = { planner, moduleBank, settings };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2.0', {
       id: '0',
@@ -171,7 +176,7 @@ describe(getAcadYearModules, () => {
       moduleCodes: { CS3216: { semesters: [1] } },
     };
 
-    const state: any = { planner, moduleBank };
+    const state: any = { planner, moduleBank, settings };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0', {
       id: '0',
@@ -200,7 +205,7 @@ describe(getAcadYearModules, () => {
       moduleCodes: { CS3216: { semesters: [1] } },
     };
 
-    const state: any = { planner, moduleBank };
+    const state: any = { planner, moduleBank, settings };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2.0', {
       id: '0',
@@ -239,7 +244,7 @@ describe(getAcadYearModules, () => {
       },
     };
 
-    const state: any = { planner, moduleBank };
+    const state: any = { planner, moduleBank, settings };
 
     expect(getAcadYearModules(state)).toHaveProperty('2017/2018.1', [
       {
@@ -288,7 +293,7 @@ describe(getAcadYearModules, () => {
       },
     };
 
-    const state: any = { planner, moduleBank };
+    const state: any = { planner, moduleBank, settings };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1', [
       {
@@ -354,7 +359,7 @@ describe(getAcadYearModules, () => {
       },
     };
 
-    const state: any = { planner, moduleBank };
+    const state: any = { planner, moduleBank, settings };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1', [
       {
@@ -395,7 +400,7 @@ describe(getAcadYearModules, () => {
       },
     };
 
-    const state: any = { planner, moduleBank };
+    const state: any = { planner, moduleBank, settings };
 
     expect(getAcadYearModules(state)).toHaveProperty('2016/2017.1', [
       {
@@ -439,6 +444,7 @@ describe(getAcadYearModules, () => {
     const state: any = {
       planner,
       moduleBank,
+      settings,
     };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2.0', {
@@ -478,6 +484,7 @@ describe(getAcadYearModules, () => {
     const state: any = {
       planner,
       moduleBank,
+      settings,
     };
 
     const result = getAcadYearModules(state);

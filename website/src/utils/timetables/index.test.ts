@@ -1,9 +1,9 @@
 import NUSModerator from 'nusmoderator';
 import { parseISO } from 'date-fns';
 import { ModuleLessonConfig } from 'types/timetables';
-import { LessonType, RawLesson, Semester, Weeks } from 'types/modules';
+import { LessonType, ModuleLessonMap, RawLesson, Semester, Weeks } from 'types/modules';
 
-import { getModuleTimetable } from 'utils/modules';
+import { getModuleLessonMap, getModuleTimetable } from 'utils/modules';
 
 import { CS1010S } from '__mocks__/modules';
 import timetable from '__mocks__/sem-timetable.json';
@@ -16,7 +16,6 @@ import {
   getStartTimeAsDate,
   isLessonAvailable,
   isLessonOngoing,
-  isSameTimetableConfig,
   isValidSemester,
   lessonsForLessonType,
   randomModuleLessonConfig,
@@ -39,11 +38,19 @@ describe(isValidSemester, () => {
 
 test('randomModuleLessonConfig should return a random lesson config', () => {
   const sem: Semester = 1;
-  const rawLessons = getModuleTimetable(CS1010S, sem);
+  const rawLessons: ModuleLessonMap<RawLesson> = getModuleLessonMap(CS1010S, sem);
   const lessonConfig: ModuleLessonConfig = randomModuleLessonConfig(rawLessons);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
     expect(lessonConfig[lessonType]).toBeTruthy();
   });
+});
+
+test('randomModuleLessonConfig should omit lesson types with no available class numbers', () => {
+  const emptyLessonMap = {
+    Lecture: {},
+    Tutorial: {},
+  } as ModuleLessonMap<RawLesson>;
+  expect(randomModuleLessonConfig(emptyLessonMap)).toEqual({});
 });
 
 test('lessonsForLessonType should return all lessons belonging to a particular lessonType', () => {
@@ -68,54 +75,6 @@ test('lessonsForLessonType should return empty array if no such lessonType is pr
 test('timetableLessonsArray should return a flat array of lessons', () => {
   const someTimetable = timetable;
   expect(timetableLessonsArray(someTimetable).length).toBe(6);
-});
-
-test('isSameTimetableConfig', () => {
-  // Empty timetable
-  expect(isSameTimetableConfig({}, {})).toBe(true);
-
-  // Change lessonType order
-  expect(
-    isSameTimetableConfig(
-      { CS2104: { Tutorial: [1], Lecture: [2] } },
-      { CS2104: { Lecture: [2], Tutorial: [1] } },
-    ),
-  ).toBe(true);
-
-  // Change module order
-  expect(
-    isSameTimetableConfig(
-      {
-        CS2104: { Lecture: [1], Tutorial: [2] },
-        CS2105: { Lecture: [1], Tutorial: [1] },
-      },
-      {
-        CS2105: { Lecture: [1], Tutorial: [1] },
-        CS2104: { Lecture: [1], Tutorial: [2] },
-      },
-    ),
-  ).toBe(true);
-
-  // Different values
-  expect(
-    isSameTimetableConfig(
-      { CS2104: { Lecture: [1], Tutorial: [2] } },
-      { CS2104: { Lecture: [2], Tutorial: [1] } },
-    ),
-  ).toBe(false);
-
-  // One is subset of the other
-  expect(
-    isSameTimetableConfig(
-      {
-        CS2104: { Tutorial: [1], Lecture: [2] },
-      },
-      {
-        CS2104: { Tutorial: [1], Lecture: [2] },
-        CS2105: { Lecture: [1], Tutorial: [1] },
-      },
-    ),
-  ).toBe(false);
 });
 
 describe(formatNumericWeeks, () => {

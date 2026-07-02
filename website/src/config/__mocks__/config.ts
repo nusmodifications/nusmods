@@ -5,6 +5,7 @@ export { convertModRegDates } from '..';
 const mockConfig = {
   ...config,
   academicYear: '2017/2018',
+  specialTermAcademicYear: null,
   semester: 1,
 
   timetableAvailable: [1],

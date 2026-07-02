@@ -1,244 +1,715 @@
-import { get } from 'lodash-es';
 import { SemTimetableConfig } from 'types/timetables';
-import { ModuleCode, RawLessonWithIndex } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 
-import { getModuleTimetable } from 'utils/modules';
+import { CS1010S, CS3216, CS4243 } from '__mocks__/modules';
 
-import { CS1010S, CS3216, CS4243, GER1000 } from '__mocks__/modules';
-
-import { deserializeTimetable, parseTaModuleCodes, serializeTimetable } from './shareLinks';
+import { deserializeTimetable, getImportedModuleCodes, serializeTimetable } from './shareLinks';
+import { ModulesMap } from 'types/reducers';
+import qs from 'query-string';
 
 describe('timetable serialization/deserialization', () => {
-  const mockSemesterTimetable: { [moduleCode: ModuleCode]: readonly RawLessonWithIndex[] } = {
-    CS1010S: getModuleTimetable(CS1010S, 1),
-    CS3216: getModuleTimetable(CS3216, 1),
-    GER1000: getModuleTimetable(GER1000, 1),
-    CS4243: getModuleTimetable(CS4243, 1),
-  };
-  const mockGetModuleSemesterTimetable = (moduleCode: ModuleCode): readonly RawLessonWithIndex[] =>
-    get(mockSemesterTimetable, moduleCode);
+  const modules = {
+    CS1010S,
+    CS3216,
+    CS4243,
+  } as ModulesMap;
+  const semester: Semester = 1;
 
-  test('timetable serialization/deserialization', () => {
-    const configs: SemTimetableConfig[] = [
-      {},
-      { CS1010S: {} },
-      {
-        GER1000: { Tutorial: [13] },
-      },
-      {
-        CS4243: { Laboratory: [2], Lecture: [5] },
-        GER1000: { Tutorial: [13] },
-      },
-    ];
+  const deserialize = (serializedConfig: string) =>
+    deserializeTimetable(serializedConfig, modules, semester);
 
-    configs.forEach((config) => {
-      expect(
-        deserializeTimetable(serializeTimetable(config), mockGetModuleSemesterTimetable)
-          .semTimetableConfig,
-      ).toEqual(config);
-    });
-  });
+  describe('deserialized config should be identical to config that was serialized', () => {
+    const serializeThenDeserialize = (config: {
+      semTimetableConfig: SemTimetableConfig;
+      hidden: ModuleCode[];
+      ta: ModuleCode[];
+    }) => deserialize(serializeTimetable(config));
 
-  test('deserializing timetable with ta and hidden modules', () => {
-    expect(
-      deserializeTimetable(
-        'CS1010S=LEC:(0)&CS3216=LEC:(0)&ta=CS1010S&hidden=CS3216',
-        mockGetModuleSemesterTimetable,
-      ),
-    ).toEqual({
-      semTimetableConfig: {
-        CS1010S: {
-          Lecture: [0],
-        },
-        CS3216: {
-          Lecture: [0],
-        },
-      },
-      ta: ['CS1010S'],
-      hidden: ['CS3216'],
-    });
-  });
-
-  describe('deserializing edge cases', () => {
-    test('duplicate module code', () => {
-      expect(
-        deserializeTimetable('CS1010S=LEC:(0)&CS1010S=REC:(1)', mockGetModuleSemesterTimetable)
-          .semTimetableConfig,
-      ).toEqual({
-        CS1010S: {
-          Lecture: [0],
-          Recitation: [1],
-        },
-      });
-    });
-
-    test('no lessons', () => {
-      expect(
-        deserializeTimetable(
-          'CS2105&CS3217&CS1010S=LEC:(0)&ta=&hidden=',
-          mockGetModuleSemesterTimetable,
-        ).semTimetableConfig,
-      ).toEqual({
-        CS2105: {},
-        CS3217: {},
-        CS1010S: {
-          Lecture: [0],
-        },
-      });
-    });
-
-    test('should ignore invalid lesson indices', () => {
-      expect(
-        deserializeTimetable('CS1010S=LEC:(20)', mockGetModuleSemesterTimetable).semTimetableConfig,
-      ).toEqual({
-        CS1010S: {
-          Lecture: [],
-        },
-      });
-    });
-  });
-
-  test('should return empty array if v2 serialized', () => {
-    expect(parseTaModuleCodes('(CS1010S,CS3216)')).toEqual([]);
-  });
-
-  describe('deserialize v1 config', () => {
-    test('deserialize v1', () => {
-      expect(
-        deserializeTimetable(
-          'CS1010S=LEC:1,TUT:8&CS3216=LEC:1&ta=CS3216(LEC:1),CS1010S(LEC:1,TUT:2,TUT:3)&hidden=CS3216',
-          mockGetModuleSemesterTimetable,
-        ),
-      ).toEqual({
-        semTimetableConfig: {
-          CS1010S: {
-            Lecture: [0],
-            Tutorial: [21, 30],
-          },
-          CS3216: {
-            Lecture: [0],
-          },
-        },
-        ta: ['CS3216', 'CS1010S'],
-        hidden: ['CS3216'],
-      });
-    });
-
-    test('should ignore invalid lesson type', () => {
-      expect(
-        deserializeTimetable(
-          'CS1010S=LEC:1&ta=CS1010S(TUT:2,INVALIDLESSONTYPE:1)',
-          mockGetModuleSemesterTimetable,
-        ),
-      ).toEqual({
-        semTimetableConfig: {
-          CS1010S: {
-            Tutorial: [21],
-          },
-        },
-        ta: ['CS1010S'],
+    test('empty semTimetableConfig', () => {
+      const config = {
+        semTimetableConfig: {},
         hidden: [],
-      });
-    });
-
-    test('should ignore invalid classNo', () => {
-      expect(
-        deserializeTimetable('CS1010S=LEC:INVALIDCLASSNO', mockGetModuleSemesterTimetable),
-      ).toEqual({
-        semTimetableConfig: {
-          CS1010S: {
-            Lecture: [],
-          },
-        },
         ta: [],
-        hidden: [],
-      });
-    });
+      };
 
-    test('use only last ta param', () => {
-      expect(
-        deserializeTimetable(
-          'CS1010S=LEC:1&ta=CS3216(LEC:1)&ta=CS1010S(TUT:2)',
-          mockGetModuleSemesterTimetable,
-        ),
-      ).toEqual({
+      expect(serializeThenDeserialize(config)).toStrictEqual(config);
+    });
+    test('config with hidden and ta modules', () => {
+      const config = {
         semTimetableConfig: {
           CS1010S: {
-            Tutorial: [21],
+            Lecture: ['1'],
+            Recitation: ['2'],
+            Tutorial: ['3'],
+          },
+          CS4243: {
+            Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+            Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
           },
         },
-        ta: ['CS1010S'],
         hidden: [],
-      });
-    });
+        ta: ['CS4243'],
+      };
 
-    test('should ignore invalid ta lessons', () => {
-      expect(
-        deserializeTimetable('CS1010S=LEC:1&ta=CS1010S(LEC:2)', mockGetModuleSemesterTimetable),
-      ).toEqual({
-        semTimetableConfig: {
-          CS1010S: {
-            Lecture: [],
+      expect(serializeThenDeserialize(config)).toStrictEqual(config);
+    });
+  });
+
+  describe('deserializing v3 strings', () => {
+    describe('typical strings', () => {
+      test('with non-ta modules and ta modules', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2,TUT:3' +
+              '&CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);LEC:(1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13)' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
           },
-        },
-        ta: ['CS1010S'],
-        hidden: [],
+          ta: ['CS4243'],
+          hidden: [],
+        });
       });
-    });
-
-    test('ta module config without lessons', () => {
-      expect(
-        deserializeTimetable('CS1010S=LEC:1,TUT:3&ta=CS1010S()', mockGetModuleSemesterTimetable),
-      ).toEqual({
-        semTimetableConfig: {
-          CS1010S: {},
-        },
-        ta: ['CS1010S'],
-        hidden: [],
-      });
-    });
-
-    test('ignore modules without semester data', () => {
-      expect(
-        deserializeTimetable(
-          'CS1010S=LEC:1,REC:1,TUT:3&ta=CS3217(LEC:1)',
-          mockGetModuleSemesterTimetable,
-        ),
-      ).toEqual({
-        semTimetableConfig: {
-          CS1010S: {
-            Lecture: [0],
-            Recitation: [1],
-            Tutorial: [30],
+      test('with non-ta modules and ta modules that are hidden', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2,TUT:3' +
+              '&CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);LEC:(1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13)' +
+              '&hidden=CS1010S,CS4243' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
           },
-        },
-        ta: [],
-        hidden: [],
+          ta: ['CS4243'],
+          hidden: ['CS1010S', 'CS4243'],
+        });
       });
     });
-
-    test('should ignore invalid ta module config', () => {
-      expect(
-        deserializeTimetable(
-          'CS1010S=LEC:1,REC:1,TUT:3&ta=INVALID),CS1010S(LEC:1)',
-          mockGetModuleSemesterTimetable,
-        ),
-      ).toEqual({
-        semTimetableConfig: {
-          CS1010S: {
-            Lecture: [0],
+    describe('edge cases', () => {
+      test('empty semTimetableConfig string should not error', () => {
+        expect(deserialize('')).toStrictEqual({
+          semTimetableConfig: {},
+          ta: [],
+          hidden: [],
+        });
+      });
+      test('non-ta modules with serializedLessonDetails lessonId are converted to classNo', () => {
+        expect(
+          deserialize(
+            'CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);LEC:(1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13)',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS4243: {
+              Laboratory: ['2'],
+              Lecture: ['1'],
+            },
           },
-        },
-        ta: ['CS1010S'],
-        hidden: [],
+          ta: [],
+          hidden: [],
+        });
+      });
+      test('ta modules with classNo lessonId are converted to serializedLessonDetails', () => {
+        expect(deserialize('CS4243=LAB:2,LEC:1&ta=CS4243')).toStrictEqual({
+          semTimetableConfig: {
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('multiple non-ta and ta modules configs are combined', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2' +
+              '&CS1010S=TUT:3' +
+              '&CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13)' +
+              '&CS4243=LEC:(1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13)' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('if user manually enters multiple hidden and ta query keys, use latest one', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2,TUT:3' +
+              '&CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);LEC:(1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13)' +
+              '&CS3216=LEC:(1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13)' +
+              '&hidden=CS1010S,CS3216' +
+              '&hidden=CS4243' +
+              '&ta=CS1010S' +
+              '&ta=CS4243,CS3216',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+            CS3216: {
+              Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          hidden: ['CS4243'],
+          ta: ['CS4243', 'CS3216'],
+        });
+      });
+      test('invalid module codes are excluded, other modules should be deserialized correctly', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2,TUT:3' +
+              '&INVALIDMODULECODE=LEC:1' +
+              '&CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);LEC:(1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13)' +
+              '&ANOTHERINVALIDMODULECODE=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);LEC:(1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13)' +
+              '&ta=CS4243,ANOTHERINVALIDMODULECODE',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('empty module config should not error', () => {
+        expect(deserialize('CS1010S=' + '&CS4243=' + '&ta=CS4243')).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {},
+            CS4243: {},
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('invalid lesson types are excluded, other lesson types should be deserialized correctly', () => {
+        expect(
+          deserialize(
+            'CS1010S=ABC:1,SEC:1,REC:2,TUT:3' +
+              '&CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);ABC:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);SEC:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13)' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('lesson type with no lessonId should not error', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:,REC:2,TUT:3' +
+              '&CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);LEC:()' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: [],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: [],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('invalid lessonId are excluded, other lessons should be deserialized correctly', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:2,REC:2,TUT:3' +
+              '&CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13);LEC:(2|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13)' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: [],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: [],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
       });
     });
+  });
 
-    test('should return array of module codes', () => {
-      expect(parseTaModuleCodes('CS1010S(LEC:1,TUT:1),CS3216(LEC:1)')).toEqual([
-        'CS1010S',
-        'CS3216',
-      ]);
+  describe('deserializing v2 strings', () => {
+    describe('typical strings', () => {
+      test('with non-ta modules and ta modules', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:(0);REC:(3);TUT:(30)' + '&CS4243=LAB:(1);LEC:(5)' + '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('with non-ta modules and ta modules that are hidden', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:(0);REC:(3);TUT:(30)' +
+              '&CS4243=LAB:(1);LEC:(5)' +
+              '&hidden=CS1010S,CS4243' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: ['CS1010S', 'CS4243'],
+        });
+      });
     });
+    describe('deserializing edge cases', () => {
+      test('multiple non-ta and ta modules configs are combined', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:(0);REC:(3)' +
+              '&CS1010S=TUT:(30)' +
+              '&CS4243=LAB:(1)' +
+              '&CS4243=LEC:(5)' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('if user manually enters multiple hidden and ta query keys, use latest one', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:(0);REC:(3);TUT:(30)' +
+              '&CS4243=LAB:(1);LEC:(5)' +
+              '&CS3216=LEC:(0)' +
+              '&hidden=CS1010S,CS3216' +
+              '&hidden=CS4243' +
+              '&ta=CS1010S' +
+              '&ta=CS4243,CS3216',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+            CS3216: {
+              Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          hidden: ['CS4243'],
+          ta: ['CS4243', 'CS3216'],
+        });
+      });
+      test('invalid module codes are excluded, other modules should be deserialized correctly', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:(0);REC:(3);TUT:(30)' +
+              '&CS4243=LAB:(1);LEC:(5)' +
+              '&INVALIDMODULECODE=LEC:(1)' +
+              '&ANOTHERINVALIDMODULECODE=TUT:(1)' +
+              '&ta=CS4243,ANOTHERINVALIDMODULECODE',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('empty module config should not error', () => {
+        expect(deserialize('CS1010S=' + '&CS4243=' + '&ta=CS4243')).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {},
+            CS4243: {},
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('invalid lesson types are excluded, other lesson types should be deserialized correctly', () => {
+        expect(
+          deserialize(
+            'CS1010S=ABC:(0);SEC:(0);REC:(3);TUT:(30)' +
+              '&CS4243=ABC:(0);SEC:(0);LAB:(1)' +
+              '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('lesson type with no lessonId should not error', () => {
+        expect(
+          deserialize('CS1010S=LEC:();REC:(3);TUT:(30)' + '&CS4243=LAB:(1);LEC:()' + '&ta=CS4243'),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: [],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: [],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('ignore invalid lessonIndex, other lessons should be deserialized correctly', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:(1);REC:(3);TUT:(30)' + '&CS4243=LAB:(1);LEC:(6)' + '&ta=CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: [],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: [],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+    });
+  });
+
+  describe('deserializing v1 strings', () => {
+    describe('typical strings', () => {
+      test('with non-ta modules and ta modules', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2,TUT:3' + '&CS4243=LAB:2,LEC:1' + '&ta=CS4243(LAB:2,LEC:1)',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('with non-ta modules and ta modules that are hidden', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2,TUT:3' +
+              '&CS4243=LAB:2,LEC:1' +
+              '&ta=CS4243(LAB:2,LEC:1)' +
+              '&hidden=CS1010S,CS4243',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: ['CS1010S', 'CS4243'],
+        });
+      });
+    });
+    describe('deserializing edge cases', () => {
+      test('if user manually enters multiple hidden and ta query keys, use latest one', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2' +
+              '&CS1010S=TUT:3' +
+              '&CS4243=LAB:2,LEC:1' +
+              '&CS3216=LEC:1' +
+              '&hidden=CS1010S,CS3216' +
+              '&hidden=CS4243' +
+              '&ta=CS1010S(LEC:1,REC:2,TUT:3)' +
+              '&ta=CS4243(LAB:2,LEC:1),CS3216(LEC:1)',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: ['1|MON|1830|2030|LT15|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+            CS3216: {
+              Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          hidden: ['CS4243'],
+          ta: ['CS4243', 'CS3216'],
+        });
+      });
+      test('invalid TA module code', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:1,REC:2,TUT:3' +
+              '&CS4243=LAB:2,LEC:1' +
+              '&INVALIDMODULECODE=LEC:1' +
+              '&ANOTHERINVALIDMODULECODE=LEC:1' +
+              '&ta=CS4243(LAB:2),ANOTHERINVALIDMODULECODE(LEC:1)',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('empty TA lesson config', () => {
+        expect(
+          deserialize('CS1010S=LEC:1,REC:2,TUT:3' + '&CS4243=LAB:2,LEC:1' + '&ta=CS4243()'),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: ['1'],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {},
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('invalid lesson types are excluded, other lesson types should be deserialized correctly', () => {
+        expect(
+          deserialize(
+            'CS1010S=ABC:1,SEC:1,REC:2,TUT:3' +
+              '&CS4243=LAB:2,LEC:1' +
+              '&ta=CS4243(ABC:1,SEC:1,LAB:2)',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+      test('invalid classNo in TA lesson config', () => {
+        expect(
+          deserialize(
+            'CS1010S=LEC:2,REC:2,TUT:3' + '&CS4243=LAB:2,LEC:1' + '&ta=CS4243(LAB:2,LEC:2)',
+          ),
+        ).toStrictEqual({
+          semTimetableConfig: {
+            CS1010S: {
+              Lecture: [],
+              Recitation: ['2'],
+              Tutorial: ['3'],
+            },
+            CS4243: {
+              Laboratory: ['2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13'],
+              Lecture: [],
+            },
+          },
+          ta: ['CS4243'],
+          hidden: [],
+        });
+      });
+    });
+  });
+});
+
+describe('getting TA module codes of imported timetable', () => {
+  test('getting TA module codes of v1 serialization string', () => {
+    const searchString =
+      '?CS1010S=LEC1:1,REC:2,TUT:3\
+      &CS4243=LAB:2,LEC:1\
+      &ta=CS4243(LAB:2)';
+    expect(getImportedModuleCodes(qs.parse(searchString))).toStrictEqual(['CS1010S', 'CS4243']);
+  });
+
+  test('only count modules from last TA params of v1 serialization string', () => {
+    const searchString =
+      '?CS1010S=LEC1:1,REC:2,TUT:3\
+      &CS4243=LAB:2,LEC:1\
+      &ta=CS3216(LEC1:1),CS4243(LAB:2)\
+      &ta=CS4243(LAB:2)';
+    expect(getImportedModuleCodes(qs.parse(searchString))).toStrictEqual(['CS1010S', 'CS4243']);
+  });
+
+  test('getting TA module codes of v2 serialization string', () => {
+    const searchString =
+      '?CS1010S=LEC1:(0);REC:(3);TUT:(30)\
+      &CS4243=LAB:(2)\
+      &ta=CS4243';
+    expect(getImportedModuleCodes(qs.parse(searchString))).toStrictEqual(['CS1010S', 'CS4243']);
+  });
+
+  test('getting TA module codes of v3 serialization string', () => {
+    const searchString =
+      '?CS1010S=LEC1:1,REC:2,TUT:3\
+      &CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13)\
+      &ta=CS4243';
+    expect(getImportedModuleCodes(qs.parse(searchString))).toStrictEqual(['CS1010S', 'CS4243']);
+  });
+
+  test('only count modules from last TA params of v2/v3 serialization string', () => {
+    const searchString =
+      '?CS1010S=LEC1:1,REC:2,TUT:3\
+      &CS4243=LAB:(2|TUE|1600|1800|AS6-0421|3_4_5_6_7_8_9_10_11_12_13)\
+      &ta=CS3216,CS4243\
+      &ta=CS4243';
+    expect(getImportedModuleCodes(qs.parse(searchString))).toStrictEqual(['CS1010S', 'CS4243']);
   });
 });

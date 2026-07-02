@@ -8,6 +8,7 @@
   "scripts": {
     "scrape": "node build/index.js",
     "dev": "pnpm build && node build/index.js",
+    "serve:data": "node scripts/serve-data.mjs",
     "docs": "cp swagger.yaml docs/* data/",
     "bunyan": "bunyan -L -o short --color",
     "build": "tsc -p tsconfig.prod.json",
@@ -31,6 +32,7 @@
     "joi": "17.13.3",
     "lodash": "4.18.1",
     "nusmoderator": "3.0.0",
+    "nusmods-academic-calendar": "workspace:*",
     "oboe": "2.1.7",
     "promise-queue": "2.2.5",
     "ramda": "0.30.1",

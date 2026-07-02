@@ -8,6 +8,7 @@ import { getModuleCondensed } from 'selectors/moduleBank';
 import { ModuleCode, PrereqTree, ModuleCondensed } from 'types/modules';
 import { State } from 'types/state';
 import { notNull } from 'types/utils';
+import { formatCohortCondition, formatProgramTypeCondition } from 'utils/planner';
 
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import ConditionalReverse from 'views/components/ConditionalReverse';
@@ -41,7 +42,18 @@ const formatConditional = (node: PrereqTree, prereqTreeOnLeft?: boolean) => {
     return prereqTreeOnLeft ? `take at least ${requiredNum}` : `at least ${requiredNum} of`;
   }
   if ('or' in node) {
+    // A disjunction whose branches are all program-type gates is a per-degree
+    // split, not a choice the student makes, so it gets no "one of" label.
+    if (node.or.every((child) => typeof child === 'object' && 'programType' in child)) {
+      return '';
+    }
     return prereqTreeOnLeft ? 'take one' : `one of`;
+  }
+  if ('cohort' in node) {
+    return `For ${formatCohortCondition(node.cohort)}`;
+  }
+  if ('programType' in node) {
+    return `For ${formatProgramTypeCondition(node.programType)}`;
   }
   return prereqTreeOnLeft ? 'take all' : `all of`;
 };
@@ -79,6 +91,17 @@ const unwrapLayer = (node: PrereqTree) => {
   if ('nOf' in node) {
     return node.nOf[1];
   }
+  if ('cohort' in node) {
+    // Only the gated requirement is a child branch; the condition is rendered
+    // as this node's label via formatConditional. A bare cohort constraint has
+    // no requirement, so it renders as a childless label.
+    return node.then === undefined ? [] : [node.then];
+  }
+  if ('programType' in node) {
+    // The program type is rendered as this node's label; its gated requirement
+    // is the single child branch.
+    return [node.then];
+  }
   return flatten(values(node).filter(notNull));
 };
 
@@ -112,16 +135,27 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   const { prefix, name } = nodeName(node);
 
   if (isConditional) {
+    const children = unwrapLayer(node);
+    const label = formatConditional(node, prereqTreeOnLeft);
     return (
       <ConditionalReverse reverse={!prereqTreeOnLeft}>
         <Branch
-          nodes={unwrapLayer(node)}
+          nodes={children}
           layer={layer + 1}
           prereqTreeOnLeft={prereqTreeOnLeft}
           getModuleCondensed={props.getModuleCondensed}
         />
-        <div className={classnames(styles.node, styles.conditional)}>
-          {formatConditional(node, prereqTreeOnLeft)}
+        <div
+          className={classnames(styles.node, styles.conditional, {
+            // A childless conditional (e.g. a bare cohort constraint) has no
+            // branch to connect to, so drop the dangling connector line.
+            [styles.childless]: children.length === 0,
+            // An unlabelled junction (a per-degree program-type split) should
+            // not break the connector line, so collapse its box.
+            [styles.passthrough]: label === '',
+          })}
+        >
+          {label}
         </div>
       </ConditionalReverse>
     );

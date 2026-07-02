@@ -5,7 +5,7 @@ import { setAutoFreeze } from 'immer';
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
-import stateSyncMiddleware from 'middlewares/state-sync-middleware';
+import stateSyncMiddleware, { initStateWithPrevTab } from 'middlewares/state-sync-middleware';
 import getLocalStorage from 'storage/localStorage';
 
 import type { GetState } from 'types/redux';
@@ -69,6 +69,8 @@ export default function configureStore(defaultState?: State, usePersistence: boo
     // Enable webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => store.replaceReducer(rootReducer));
   }
+
+  initStateWithPrevTab(store);
 
   return store;
 }

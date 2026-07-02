@@ -1,5 +1,8 @@
+import { AnyAction } from 'redux';
+
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
+import { withReduxStateSync, receiveState } from 'middlewares/state-sync-middleware';
 import { State } from 'types/state';
 import { Actions } from 'types/actions';
 
@@ -47,7 +50,12 @@ const reducers = {
 
 const reducer = rememberReducer(combineReducers(reducers));
 
-export default function rootReducer(state: State = defaultState, action: Actions): State {
+export function rootReducer(state: State = defaultState, action: AnyAction): State {
   const newState = reducer(state, action);
   return undoReducer(state, newState, action);
 }
+
+// withReduxStateSync intercepts RECEIVE_INIT_STATE (from initStateWithPrevTab)
+// and adopts the peer tab's state, including non-persisted slices like
+// undoHistory so undo/redo stay in sync across tabs.
+export default withReduxStateSync(rootReducer, receiveState);

@@ -98,6 +98,24 @@ $connector-size: 0.75rem;
   }
 }
 
+// A conditional with no children (e.g. a bare cohort constraint) has nothing to
+// connect to, so suppress the trailing connector line.
+.childless {
+  margin-right: 0;
+
+  &::after {
+    display: none;
+  }
+}
+
+// An unlabelled junction (a per-degree program-type split) carries no text, so
+// collapse its box to zero width. The left (::before) and right (::after)
+// connector segments then meet, running the line straight through instead of
+// leaving a gap where the empty node sat.
+.passthrough {
+  padding: 0;
+}
+
 .branch {
   position: relative;
   display: flex;

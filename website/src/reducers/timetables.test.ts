@@ -15,6 +15,8 @@ import {
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
 import config from 'config';
+import { ModuleLessonConfig, TimetableConfig } from 'types/timetables';
+import { LessonId } from 'types/modules';
 
 const initialState = defaultTimetableState;
 
@@ -129,7 +131,14 @@ describe('hidden module reducer', () => {
 
 describe('TA module reducer', () => {
   test('should update TA modules', () => {
-    expect(reducer(initialState, addTaModule(1, 'CS3216'))).toHaveProperty('ta.1', ['CS3216']);
+    expect(
+      reducer(
+        initialState,
+        addTaModule(1, 'CS3216', {
+          Lecture: ['1'],
+        } satisfies ModuleLessonConfig),
+      ),
+    ).toHaveProperty('ta.1', ['CS3216'] satisfies LessonId[]);
   });
 
   test('should remove modules from list when modules are removed', () => {
@@ -156,44 +165,44 @@ describe('lesson reducer', () => {
           lessons: {
             [1]: {
               CS1010S: {
-                Lecture: [0],
-                Recitation: [3],
+                Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+                Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
               },
               CS3216: {
-                Lecture: [0],
+                Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
               },
             },
             [2]: {
               CS3217: {
-                Lecture: [0],
+                Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
               },
             },
-          },
+          } satisfies TimetableConfig,
         },
         setLessonConfig(1, 'CS1010S', {
-          Lecture: [1],
-          Recitation: [4],
-          Tutorial: [11],
-        }),
+          Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Recitation: ['3|THU|1600|1700|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+          Tutorial: ['1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13'],
+        } satisfies ModuleLessonConfig),
       ),
     ).toMatchObject({
       lessons: {
         [1]: {
           CS1010S: {
-            Lecture: [1],
-            Recitation: [4],
-            Tutorial: [11],
+            Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            Recitation: ['3|THU|1600|1700|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+            Tutorial: ['1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13'],
           },
           CS3216: {
-            Lecture: [0],
+            Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
           },
         },
         [2]: {
           CS3217: {
-            Lecture: [0],
+            Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
           },
         },
-      },
+      } satisfies TimetableConfig,
     });
   });
 
@@ -203,15 +212,27 @@ describe('lesson reducer', () => {
       lessons: {
         1: {
           CS1010S: {
-            Tutorial: [11, 12, 13],
+            Tutorial: [
+              '1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13',
+              '10|TUE|0900|1000|COM1-0209|3_4_5_6_7_8_9_10_11_12_13',
+              '11|TUE|1000|1100|COM1-0208|3_4_5_6_7_8_9_10_11_12_13',
+            ],
           },
         },
       },
     };
 
     expect(
-      reducer(timetableState, removeLesson(1, 'CS1010S', 'Tutorial', [12, 13])),
-    ).toHaveProperty('lessons.1.CS1010S.Tutorial', [11]);
+      reducer(
+        timetableState,
+        removeLesson(1, 'CS1010S', 'Tutorial', [
+          '10|TUE|0900|1000|COM1-0209|3_4_5_6_7_8_9_10_11_12_13',
+          '11|TUE|1000|1100|COM1-0208|3_4_5_6_7_8_9_10_11_12_13',
+        ]),
+      ),
+    ).toHaveProperty('lessons.1.CS1010S.Tutorial', [
+      '1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13',
+    ] satisfies LessonId[]);
   });
 
   test('should replace lessons with those in payload', () => {
@@ -220,15 +241,28 @@ describe('lesson reducer', () => {
       lessons: {
         1: {
           CS1010S: {
-            Tutorial: [11, 12, 13],
+            Tutorial: [
+              '1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13',
+              '10|TUE|0900|1000|COM1-0209|3_4_5_6_7_8_9_10_11_12_13',
+              '11|TUE|1000|1100|COM1-0208|3_4_5_6_7_8_9_10_11_12_13',
+            ],
           },
         },
       },
     };
 
     expect(
-      reducer(timetableState, changeLesson(1, 'CS1010S', 'Tutorial', [14, 15])),
-    ).toHaveProperty('lessons.1.CS1010S.Tutorial', [14, 15]);
+      reducer(
+        timetableState,
+        changeLesson(1, 'CS1010S', 'Tutorial', [
+          '12|TUE|1100|1200|COM1-0207|3_4_5_6_7_8_9_10_11_12_13',
+          '13|TUE|1200|1300|COM1-0114|3_4_5_6_7_8_9_10_11_12_13',
+        ]),
+      ),
+    ).toHaveProperty('lessons.1.CS1010S.Tutorial', [
+      '12|TUE|1100|1200|COM1-0207|3_4_5_6_7_8_9_10_11_12_13',
+      '13|TUE|1200|1300|COM1-0114|3_4_5_6_7_8_9_10_11_12_13',
+    ] satisfies LessonId[]);
   });
 
   test('should not add duplicate TA lessons', () => {
@@ -237,7 +271,7 @@ describe('lesson reducer', () => {
       lessons: {
         1: {
           CS1010S: {
-            Tutorial: [11],
+            Tutorial: ['1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13'],
           },
         },
       },
@@ -246,9 +280,14 @@ describe('lesson reducer', () => {
       },
     };
 
-    expect(reducer(withTaModules, addLesson(1, 'CS1010S', 'Tutorial', [11]))).toMatchObject(
-      withTaModules,
-    );
+    expect(
+      reducer(
+        withTaModules,
+        addLesson(1, 'CS1010S', 'Tutorial', [
+          '1|MON|0900|1000|COM1-0203|3_4_5_6_7_8_9_10_11_12_13',
+        ]),
+      ),
+    ).toMatchObject(withTaModules);
   });
 });
 
@@ -257,22 +296,22 @@ describe(stateReconciler, () => {
     '2015/2016': {
       [1]: {
         GET1006: {
-          Lecture: [0],
+          Lecture: ['1'],
         },
       },
     },
   };
 
-  const oldLessons = {
+  const oldLessons: TimetableConfig = {
     [1]: {
       CS1010S: {
-        Lecture: [0],
-        Recitation: [3],
+        Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
+        Recitation: ['2|THU|1300|1400|S14-0619|1_2_3_4_5_6_7_8_9_10_11_12_13'],
       },
     },
     [2]: {
       CS3217: {
-        Lecture: [0],
+        Lecture: ['1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13'],
       },
     },
   };

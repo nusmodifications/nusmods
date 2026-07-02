@@ -15,6 +15,7 @@ import {
 } from 'actions/constants';
 import { SUCCESS_KEY } from 'middlewares/requests-middleware';
 import { REMEMBER_REHYDRATED } from 'redux-remember';
+import { makeModuleLessonMap } from 'utils/timetables';
 
 export const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of basic modules data (module code, name, semester)
@@ -54,10 +55,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
             timestamp: Date.now(),
             semesterData: map(action.payload.semesterData, (semesterData) => ({
               ...semesterData,
-              timetable: map(semesterData.timetable, (lesson, lessonIndex) => ({
-                ...lesson,
-                lessonIndex,
-              })),
+              lessonMap: makeModuleLessonMap(semesterData.timetable),
             })),
           },
         },
