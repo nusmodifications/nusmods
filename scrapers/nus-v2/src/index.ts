@@ -123,7 +123,7 @@ yargs
             logger.warn(error, `No semester data available for ${semester}`);
             return [];
           });
-        semesterData.push(modules);
+        semesterData.push({ modules, semester });
       }
 
       await new CollateModules().run({ aliases, semesterData });

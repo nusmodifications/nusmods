@@ -6,7 +6,7 @@ import {
   ModuleAliases,
   ModuleWithoutTree,
   SemesterModule,
-  SemesterModuleData,
+  SemesterModuleBatch,
 } from '../types/mapper';
 import {
   Module,
@@ -28,7 +28,7 @@ import { isModuleInMPE } from '../utils/mpe';
 interface Input {
   aliases: Array<ModuleAliases>;
   preserveModuleInfoSemesters?: ReadonlySet<number>;
-  semesterData: Array<Array<SemesterModuleData>>;
+  semesterData: Array<SemesterModuleBatch>;
 }
 type Output = Array<Module>;
 
@@ -99,7 +99,7 @@ type CombineModulesOptions = {
  * Combine modules from multiple semesters into one
  */
 export function combineModules(
-  semesters: Array<Array<SemesterModuleData>>,
+  semesters: Array<SemesterModuleBatch>,
   aliases: { [moduleCode: string]: Array<ModuleCode> },
   logger: Logger,
   options: CombineModulesOptions = {},
@@ -107,8 +107,16 @@ export function combineModules(
   const { preserveModuleInfoSemesters } = options;
   const modules: { [moduleCode: string]: ModuleWithoutTree } = {};
 
-  // 1. Iterate over each module
-  for (const semesterModules of semesters) {
+  // 1. Iterate over each semester's batch of modules
+  for (const { modules: semesterModules, semester } of semesters) {
+    // When a semester's data is sourced from a previous academic year (the
+    // special-term fallback during an AY migration), its module info must not
+    // override the current year's. The batch carries its semester explicitly, so
+    // this holds for every module in it - including modules that exist in the
+    // catalog but are not offered this semester (and therefore have no timetable,
+    // and no semester of their own to infer from).
+    const isPreservedSemester = preserveModuleInfoSemesters?.has(semester) ?? false;
+
     for (const semesterModule of semesterModules) {
       const { moduleCode, semesterData } = semesterModule;
 
@@ -129,18 +137,24 @@ export function combineModules(
           logger.warn(difference, 'Module with different module info between semesters');
         }
 
-        if (semesterData && preserveModuleInfoSemesters?.has(semesterData.semester)) {
+        // 4. For preserved semesters (previous-AY special terms), keep the existing
+        //    current-year module info and only merge in this semester's timetable,
+        //    if the module is actually offered. This applies to every module in the
+        //    batch, including those with no timetable this semester.
+        if (isPreservedSemester) {
           modules[moduleCode] = {
             ...existingData,
             aliases: aliases[moduleCode] ?? existingData.aliases,
-            semesterData: upsertSemesterData(existingData.semesterData, semesterData),
+            semesterData: semesterData
+              ? upsertSemesterData(existingData.semesterData, semesterData)
+              : existingData.semesterData,
           };
           continue;
         }
 
-        // 4. Always use the latest semester's data. In case the two semester's data
-        //    diverge we trust the latest semester's data to be canonical as most
-        //    changes are additive, eg. adding more prereq options
+        // 5. Otherwise always use the latest semester's data. In case the two
+        //    semesters' data diverge we trust the latest semester's data to be
+        //    canonical as most changes are additive, eg. adding more prereq options
         module.semesterData.unshift(...existingData.semesterData);
       }
 
