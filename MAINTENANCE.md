@@ -14,11 +14,13 @@ Create a new issue on GitHub with this checklist after the finals every semester
   - [ ] Update `packages/nusmods-academic-calendar/academic-calendar.json` with data for the new academic year so scraper and website Special Term overlap routing remains correct
   - [ ] Update with next year's holiday data from academic calendar to `website/src/data/holidays.json` - Singapore & NUS Holidays (e.g. Well-Being day): <https://www.nus.edu.sg/registrar/calendar>
   - [ ] Update academic year in `scrapers/nus-v2/src/config.ts`
+
 - **Prepare "PR2"**
-  - [ ] In `app-config.json`, update `academicYear`
-  - [ ] Leave `examAvailability` unchanged during the Special Term overlap window because it is keyed by semester number, and previous AY Special Term exam data should remain visible
+  - [ ] In `app-config.json`, update `academicYear` and `examAvailability` to include only the semesters where exam information is available
+  - [ ] Update `packages/nusmods-academic-calendar/academic-calendar.json` with data for the new academic year
   - [ ] Add announcement to website by updating `website/src/views/components/notfications/Announcements.tsx`
-  - [ ] Leave `specialTermAcademicYear` as `null` — overlap with previous AY Special Term I and II is handled automatically until new AY Semester 1 starts (see PR3). Set manually (e.g. `"2024/2025"`) only if auto-detection from the academic calendar is insufficient.
+  - [ ] Leave `specialTermAcademicYear` as `null` — overlap with previous AY Special Term I and II is handled automatically until new AY Semester 1 starts (see PR3). Set manually (e.g. `"2024/2025"`) only if auto-detection from the academic calendar is insufficient
+  - [ ] Update ModReg schedule (see [Every Semester](#every-semester))
 
 ### 1-2 days before NUS IT Data Update
 
@@ -52,7 +54,6 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 ## Every Semester
 
 - [ ] Update semester in `website/src/config/app-config.json`
-- [ ] In `app-config.json`, add semester to `examAvailability` to indicate exam information is available for the semester
 - [ ] Update the ModReg schedule in `website/src/data/modreg-schedule.json`, and make sure the correct version is pointed to in `website/src/config/index.ts`
   - Reference PR: [PR #2764](https://github.com/nusmodifications/nusmods/pull/2764)
 
