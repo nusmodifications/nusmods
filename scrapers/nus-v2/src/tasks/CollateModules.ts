@@ -6,7 +6,7 @@ import {
   ModuleAliases,
   ModuleWithoutTree,
   SemesterModule,
-  SemesterModuleData,
+  SemesterModuleBatch,
 } from '../types/mapper';
 import {
   Module,
@@ -28,7 +28,7 @@ import { isModuleInMPE } from '../utils/mpe';
 interface Input {
   aliases: Array<ModuleAliases>;
   preserveModuleInfoSemesters?: ReadonlySet<number>;
-  semesterData: Array<Array<SemesterModuleData>>;
+  semesterData: Array<SemesterModuleBatch>;
 }
 type Output = Array<Module>;
 
@@ -99,7 +99,7 @@ type CombineModulesOptions = {
  * Combine modules from multiple semesters into one
  */
 export function combineModules(
-  semesters: Array<Array<SemesterModuleData>>,
+  semesters: Array<SemesterModuleBatch>,
   aliases: { [moduleCode: string]: Array<ModuleCode> },
   logger: Logger,
   options: CombineModulesOptions = {},
@@ -107,21 +107,15 @@ export function combineModules(
   const { preserveModuleInfoSemesters } = options;
   const modules: { [moduleCode: string]: ModuleWithoutTree } = {};
 
-  // 1. Iterate over each module
-  for (const semesterModules of semesters) {
-    // Every module in a batch comes from the same semester's fetch. When that
-    // semester's data is sourced from a previous academic year (the special-term
-    // fallback during an AY migration), its module info must not override the
-    // current year's. We detect this per-batch from any offered module's semester,
-    // because modules that exist in the catalog but are not offered this semester
-    // carry no semesterData - and hence no semester - of their own, yet they still
-    // must be preserved. (Previously this was checked per-entry via
-    // semesterData.semester, so those timetable-less entries bypassed the check and
-    // clobbered the current year's module info with stale previous-AY data.)
-    const isPreservedSemester = semesterModules.some(
-      ({ semesterData }) =>
-        semesterData != null && (preserveModuleInfoSemesters?.has(semesterData.semester) ?? false),
-    );
+  // 1. Iterate over each semester's batch of modules
+  for (const { modules: semesterModules, semester } of semesters) {
+    // When a semester's data is sourced from a previous academic year (the
+    // special-term fallback during an AY migration), its module info must not
+    // override the current year's. The batch carries its semester explicitly, so
+    // this holds for every module in it - including modules that exist in the
+    // catalog but are not offered this semester (and therefore have no timetable,
+    // and no semester of their own to infer from).
+    const isPreservedSemester = preserveModuleInfoSemesters?.has(semester) ?? false;
 
     for (const semesterModule of semesterModules) {
       const { moduleCode, semesterData } = semesterModule;

@@ -78,27 +78,36 @@ describe(combineModules, () => {
     expect(
       combineModules(
         [
-          [
-            {
-              module,
-              moduleCode,
-              semesterData: semesterOneData,
-            },
-          ],
-          [
-            {
-              module,
-              moduleCode,
-              semesterData: semesterTwoData,
-            },
-          ],
-          [
-            {
-              module,
-              moduleCode,
-              // No semesterData - should be ignored
-            },
-          ],
+          {
+            modules: [
+              {
+                module,
+                moduleCode,
+                semesterData: semesterOneData,
+              },
+            ],
+            semester: 1,
+          },
+          {
+            modules: [
+              {
+                module,
+                moduleCode,
+                semesterData: semesterTwoData,
+              },
+            ],
+            semester: 2,
+          },
+          {
+            modules: [
+              {
+                module,
+                moduleCode,
+                // No semesterData - should be ignored
+              },
+            ],
+            semester: 3,
+          },
         ],
         {},
         logger,
@@ -112,7 +121,14 @@ describe(combineModules, () => {
 
     // 2 modules without semesterData - should result in empty semesterData array.
     expect(
-      combineModules([[{ module, moduleCode }], [{ module, moduleCode }]], {}, logger),
+      combineModules(
+        [
+          { modules: [{ module, moduleCode }], semester: 1 },
+          { modules: [{ module, moduleCode }], semester: 2 },
+        ],
+        {},
+        logger,
+      ),
     ).toEqual([
       {
         ...module,
@@ -162,14 +178,22 @@ describe(combineModules, () => {
     expect(
       combineModules(
         [
-          [{ module: currentYearModule, moduleCode: 'CS1010S', semesterData: undefined }],
-          [
-            {
-              module: previousYearModule,
-              moduleCode: 'CS1010S',
-              semesterData: semesterFourData,
-            },
-          ],
+          {
+            modules: [
+              { module: currentYearModule, moduleCode: 'CS1010S', semesterData: undefined },
+            ],
+            semester: 1,
+          },
+          {
+            modules: [
+              {
+                module: previousYearModule,
+                moduleCode: 'CS1010S',
+                semesterData: semesterFourData,
+              },
+            ],
+            semester: 4,
+          },
         ],
         {},
         logger,
@@ -183,11 +207,12 @@ describe(combineModules, () => {
     ]);
   });
 
-  test('should keep current-year module info for modules not offered in a preserved semester', () => {
-    // Reproduces the AY-migration bug: a module offered in the current year
-    // (Semester 1) that also exists in the previous year's catalog but is NOT
-    // offered in the previous-AY special term. Its timetable-less special-term
-    // entry must not overwrite the current year's module info.
+  test('should keep current-year module info when a preserved batch has no offered modules', () => {
+    // Hardening for the AY-migration bug and its edge case: a preserved
+    // (previous-AY special term) batch in which NO module is offered - every entry
+    // has semesterData: undefined. Because the batch carries its semester
+    // explicitly, its stale module info must still not overwrite the current
+    // year's, even though the semester cannot be inferred from any timetable.
     const currentYearModule = {
       acadYear: '2026/2027',
       department: 'Geography',
@@ -225,48 +250,21 @@ describe(combineModules, () => {
       ],
     };
 
-    // A different module that IS offered in the preserved special term, so the
-    // Sem 3 batch is correctly recognised as a preserved (previous-AY) batch even
-    // though the module under test has no timetable there.
-    const offeredInSpecialTerm = {
-      acadYear: '2025/2026',
-      department: 'Geography',
-      description: 'A special term module',
-      faculty: 'Arts and Social Science',
-      moduleCode: 'GE3000',
-      moduleCredit: '4',
-      title: 'Some Special Term Module',
-      workload: [2, 1, 0, 0, 3],
-    };
-
-    const semesterThreeData: SemesterData = {
-      covidZones: ['A'],
-      semester: 3,
-      timetable: [
-        {
-          classNo: '1',
-          covidZone: 'A',
-          day: 'Monday',
-          endTime: '1200',
-          lessonType: 'Lecture',
-          size: 20,
-          startTime: '1000',
-          venue: 'LT19',
-          weeks: [1, 2, 3, 4, 5, 6],
-        },
-      ],
-    };
-
     const result = combineModules(
       [
         // Semester 1 (current AY): GE4204 offered with the new title.
-        [{ module: currentYearModule, moduleCode: 'GE4204', semesterData: semesterOneData }],
-        // Semester 3 (previous-AY special term): GE4204 present but not offered
-        // (no timetable) with stale info, alongside a module that is offered.
-        [
-          { module: previousYearModule, moduleCode: 'GE4204', semesterData: undefined },
-          { module: offeredInSpecialTerm, moduleCode: 'GE3000', semesterData: semesterThreeData },
-        ],
+        {
+          modules: [
+            { module: currentYearModule, moduleCode: 'GE4204', semesterData: semesterOneData },
+          ],
+          semester: 1,
+        },
+        // Semester 3 (previous-AY special term): GE4204 present but not offered,
+        // and no module in the batch is offered at all (all semesterData undefined).
+        {
+          modules: [{ module: previousYearModule, moduleCode: 'GE4204', semesterData: undefined }],
+          semester: 3,
+        },
       ],
       {},
       logger,
