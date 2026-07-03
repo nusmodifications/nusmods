@@ -56,7 +56,10 @@ export default function configureStore(defaultState?: State, usePersistence: boo
                 {
                   migrate,
                   serialize: (state, _key) => state,
-                  unserialize: (state, _key) => state,
+                  unserialize: (state, _key) => {
+                    initStateWithPrevTab(store);
+                    return state;
+                  },
                 },
               ),
               storeEnhancer,
@@ -69,8 +72,6 @@ export default function configureStore(defaultState?: State, usePersistence: boo
     // Enable webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => store.replaceReducer(rootReducer));
   }
-
-  initStateWithPrevTab(store);
 
   return store;
 }
