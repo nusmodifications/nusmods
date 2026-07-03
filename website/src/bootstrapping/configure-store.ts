@@ -5,7 +5,7 @@ import { setAutoFreeze } from 'immer';
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
-import stateSyncMiddleware, { initStateWithPrevTab } from 'middlewares/state-sync-middleware';
+import stateSyncMiddleware from 'middlewares/state-sync-middleware';
 import getLocalStorage from 'storage/localStorage';
 
 import type { GetState } from 'types/redux';
@@ -56,10 +56,7 @@ export default function configureStore(defaultState?: State, usePersistence: boo
                 {
                   migrate,
                   serialize: (state, _key) => state,
-                  unserialize: (state, _key) => {
-                    initStateWithPrevTab(store);
-                    return state;
-                  },
+                  unserialize: (state, _key) => state,
                 },
               ),
               storeEnhancer,

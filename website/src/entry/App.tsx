@@ -12,6 +12,7 @@ import { DIMENSIONS, setCustomDimensions } from 'bootstrapping/matomo';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import RehydrateGate from 'storage/RehydrateGate';
+import { initStateWithPrevTab } from 'redux-state-sync';
 
 type Props = {
   store: Store<State>;
@@ -25,6 +26,8 @@ const App: FC<PropsWithChildren<Props>> = ({ store }) => {
       [DIMENSIONS.theme]: theme.id,
       [DIMENSIONS.beta]: String(!!settings.beta),
     });
+
+    initStateWithPrevTab(store);
   };
 
   return (
