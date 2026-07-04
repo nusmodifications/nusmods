@@ -60,7 +60,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		logger.ErrorContext(ctx, "failed to read request body", "error", err)
-		http.Error(w, "Invalid request format", http.StatusBadRequest)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
