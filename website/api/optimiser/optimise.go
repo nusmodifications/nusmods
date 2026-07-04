@@ -8,7 +8,6 @@ package handler
 import (
 	"encoding/json"
 	"errors"
-	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -55,19 +54,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	start := time.Now()
 
-	// Read the raw body first so we can log exactly what the client sent if
-	// decoding fails below.
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		logger.ErrorContext(ctx, "failed to read request body", "error", err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-
 	// get selected modules from request
 	var optimiserRequest models.OptimiserRequest
-	if err = json.Unmarshal(body, &optimiserRequest); err != nil {
-		logger.ErrorContext(ctx, "failed to decode request body", "error", err, "body", string(body))
+	err := json.NewDecoder(r.Body).Decode(&optimiserRequest)
+	if err != nil {
+		logger.ErrorContext(ctx, "failed to decode request body", "error", err)
 		http.Error(w, "Invalid request format", http.StatusBadRequest)
 		return
 	}
