@@ -6,7 +6,6 @@ and handles incoming optimization requests from the NUSMods web application.
 package handler
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -19,12 +18,7 @@ import (
 	solver "github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
 
-// logger emits JSON logs tagged with a "service" field. Vercel automatically
-// parses JSON log lines from serverless functions, so each line carries a
-// timestamp, level, message and service name — giving us searchable, filterable
-// logs on the dashboard for debugging requests.
-//
-//nolint:gochecknoglobals // a single package-level logger shared by the handler
+//nolint:gochecknoglobals
 var logger = slog.New(
 	slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
 ).With("service", "optimiser")
@@ -84,7 +78,24 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	response, err := solver.Solve(optimiserRequest)
 	if err != nil {
-		code, message := logSolveError(ctx, err, optimiserRequest)
+		// A SolveError carries a specific status code and message; anything else
+		// is an internal server error.
+		code := http.StatusInternalServerError
+		message := "Internal server error"
+		var solveErr *models.SolveError
+		if errors.As(err, &solveErr) {
+			code = solveErr.Code
+			message = solveErr.Message
+		}
+
+		// A 4xx means the client sent a bad request (invalid params, unknown
+		// module); log at Warn since it is not a server fault. Everything else
+		// is an internal failure.
+		if code >= http.StatusBadRequest && code < http.StatusInternalServerError {
+			logger.WarnContext(ctx, "solve rejected request", "error", err, "request", optimiserRequest)
+		} else {
+			logger.ErrorContext(ctx, "solve failed", "error", err, "request", optimiserRequest)
+		}
 		http.Error(w, message, code)
 		return
 	}
@@ -104,36 +115,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.InfoContext(ctx, "solve succeeded",
-		"modules", len(optimiserRequest.Modules),
 		"score", response.Score,
 		"durationMs", time.Since(start).Milliseconds(),
+		"shareableLink", response.ShareableLink,
+		"defaultShareableLink", response.DefaultShareableLink,
 	)
-}
-
-// logSolveError logs a failed Solve call together with the client request that
-// caused it, and returns the HTTP status code and message to send back.
-//
-// A SolveError carries a specific status code and message; anything else is
-// treated as an internal server error. Client mistakes (4xx — invalid params,
-// unknown module) are logged at Warn since they are not a server fault, while
-// everything else is logged at Error.
-func logSolveError(
-	ctx context.Context,
-	err error,
-	request models.OptimiserRequest,
-) (int, string) {
-	code := http.StatusInternalServerError
-	message := "Internal server error"
-	var solveErr *models.SolveError
-	if errors.As(err, &solveErr) {
-		code = solveErr.Code
-		message = solveErr.Message
-	}
-
-	if code >= http.StatusBadRequest && code < http.StatusInternalServerError {
-		logger.WarnContext(ctx, "solve rejected request", "error", err, "request", request)
-	} else {
-		logger.ErrorContext(ctx, "solve failed", "error", err, "request", request)
-	}
-	return code, message
 }
