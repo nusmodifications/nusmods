@@ -18,7 +18,7 @@ import (
 	solver "github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
 
-//nolint:gochecknoglobals
+//nolint:gochecknoglobals // a single package-level logger shared by the handler
 var logger = slog.New(
 	slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
 ).With("service", "optimiser")
