@@ -364,8 +364,13 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const { modules } = state.moduleBank;
 
-  const lastDay = addDays(ownProps.currentTime, DAYS); // current date plus 7 days
-  const todayWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(ownProps.currentTime);
+  // Semester/week selection must match the Singapore-based day grouping in the
+  // component (see groupLessons), so an overseas viewer whose local date trails
+  // Singapore's doesn't load the previous semester's timetable while the day
+  // list already shows the new semester's lessons.
+  const currentTime = toSingaporeTime(ownProps.currentTime);
+  const lastDay = addDays(currentTime, DAYS); // current date plus 7 days
+  const todayWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(currentTime);
   const nextWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
 
   const todaySemester = semesterNameMap[todayWeekInfo.sem];
