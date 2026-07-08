@@ -61,7 +61,11 @@ export function deduplicateModulesByVersion(
   for (const mod of modules) {
     const moduleCode = mod.SubjectArea + mod.CatalogNumber;
     const existing = byCode.get(moduleCode);
-    if (!existing || compareModuleVersion(mod, existing) > 0) {
+    // Replace on a newer-or-equal revision. On an exact tie (same version and
+    // effective date) this keeps the later record in iteration order: in the
+    // per-semester fallback that is the later semester, preserving the "latest
+    // semester's data is canonical" convention that CollateModules relies on.
+    if (!existing || compareModuleVersion(mod, existing) >= 0) {
       byCode.set(moduleCode, mod);
     }
   }

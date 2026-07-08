@@ -123,15 +123,18 @@ describe(deduplicateModulesByVersion, () => {
     expect(result).toHaveLength(2);
   });
 
-  test('preserves the first-seen entry when revisions are indistinguishable', () => {
+  test('keeps the last-seen entry when revisions are indistinguishable', () => {
+    // Tie on version and date resolves to iteration order: the per-semester
+    // fallback flattens semesters ascending, so the later semester wins,
+    // matching the "latest semester's data is canonical" convention.
     const modules = [
-      makeModule({ AcademicGroup: 'first', VersionMajor: 1, VersionMinor: 0 }),
-      makeModule({ AcademicGroup: 'second', VersionMajor: 1, VersionMinor: 0 }),
+      makeModule({ AcademicGroup: 'earlier-semester', VersionMajor: 1, VersionMinor: 0 }),
+      makeModule({ AcademicGroup: 'later-semester', VersionMajor: 1, VersionMinor: 0 }),
     ];
 
     const result = deduplicateModulesByVersion(modules);
 
     expect(result).toHaveLength(1);
-    expect(result[0].AcademicGroup).toBe('first');
+    expect(result[0].AcademicGroup).toBe('later-semester');
   });
 });
