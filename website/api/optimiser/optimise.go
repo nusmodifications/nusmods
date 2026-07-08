@@ -10,10 +10,17 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"os"
+	"time"
 
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 	solver "github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
+
+//nolint:gochecknoglobals // a single package-level logger shared by the handler
+var logger = slog.New(
+	slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
+).With("service", "optimiser")
 
 // Handler is the main entry point for the timetable optimiser API endpoint.
 // It accepts POST requests with module selection and preferences, runs the optimization
@@ -44,27 +51,49 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ctx := r.Context()
+	start := time.Now()
+
 	// get selected modules from request
 	var optimiserRequest models.OptimiserRequest
 	err := json.NewDecoder(r.Body).Decode(&optimiserRequest)
 	if err != nil {
+		logger.ErrorContext(ctx, "failed to decode request body", "error", err)
 		http.Error(w, "Invalid request format", http.StatusBadRequest)
 		return
 	}
 
+	// Log the request as soon as it is decoded so we always have a record of
+	// what the client sent, even if the solve below times out or panics.
+	logger.InfoContext(ctx, "request received", "request", optimiserRequest)
+
 	response, err := solver.Solve(optimiserRequest)
 	if err != nil {
+		// A SolveError carries a specific status code and message; anything else
+		// is an internal server error.
+		code := http.StatusInternalServerError
+		message := "Internal server error"
 		var solveErr *models.SolveError
 		if errors.As(err, &solveErr) {
-			http.Error(w, solveErr.Message, solveErr.Code)
-		} else {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			code = solveErr.Code
+			message = solveErr.Message
 		}
+
+		// A 4xx means the client sent a bad request (invalid params, unknown
+		// module); log at Warn since it is not a server fault. Everything else
+		// is an internal failure.
+		if code >= http.StatusBadRequest && code < http.StatusInternalServerError {
+			logger.WarnContext(ctx, "solve rejected request", "error", err, "request", optimiserRequest)
+		} else {
+			logger.ErrorContext(ctx, "solve failed", "error", err, "request", optimiserRequest)
+		}
+		http.Error(w, message, code)
 		return
 	}
 
 	data, err := json.Marshal(response)
 	if err != nil {
+		logger.ErrorContext(ctx, "failed to encode response", "error", err, "request", optimiserRequest)
 		http.Error(w, "JSON encoding failed", http.StatusInternalServerError)
 		return
 	}
@@ -72,6 +101,14 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if _, writeErr := w.Write(data); writeErr != nil {
-		slog.ErrorContext(r.Context(), "failed to write response", "error", writeErr)
+		logger.ErrorContext(ctx, "failed to write response", "error", writeErr)
+		return
 	}
+
+	logger.InfoContext(ctx, "solve succeeded",
+		"score", response.Score,
+		"durationMs", time.Since(start).Milliseconds(),
+		"shareableLink", response.ShareableLink,
+		"defaultShareableLink", response.DefaultShareableLink,
+	)
 }
