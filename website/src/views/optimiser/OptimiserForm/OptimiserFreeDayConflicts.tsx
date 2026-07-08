@@ -16,7 +16,7 @@ const OptimiserFreeDayConflicts: React.FC<Props> = ({ freeDayConflicts }) =>
         Free Day Conflicts
       </h3>
 
-      <h4>The following lesson(s) require physical attendance on your selected free days:</h4>
+      <h4>The following lesson(s) require live attendance on your selected free days:</h4>
 
       <ul>
         {freeDayConflicts.map((conflict, index) => (
