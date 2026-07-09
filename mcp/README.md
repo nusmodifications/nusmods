@@ -1,0 +1,84 @@
+# NUSMods MCP Server
+
+A [Model Context Protocol](https://modelcontextprotocol.io/) server that exposes
+NUSMods module data to LLM clients (Claude Desktop, Cursor, etc.).
+
+Deployed at **`https://mcp.nusmods.com/mcp`** (Streamable HTTP transport).
+
+## Tools
+
+| Tool             | Description                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| `search_modules` | Keyword search over module code / title / description for the current academic year. |
+| `get_module`     | Full details for one module code: info, requisites, exam dates, timetable.           |
+
+Data comes entirely from existing public NUSMods infrastructure — no database:
+
+- Module details: the v2 JSON API (`https://api.nusmods.com/v2/{AY}/modules/{CODE}.json`)
+- Search: the public `modules_v2` ElasticSearch index (the same one the website's
+  Course Finder queries)
+
+## Architecture
+
+- **Transport:** Streamable HTTP, **stateless** (`sessionIdGenerator: undefined`,
+  `enableJsonResponse: true`) — a fresh server + transport per request, which
+  suits serverless.
+- **Hosting:** Vercel serverless function (`api/mcp.ts`), mirroring `/export`.
+  Rate limiting is handled upstream by Cloudflare.
+- **SDK:** `@modelcontextprotocol/sdk` with `zod` input schemas.
+
+```
+mcp/
+├── api/
+│   ├── mcp.ts          # Vercel entrypoint for /mcp
+│   └── health.ts       # Health check for /
+├── src/
+│   ├── server.ts       # builds the McpServer, registers tools
+│   ├── handler.ts      # per-request stateless transport wiring
+│   ├── dev.ts          # local HTTP dev server
+│   ├── config.ts
+│   ├── format.ts       # human-readable text output
+│   ├── data/           # nusmodsApi (v2 JSON) · elastic (search) · cache
+│   ├── tools/          # getModule · searchModules
+│   └── types/          # vendored module + ES types
+└── vercel.json
+```
+
+## Development
+
+From the repo root (`pnpm install` once for the whole workspace), then:
+
+```sh
+cd mcp
+cp .env.example .env      # optional; defaults are baked in
+pnpm dev                  # http://localhost:3000/mcp
+```
+
+Inspect it with the MCP Inspector:
+
+```sh
+npx @modelcontextprotocol/inspector
+# then connect to http://localhost:3000/mcp (Streamable HTTP)
+```
+
+Checks:
+
+```sh
+pnpm typecheck
+pnpm lint
+pnpm check       # lint + typecheck
+```
+
+## Deployment
+
+Vercel project bound to `mcp.nusmods.com`. `vercel.json` rewrites `/mcp` to the
+function and `/` to the health check. Environment variables (all optional, see
+`.env.example`) let you override the academic year and upstream URLs.
+
+## Roadmap
+
+- **M4:** faceted search filters (semester, faculty, department, module level,
+  credits, attributes) + highlight snippets, plus an ES fallback to
+  `moduleInformation.json`.
+- Later: venues, faculty/department listing, academic-calendar tools, and MCP
+  **resources** (e.g. `nusmods://{ay}/module/{code}`).

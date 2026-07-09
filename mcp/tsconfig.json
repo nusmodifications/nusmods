@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "rootDir": ".",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "esModuleInterop": true,
+    "strict": true,
+    "useUnknownInCatchVariables": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "api"]
+}
