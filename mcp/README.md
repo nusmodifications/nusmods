@@ -70,7 +70,9 @@ Checks:
 ```sh
 pnpm typecheck
 pnpm lint
-pnpm check       # lint + typecheck
+pnpm test        # vitest (unit tests, no network)
+pnpm test:watch
+pnpm check       # lint + typecheck + test
 ```
 
 ## Deployment
