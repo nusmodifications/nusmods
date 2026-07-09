@@ -85,27 +85,37 @@ export function formatModuleSummary(module: Module): string {
   return lines.join('\n');
 }
 
+/** Build a one-line snippet, preferring ES highlight fragments over raw description. */
+function searchSnippet(hit: ModuleHit): string {
+  const fragments = hit.highlight?.description;
+  if (fragments?.length) {
+    const joined = fragments.join(' … ').replaceAll('<mark>', '**').replaceAll('</mark>', '**');
+    return ` — ${joined}`;
+  }
+  const desc = hit._source.description;
+  return desc ? ` — ${desc.slice(0, 140)}${desc.length > 140 ? '…' : ''}` : '';
+}
+
 /** Human-readable summary of a search result set. */
 export function formatSearchResults(
   query: string | undefined,
   total: number,
   hits: Array<ModuleHit>,
+  appliedFilters?: string,
 ): string {
+  const scope = query ? ` matching "${query}"` : '';
+  const filters = appliedFilters ? ` [${appliedFilters}]` : '';
+
   if (hits.length === 0) {
-    return query ? `No modules found matching "${query}".` : 'No modules found.';
+    return `No modules found${scope}${filters} for AY ${config.academicYear}.`;
   }
 
-  const header = query
-    ? `Found ${total} module(s) matching "${query}" (showing ${hits.length}) for AY ${config.academicYear}:`
-    : `Showing ${hits.length} of ${total} modules for AY ${config.academicYear}:`;
+  const header = `Found ${total} module(s)${scope}${filters} (showing ${hits.length}) for AY ${config.academicYear}:`;
 
   const items = hits.map((hit) => {
     const m = hit._source;
     const credits = m.moduleCredit ? ` · ${m.moduleCredit} MC` : '';
-    const desc = m.description
-      ? ` — ${m.description.slice(0, 140)}${m.description.length > 140 ? '…' : ''}`
-      : '';
-    return `- **${m.moduleCode}** ${m.title}${credits}${desc}`;
+    return `- **${m.moduleCode}** ${m.title}${credits}${searchSnippet(hit)}`;
   });
 
   return [header, '', ...items, '', 'Use `get_module` with a module code for full details.'].join(

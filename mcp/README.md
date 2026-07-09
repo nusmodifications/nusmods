@@ -7,10 +7,14 @@ Deployed at **`https://mcp.nusmods.com/mcp`** (Streamable HTTP transport).
 
 ## Tools
 
-| Tool             | Description                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------ |
-| `search_modules` | Keyword search over module code / title / description for the current academic year. |
-| `get_module`     | Full details for one module code: info, requisites, exam dates, timetable.           |
+- **`search_modules`** — keyword search + faceted filters for the current academic year.
+- **`get_module`** — full details for one module code: info, requisites, exam dates, timetable.
+
+`search_modules` supports free-text `query` (module code / title / description,
+returned with `<mark>`→`**` highlight snippets) plus these filters — combined
+with AND, multiple values within a filter OR'd: `semesters`, `levels`,
+`faculties`, `departments`, `gradingBasis`, `attributes`, `minCredit`/`maxCredit`,
+and `noExam`.
 
 Data comes entirely from existing public NUSMods infrastructure — no database:
 
@@ -27,7 +31,7 @@ Data comes entirely from existing public NUSMods infrastructure — no database:
   Rate limiting is handled upstream by Cloudflare.
 - **SDK:** `@modelcontextprotocol/sdk` with `zod` input schemas.
 
-```
+```text
 mcp/
 ├── api/
 │   ├── mcp.ts          # Vercel entrypoint for /mcp
