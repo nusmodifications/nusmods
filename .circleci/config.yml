@@ -89,6 +89,18 @@ jobs:
             NODE_ENV: production
           command: pnpm build
 
+  mcp:
+    executor: node-executor
+    working_directory: ~/nusmods/mcp
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - run: corepack enable && corepack prepare pnpm@10.30.3 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+
   website:
     executor: node-executor
     working_directory: ~/nusmods/website
@@ -183,6 +195,9 @@ workflows:
           requires:
             - checkout
       - export:
+          requires:
+            - checkout
+      - mcp:
           requires:
             - checkout
       - optimiser:
