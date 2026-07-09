@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getCached } from './cache.js';
+import { clearCache, getCached } from './cache.js';
 
 describe('getCached', () => {
   beforeEach(() => {
+    clearCache();
     vi.useFakeTimers();
   });
 

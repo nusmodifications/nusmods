@@ -1,5 +1,6 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Module } from '../types/modules.js';
+import { clearCache } from './cache.js';
 import { fetchModule, ModuleNotFoundError } from './nusmodsApi.js';
 
 function stubFetch(response: Partial<Response> & { json?: () => Promise<unknown> }) {
@@ -11,6 +12,10 @@ function stubFetch(response: Partial<Response> & { json?: () => Promise<unknown>
 const sampleModule = { moduleCode: 'CS2030S', title: 'Programming Methodology II' } as Module;
 
 describe('fetchModule', () => {
+  beforeEach(() => {
+    clearCache();
+  });
+
   afterEach(() => {
     vi.unstubAllGlobals();
   });

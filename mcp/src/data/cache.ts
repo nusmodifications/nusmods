@@ -41,3 +41,9 @@ export async function getCached<T>(
   inflight.set(key, promise);
   return promise as Promise<T>;
 }
+
+/** Drop all cached entries and in-flight promises. Intended for test isolation. */
+export function clearCache(): void {
+  store.clear();
+  inflight.clear();
+}
