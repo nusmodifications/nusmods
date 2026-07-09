@@ -15,6 +15,15 @@ config.rules = Object.fromEntries(
 
 export default defineConfig({
   extends: [config],
+  overrides: [
+    {
+      // Test fixtures are clearer in a meaningful order than alphabetically sorted.
+      files: ['**/*.test.ts'],
+      rules: {
+        'perfectionist/sort-objects': 'off',
+      },
+    },
+  ],
   rules: {
     'import-x/no-namespace': 'off',
     'no-console': 'off',
