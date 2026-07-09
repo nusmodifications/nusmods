@@ -2,8 +2,25 @@ package constants
 
 import (
 	_ "embed"
+	"time"
 
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
+)
+
+// HTTP client settings for fetching module data from the NUSMods API.
+const (
+	// HTTPRequestTimeout bounds a single request (connect + awaiting headers +
+	// reading the body), applied per attempt rather than across all retries.
+	// Observed failures are connection/transit stalls on the way to the origin
+	// (the origin itself serves in milliseconds), not slow origin compute, so
+	// this is kept short to fail fast and let a retry try a fresh connection
+	// instead of blocking the whole budget on one stalled attempt.
+	HTTPRequestTimeout = 4 * time.Second
+	// HTTPMaxAttempts is the total number of attempts (1 initial + retries) for
+	// a single module before giving up.
+	HTTPMaxAttempts = 3
+	// HTTPRetryBackoff is the fixed delay between attempts.
+	HTTPRetryBackoff = 300 * time.Millisecond
 )
 
 // Ensure in sync with all E-Venues in NUSMods
