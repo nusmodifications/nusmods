@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 
 	client "github.com/nusmodifications/nusmods/website/api/optimiser/_client"
 	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
@@ -36,72 +37,118 @@ func GetAllModuleSlots(
 
 	// These are default or backup slots for the partial timetable so that we can display some random slot for unallocated lessons
 	defaultSlots := make(models.ModuleDefaultSlotsMap)
-	for _, module := range optimiserRequest.Modules {
 
-		body, err := client.GetModuleData(optimiserRequest.AcadYear, strings.ToUpper(module))
-		if err != nil {
-			return nil, nil, nil, err
+	// Fetch and process each module concurrently. The modules are independent of
+	// one another, so a single slow fetch no longer blocks the others; the total
+	// wall-clock time is bounded by the slowest module rather than their sum.
+	// Results are written into per-index slots to avoid concurrent map writes,
+	// then assembled into the maps once all goroutines have finished.
+	type moduleResult struct {
+		merged   map[models.LessonType]map[models.ClassNo][]models.ModuleSlot
+		defaults map[models.LessonType][]models.ModuleSlot
+		err      error
+	}
+	results := make([]moduleResult, len(optimiserRequest.Modules))
+
+	var wg sync.WaitGroup
+	for i, module := range optimiserRequest.Modules {
+		wg.Add(1)
+		go func(i int, module string) {
+			defer wg.Done()
+			merged, defaults, err := processModule(
+				optimiserRequest,
+				module,
+				venues,
+				recordingsMap,
+				freeDaysMap,
+			)
+			results[i] = moduleResult{merged: merged, defaults: defaults, err: err}
+		}(i, module)
+	}
+	wg.Wait()
+
+	for i, module := range optimiserRequest.Modules {
+		if results[i].err != nil {
+			return nil, nil, nil, results[i].err
 		}
-
-		var moduleData struct {
-			SemesterData []struct {
-				Semester  int                 `json:"semester"`
-				Timetable []models.ModuleSlot `json:"timetable"`
-			} `json:"semesterData"`
-		}
-		err = json.Unmarshal(body, &moduleData)
-		if err != nil {
-			return nil, nil, nil, err
-		}
-
-		// Get the module timetable for the semester
-		var moduleTimetable []models.ModuleSlot
-		for _, semester := range moduleData.SemesterData {
-			if semester.Semester == optimiserRequest.AcadSem {
-				moduleTimetable = semester.Timetable
-				break
-			}
-		}
-
-		// Parse the weeks
-		for i := range moduleTimetable {
-
-			// Note: if weeks is not a []int, then skip parsing
-			// Currently we are not handling week conflict for non-[]int weeks
-			if _, ok := moduleTimetable[i].Weeks.([]any); !ok {
-				continue
-			}
-
-			moduleTimetable[i].WeeksSet = make(map[int]struct{})
-			weeks := moduleTimetable[i].Weeks.([]any)
-			weeksStrings := make([]string, 0, len(weeks))
-
-			for _, week := range weeks {
-				weekFloat, ok := week.(float64)
-				if !ok {
-					continue
-				}
-				weekInt := int(weekFloat)
-				moduleTimetable[i].WeeksSet[weekInt] = struct{}{}
-				weeksStrings = append(weeksStrings, strconv.Itoa(weekInt))
-			}
-			moduleTimetable[i].WeeksString = strings.Join(weeksStrings, ",")
-		}
-
-		// Store the module slots for the module
-		moduleSlots[module], defaultSlots[module] = mergeAndFilterModuleSlots(
-			moduleTimetable,
-			venues,
-			module,
-			recordingsMap,
-			freeDaysMap,
-			optimiserRequest.EarliestMin,
-			optimiserRequest.LatestMin,
-		)
-
+		moduleSlots[module] = results[i].merged
+		defaultSlots[module] = results[i].defaults
 	}
 
 	return moduleSlots, defaultSlots, recordingsMap, nil
+}
+
+// processModule fetches a single module's data and reduces it to its candidate
+// and default slots. It is safe to run concurrently for different modules since
+// it only reads the shared venues/recordings/freeDays maps and returns its
+// result rather than writing to shared state.
+func processModule(
+	optimiserRequest *models.OptimiserRequest,
+	module string,
+	venues map[string]models.Location,
+	recordingsMap map[string]struct{},
+	freeDaysMap map[string]struct{},
+) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot, error) {
+	body, err := client.GetModuleData(optimiserRequest.AcadYear, strings.ToUpper(module))
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var moduleData struct {
+		SemesterData []struct {
+			Semester  int                 `json:"semester"`
+			Timetable []models.ModuleSlot `json:"timetable"`
+		} `json:"semesterData"`
+	}
+	err = json.Unmarshal(body, &moduleData)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Get the module timetable for the semester
+	var moduleTimetable []models.ModuleSlot
+	for _, semester := range moduleData.SemesterData {
+		if semester.Semester == optimiserRequest.AcadSem {
+			moduleTimetable = semester.Timetable
+			break
+		}
+	}
+
+	// Parse the weeks
+	for i := range moduleTimetable {
+
+		// Note: if weeks is not a []int, then skip parsing
+		// Currently we are not handling week conflict for non-[]int weeks
+		if _, ok := moduleTimetable[i].Weeks.([]any); !ok {
+			continue
+		}
+
+		moduleTimetable[i].WeeksSet = make(map[int]struct{})
+		weeks := moduleTimetable[i].Weeks.([]any)
+		weeksStrings := make([]string, 0, len(weeks))
+
+		for _, week := range weeks {
+			weekFloat, ok := week.(float64)
+			if !ok {
+				continue
+			}
+			weekInt := int(weekFloat)
+			moduleTimetable[i].WeeksSet[weekInt] = struct{}{}
+			weeksStrings = append(weeksStrings, strconv.Itoa(weekInt))
+		}
+		moduleTimetable[i].WeeksString = strings.Join(weeksStrings, ",")
+	}
+
+	merged, defaults := mergeAndFilterModuleSlots(
+		moduleTimetable,
+		venues,
+		module,
+		recordingsMap,
+		freeDaysMap,
+		optimiserRequest.EarliestMin,
+		optimiserRequest.LatestMin,
+	)
+	return merged, defaults, nil
 }
 
 // Gets all venue information from venues.json
