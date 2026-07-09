@@ -81,10 +81,14 @@ Vercel project bound to `mcp.nusmods.com`. `vercel.json` rewrites `/mcp` to the
 function and `/` to the health check. Environment variables (all optional, see
 `.env.example`) let you override the academic year and upstream URLs.
 
+## Maintenance
+
+The academic year in `src/config.ts` must be bumped once a year — this is
+tracked in the repo-root [MAINTENANCE.md](../MAINTENANCE.md) checklist alongside
+the website's `app-config.json` update.
+
 ## Roadmap
 
-- **M4:** faceted search filters (semester, faculty, department, module level,
-  credits, attributes) + highlight snippets, plus an ES fallback to
-  `moduleInformation.json`.
+- ES fallback to `moduleInformation.json` when the search cluster is unavailable.
 - Later: venues, faculty/department listing, academic-calendar tools, and MCP
   **resources** (e.g. `nusmods://{ay}/module/{code}`).
