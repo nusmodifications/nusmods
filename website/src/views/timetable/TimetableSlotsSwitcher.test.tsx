@@ -19,6 +19,7 @@ function makeSwitcher(slots: TimetableSlot[] = twoSlots, activeSlotId = '0') {
   const onAddSlot = vi.fn();
   const onRenameSlot = vi.fn();
   const onDeleteSlot = vi.fn();
+  const onCompare = vi.fn();
 
   const wrapper = mount(
     <TimetableSlotsSwitcherComponent
@@ -28,10 +29,11 @@ function makeSwitcher(slots: TimetableSlot[] = twoSlots, activeSlotId = '0') {
       onAddSlot={onAddSlot}
       onRenameSlot={onRenameSlot}
       onDeleteSlot={onDeleteSlot}
+      onCompare={onCompare}
     />,
   );
 
-  return { wrapper, onSwitchSlot, onAddSlot, onRenameSlot, onDeleteSlot };
+  return { wrapper, onSwitchSlot, onAddSlot, onRenameSlot, onDeleteSlot, onCompare };
 }
 
 const findTabs = (wrapper: ReturnType<typeof mount>) => wrapper.find(`button.${styles.tab}`);
@@ -114,6 +116,24 @@ describe(TimetableSlotsSwitcherComponent, () => {
     confirmButton.simulate('click');
 
     expect(onDeleteSlot).toHaveBeenCalledWith('0');
+  });
+
+  test('should start comparison from the options menu', () => {
+    const { wrapper, onCompare } = makeSwitcher();
+    clickMenuItem(wrapper, 'Compare', 'Timetable options');
+
+    expect(onCompare).toHaveBeenCalled();
+  });
+
+  test('should not offer comparison with a single slot', () => {
+    const { wrapper } = makeSwitcher([twoSlots[0]]);
+    wrapper.find('button[aria-label="Timetable options"]').simulate('click');
+
+    expect(
+      wrapper
+        .find('button.dropdown-item')
+        .filterWhere((button) => button.text().includes('Compare')),
+    ).toHaveLength(0);
   });
 
   test('should not allow deleting the last remaining slot', () => {

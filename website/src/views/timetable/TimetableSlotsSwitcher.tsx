@@ -2,7 +2,7 @@ import { FC, FormEvent, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Downshift from 'downshift';
 import classnames from 'classnames';
-import { Copy, Edit2, FilePlus, MoreHorizontal, Plus, Trash2 } from 'react-feather';
+import { Columns, Copy, Edit2, FilePlus, MoreHorizontal, Plus, Trash2 } from 'react-feather';
 
 import type { Semester } from 'types/modules';
 import type { TimetableSlot } from 'types/reducers';
@@ -20,7 +20,7 @@ import CloseButton from 'views/components/CloseButton';
 import styles from './TimetableSlotsSwitcher.scss';
 
 type AddAction = 'NEW' | 'DUPLICATE';
-type ManageAction = 'RENAME' | 'DELETE';
+type ManageAction = 'RENAME' | 'DELETE' | 'COMPARE';
 
 type Props = {
   slots: TimetableSlot[];
@@ -29,6 +29,7 @@ type Props = {
   onAddSlot: (options: { title?: string; duplicateCurrent?: boolean }) => void;
   onRenameSlot: (slotId: string, title: string) => void;
   onDeleteSlot: (slotId: string) => void;
+  onCompare?: () => void;
 };
 
 export const TimetableSlotsSwitcherComponent: FC<Props> = ({
@@ -38,6 +39,7 @@ export const TimetableSlotsSwitcherComponent: FC<Props> = ({
   onAddSlot,
   onRenameSlot,
   onDeleteSlot,
+  onCompare,
 }) => {
   const [isRenameOpen, setRenameOpen] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
@@ -73,12 +75,15 @@ export const TimetableSlotsSwitcherComponent: FC<Props> = ({
     [onAddSlot],
   );
 
+  const canCompare = slots.length > 1 && !!onCompare;
+
   const onSelectManageAction = useCallback(
     (item: ManageAction | null) => {
       if (item === 'RENAME') openRenameModal();
       if (item === 'DELETE' && canDelete) setDeleteOpen(true);
+      if (item === 'COMPARE') onCompare?.();
     },
-    [canDelete, openRenameModal],
+    [canDelete, onCompare, openRenameModal],
   );
 
   return (
@@ -168,12 +173,23 @@ export const TimetableSlotsSwitcherComponent: FC<Props> = ({
               >
                 <Edit2 className="svg svg-small" /> Rename
               </button>
+              {canCompare && (
+                <button
+                  type="button"
+                  className={classnames('dropdown-item', {
+                    'dropdown-selected': highlightedIndex === 1,
+                  })}
+                  {...getItemProps({ item: 'COMPARE' })}
+                >
+                  <Columns className="svg svg-small" /> Compare&hellip;
+                </button>
+              )}
               <button
                 type="button"
                 disabled={!canDelete}
                 title={canDelete ? undefined : 'The last timetable cannot be deleted'}
                 className={classnames('dropdown-item', {
-                  'dropdown-selected': highlightedIndex === 1,
+                  'dropdown-selected': highlightedIndex === (canCompare ? 2 : 1),
                 })}
                 {...getItemProps({ item: 'DELETE', disabled: !canDelete })}
               >
@@ -234,13 +250,14 @@ export const TimetableSlotsSwitcherComponent: FC<Props> = ({
 
 type OwnProps = {
   semester: Semester;
+  onCompare?: () => void;
 };
 
 /**
  * Tab row for switching between saved timetable arrangements ("slots") of a
  * semester. See https://github.com/nusmodifications/nusmods/issues/4455
  */
-const TimetableSlotsSwitcher: FC<OwnProps> = ({ semester }) => {
+const TimetableSlotsSwitcher: FC<OwnProps> = ({ semester, onCompare }) => {
   const slots = useSelector(getTimetableSlots)(semester);
   const activeSlotId = useSelector(getActiveSlotId)(semester);
   const dispatch = useDispatch();
@@ -271,6 +288,7 @@ const TimetableSlotsSwitcher: FC<OwnProps> = ({ semester }) => {
       onAddSlot={onAddSlot}
       onRenameSlot={onRenameSlot}
       onDeleteSlot={onDeleteSlot}
+      onCompare={onCompare}
     />
   );
 };
