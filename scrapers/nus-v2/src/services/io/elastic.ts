@@ -20,6 +20,7 @@ type ModuleSearchBody = {
 };
 
 const INDEX_NAME = 'modules_v2';
+const DEFAULT_REQUEST_TIMEOUT_MS = 120_000;
 
 // Tokenizes a string into an array of digits
 const first_digit_tokenizer = {
@@ -114,7 +115,10 @@ export default class ElasticPersist implements Persist {
       throw new Error('elasticConfig in config.json is not set');
     }
 
-    const client = new Client(config.elasticConfig);
+    const client = new Client({
+      requestTimeout: DEFAULT_REQUEST_TIMEOUT_MS,
+      ...config.elasticConfig,
+    });
 
     this.client = createIndex(client);
   }
