@@ -16,9 +16,7 @@ pnpm build
 echo "Running CPEx scraper"
 node build/src/index.js
 
-# Sync with live data
-echo "Syncing data"
-\cp data/cpexModules.json ../../../api.nusmods.com/v2
+# Syncing with live data is done via symlink, no need to copy or rsync
 
 # pm2 doesn't restart processes that have stopped, so this just noops until
 # the next cron restart
