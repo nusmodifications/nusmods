@@ -1,0 +1,39 @@
+@import '~styles/utils/modules-entry.scss';
+@import './OptimiserForm.scss';
+
+.pinnedSlotSection {
+  margin-top: $form-fields-gap;
+}
+
+.pinnedSlotRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lessonLabel {
+  composes: lessonTag from '../common.scss';
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.pinnedSlotRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+
+  .optimiserDropdown {
+    max-width: 24rem;
+  }
+
+  @include media-breakpoint-down(xs) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+
+    .optimiserDropdown {
+      max-width: 100%;
+    }
+  }
+}

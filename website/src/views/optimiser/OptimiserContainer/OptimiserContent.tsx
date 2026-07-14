@@ -9,14 +9,17 @@ import ApiError from 'views/errors/ApiError';
 import { SemTimetableConfig } from 'types/timetables';
 import { getSemesterModules } from 'utils/timetables';
 import {
+  getAllPinnedSlotOptions,
   getFreeDayConflicts,
   getLessonOptions,
   getOptimiserAcadYear,
+  getPinnedSlotConflicts,
+  getPinnedSlotsPayload,
   getRecordedLessonOptions,
   getUnassignedLessonOptions,
   isSaturdayInOptions,
 } from 'utils/optimiser';
-import { FreeDayConflict, LessonOption } from 'types/optimiser';
+import { FreeDayConflict, LessonOption, PinnedSlotConflict } from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserContent.scss';
 import OptimiserHeader from '../OptimiserHeader';
@@ -36,6 +39,8 @@ const OptimiserContent: React.FC = () => {
   const {
     liveLessonOptions: physicalLessonOptions,
     setLiveLessonOptions: setPhysicalLessonOptions,
+    pinnedSlots,
+    setPinnedSlots,
     freeDays,
     lessonTimeRange,
     lunchTimeRange,
@@ -53,10 +58,41 @@ const OptimiserContent: React.FC = () => {
     return getLessonOptions(modules, activeSemester, colors);
   }, [timetable, modulesMap, activeSemester, colors]);
 
+  const pinnedSlotOptions = useMemo(() => {
+    const modules = getSemesterModules(timetable, modulesMap);
+    return getAllPinnedSlotOptions(modules, activeSemester);
+  }, [timetable, modulesMap, activeSemester]);
+
   const freeDayConflicts: FreeDayConflict[] = useMemo(() => {
     const modules = getSemesterModules(timetable, modulesMap);
-    return getFreeDayConflicts(modules, activeSemester, physicalLessonOptions, freeDays);
-  }, [timetable, modulesMap, activeSemester, physicalLessonOptions, freeDays]);
+    // Pinned lessons are excluded: they are fixed to one class, so they no longer
+    // block free days (the pin wins and is surfaced separately as a warning)
+    const unpinnedPhysicalLessonOptions = physicalLessonOptions.filter(
+      (option) => !(option.lessonKey in pinnedSlots),
+    );
+    return getFreeDayConflicts(modules, activeSemester, unpinnedPhysicalLessonOptions, freeDays);
+  }, [timetable, modulesMap, activeSemester, physicalLessonOptions, pinnedSlots, freeDays]);
+
+  const pinnedSlotConflicts: PinnedSlotConflict[] = useMemo(() => {
+    const modules = getSemesterModules(timetable, modulesMap);
+    const liveLessonKeys = new Set(physicalLessonOptions.map((option) => option.lessonKey));
+    return getPinnedSlotConflicts(
+      modules,
+      activeSemester,
+      pinnedSlots,
+      liveLessonKeys,
+      freeDays,
+      lessonTimeRange,
+    );
+  }, [
+    timetable,
+    modulesMap,
+    activeSemester,
+    pinnedSlots,
+    physicalLessonOptions,
+    freeDays,
+    lessonTimeRange,
+  ]);
 
   const recordedLessonOptions: LessonOption[] = useMemo(
     () => getRecordedLessonOptions(lessonOptions, physicalLessonOptions),
@@ -72,6 +108,18 @@ const OptimiserContent: React.FC = () => {
     );
   }, [lessonOptions, setPhysicalLessonOptions]);
 
+  // Drop pins whose lesson or class no longer exists (e.g. module removed from timetable)
+  useEffect(() => {
+    setPinnedSlots((prev) => {
+      const next = Object.fromEntries(
+        Object.entries(prev).filter(([lessonKey, classNo]) =>
+          (pinnedSlotOptions[lessonKey] ?? []).some((option) => option.classNo === classNo),
+        ),
+      );
+      return Object.keys(next).length === Object.keys(prev).length ? prev : next;
+    });
+  }, [pinnedSlotOptions, setPinnedSlots]);
+
   const buttonOnClick = async () => {
     setShareableLink(null);
     setIsOptimising(true);
@@ -85,6 +133,7 @@ const OptimiserContent: React.FC = () => {
       earliestTime: lessonTimeRange.earliest,
       latestTime: lessonTimeRange.latest,
       recordings: recordedLessonOptions.map((lessonOption) => lessonOption.lessonKey),
+      pinnedSlots: getPinnedSlotsPayload(pinnedSlots),
       lunchStart: lunchTimeRange.earliest,
       lunchEnd: lunchTimeRange.latest,
       maxConsecutiveHours,
@@ -122,6 +171,8 @@ const OptimiserContent: React.FC = () => {
 
       <OptimiserForm
         lessonOptions={lessonOptions}
+        pinnedSlotOptions={pinnedSlotOptions}
+        pinnedSlotConflicts={pinnedSlotConflicts}
         freeDayConflicts={freeDayConflicts}
         hasSaturday={hasSaturday}
         optimiserFormFields={optimiserFormFields}

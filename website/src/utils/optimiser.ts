@@ -23,7 +23,16 @@ import {
   Semester,
   WorkingDays,
 } from 'types/modules';
-import { DisplayText, FreeDayConflict, LessonOption, LessonKey, TimeRange } from 'types/optimiser';
+import {
+  DisplayText,
+  FreeDayConflict,
+  LessonOption,
+  LessonKey,
+  PinnedSlotConflict,
+  PinnedSlotOption,
+  PinnedSlots,
+  TimeRange,
+} from 'types/optimiser';
 import { ColorMapping } from 'types/reducers';
 import { LessonSlot, OptimiseResponse } from 'apis/optimiser';
 import { getModuleTimetable } from './modules';
@@ -151,6 +160,117 @@ export function getFreeDayConflicts(
       }),
     );
   });
+}
+
+// Creates a dropdown option for each classNo of the given lessonType
+export function getPinnedSlotOptions(
+  lessons: readonly RawLesson[],
+  lessonType: LessonType,
+): PinnedSlotOption[] {
+  const groupedClasses = groupBy(
+    lessons.filter((lesson) => lesson.lessonType === lessonType),
+    (lesson) => lesson.classNo,
+  );
+  return Object.entries(groupedClasses)
+    .map(([classNo, classLessons]) => {
+      const sortedLessons = [...classLessons].sort(
+        (a, b) =>
+          WorkingDays.indexOf(a.day as Day) - WorkingDays.indexOf(b.day as Day) ||
+          a.startTime.localeCompare(b.startTime),
+      );
+      const schedules = uniq(
+        sortedLessons.map(
+          (lesson) =>
+            `${lesson.day.slice(0, 3)} ${getOptimiserTime(lesson.startTime)}-${getOptimiserTime(
+              lesson.endTime,
+            )}`,
+        ),
+      );
+      return { classNo, label: `${classNo} — ${schedules.join(', ')}` };
+    })
+    .sort((a, b) => a.classNo.localeCompare(b.classNo, undefined, { numeric: true }));
+}
+
+// Creates the pinned slot dropdown options for every lesson, keyed by lessonKey
+export function getAllPinnedSlotOptions(
+  modules: Module[],
+  semester: Semester,
+): Record<LessonKey, PinnedSlotOption[]> {
+  const options: Record<LessonKey, PinnedSlotOption[]> = {};
+  modules.forEach((module) => {
+    const lessons = getModuleTimetable(module, semester);
+    getLessonTypes(lessons).forEach((lessonType) => {
+      options[getLessonKey(module.moduleCode, lessonType)] = getPinnedSlotOptions(
+        lessons,
+        lessonType,
+      );
+    });
+  });
+  return options;
+}
+
+// For each pinned class attended live, report clashes with the free day and lesson time
+// preferences. Pinned classes are kept by the optimiser regardless, so these are warnings
+// rather than errors. Recorded lessons are exempt from both constraints and are skipped.
+export function getPinnedSlotConflicts(
+  modules: Module[],
+  semester: Semester,
+  pinnedSlots: PinnedSlots,
+  liveLessonKeys: Set<LessonKey>,
+  selectedFreeDays: Set<DayText>,
+  lessonTimeRange: TimeRange,
+): PinnedSlotConflict[] {
+  return modules.flatMap((module) => {
+    const { moduleCode } = module;
+    const lessons = getModuleTimetable(module, semester);
+    return compact(
+      getLessonTypes(lessons).map((lessonType) => {
+        const lessonKey = getLessonKey(moduleCode, lessonType);
+        const classNo = pinnedSlots[lessonKey];
+        if (!classNo || !liveLessonKeys.has(lessonKey)) {
+          return null;
+        }
+
+        const classLessons = lessons.filter(
+          (lesson) => lesson.lessonType === lessonType && lesson.classNo === classNo,
+        );
+        const freeDayClashes = sortDays(
+          uniq(classLessons.map((lesson) => lesson.day).filter((day) => selectedFreeDays.has(day))),
+        );
+        // "HHMM" strings compare correctly lexicographically
+        const isOutsideTimeRange = classLessons.some(
+          (lesson) =>
+            lesson.startTime < lessonTimeRange.earliest || lesson.endTime > lessonTimeRange.latest,
+        );
+
+        const reasons: string[] = [];
+        if (!isEmpty(freeDayClashes)) {
+          reasons.push(`falls on your free day(s): ${freeDayClashes.join(', ')}`);
+        }
+        if (isOutsideTimeRange) {
+          reasons.push(
+            `is outside your selected lesson times (${getOptimiserTime(
+              lessonTimeRange.earliest,
+            )} - ${getOptimiserTime(lessonTimeRange.latest)})`,
+          );
+        }
+        return isEmpty(reasons)
+          ? null
+          : {
+              moduleCode,
+              lessonType,
+              displayText: getDisplayText(moduleCode, lessonType),
+              classNo,
+              reasons,
+            };
+      }),
+    );
+  });
+}
+
+// Serialises pinned slots into the API wire format, e.g. ["CS2040S|Tutorial|08"]
+export function getPinnedSlotsPayload(pinnedSlots: PinnedSlots): string[] {
+  return Object.entries(pinnedSlots).map(([lessonKey, classNo]) => `${lessonKey}|${classNo}`);
 }
 
 export function getUnassignedLessonOptions(

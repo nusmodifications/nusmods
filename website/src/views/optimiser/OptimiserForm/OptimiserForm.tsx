@@ -1,7 +1,15 @@
-import { FreeDayConflict, LessonOption } from 'types/optimiser';
+import {
+  FreeDayConflict,
+  LessonKey,
+  LessonOption,
+  PinnedSlotConflict,
+  PinnedSlotOption,
+} from 'types/optimiser';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserForm.scss';
 import OptimiserLessonOptionSelect from './OptimiserLessonOptionSelect';
+import OptimiserPinnedSlotSelect from './OptimiserPinnedSlotSelect';
+import OptimiserPinnedSlotConflicts from './OptimiserPinnedSlotConflicts';
 import OptimiserFreeDaySelect from './OptimiserFreeDaySelect';
 import OptimiserFreeDayConflicts from './OptimiserFreeDayConflicts';
 import {
@@ -12,6 +20,8 @@ import OptimiserMaxConsecutiveHoursSelect from './OptimiserMaxConsecutiveHoursSe
 
 interface OptimiserFormProps {
   lessonOptions: LessonOption[];
+  pinnedSlotOptions: Record<LessonKey, PinnedSlotOption[]>;
+  pinnedSlotConflicts: PinnedSlotConflict[];
   freeDayConflicts: FreeDayConflict[];
   hasSaturday: boolean;
   optimiserFormFields: OptimiserFormFields;
@@ -19,6 +29,8 @@ interface OptimiserFormProps {
 
 const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
   lessonOptions,
+  pinnedSlotOptions,
+  pinnedSlotConflicts,
   freeDayConflicts,
   hasSaturday,
   optimiserFormFields,
@@ -29,9 +41,17 @@ const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
       optimiserFormFields={optimiserFormFields}
     />
 
+    <OptimiserPinnedSlotSelect
+      lessonOptions={lessonOptions}
+      pinnedSlotOptions={pinnedSlotOptions}
+      optimiserFormFields={optimiserFormFields}
+    />
+
     <OptimiserFreeDaySelect hasSaturday={hasSaturday} optimiserFormFields={optimiserFormFields} />
 
     <OptimiserFreeDayConflicts freeDayConflicts={freeDayConflicts} />
+
+    <OptimiserPinnedSlotConflicts pinnedSlotConflicts={pinnedSlotConflicts} />
 
     <OptimiserLessonTimeRangeSelect optimiserFormFields={optimiserFormFields} />
 

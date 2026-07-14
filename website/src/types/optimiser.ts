@@ -1,4 +1,4 @@
-import { DayText, LessonTime, LessonType, ModuleCode } from './modules';
+import { ClassNo, DayText, LessonTime, LessonType, ModuleCode } from './modules';
 import { ColorIndex } from './timetables';
 
 export type LessonKey = string;
@@ -23,4 +23,20 @@ export type FreeDayConflict = {
   lessonType: LessonType;
   displayText: DisplayText;
   days: DayText[];
+};
+
+// Maps a lessonKey to the classNo the user has pinned for that lesson
+export type PinnedSlots = Record<LessonKey, ClassNo>;
+
+export type PinnedSlotOption = {
+  classNo: ClassNo;
+  label: string;
+};
+
+export type PinnedSlotConflict = {
+  moduleCode: ModuleCode;
+  lessonType: LessonType;
+  displayText: DisplayText;
+  classNo: ClassNo;
+  reasons: string[];
 };
