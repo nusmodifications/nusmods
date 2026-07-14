@@ -1,6 +1,7 @@
 package solver
 
 import (
+	"errors"
 	"net/http"
 	"sort"
 	"strings"
@@ -34,6 +35,10 @@ func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 
 	slots, defaultSlots, recordings, err := modules.GetAllModuleSlots(&req)
 	if err != nil {
+		var solveErr *models.SolveError
+		if errors.As(err, &solveErr) {
+			return models.SolveResponse{}, solveErr
+		}
 		return models.SolveResponse{}, &models.SolveError{Code: http.StatusInternalServerError, Message: err.Error()}
 	}
 

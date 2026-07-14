@@ -42,7 +42,7 @@ A single request moves through the following stages:
 
 1. **`optimise.go` — HTTP handler**: Decodes the JSON request body into `OptimiserRequest` and calls `solver.Solve`.
 
-2. **`_modules/GetAllModuleSlots`**: For each requested module, fetches timetable data from the NUSMods API (`_client`). Slots are then filtered (removing those outside the time window or on free days) and deduplicated — two class numbers that share the same day, start time, and building are treated as equivalent and merged to reduce the search space. Returns a map of `Module → LessonType → ClassNo → []Slot`.
+2. **`_modules/GetAllModuleSlots`**: For each requested module, fetches timetable data from the NUSMods API (`_client`). Slots are then filtered (removing those outside the time window or on free days) and deduplicated — two class numbers that share the same day, start time, and building are treated as equivalent and merged to reduce the search space. Lessons pinned via `pinnedSlots` (format `"MODULE|LessonType|ClassNo"`) are reduced to just the pinned class, which is kept even if it falls outside the time window or on a free day — an explicit pin wins over general preferences. Returns a map of `Module → LessonType → ClassNo → []Slot`.
 
 3. **`_solver/beamSearch`**: Lessons are first sorted by number of available options (fewest first — the **Minimum Remaining Values** heuristic). The beam search then assigns one lesson type at a time, expanding each partial timetable into up to `BranchingFactor` candidates, scoring them all, and keeping only the top `BeamWidth`. This repeats until all lessons are assigned.
 
@@ -123,6 +123,7 @@ The scoring function combines four penalty/bonus terms. All values were empirica
 {
   "modules": ["CS1010S", "CS2030S", "MA1521"],
   "recordings": ["CS1010S|Lecture", "CS2030S|Laboratory"],
+  "pinnedSlots": ["MA1521|Tutorial|01"],
   "freeDays": ["Monday", "Friday"],
   "maxConsecutiveHours": 4,
   "earliestTime": "0900",

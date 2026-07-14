@@ -303,6 +303,150 @@ func TestOptimiser_AllSlotsHaveAssignments(t *testing.T) {
 	t.Logf("✅ All slots have assignments. Assignments: %v", result.Assignments)
 }
 
+// pinnedSlotBaseRequest returns a request used by the pinned slot tests.
+func pinnedSlotBaseRequest() models.OptimiserRequest {
+	return models.OptimiserRequest{
+		Modules:             []string{"CS2040S"},
+		Recordings:          []string{},
+		FreeDays:            []string{},
+		EarliestTime:        "0800",
+		LatestTime:          "1900",
+		AcadYear:            "2025-2026",
+		AcadSem:             1,
+		MaxConsecutiveHours: 4,
+		LunchStart:          "1200",
+		LunchEnd:            "1400",
+	}
+}
+
+// solveOK sends the request expecting a 200 response and returns the parsed result.
+func solveOK(t *testing.T, req models.OptimiserRequest) models.SolveResponse {
+	t.Helper()
+
+	resp, body := makeRequest(t, req)
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status 200, got %d. Body: %s", resp.StatusCode, string(body))
+	}
+
+	var result models.SolveResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		t.Fatalf("Failed to parse response: %v", err)
+	}
+	return result
+}
+
+// TestOptimiser_PinnedSlotAssigned verifies that a pinned class is kept in the
+// solution. The baseline solve provides a real lessonKey and classNo so the test
+// does not hardcode class data.
+func TestOptimiser_PinnedSlotAssigned(t *testing.T) {
+	req := pinnedSlotBaseRequest()
+	baseline := solveOK(t, req)
+
+	var lessonKey, classNo string
+	for key, class := range baseline.Assignments {
+		lessonKey, classNo = key, class
+		break
+	}
+	if lessonKey == "" {
+		t.Fatal("Baseline solve produced no assignments")
+	}
+
+	req.PinnedSlots = []string{lessonKey + "|" + classNo}
+	result := solveOK(t, req)
+
+	if got := result.Assignments[lessonKey]; got != classNo {
+		t.Errorf("Expected pinned class %s for %s, got %q", classNo, lessonKey, got)
+	}
+	validateTimetable(t, result, req)
+
+	t.Logf("✅ Pinned slot assigned. %s -> %s", lessonKey, classNo)
+}
+
+// TestOptimiser_PinnedSlotWinsOverFreeDay verifies that a pinned class is kept
+// even when it falls on a requested free day (an explicit pin wins over the
+// free-day preference).
+func TestOptimiser_PinnedSlotWinsOverFreeDay(t *testing.T) {
+	req := pinnedSlotBaseRequest()
+	baseline := solveOK(t, req)
+
+	var lessonKey, classNo, pinnedDay string
+	for dayIdx, slots := range baseline.DaySlots {
+		if len(slots) > 0 {
+			lessonKey = slots[0].LessonKey
+			classNo = slots[0].ClassNo
+			pinnedDay = dayNames[dayIdx]
+			break
+		}
+	}
+	if lessonKey == "" {
+		t.Fatal("Baseline solve produced no slots")
+	}
+
+	req.PinnedSlots = []string{lessonKey + "|" + classNo}
+	req.FreeDays = []string{pinnedDay}
+	result := solveOK(t, req)
+
+	if got := result.Assignments[lessonKey]; got != classNo {
+		t.Errorf("Expected pinned class %s for %s despite free day %s, got %q",
+			classNo, lessonKey, pinnedDay, got)
+	}
+	validateTimetable(t, result, req)
+
+	t.Logf("✅ Pinned slot wins over free day. %s -> %s kept on %s", lessonKey, classNo, pinnedDay)
+}
+
+// TestOptimiser_PinnedSlotNonExistentClass verifies that pinning a class number
+// that does not exist for the module is rejected with 400.
+func TestOptimiser_PinnedSlotNonExistentClass(t *testing.T) {
+	req := pinnedSlotBaseRequest()
+	req.PinnedSlots = []string{"CS2040S|Tutorial|ZZZ99"}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("Expected status 400 for non-existent pinned class, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_PinnedSlotModuleNotInRequest verifies that pinning a class of a
+// module that is not part of the request is rejected with 400.
+func TestOptimiser_PinnedSlotModuleNotInRequest(t *testing.T) {
+	req := pinnedSlotBaseRequest()
+	req.PinnedSlots = []string{"CS1010S|Lecture|01"}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("Expected status 400 for pin on module not in request, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_PinnedSlotDuplicate verifies that two pins for the same lesson
+// are rejected with 400.
+func TestOptimiser_PinnedSlotDuplicate(t *testing.T) {
+	req := pinnedSlotBaseRequest()
+	req.PinnedSlots = []string{"CS2040S|Tutorial|01", "CS2040S|Tutorial|02"}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("Expected status 400 for duplicate pins, got %d", resp.StatusCode)
+	}
+}
+
+// TestOptimiser_PinnedSlotMalformed verifies that a pin entry without a class
+// number is rejected with 400.
+func TestOptimiser_PinnedSlotMalformed(t *testing.T) {
+	req := pinnedSlotBaseRequest()
+	req.PinnedSlots = []string{"CS2040S|Tutorial"}
+
+	resp, _ := makeRequest(t, req)
+
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("Expected status 400 for malformed pin entry, got %d", resp.StatusCode)
+	}
+}
+
 // helpers
 
 // Day name constants for mapping
@@ -313,6 +457,7 @@ var dayNames = []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 // - All lessons are within earliestTime and latestTime bounds
 // - Free days have no lessons scheduled
 // - Lessons marked as recordings should not appear in physical timetable
+// - Pinned lessons are exempt from free-day and time bounds (pin wins)
 func validateTimetable(t *testing.T, result models.SolveResponse, req models.OptimiserRequest) {
 	t.Helper()
 
@@ -333,11 +478,20 @@ func validateTimetable(t *testing.T, result models.SolveResponse, req models.Opt
 		recordings[rec] = true
 	}
 
+	// Build pinned lessonKey set (from "CS2040S|Tutorial|08" entries)
+	pinned := make(map[string]bool)
+	for _, pin := range req.PinnedSlots {
+		parts := strings.SplitN(pin, "|", 3)
+		if len(parts) == 3 {
+			pinned[parts[0]+"|"+parts[1]] = true
+		}
+	}
+
 	for dayIdx, slots := range result.DaySlots {
 		for i, slot := range slots {
-			// Free days should only have recorded lessons (if any)
+			// Free days should only have recorded or pinned lessons (if any)
 			if freeDays[dayIdx] {
-				if !recordings[slot.LessonKey] {
+				if !recordings[slot.LessonKey] && !pinned[slot.LessonKey] {
 					t.Errorf("%s: Non-recorded lesson %s should not appear on free day",
 						dayNames[dayIdx], slot.LessonKey)
 				}
@@ -350,13 +504,13 @@ func validateTimetable(t *testing.T, result models.SolveResponse, req models.Opt
 			earliestMin, _ := models.ParseTimeToMinutes(req.EarliestTime)
 			latestMin, _ := models.ParseTimeToMinutes(req.LatestTime)
 
-			if slotStartMin < earliestMin {
+			if slotStartMin < earliestMin && !pinned[slot.LessonKey] {
 				t.Errorf("%s: %s %s starts at %s, before earliest time %s",
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.StartTime, req.EarliestTime)
 			}
 
 			// Check latest time constraint
-			if slotEndMin > latestMin {
+			if slotEndMin > latestMin && !pinned[slot.LessonKey] {
 				t.Errorf("%s: %s %s ends at %s, after latest time %s",
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.EndTime, req.LatestTime)
 			}
