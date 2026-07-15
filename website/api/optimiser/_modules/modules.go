@@ -143,8 +143,13 @@ func validatePinnedSlots(
 		}
 		if _, ok := classNos[classNo]; !ok {
 			return &models.SolveError{
-				Code:    http.StatusBadRequest,
-				Message: fmt.Sprintf("pinned class %s not found for %s %s", classNo, strings.ToUpper(module), lessonType),
+				Code: http.StatusBadRequest,
+				Message: fmt.Sprintf(
+					"pinned class %s not found for %s %s",
+					classNo,
+					strings.ToUpper(module),
+					lessonType,
+				),
 			}
 		}
 	}
