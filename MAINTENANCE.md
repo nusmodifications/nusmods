@@ -6,7 +6,9 @@ Create a new issue on GitHub with this checklist after the finals every semester
 
 ### Around End of Semester 2
 
-- [ ] Venue issues are created by [Cloudflare workers](https://github.com/nusmodifications/serverless-functions), and the GitHub access token expires after 366 days. Update the personal access token on the Cloudflare dashboard and grant write permissions under [Issues](https://docs.github.com/en/rest/issues/issues?apiVersion=2026-03-10#create-an-issue) for the `nusmods` repository.
+- [ ] Rotate `GITHUB_API_TOKEN`, which expires after 366 days, and update it in both deployment platforms:
+  - [ ] In the [Cloudflare workers](https://github.com/nusmodifications/serverless-functions), update the token on the Cloudflare dashboard and grant write permissions under [Issues](https://docs.github.com/en/rest/issues/issues?apiVersion=2026-03-10#create-an-issue) for the `nusmods` repository so venue issues can be created.
+  - [ ] In Vercel, update the token for both the `nusmods-website` and `nusmods-export` projects so fork PR builds can be identified by `vercel_ignore_build.sh`.
 
 ### 1 week before NUS IT Data Update
 
