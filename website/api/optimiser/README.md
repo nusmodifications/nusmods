@@ -44,7 +44,7 @@ A single request moves through the following stages:
 
 2. **`_modules/GetAllModuleSlots`**: For each requested module, fetches timetable data from the NUSMods API (`_client`). Slots are then filtered (removing those outside the time window or on free days) and deduplicated — two class numbers that share the same day, start time, and building are treated as equivalent and merged to reduce the search space. Lessons pinned via `pinnedSlots` (format `"MODULE|LessonType|ClassNo"`) are reduced to just the pinned class. Pinned lessons must satisfy the free-day and time-range constraints: a non-recorded pinned class that falls on a free day or outside the time window is rejected with a 400 error (the website blocks such pins before submitting, so this only guards direct API calls). Pins on recorded lessons are exempt since they need no physical attendance. Returns a map of `Module → LessonType → ClassNo → []Slot`.
 
-3. **`_solver/beamSearch`**: Lessons are first sorted by number of available options (fewest first — the **Minimum Remaining Values** heuristic). The beam search then assigns one lesson type at a time, expanding each partial timetable into up to `BranchingFactor` candidates, scoring them all, and keeping only the top `BeamWidth`. This repeats until all lessons are assigned.
+3. **`_solver/beamSearch`**: Lessons are first sorted pinned-first, then by number of available options (fewest first — the **Minimum Remaining Values** heuristic) — this ensures a pinned lesson always claims its slot before an unrelated single-option lesson can occupy it and force the pin out. The beam search then assigns one lesson type at a time, expanding each partial timetable into up to `BranchingFactor` candidates, scoring them all, and keeping only the top `BeamWidth`. This repeats until all lessons are assigned.
 
 4. **`_solver/FillDefaultsAndGenerateShareableLinks`**: Converts the final assignment map into 2 shareable URLs (one without default slots and one with default slots). (see [Response fields](#response) below).
 
@@ -57,7 +57,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 1. **State Space**: Each state represents a partial timetable assignment
 2. **Beam Width**: Maintains the top 5000 most promising states at each step (configurable via `BeamWidth` constant)
 3. **Branching Factor**: Limits the number of options considered per lesson type to 100 (configurable via `BranchingFactor` constant)
-4. **MRV Heuristic**: Lessons with fewer class options are assigned first, pruning infeasible branches early
+4. **MRV Heuristic**: Pinned lessons are assigned first, then lessons with fewer class options, pruning infeasible branches early
 5. **Scoring Function**: Evaluates states based on:
    - Total walking distance between consecutive physical classes using haversine formula (recorded lessons are skipped since they need no travel)
    - Having a one-hour break within provided lunch time window
