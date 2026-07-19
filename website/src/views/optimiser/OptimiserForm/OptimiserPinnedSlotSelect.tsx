@@ -46,7 +46,7 @@ const OptimiserPinnedSlotSelect: React.FC<Props> = ({
   return (
     <section className={styles.pinnedSlotSection}>
       <h4 className={styles.optimiserDescription}>
-        Pin specific classes (optional)
+        Select lessons to pin
         <OptimiserFormTooltip content="Pinned lessons are locked to the class selected in your timetable, and the optimiser plans the remaining lessons around them" />
       </h4>
 
