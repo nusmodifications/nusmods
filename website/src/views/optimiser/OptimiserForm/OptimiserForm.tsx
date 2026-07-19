@@ -1,17 +1,12 @@
-import {
-  FreeDayConflict,
-  LessonKey,
-  LessonOption,
-  PinnedSlotConflict,
-  PinnedSlotOption,
-} from 'types/optimiser';
+import { ClassNo } from 'types/modules';
+import { FreeDayConflict, LessonKey, LessonOption, TimeRangeConflict } from 'types/optimiser';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserForm.scss';
 import OptimiserLessonOptionSelect from './OptimiserLessonOptionSelect';
 import OptimiserPinnedSlotSelect from './OptimiserPinnedSlotSelect';
-import OptimiserPinnedSlotConflicts from './OptimiserPinnedSlotConflicts';
 import OptimiserFreeDaySelect from './OptimiserFreeDaySelect';
 import OptimiserFreeDayConflicts from './OptimiserFreeDayConflicts';
+import OptimiserTimeRangeConflicts from './OptimiserTimeRangeConflicts';
 import {
   OptimiserLessonTimeRangeSelect,
   OptimiserLunchTimeRangeSelect,
@@ -20,18 +15,18 @@ import OptimiserMaxConsecutiveHoursSelect from './OptimiserMaxConsecutiveHoursSe
 
 interface OptimiserFormProps {
   lessonOptions: LessonOption[];
-  pinnedSlotOptions: Record<LessonKey, PinnedSlotOption[]>;
-  pinnedSlotConflicts: PinnedSlotConflict[];
+  timetableClassNos: Record<LessonKey, ClassNo>;
   freeDayConflicts: FreeDayConflict[];
+  timeRangeConflicts: TimeRangeConflict[];
   hasSaturday: boolean;
   optimiserFormFields: OptimiserFormFields;
 }
 
 const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
   lessonOptions,
-  pinnedSlotOptions,
-  pinnedSlotConflicts,
+  timetableClassNos,
   freeDayConflicts,
+  timeRangeConflicts,
   hasSaturday,
   optimiserFormFields,
 }) => (
@@ -43,7 +38,7 @@ const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
 
     <OptimiserPinnedSlotSelect
       lessonOptions={lessonOptions}
-      pinnedSlotOptions={pinnedSlotOptions}
+      timetableClassNos={timetableClassNos}
       optimiserFormFields={optimiserFormFields}
     />
 
@@ -51,9 +46,12 @@ const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
 
     <OptimiserFreeDayConflicts freeDayConflicts={freeDayConflicts} />
 
-    <OptimiserPinnedSlotConflicts pinnedSlotConflicts={pinnedSlotConflicts} />
-
     <OptimiserLessonTimeRangeSelect optimiserFormFields={optimiserFormFields} />
+
+    <OptimiserTimeRangeConflicts
+      timeRangeConflicts={timeRangeConflicts}
+      lessonTimeRange={optimiserFormFields.lessonTimeRange}
+    />
 
     <div className={styles.priorityNotice}>
       Following preferences will be <strong className={styles.prioritised}>prioritised</strong> but{' '}

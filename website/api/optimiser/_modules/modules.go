@@ -89,7 +89,15 @@ func GetAllModuleSlots(
 			moduleTimetable[i].WeeksString = strings.Join(weeksStrings, ",")
 		}
 
-		if err := validatePinnedSlots(moduleTimetable, module, optimiserRequest.PinnedMap); err != nil {
+		if err := validatePinnedSlots(
+			moduleTimetable,
+			module,
+			optimiserRequest.PinnedMap,
+			recordingsMap,
+			freeDaysMap,
+			optimiserRequest.EarliestMin,
+			optimiserRequest.LatestMin,
+		); err != nil {
 			return nil, nil, nil, err
 		}
 
@@ -111,21 +119,30 @@ func GetAllModuleSlots(
 }
 
 // validatePinnedSlots ensures every pinned slot for this module references an existing
-// lessonType and classNo in the module's raw timetable. This must be checked against the
-// raw timetable (not the merged output) because merging drops duplicate-schedule classes
-// by design, and a pin on an existing class must never be rejected.
+// lessonType and classNo in the module's raw timetable, and that a physical (non-recorded)
+// pinned class does not fall on a free day or outside the requested time range. This must
+// be checked against the raw timetable (not the merged output) because merging drops
+// duplicate-schedule classes by design, and a pin on an existing class must never be
+// rejected as missing.
 func validatePinnedSlots(
 	moduleTimetable []models.ModuleSlot,
 	module string,
 	pinnedMap map[string]models.ClassNo,
+	recordingsMap map[string]struct{},
+	freeDaysMap map[string]struct{},
+	earliestMin int,
+	latestMin int,
 ) error {
-	lessonTypeClasses := make(map[models.LessonType]map[models.ClassNo]struct{})
+	lessonTypeClasses := make(map[models.LessonType]map[models.ClassNo][]models.ModuleSlot)
 	for i := range moduleTimetable {
 		slot := &moduleTimetable[i]
 		if lessonTypeClasses[slot.LessonType] == nil {
-			lessonTypeClasses[slot.LessonType] = make(map[models.ClassNo]struct{})
+			lessonTypeClasses[slot.LessonType] = make(map[models.ClassNo][]models.ModuleSlot)
 		}
-		lessonTypeClasses[slot.LessonType][slot.ClassNo] = struct{}{}
+		lessonTypeClasses[slot.LessonType][slot.ClassNo] = append(
+			lessonTypeClasses[slot.LessonType][slot.ClassNo],
+			*slot,
+		)
 	}
 
 	modulePrefix := strings.ToUpper(module) + "|"
@@ -141,7 +158,8 @@ func validatePinnedSlots(
 				Message: fmt.Sprintf("pinned lesson type %s not found for %s", lessonType, strings.ToUpper(module)),
 			}
 		}
-		if _, ok := classNos[classNo]; !ok {
+		slots, ok := classNos[classNo]
+		if !ok {
 			return &models.SolveError{
 				Code: http.StatusBadRequest,
 				Message: fmt.Sprintf(
@@ -150,6 +168,38 @@ func validatePinnedSlots(
 					strings.ToUpper(module),
 					lessonType,
 				),
+			}
+		}
+
+		// Recorded lessons need no physical attendance, so their pins never conflict
+		// with free days or the time range.
+		if _, isRecorded := recordingsMap[lessonKey]; isRecorded {
+			continue
+		}
+		for i := range slots {
+			slot := &slots[i]
+			if _, ok := freeDaysMap[slot.Day]; ok {
+				return &models.SolveError{
+					Code: http.StatusBadRequest,
+					Message: fmt.Sprintf(
+						"pinned class %s for %s %s falls on free day %s",
+						classNo,
+						strings.ToUpper(module),
+						lessonType,
+						slot.Day,
+					),
+				}
+			}
+			if isSlotOutsideTimeRange(*slot, earliestMin, latestMin) {
+				return &models.SolveError{
+					Code: http.StatusBadRequest,
+					Message: fmt.Sprintf(
+						"pinned class %s for %s %s is outside the allowed time range",
+						classNo,
+						strings.ToUpper(module),
+						lessonType,
+					),
+				}
 			}
 		}
 	}
@@ -223,9 +273,10 @@ func mergeAndFilterModuleSlots(
 			defaultSlots[lessonType] = slots
 		}
 
-		// Only apply filters to physical lessons. Pinned classes are exempt like recorded
-		// ones: an explicitly chosen class wins over free-day/time-range preferences.
-		if !isRecorded && !isPinned {
+		// Only apply filters to physical lessons. Pinned classes pass these filters by
+		// construction: validatePinnedSlots rejects the request if a physical pin
+		// conflicts with a free day or the time range.
+		if !isRecorded {
 			for i := range slots {
 				slot := &slots[i]
 				// Check free days

@@ -9,6 +9,7 @@ describe('OptimiserButton', () => {
       isOptimising: false,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
+      timeRangeConflicts: [],
       onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
@@ -20,6 +21,7 @@ describe('OptimiserButton', () => {
       isOptimising: false,
       lessonOptions: [],
       freeDayConflicts: [],
+      timeRangeConflicts: [],
       onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
@@ -31,6 +33,7 @@ describe('OptimiserButton', () => {
       isOptimising: true,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
+      timeRangeConflicts: [],
       onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
@@ -49,6 +52,26 @@ describe('OptimiserButton', () => {
           days: [],
         },
       ],
+      timeRangeConflicts: [],
+      onClick: jest.fn(),
+    };
+    render(<OptimiserButton {...props} />);
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+
+  it('should be disabled when there are time range conflicts', () => {
+    const props: OptimiserButtonProps = {
+      isOptimising: false,
+      lessonOptions: [defaultLectureOption],
+      freeDayConflicts: [],
+      timeRangeConflicts: [
+        {
+          moduleCode: defaultLectureOption.moduleCode,
+          lessonType: defaultLectureOption.lessonType,
+          displayText: defaultLectureOption.displayText,
+          classNo: '1',
+        },
+      ],
       onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
@@ -60,6 +83,7 @@ describe('OptimiserButton', () => {
       isOptimising: true,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
+      timeRangeConflicts: [],
       onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);
@@ -71,6 +95,7 @@ describe('OptimiserButton', () => {
       isOptimising: false,
       lessonOptions: [defaultLectureOption],
       freeDayConflicts: [],
+      timeRangeConflicts: [],
       onClick: jest.fn(),
     };
     render(<OptimiserButton {...props} />);

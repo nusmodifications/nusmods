@@ -1,38 +1,36 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { defaultLectureOption, defaultTutorialOption } from 'test-utils/optimiser';
-import { LessonKey, LessonOption, PinnedSlotOption } from 'types/optimiser';
+import { ClassNo } from 'types/modules';
+import { LessonKey, LessonOption } from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
-import OptimiserPinnedSlotSelect, { UNPINNED_OPTION_LABEL } from './OptimiserPinnedSlotSelect';
+import OptimiserPinnedSlotSelect from './OptimiserPinnedSlotSelect';
 
 vi.mock('./OptimiserFormTooltip', () => ({
   __esModule: true,
   default: () => <div />,
 }));
 
-const defaultPinnedSlotOptions: Record<LessonKey, PinnedSlotOption[]> = {
-  [defaultTutorialOption.lessonKey]: [
-    { classNo: '1', label: '1 — Mon 09:00-10:00' },
-    { classNo: '2', label: '2 — Tue 09:00-10:00' },
-  ],
-  [defaultLectureOption.lessonKey]: [{ classNo: '1', label: '1 — Wed 10:00-12:00' }],
+const defaultTimetableClassNos: Record<LessonKey, ClassNo> = {
+  [defaultTutorialOption.lessonKey]: '2',
+  [defaultLectureOption.lessonKey]: '1',
 };
 
 describe('OptimiserPinnedSlotSelect', () => {
   type Props = {
     lessonOptions: LessonOption[];
-    pinnedSlotOptions?: Record<LessonKey, PinnedSlotOption[]>;
+    timetableClassNos?: Record<LessonKey, ClassNo>;
   };
 
   const Helper: React.FC<Props> = ({
     lessonOptions,
-    pinnedSlotOptions = defaultPinnedSlotOptions,
+    timetableClassNos = defaultTimetableClassNos,
   }) => {
     const optimiserFormFields = useOptimiserForm();
     return (
       <OptimiserPinnedSlotSelect
         lessonOptions={lessonOptions}
-        pinnedSlotOptions={pinnedSlotOptions}
+        timetableClassNos={timetableClassNos}
         optimiserFormFields={optimiserFormFields}
       />
     );
@@ -43,35 +41,38 @@ describe('OptimiserPinnedSlotSelect', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it('should show a dropdown per lesson defaulting to unpinned', () => {
+  it('should show a button per lesson labelled with the timetable classNo', () => {
     const lessonOptions = [defaultLectureOption, defaultTutorialOption];
-    const { container } = render(<Helper lessonOptions={lessonOptions} />);
-    expect(container).toHaveTextContent(defaultLectureOption.displayText);
-    expect(container).toHaveTextContent(defaultTutorialOption.displayText);
+    render(<Helper lessonOptions={lessonOptions} />);
 
-    const dropdowns = screen.getAllByRole('combobox');
-    expect(dropdowns).toHaveLength(2);
-    dropdowns.forEach((dropdown) => expect(dropdown).toHaveValue(''));
-    expect(screen.getAllByRole('option', { name: UNPINNED_OPTION_LABEL })).toHaveLength(2);
+    const buttons = screen.getAllByRole('button');
+    expect(buttons).toHaveLength(2);
+    expect(
+      screen.getByRole('button', { name: `${defaultLectureOption.displayText} · 1` }),
+    ).toBeEnabled();
+    expect(
+      screen.getByRole('button', { name: `${defaultTutorialOption.displayText} · 2` }),
+    ).toBeEnabled();
   });
 
-  it('should pin and unpin a class', async () => {
+  it('should toggle a pin on click', async () => {
     render(<Helper lessonOptions={[defaultTutorialOption]} />);
 
-    const dropdown = screen.getByRole('combobox');
-    expect(screen.getAllByRole('option')).toHaveLength(3);
+    const button = screen.getByRole('button');
+    expect(button.className).toContain('unselected');
 
-    await userEvent.selectOptions(dropdown, '2');
-    expect(dropdown).toHaveValue('2');
+    await userEvent.click(button);
+    expect(button.className).toContain('selected');
+    expect(button.className).not.toContain('unselected');
 
-    await userEvent.selectOptions(dropdown, '');
-    expect(dropdown).toHaveValue('');
+    await userEvent.click(button);
+    expect(button.className).toContain('unselected');
   });
 
-  it('should show only the unpinned option when a lesson has no class options', () => {
-    render(<Helper lessonOptions={[defaultTutorialOption]} pinnedSlotOptions={{}} />);
-    const options = screen.getAllByRole('option');
-    expect(options).toHaveLength(1);
-    expect(options[0]).toHaveTextContent(UNPINNED_OPTION_LABEL);
+  it('should disable the button when the timetable selection cannot be resolved', () => {
+    render(<Helper lessonOptions={[defaultTutorialOption]} timetableClassNos={{}} />);
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+    expect(button).toHaveTextContent(defaultTutorialOption.displayText);
   });
 });

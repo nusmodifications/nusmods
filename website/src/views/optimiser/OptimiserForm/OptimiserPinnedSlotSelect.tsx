@@ -1,39 +1,38 @@
 import { isEmpty } from 'lodash-es';
 import { useCallback } from 'react';
 import classNames from 'classnames';
-import { LessonKey, LessonOption, PinnedSlotOption } from 'types/optimiser';
+import { ClassNo } from 'types/modules';
+import { LessonKey, LessonOption } from 'types/optimiser';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserPinnedSlotSelect.scss';
 import OptimiserFormTooltip from './OptimiserFormTooltip';
 
-export const UNPINNED_OPTION_LABEL = 'Any (optimise for me)';
-
 type Props = {
   lessonOptions: LessonOption[];
-  pinnedSlotOptions: Record<LessonKey, PinnedSlotOption[]>;
+  timetableClassNos: Record<LessonKey, ClassNo>;
   optimiserFormFields: OptimiserFormFields;
 };
 
 const OptimiserPinnedSlotSelect: React.FC<Props> = ({
   lessonOptions,
-  pinnedSlotOptions,
+  timetableClassNos,
   optimiserFormFields,
 }) => {
-  const { pinnedSlots, setPinnedSlots } = optimiserFormFields;
+  const { pinnedLessonKeys, setPinnedLessonKeys } = optimiserFormFields;
 
-  const setPinnedSlot = useCallback(
-    (lessonKey: LessonKey, classNo: string) => {
-      setPinnedSlots((prev) => {
-        const next = { ...prev };
-        if (classNo === '') {
-          delete next[lessonKey];
+  const togglePinnedLesson = useCallback(
+    (lessonKey: LessonKey) => {
+      setPinnedLessonKeys((prev) => {
+        const next = new Set(prev);
+        if (next.has(lessonKey)) {
+          next.delete(lessonKey);
         } else {
-          next[lessonKey] = classNo;
+          next.add(lessonKey);
         }
         return next;
       });
     },
-    [setPinnedSlots],
+    [setPinnedLessonKeys],
   );
 
   if (isEmpty(lessonOptions)) {
@@ -45,34 +44,31 @@ const OptimiserPinnedSlotSelect: React.FC<Props> = ({
     <section className={styles.pinnedSlotSection}>
       <h4 className={styles.optimiserDescription}>
         Pin specific classes (optional)
-        <OptimiserFormTooltip content="Pinned classes are kept exactly as chosen, and the optimiser plans the remaining lessons around them" />
+        <OptimiserFormTooltip content="Pinned lessons are locked to the class selected in your timetable, and the optimiser plans the remaining lessons around them" />
       </h4>
 
-      <div className={styles.pinnedSlotRows}>
-        {lessonOptions.map((option) => (
-          <div key={option.lessonKey} className={styles.pinnedSlotRow}>
-            <span className={classNames(`color-${option.colorIndex}`, styles.lessonLabel)}>
-              {option.displayText}
-            </span>
+      <div className={styles.pinnedSlotButtons}>
+        {lessonOptions.map((option) => {
+          const classNo = timetableClassNos[option.lessonKey];
+          const isPinned = pinnedLessonKeys.has(option.lessonKey);
+          const className = classNames(
+            `color-${option.colorIndex}`,
+            styles.pinnedSlotButton,
+            isPinned ? styles.selected : styles.unselected,
+          );
 
-            <label htmlFor={`pinned-slot-${option.lessonKey}`} hidden>
-              Pin a class for {option.displayText}
-            </label>
-            <select
-              id={`pinned-slot-${option.lessonKey}`}
-              className={styles.optimiserDropdown}
-              value={pinnedSlots[option.lessonKey] ?? ''}
-              onChange={(e) => setPinnedSlot(option.lessonKey, e.target.value)}
+          return (
+            <button
+              key={option.lessonKey}
+              type="button"
+              disabled={!classNo}
+              onClick={() => togglePinnedLesson(option.lessonKey)}
+              className={className}
             >
-              <option value="">{UNPINNED_OPTION_LABEL}</option>
-              {(pinnedSlotOptions[option.lessonKey] ?? []).map((pinnedSlotOption) => (
-                <option key={pinnedSlotOption.classNo} value={pinnedSlotOption.classNo}>
-                  {pinnedSlotOption.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        ))}
+              {classNo ? `${option.displayText} · ${classNo}` : option.displayText}
+            </button>
+          );
+        })}
       </div>
     </section>
   );

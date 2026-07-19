@@ -220,8 +220,10 @@ export { findExamClashes } from './exams';
 export { isInteractable, getInteractableLessons } from './interactabilityHydration';
 export { hydrateSemTimetableWithLessons } from './lessonHydration';
 export {
+  getClosestClassNo,
   getClosestLessonConfig,
   getRecoveryClassNo,
+  isClassNo,
   getRecoverySerializedLessonDetails,
   makeModuleLessonMap,
   serializeLessonDetails,

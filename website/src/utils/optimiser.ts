@@ -13,6 +13,7 @@ import {
 } from 'lodash-es';
 import {
   AcadYear,
+  ClassNo,
   Day,
   DayText,
   LessonTime,
@@ -28,14 +29,15 @@ import {
   FreeDayConflict,
   LessonOption,
   LessonKey,
-  PinnedSlotConflict,
-  PinnedSlotOption,
   PinnedSlots,
   TimeRange,
+  TimeRangeConflict,
 } from 'types/optimiser';
 import { ColorMapping } from 'types/reducers';
+import { SemTimetableConfig } from 'types/timetables';
 import { LessonSlot, OptimiseResponse } from 'apis/optimiser';
-import { getModuleTimetable } from './modules';
+import { getModuleLessonMap, getModuleTimetable } from './modules';
+import { getClosestClassNo, isClassNo } from './timetables';
 import {
   convertIndexToTime,
   convertTimeToIndex,
@@ -128,11 +130,14 @@ export function getConflictingDays(
   return isConflictFree ? [] : sortDays(uniq(flatten(conflictingDays)));
 }
 
-// For each physical lesson option, check if that lessonType will have conflicts
+// For each physical lesson option, check if that lessonType will have conflicts.
+// A pinned lesson is fixed to the single class chosen in the timetable, so only that
+// class's days are considered for it.
 export function getFreeDayConflicts(
   modules: Module[],
   semester: Semester,
   physicalLessonOptions: LessonOption[],
+  pinnedClassNos: PinnedSlots,
   selectedFreeDays: Set<DayText>,
 ): FreeDayConflict[] {
   const groupedPhysicalLessonOptions = groupBy(
@@ -146,8 +151,13 @@ export function getFreeDayConflicts(
     const lessonOptions = get(groupedPhysicalLessonOptions, moduleCode, []);
     return compact(
       lessonOptions.map((lessonOption) => {
-        const { lessonType, displayText } = lessonOption;
-        const filteredLessons = lessons.filter((lesson) => lesson.lessonType === lessonType);
+        const { lessonType, lessonKey, displayText } = lessonOption;
+        const pinnedClassNo = pinnedClassNos[lessonKey];
+        const filteredLessons = lessons.filter(
+          (lesson) =>
+            lesson.lessonType === lessonType &&
+            (!pinnedClassNo || lesson.classNo === pinnedClassNo),
+        );
         const conflictingDays = getConflictingDays(filteredLessons, selectedFreeDays);
         return isEmpty(conflictingDays)
           ? null
@@ -162,107 +172,72 @@ export function getFreeDayConflicts(
   });
 }
 
-// Creates a dropdown option for each classNo of the given lessonType
-export function getPinnedSlotOptions(
-  lessons: readonly RawLesson[],
-  lessonType: LessonType,
-): PinnedSlotOption[] {
-  const groupedClasses = groupBy(
-    lessons.filter((lesson) => lesson.lessonType === lessonType),
-    (lesson) => lesson.classNo,
-  );
-  return Object.entries(groupedClasses)
-    .map(([classNo, classLessons]) => {
-      const sortedLessons = [...classLessons].sort(
-        (a, b) =>
-          WorkingDays.indexOf(a.day as Day) - WorkingDays.indexOf(b.day as Day) ||
-          a.startTime.localeCompare(b.startTime),
-      );
-      const schedules = uniq(
-        sortedLessons.map(
-          (lesson) =>
-            `${lesson.day.slice(0, 3)} ${getOptimiserTime(lesson.startTime)}-${getOptimiserTime(
-              lesson.endTime,
-            )}`,
-        ),
-      );
-      return { classNo, label: `${classNo} — ${schedules.join(', ')}` };
-    })
-    .sort((a, b) => a.classNo.localeCompare(b.classNo, undefined, { numeric: true }));
-}
-
-// Creates the pinned slot dropdown options for every lesson, keyed by lessonKey
-export function getAllPinnedSlotOptions(
+// Resolves each lesson to the classNo currently selected in the timetable tab, keyed by
+// lessonKey. Handles both lesson config formats: V1 stores the classNo directly, V2 stores
+// serialised lesson ids (resolved to their classNo). Lessons whose selection cannot be
+// resolved (e.g. lesson removed from the module) are skipped, so they cannot be pinned.
+export function getTimetableClassNos(
+  timetable: SemTimetableConfig,
   modules: Module[],
   semester: Semester,
-): Record<LessonKey, PinnedSlotOption[]> {
-  const options: Record<LessonKey, PinnedSlotOption[]> = {};
+): Record<LessonKey, ClassNo> {
+  const timetableClassNos: Record<LessonKey, ClassNo> = {};
   modules.forEach((module) => {
-    const lessons = getModuleTimetable(module, semester);
-    getLessonTypes(lessons).forEach((lessonType) => {
-      options[getLessonKey(module.moduleCode, lessonType)] = getPinnedSlotOptions(
-        lessons,
-        lessonType,
-      );
+    const { moduleCode } = module;
+    const lessonMap = getModuleLessonMap(module, semester);
+    Object.entries(timetable[moduleCode] ?? {}).forEach(([lessonType, lessonConfig]) => {
+      const lessonTypeLessons = lessonMap[lessonType] ?? {};
+      let classNo: ClassNo | null = null;
+      if (isClassNo(lessonConfig)) {
+        // V1 config: the value is the classNo itself; keep it only if it still exists
+        const [candidate] = lessonConfig;
+        if (values(lessonTypeLessons).some((lesson) => lesson.classNo === candidate)) {
+          classNo = candidate;
+        }
+      } else {
+        // V2 config: serialised lesson ids, resolve to the majority classNo
+        classNo = getClosestClassNo(lessonTypeLessons, lessonConfig);
+      }
+      if (classNo) timetableClassNos[getLessonKey(moduleCode, lessonType)] = classNo;
     });
   });
-  return options;
+  return timetableClassNos;
 }
 
-// For each pinned class attended live, report clashes with the free day and lesson time
-// preferences. Pinned classes are kept by the optimiser regardless, so these are warnings
-// rather than errors. Recorded lessons are exempt from both constraints and are skipped.
-export function getPinnedSlotConflicts(
+// For each live pinned lesson, report a conflict when its pinned class falls outside the
+// selected lesson time range. Recorded lessons need no physical attendance, so they are
+// exempt (only physical lesson options are checked).
+export function getTimeRangeConflicts(
   modules: Module[],
   semester: Semester,
-  pinnedSlots: PinnedSlots,
-  liveLessonKeys: Set<LessonKey>,
-  selectedFreeDays: Set<DayText>,
+  physicalLessonOptions: LessonOption[],
+  pinnedClassNos: PinnedSlots,
   lessonTimeRange: TimeRange,
-): PinnedSlotConflict[] {
+): TimeRangeConflict[] {
+  const groupedPhysicalLessonOptions = groupBy(
+    physicalLessonOptions,
+    (lessonOption) => lessonOption.moduleCode,
+  );
+
   return modules.flatMap((module) => {
     const { moduleCode } = module;
     const lessons = getModuleTimetable(module, semester);
+    const lessonOptions = get(groupedPhysicalLessonOptions, moduleCode, []);
     return compact(
-      getLessonTypes(lessons).map((lessonType) => {
-        const lessonKey = getLessonKey(moduleCode, lessonType);
-        const classNo = pinnedSlots[lessonKey];
-        if (!classNo || !liveLessonKeys.has(lessonKey)) {
-          return null;
-        }
+      lessonOptions.map((lessonOption) => {
+        const { lessonType, lessonKey, displayText } = lessonOption;
+        const classNo = pinnedClassNos[lessonKey];
+        if (!classNo) return null;
 
         const classLessons = lessons.filter(
           (lesson) => lesson.lessonType === lessonType && lesson.classNo === classNo,
-        );
-        const freeDayClashes = sortDays(
-          uniq(classLessons.map((lesson) => lesson.day).filter((day) => selectedFreeDays.has(day))),
         );
         // "HHMM" strings compare correctly lexicographically
         const isOutsideTimeRange = classLessons.some(
           (lesson) =>
             lesson.startTime < lessonTimeRange.earliest || lesson.endTime > lessonTimeRange.latest,
         );
-
-        const reasons: string[] = [];
-        if (!isEmpty(freeDayClashes)) {
-          reasons.push(`falls on your free day(s): ${freeDayClashes.join(', ')}`);
-        }
-        if (isOutsideTimeRange) {
-          reasons.push(
-            `is outside your selected lesson times (${getOptimiserTime(
-              lessonTimeRange.earliest,
-            )} - ${getOptimiserTime(lessonTimeRange.latest)})`,
-          );
-        }
-        return isEmpty(reasons)
-          ? null
-          : {
-              moduleCode,
-              lessonType,
-              displayText: getDisplayText(moduleCode, lessonType),
-              classNo,
-              reasons,
-            };
+        return isOutsideTimeRange ? { moduleCode, lessonType, displayText, classNo } : null;
       }),
     );
   });

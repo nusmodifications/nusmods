@@ -362,10 +362,10 @@ func TestOptimiser_PinnedSlotAssigned(t *testing.T) {
 	t.Logf("✅ Pinned slot assigned. %s -> %s", lessonKey, classNo)
 }
 
-// TestOptimiser_PinnedSlotWinsOverFreeDay verifies that a pinned class is kept
-// even when it falls on a requested free day (an explicit pin wins over the
-// free-day preference).
-func TestOptimiser_PinnedSlotWinsOverFreeDay(t *testing.T) {
+// TestOptimiser_PinnedSlotOnFreeDayRejected verifies that pinning a physical class
+// that falls on a requested free day is rejected with 400 (pins must not conflict
+// with free days; the frontend blocks this before submitting).
+func TestOptimiser_PinnedSlotOnFreeDayRejected(t *testing.T) {
 	req := pinnedSlotBaseRequest()
 	baseline := solveOK(t, req)
 
@@ -384,15 +384,80 @@ func TestOptimiser_PinnedSlotWinsOverFreeDay(t *testing.T) {
 
 	req.PinnedSlots = []string{lessonKey + "|" + classNo}
 	req.FreeDays = []string{pinnedDay}
-	result := solveOK(t, req)
 
+	resp, body := makeRequest(t, req)
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("Expected status 400 for pin on free day %s, got %d. Body: %s",
+			pinnedDay, resp.StatusCode, string(body))
+	}
+
+	t.Logf("✅ Pinned slot on free day rejected. %s -> %s on %s", lessonKey, classNo, pinnedDay)
+}
+
+// TestOptimiser_PinnedSlotOutsideTimeRangeRejected verifies that pinning a physical
+// class that falls outside the requested time range is rejected with 400.
+func TestOptimiser_PinnedSlotOutsideTimeRangeRejected(t *testing.T) {
+	req := pinnedSlotBaseRequest()
+	baseline := solveOK(t, req)
+
+	var lessonKey, classNo, startTime string
+	for _, slots := range baseline.DaySlots {
+		if len(slots) > 0 {
+			lessonKey = slots[0].LessonKey
+			classNo = slots[0].ClassNo
+			startTime = slots[0].StartTime
+			break
+		}
+	}
+	if lessonKey == "" {
+		t.Fatal("Baseline solve produced no slots")
+	}
+
+	req.PinnedSlots = []string{lessonKey + "|" + classNo}
+	// The class ends after it starts, so a latest time equal to its start time
+	// guarantees the pinned class is outside the allowed range.
+	req.LatestTime = startTime
+
+	resp, body := makeRequest(t, req)
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("Expected status 400 for pin outside time range, got %d. Body: %s",
+			resp.StatusCode, string(body))
+	}
+
+	t.Logf("✅ Pinned slot outside time range rejected. %s -> %s starting %s", lessonKey, classNo, startTime)
+}
+
+// TestOptimiser_PinnedRecordedSlotOnFreeDayAllowed verifies that pinning a recorded
+// lesson is allowed even when its class falls on a free day, since recorded lessons
+// need no physical attendance.
+func TestOptimiser_PinnedRecordedSlotOnFreeDayAllowed(t *testing.T) {
+	req := pinnedSlotBaseRequest()
+	baseline := solveOK(t, req)
+
+	var lessonKey, classNo, pinnedDay string
+	for dayIdx, slots := range baseline.DaySlots {
+		if len(slots) > 0 {
+			lessonKey = slots[0].LessonKey
+			classNo = slots[0].ClassNo
+			pinnedDay = dayNames[dayIdx]
+			break
+		}
+	}
+	if lessonKey == "" {
+		t.Fatal("Baseline solve produced no slots")
+	}
+
+	req.PinnedSlots = []string{lessonKey + "|" + classNo}
+	req.Recordings = []string{lessonKey}
+	req.FreeDays = []string{pinnedDay}
+
+	result := solveOK(t, req)
 	if got := result.Assignments[lessonKey]; got != classNo {
-		t.Errorf("Expected pinned class %s for %s despite free day %s, got %q",
-			classNo, lessonKey, pinnedDay, got)
+		t.Errorf("Expected pinned recorded class %s for %s, got %q", classNo, lessonKey, got)
 	}
 	validateTimetable(t, result, req)
 
-	t.Logf("✅ Pinned slot wins over free day. %s -> %s kept on %s", lessonKey, classNo, pinnedDay)
+	t.Logf("✅ Pinned recorded slot allowed on free day. %s -> %s on %s", lessonKey, classNo, pinnedDay)
 }
 
 // TestOptimiser_PinnedSlotNonExistentClass verifies that pinning a class number
@@ -457,7 +522,6 @@ var dayNames = []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 // - All lessons are within earliestTime and latestTime bounds
 // - Free days have no lessons scheduled
 // - Lessons marked as recordings should not appear in physical timetable
-// - Pinned lessons are exempt from free-day and time bounds (pin wins)
 func validateTimetable(t *testing.T, result models.SolveResponse, req models.OptimiserRequest) {
 	t.Helper()
 
@@ -478,20 +542,11 @@ func validateTimetable(t *testing.T, result models.SolveResponse, req models.Opt
 		recordings[rec] = true
 	}
 
-	// Build pinned lessonKey set (from "CS2040S|Tutorial|08" entries)
-	pinned := make(map[string]bool)
-	for _, pin := range req.PinnedSlots {
-		parts := strings.SplitN(pin, "|", 3)
-		if len(parts) == 3 {
-			pinned[parts[0]+"|"+parts[1]] = true
-		}
-	}
-
 	for dayIdx, slots := range result.DaySlots {
 		for i, slot := range slots {
-			// Free days should only have recorded or pinned lessons (if any)
+			// Free days should only have recorded lessons (if any)
 			if freeDays[dayIdx] {
-				if !recordings[slot.LessonKey] && !pinned[slot.LessonKey] {
+				if !recordings[slot.LessonKey] {
 					t.Errorf("%s: Non-recorded lesson %s should not appear on free day",
 						dayNames[dayIdx], slot.LessonKey)
 				}
@@ -504,13 +559,13 @@ func validateTimetable(t *testing.T, result models.SolveResponse, req models.Opt
 			earliestMin, _ := models.ParseTimeToMinutes(req.EarliestTime)
 			latestMin, _ := models.ParseTimeToMinutes(req.LatestTime)
 
-			if slotStartMin < earliestMin && !pinned[slot.LessonKey] {
+			if slotStartMin < earliestMin {
 				t.Errorf("%s: %s %s starts at %s, before earliest time %s",
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.StartTime, req.EarliestTime)
 			}
 
 			// Check latest time constraint
-			if slotEndMin > latestMin && !pinned[slot.LessonKey] {
+			if slotEndMin > latestMin {
 				t.Errorf("%s: %s %s ends at %s, after latest time %s",
 					dayNames[dayIdx], slot.LessonType, slot.ClassNo, slot.EndTime, req.LatestTime)
 			}

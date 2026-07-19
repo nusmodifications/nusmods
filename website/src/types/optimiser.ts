@@ -25,18 +25,13 @@ export type FreeDayConflict = {
   days: DayText[];
 };
 
-// Maps a lessonKey to the classNo the user has pinned for that lesson
+// Maps a pinned lessonKey to its classNo, derived from the class currently
+// selected in the timetable tab
 export type PinnedSlots = Record<LessonKey, ClassNo>;
 
-export type PinnedSlotOption = {
-  classNo: ClassNo;
-  label: string;
-};
-
-export type PinnedSlotConflict = {
+export type TimeRangeConflict = {
   moduleCode: ModuleCode;
   lessonType: LessonType;
   displayText: DisplayText;
   classNo: ClassNo;
-  reasons: string[];
 };
