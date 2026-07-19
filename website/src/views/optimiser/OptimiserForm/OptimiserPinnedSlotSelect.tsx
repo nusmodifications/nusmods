@@ -1,8 +1,9 @@
 import { isEmpty } from 'lodash-es';
 import { useCallback } from 'react';
 import classNames from 'classnames';
-import { ClassNo } from 'types/modules';
+import { ClassNo, Venue } from 'types/modules';
 import { LessonKey, LessonOption } from 'types/optimiser';
+import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserPinnedSlotSelect.scss';
 import OptimiserFormTooltip from './OptimiserFormTooltip';
@@ -10,12 +11,14 @@ import OptimiserFormTooltip from './OptimiserFormTooltip';
 type Props = {
   lessonOptions: LessonOption[];
   timetableClassNos: Record<LessonKey, ClassNo>;
+  pinnedSlotVenues: Record<LessonKey, Venue>;
   optimiserFormFields: OptimiserFormFields;
 };
 
 const OptimiserPinnedSlotSelect: React.FC<Props> = ({
   lessonOptions,
   timetableClassNos,
+  pinnedSlotVenues,
   optimiserFormFields,
 }) => {
   const { pinnedLessonKeys, setPinnedLessonKeys } = optimiserFormFields;
@@ -50,6 +53,7 @@ const OptimiserPinnedSlotSelect: React.FC<Props> = ({
       <div className={styles.pinnedSlotButtons}>
         {lessonOptions.map((option) => {
           const classNo = timetableClassNos[option.lessonKey];
+          const venue = pinnedSlotVenues[option.lessonKey];
           const isPinned = pinnedLessonKeys.has(option.lessonKey);
           const className = classNames(
             `color-${option.colorIndex}`,
@@ -65,7 +69,17 @@ const OptimiserPinnedSlotSelect: React.FC<Props> = ({
               onClick={() => togglePinnedLesson(option.lessonKey)}
               className={className}
             >
-              {classNo ? `${option.displayText} · ${classNo}` : option.displayText}
+              {classNo ? (
+                <>
+                  <div className={styles.pinnedSlotModuleCode}>{option.moduleCode}</div>
+                  <div>
+                    {LESSON_TYPE_ABBREV[option.lessonType]} [{classNo}]
+                  </div>
+                  {venue && <div>{venue.startsWith('E-Learn') ? 'E-Learning' : venue}</div>}
+                </>
+              ) : (
+                option.displayText
+              )}
             </button>
           );
         })}

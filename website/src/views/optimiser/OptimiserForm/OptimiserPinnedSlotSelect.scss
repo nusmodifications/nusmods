@@ -14,6 +14,16 @@
 .pinnedSlotButton {
   composes: lessonTag from '../common.scss';
 
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  min-width: 6rem;
+  padding: 0.3rem 0.5rem;
+  font-weight: normal;
+  font-size: $font-size-xxs;
+  line-height: 0.85rem;
+  text-align: left;
+
   &.selected {
     opacity: 1;
     filter: brightness(1);
@@ -36,4 +46,9 @@
     opacity: 0.35;
     cursor: not-allowed;
   }
+}
+
+.pinnedSlotModuleCode {
+  font-weight: 600;
+  font-size: $font-size-xs;
 }

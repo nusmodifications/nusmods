@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { defaultLectureOption, defaultTutorialOption } from 'test-utils/optimiser';
-import { ClassNo } from 'types/modules';
+import { ClassNo, Venue } from 'types/modules';
 import { LessonKey, LessonOption } from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import OptimiserPinnedSlotSelect from './OptimiserPinnedSlotSelect';
@@ -16,21 +16,29 @@ const defaultTimetableClassNos: Record<LessonKey, ClassNo> = {
   [defaultLectureOption.lessonKey]: '1',
 };
 
+const defaultPinnedSlotVenues: Record<LessonKey, Venue> = {
+  [defaultTutorialOption.lessonKey]: 'BIZ2-0226',
+  [defaultLectureOption.lessonKey]: 'LT27',
+};
+
 describe('OptimiserPinnedSlotSelect', () => {
   type Props = {
     lessonOptions: LessonOption[];
     timetableClassNos?: Record<LessonKey, ClassNo>;
+    pinnedSlotVenues?: Record<LessonKey, Venue>;
   };
 
   const Helper: React.FC<Props> = ({
     lessonOptions,
     timetableClassNos = defaultTimetableClassNos,
+    pinnedSlotVenues = defaultPinnedSlotVenues,
   }) => {
     const optimiserFormFields = useOptimiserForm();
     return (
       <OptimiserPinnedSlotSelect
         lessonOptions={lessonOptions}
         timetableClassNos={timetableClassNos}
+        pinnedSlotVenues={pinnedSlotVenues}
         optimiserFormFields={optimiserFormFields}
       />
     );
@@ -41,17 +49,19 @@ describe('OptimiserPinnedSlotSelect', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it('should show a button per lesson labelled with the timetable classNo', () => {
+  it('should show a button per lesson labelled with the module code, class and venue', () => {
     const lessonOptions = [defaultLectureOption, defaultTutorialOption];
     render(<Helper lessonOptions={lessonOptions} />);
 
     const buttons = screen.getAllByRole('button');
     expect(buttons).toHaveLength(2);
     expect(
-      screen.getByRole('button', { name: `${defaultLectureOption.displayText} · 1` }),
+      screen.getByRole('button', { name: `${defaultLectureOption.moduleCode} LEC [1] LT27` }),
     ).toBeEnabled();
     expect(
-      screen.getByRole('button', { name: `${defaultTutorialOption.displayText} · 2` }),
+      screen.getByRole('button', {
+        name: `${defaultTutorialOption.moduleCode} TUT [2] BIZ2-0226`,
+      }),
     ).toBeEnabled();
   });
 
