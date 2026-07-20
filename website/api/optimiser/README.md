@@ -42,7 +42,7 @@ A single request moves through the following stages:
 
 1. **`optimise.go` — HTTP handler**: Decodes the JSON request body into `OptimiserRequest` and calls `solver.Solve`.
 
-2. **`_modules/GetAllModuleSlots`**: For each requested module, fetches timetable data from the NUSMods API (`_client`). Slots are then filtered (removing those outside the time window or on free days) and deduplicated — two class numbers that share the same day, start time, and building are treated as equivalent and merged to reduce the search space. Lessons pinned via `pinnedSlots` (format `"MODULE|LessonType|ClassNo"`) are reduced to just the pinned class. Pinned lessons must satisfy the free-day and time-range constraints: a non-recorded pinned class that falls on a free day or outside the time window is rejected with a 400 error (the website blocks such pins before submitting, so this only guards direct API calls). Pins on recorded lessons are exempt since they need no physical attendance. Returns a map of `Module → LessonType → ClassNo → []Slot`.
+2. **`_modules/GetAllModuleSlots`**: For each requested module, fetches timetable data from the NUSMods API (`_client`). Slots are then filtered (removing those outside the time window or on free days) and deduplicated — two class numbers that share the same day, start time, and building are treated as equivalent and merged to reduce the search space. Lessons pinned via `pinnedSlots` (format `"MODULE|LessonType|ClassNo"`) are reduced to just the pinned class. Pinned lessons must satisfy the free-day and time-range constraints.
 
 3. **`_solver/beamSearch`**: Lessons are first sorted pinned-first, then by number of available options (fewest first — the **Minimum Remaining Values** heuristic) — this ensures a pinned lesson always claims its slot before an unrelated single-option lesson can occupy it and force the pin out. The beam search then assigns one lesson type at a time, expanding each partial timetable into up to `BranchingFactor` candidates, scoring them all, and keeping only the top `BeamWidth`. This repeats until all lessons are assigned.
 
@@ -59,9 +59,9 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 3. **Branching Factor**: Limits the number of options considered per lesson type to 100 (configurable via `BranchingFactor` constant)
 4. **MRV Heuristic**: Pinned lessons are assigned first, then lessons with fewer class options, pruning infeasible branches early
 5. **Scoring Function**: Evaluates states based on:
-   - Total walking distance between consecutive physical classes using haversine formula (recorded lessons are skipped since they need no travel)
+   - Total walking distance between consecutive physical classes using haversine formula
    - Having a one-hour break within provided lunch time window
-   - <= Maximum hours of consecutive lessons (physical lessons only — recorded lessons need no attendance)
+   - <= Maximum hours of consecutive lessons
    - <= 2 hours max gap between classes (configurable)
 
 ### Hard vs Soft Constraints
@@ -74,7 +74,7 @@ Understanding this distinction is essential before modifying the solver.
 - `earliestTime` / `latestTime` — slots outside this window are filtered out
 - `pinnedSlots` — a pinned lesson's other classes are removed from the search space; a non-recorded pinned class that violates `freeDays` or the time window fails validation with a 400 error (`_modules/validatePinnedSlots`)
 
-**Soft constraints** are penalties applied by the scoring function in `_solver/scoreTimetableState`. They influence which timetable is chosen but do not guarantee the result satisfies them (if no feasible option avoids the penalty, the least-bad option is returned). All scoring components only consider physical lessons — recorded lessons are filtered out via `getPhysicalSlots` since they need no attendance:
+**Soft constraints** are penalties applied by the scoring function in `_solver/scoreTimetableState`. They influence which timetable is chosen but do not guarantee the result satisfies them (if no feasible option avoids the penalty, the least-bad option is returned).
 
 - Lunch break availability
 - Consecutive hours of study
