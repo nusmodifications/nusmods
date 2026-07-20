@@ -35,3 +35,16 @@ export type TimeRangeConflict = {
   displayText: DisplayText;
   classNo: ClassNo;
 };
+
+// One side of a clash between two pinned classes
+export type PinnedClashLesson = {
+  moduleCode: ModuleCode;
+  lessonType: LessonType;
+  displayText: DisplayText;
+  classNo: ClassNo;
+};
+
+export type PinnedClashConflict = {
+  first: PinnedClashLesson;
+  second: PinnedClashLesson;
+};

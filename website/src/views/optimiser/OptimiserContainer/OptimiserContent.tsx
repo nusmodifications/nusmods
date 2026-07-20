@@ -13,6 +13,7 @@ import {
   getFreeDayConflicts,
   getLessonOptions,
   getOptimiserAcadYear,
+  getPinnedClashConflicts,
   getPinnedSlotsPayload,
   getPinnedSlotVenues,
   getRecordedLessonOptions,
@@ -21,7 +22,12 @@ import {
   getUnassignedLessonOptions,
   isSaturdayInOptions,
 } from 'utils/optimiser';
-import { FreeDayConflict, LessonOption, TimeRangeConflict } from 'types/optimiser';
+import {
+  FreeDayConflict,
+  LessonOption,
+  PinnedClashConflict,
+  TimeRangeConflict,
+} from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserContent.scss';
 import OptimiserHeader from '../OptimiserHeader';
@@ -106,6 +112,11 @@ const OptimiserContent: React.FC = () => {
     lessonTimeRange,
   ]);
 
+  const pinnedClashConflicts: PinnedClashConflict[] = useMemo(() => {
+    const modules = getSemesterModules(timetable, modulesMap);
+    return getPinnedClashConflicts(modules, activeSemester, physicalLessonOptions, pinnedClassNos);
+  }, [timetable, modulesMap, activeSemester, physicalLessonOptions, pinnedClassNos]);
+
   const recordedLessonOptions: LessonOption[] = useMemo(
     () => getRecordedLessonOptions(lessonOptions, physicalLessonOptions),
     [lessonOptions, physicalLessonOptions],
@@ -180,6 +191,7 @@ const OptimiserContent: React.FC = () => {
         pinnedSlotVenues={pinnedSlotVenues}
         freeDayConflicts={freeDayConflicts}
         timeRangeConflicts={timeRangeConflicts}
+        pinnedClashConflicts={pinnedClashConflicts}
         hasSaturday={hasSaturday}
         optimiserFormFields={optimiserFormFields}
       />
@@ -189,6 +201,7 @@ const OptimiserContent: React.FC = () => {
         lessonOptions={lessonOptions}
         freeDayConflicts={freeDayConflicts}
         timeRangeConflicts={timeRangeConflicts}
+        pinnedClashConflicts={pinnedClashConflicts}
         onClick={buttonOnClick}
       />
 

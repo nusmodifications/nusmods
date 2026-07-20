@@ -30,6 +30,8 @@ import {
   FreeDayConflict,
   LessonOption,
   LessonKey,
+  PinnedClashConflict,
+  PinnedClashLesson,
   PinnedSlots,
   TimeRange,
   TimeRangeConflict,
@@ -38,7 +40,7 @@ import { ColorMapping } from 'types/reducers';
 import { SemTimetableConfig } from 'types/timetables';
 import { LessonSlot, OptimiseResponse } from 'apis/optimiser';
 import { getModuleLessonMap, getModuleTimetable } from './modules';
-import { getClosestClassNo, isClassNo } from './timetables';
+import { doLessonsOverlap, getClosestClassNo, isClassNo } from './timetables';
 import {
   convertIndexToTime,
   convertTimeToIndex,
@@ -269,6 +271,51 @@ export function getTimeRangeConflicts(
       }),
     );
   });
+}
+
+// Reports each pair of live pinned lessons whose classes overlap in time. The solver can
+// never schedule both, so these conflicts block optimising. Recorded lessons need no
+// physical attendance, so they are exempt (only physical lesson options are checked).
+export function getPinnedClashConflicts(
+  modules: Module[],
+  semester: Semester,
+  physicalLessonOptions: LessonOption[],
+  pinnedClassNos: PinnedSlots,
+): PinnedClashConflict[] {
+  const groupedPhysicalLessonOptions = groupBy(
+    physicalLessonOptions,
+    (lessonOption) => lessonOption.moduleCode,
+  );
+
+  // Collect each live pinned lesson with the sessions of its pinned class (a class can
+  // meet multiple times a week)
+  const pinnedLessons = modules.flatMap((module) => {
+    const { moduleCode } = module;
+    const lessons = getModuleTimetable(module, semester);
+    const lessonOptions = get(groupedPhysicalLessonOptions, moduleCode, []);
+    return compact(
+      lessonOptions.map((lessonOption) => {
+        const { lessonType, lessonKey, displayText } = lessonOption;
+        const classNo = pinnedClassNos[lessonKey];
+        if (!classNo) return null;
+
+        const classLessons = lessons.filter(
+          (lesson) => lesson.lessonType === lessonType && lesson.classNo === classNo,
+        );
+        const pinnedLesson: PinnedClashLesson = { moduleCode, lessonType, displayText, classNo };
+        return { pinnedLesson, classLessons };
+      }),
+    );
+  });
+
+  return pinnedLessons.flatMap((first, index) =>
+    pinnedLessons.slice(index + 1).flatMap((second) => {
+      const doClash = first.classLessons.some((firstLesson) =>
+        second.classLessons.some((secondLesson) => doLessonsOverlap(firstLesson, secondLesson)),
+      );
+      return doClash ? [{ first: first.pinnedLesson, second: second.pinnedLesson }] : [];
+    }),
+  );
 }
 
 // Serialises pinned slots into the API wire format, e.g. ["CS2040S|Tutorial|08"]

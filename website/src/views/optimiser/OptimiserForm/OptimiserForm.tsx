@@ -1,11 +1,18 @@
 import { ClassNo, Venue } from 'types/modules';
-import { FreeDayConflict, LessonKey, LessonOption, TimeRangeConflict } from 'types/optimiser';
+import {
+  FreeDayConflict,
+  LessonKey,
+  LessonOption,
+  PinnedClashConflict,
+  TimeRangeConflict,
+} from 'types/optimiser';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserForm.scss';
 import OptimiserLessonOptionSelect from './OptimiserLessonOptionSelect';
 import OptimiserPinnedSlotSelect from './OptimiserPinnedSlotSelect';
 import OptimiserFreeDaySelect from './OptimiserFreeDaySelect';
 import OptimiserFreeDayConflicts from './OptimiserFreeDayConflicts';
+import OptimiserPinnedClashConflicts from './OptimiserPinnedClashConflicts';
 import OptimiserTimeRangeConflicts from './OptimiserTimeRangeConflicts';
 import {
   OptimiserLessonTimeRangeSelect,
@@ -19,6 +26,7 @@ interface OptimiserFormProps {
   pinnedSlotVenues: Record<LessonKey, Venue>;
   freeDayConflicts: FreeDayConflict[];
   timeRangeConflicts: TimeRangeConflict[];
+  pinnedClashConflicts: PinnedClashConflict[];
   hasSaturday: boolean;
   optimiserFormFields: OptimiserFormFields;
 }
@@ -29,6 +37,7 @@ const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
   pinnedSlotVenues,
   freeDayConflicts,
   timeRangeConflicts,
+  pinnedClashConflicts,
   hasSaturday,
   optimiserFormFields,
 }) => (
@@ -44,6 +53,8 @@ const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
       pinnedSlotVenues={pinnedSlotVenues}
       optimiserFormFields={optimiserFormFields}
     />
+
+    <OptimiserPinnedClashConflicts pinnedClashConflicts={pinnedClashConflicts} />
 
     <OptimiserFreeDaySelect hasSaturday={hasSaturday} optimiserFormFields={optimiserFormFields} />
 
