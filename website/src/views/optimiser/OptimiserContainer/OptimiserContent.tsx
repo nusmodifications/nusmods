@@ -15,7 +15,6 @@ import {
   getOptimiserAcadYear,
   getPinnedClashConflicts,
   getPinnedSlotsPayload,
-  getPinnedSlotVenues,
   getRecordedLessonOptions,
   getTimeRangeConflicts,
   getTimetableClassNos,
@@ -77,11 +76,6 @@ const OptimiserContent: React.FC = () => {
     () => pick(timetableClassNos, Array.from(pinnedLessonKeys)),
     [timetableClassNos, pinnedLessonKeys],
   );
-
-  const pinnedSlotVenues = useMemo(() => {
-    const modules = getSemesterModules(timetable, modulesMap);
-    return getPinnedSlotVenues(modules, activeSemester, lessonOptions, timetableClassNos);
-  }, [timetable, modulesMap, activeSemester, lessonOptions, timetableClassNos]);
 
   const freeDayConflicts: FreeDayConflict[] = useMemo(() => {
     const modules = getSemesterModules(timetable, modulesMap);
@@ -188,7 +182,6 @@ const OptimiserContent: React.FC = () => {
       <OptimiserForm
         lessonOptions={lessonOptions}
         timetableClassNos={timetableClassNos}
-        pinnedSlotVenues={pinnedSlotVenues}
         freeDayConflicts={freeDayConflicts}
         timeRangeConflicts={timeRangeConflicts}
         pinnedClashConflicts={pinnedClashConflicts}

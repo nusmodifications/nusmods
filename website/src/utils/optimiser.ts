@@ -22,7 +22,6 @@ import {
   ModuleCode,
   RawLesson,
   Semester,
-  Venue,
   WorkingDays,
 } from 'types/modules';
 import {
@@ -205,33 +204,6 @@ export function getTimetableClassNos(
     });
   });
   return timetableClassNos;
-}
-
-// Looks up the venue of the class currently selected in the timetable tab for each lesson,
-// so pinned lesson buttons can display it the same way the timetable page does.
-export function getPinnedSlotVenues(
-  modules: Module[],
-  semester: Semester,
-  lessonOptions: LessonOption[],
-  timetableClassNos: Record<LessonKey, ClassNo>,
-): Record<LessonKey, Venue> {
-  const groupedLessonOptions = groupBy(lessonOptions, (lessonOption) => lessonOption.moduleCode);
-
-  const venues: Record<LessonKey, Venue> = {};
-  modules.forEach((module) => {
-    const { moduleCode } = module;
-    const lessons = getModuleTimetable(module, semester);
-    const options = get(groupedLessonOptions, moduleCode, []);
-    options.forEach(({ lessonType, lessonKey }) => {
-      const classNo = timetableClassNos[lessonKey];
-      if (!classNo) return;
-      const lesson = lessons.find(
-        (candidate) => candidate.lessonType === lessonType && candidate.classNo === classNo,
-      );
-      if (lesson) venues[lessonKey] = lesson.venue;
-    });
-  });
-  return venues;
 }
 
 // For each live pinned lesson, report a conflict when its pinned class falls outside the

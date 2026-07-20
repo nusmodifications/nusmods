@@ -21,7 +21,6 @@ import {
   getLessonTypes,
   getPinnedClashConflicts,
   getPinnedSlotsPayload,
-  getPinnedSlotVenues,
   getRecordedLessonOptions,
   getLessonKey,
   getTimeRangeConflicts,
@@ -358,32 +357,6 @@ describe('getTimetableClassNos', () => {
       CS9999: { Lecture: [getLessonId('Lecture', '1')] },
     };
     expect(getTimetableClassNos(timetable, [CS1010S], 1)).toEqual({});
-  });
-});
-
-describe('getPinnedSlotVenues', () => {
-  const lessonOptions = [defaultLectureOption, defaultTutorialOption];
-
-  it("resolves the venue of each lesson's pinned classNo", () => {
-    const timetableClassNos = {
-      [defaultLectureOption.lessonKey]: '1',
-      [defaultTutorialOption.lessonKey]: '2',
-    };
-    const expectedLectureVenue = getModuleTimetable(defaultModule, 1).find(
-      (lesson) => lesson.lessonType === 'Lecture' && lesson.classNo === '1',
-    )?.venue;
-    const expectedTutorialVenue = getModuleTimetable(defaultModule, 1).find(
-      (lesson) => lesson.lessonType === 'Tutorial' && lesson.classNo === '2',
-    )?.venue;
-
-    expect(getPinnedSlotVenues([defaultModule], 1, lessonOptions, timetableClassNos)).toEqual({
-      [defaultLectureOption.lessonKey]: expectedLectureVenue,
-      [defaultTutorialOption.lessonKey]: expectedTutorialVenue,
-    });
-  });
-
-  it('skips lessons whose classNo is not resolved', () => {
-    expect(getPinnedSlotVenues([defaultModule], 1, lessonOptions, {})).toEqual({});
   });
 });
 

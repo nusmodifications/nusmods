@@ -1,4 +1,4 @@
-import { ClassNo, Venue } from 'types/modules';
+import { ClassNo } from 'types/modules';
 import {
   FreeDayConflict,
   LessonKey,
@@ -23,7 +23,6 @@ import OptimiserMaxConsecutiveHoursSelect from './OptimiserMaxConsecutiveHoursSe
 interface OptimiserFormProps {
   lessonOptions: LessonOption[];
   timetableClassNos: Record<LessonKey, ClassNo>;
-  pinnedSlotVenues: Record<LessonKey, Venue>;
   freeDayConflicts: FreeDayConflict[];
   timeRangeConflicts: TimeRangeConflict[];
   pinnedClashConflicts: PinnedClashConflict[];
@@ -34,7 +33,6 @@ interface OptimiserFormProps {
 const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
   lessonOptions,
   timetableClassNos,
-  pinnedSlotVenues,
   freeDayConflicts,
   timeRangeConflicts,
   pinnedClashConflicts,
@@ -50,7 +48,6 @@ const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
     <OptimiserPinnedSlotSelect
       lessonOptions={lessonOptions}
       timetableClassNos={timetableClassNos}
-      pinnedSlotVenues={pinnedSlotVenues}
       optimiserFormFields={optimiserFormFields}
     />
 
