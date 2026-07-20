@@ -273,28 +273,26 @@ export function getTimeRangeConflicts(
   });
 }
 
-// Reports each pair of live pinned lessons whose classes overlap in time. The solver can
-// never schedule both, so these conflicts block optimising. Recorded lessons need no
-// physical attendance, so they are exempt (only physical lesson options are checked).
+// Reports each pair of pinned lessons whose classes overlap in time. The solver can
+// never schedule both, so these conflicts block optimising. Unlike the free-day and
+// time-range checks, recorded lessons are NOT exempt: two pinned classes that clash
+// overlap on the timetable itself, regardless of live attendance.
 export function getPinnedClashConflicts(
   modules: Module[],
   semester: Semester,
-  physicalLessonOptions: LessonOption[],
+  lessonOptions: LessonOption[],
   pinnedClassNos: PinnedSlots,
 ): PinnedClashConflict[] {
-  const groupedPhysicalLessonOptions = groupBy(
-    physicalLessonOptions,
-    (lessonOption) => lessonOption.moduleCode,
-  );
+  const groupedLessonOptions = groupBy(lessonOptions, (lessonOption) => lessonOption.moduleCode);
 
-  // Collect each live pinned lesson with the sessions of its pinned class (a class can
+  // Collect each pinned lesson with the sessions of its pinned class (a class can
   // meet multiple times a week)
   const pinnedLessons = modules.flatMap((module) => {
     const { moduleCode } = module;
     const lessons = getModuleTimetable(module, semester);
-    const lessonOptions = get(groupedPhysicalLessonOptions, moduleCode, []);
+    const moduleLessonOptions = get(groupedLessonOptions, moduleCode, []);
     return compact(
-      lessonOptions.map((lessonOption) => {
+      moduleLessonOptions.map((lessonOption) => {
         const { lessonType, lessonKey, displayText } = lessonOption;
         const classNo = pinnedClassNos[lessonKey];
         if (!classNo) return null;

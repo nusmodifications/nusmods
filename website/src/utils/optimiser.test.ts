@@ -462,12 +462,12 @@ describe('getPinnedClashConflicts', () => {
     displayText: 'MA1521 Lecture',
     days: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
   };
-  const physicalLessonOptions = [defaultTutorialOption, ma1521LectureOption];
+  const lessonOptions = [defaultTutorialOption, ma1521LectureOption];
 
   it('should report two pinned classes that overlap', () => {
     // CS1010S Tutorial 2 is Monday 10:00-11:00; MA1521 Lecture 2 is Monday 10:00-12:00
     // and Thursday 10:00-12:00
-    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, physicalLessonOptions, {
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
       'CS1010S|Tutorial': '2',
       'MA1521|Lecture': '2',
     });
@@ -491,7 +491,7 @@ describe('getPinnedClashConflicts', () => {
 
   it('should not report adjacent classes as a clash', () => {
     // CS1010S Tutorial 1 is Monday 09:00-10:00, ending exactly when MA1521 Lecture 2 starts
-    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, physicalLessonOptions, {
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
       'CS1010S|Tutorial': '1',
       'MA1521|Lecture': '2',
     });
@@ -501,7 +501,7 @@ describe('getPinnedClashConflicts', () => {
   it('should not report classes on different days', () => {
     // CS1010S Tutorial 1 is Monday 09:00-10:00; MA1521 Lecture 1 is Tuesday and
     // Friday 08:00-10:00
-    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, physicalLessonOptions, {
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
       'CS1010S|Tutorial': '1',
       'MA1521|Lecture': '1',
     });
@@ -509,24 +509,24 @@ describe('getPinnedClashConflicts', () => {
   });
 
   it('should not report a single pinned lesson', () => {
-    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, physicalLessonOptions, {
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
       'MA1521|Lecture': '2',
     });
     expect(conflicts).toHaveLength(0);
   });
 
-  it('should skip pinned lessons that are not attended live', () => {
-    // MA1521 Lecture is recorded (not in the physical lesson options), so its pin
-    // cannot clash
-    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, [defaultTutorialOption], {
+  it('should report clashes for recorded pinned lessons too', () => {
+    // All lesson options are considered — a pinned class clashes on the timetable
+    // whether or not it is attended live
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
       'CS1010S|Tutorial': '2',
       'MA1521|Lecture': '2',
     });
-    expect(conflicts).toHaveLength(0);
+    expect(conflicts).toHaveLength(1);
   });
 
   it('should report no clashes when nothing is pinned', () => {
-    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, physicalLessonOptions, {});
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {});
     expect(conflicts).toHaveLength(0);
   });
 });

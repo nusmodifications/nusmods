@@ -114,8 +114,8 @@ const OptimiserContent: React.FC = () => {
 
   const pinnedClashConflicts: PinnedClashConflict[] = useMemo(() => {
     const modules = getSemesterModules(timetable, modulesMap);
-    return getPinnedClashConflicts(modules, activeSemester, physicalLessonOptions, pinnedClassNos);
-  }, [timetable, modulesMap, activeSemester, physicalLessonOptions, pinnedClassNos]);
+    return getPinnedClashConflicts(modules, activeSemester, lessonOptions, pinnedClassNos);
+  }, [timetable, modulesMap, activeSemester, lessonOptions, pinnedClassNos]);
 
   const recordedLessonOptions: LessonOption[] = useMemo(
     () => getRecordedLessonOptions(lessonOptions, physicalLessonOptions),

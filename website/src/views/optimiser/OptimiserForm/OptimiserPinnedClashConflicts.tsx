@@ -29,10 +29,7 @@ const OptimiserPinnedClashConflicts: React.FC<Props> = ({ pinnedClashConflicts }
         ))}
       </ul>
 
-      <h5>
-        Consider unpinning one of these lessons, disabling live attendance, or changing its class in
-        the timetable tab.
-      </h5>
+      <h5>Consider unpinning one of these lessons, or changing its class in the timetable tab.</h5>
     </section>
   );
 
