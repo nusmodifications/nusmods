@@ -61,7 +61,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 5. **Scoring Function**: Evaluates states based on:
    - Total walking distance between consecutive physical classes using haversine formula (recorded lessons are skipped since they need no travel)
    - Having a one-hour break within provided lunch time window
-   - <= Maximum hours of consecutive lessons (recorded lessons included — they still occupy a scheduled slot)
+   - <= Maximum hours of consecutive lessons (physical lessons only — recorded lessons need no attendance)
    - <= 2 hours max gap between classes (configurable)
 
 ### Hard vs Soft Constraints
@@ -74,12 +74,12 @@ Understanding this distinction is essential before modifying the solver.
 - `earliestTime` / `latestTime` — slots outside this window are filtered out
 - `pinnedSlots` — a pinned lesson's other classes are removed from the search space; a non-recorded pinned class that violates `freeDays` or the time window fails validation with a 400 error (`_modules/validatePinnedSlots`)
 
-**Soft constraints** are penalties applied by the scoring function in `_solver/scoreTimetableState`. They influence which timetable is chosen but do not guarantee the result satisfies them (if no feasible option avoids the penalty, the least-bad option is returned). Lunch, consecutive-hours, and gap scoring consider all lessons including recorded ones; walking distance only considers physical lessons:
+**Soft constraints** are penalties applied by the scoring function in `_solver/scoreTimetableState`. They influence which timetable is chosen but do not guarantee the result satisfies them (if no feasible option avoids the penalty, the least-bad option is returned). All scoring components only consider physical lessons — recorded lessons are filtered out via `getPhysicalSlots` since they need no attendance:
 
 - Lunch break availability
 - Consecutive hours of study
 - Gaps between classes
-- Walking distance between venues (physical lessons only)
+- Walking distance between venues
 
 ### Scoring Constants
 

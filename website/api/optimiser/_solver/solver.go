@@ -96,7 +96,7 @@ func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 //   - lessonToSlots: Maps each lesson key to its available class options
 //   - beamWidth: Maximum number of partial timetables to keep at each step (trades quality for speed)
 //   - branchingFactor: Maximum number of class options to try per lesson (limits exploration)
-//   - recordings: Set of recorded/online lessons excluded from walking-distance scoring
+//   - recordings: Set of recorded/online lessons that don't count for physical constraints
 //   - optimiserRequest: User preferences (free days, time ranges, etc.)
 //
 // Returns the best complete timetable found.
@@ -172,7 +172,7 @@ func beamSearch(
 		}
 
 		for i := range nextBeam {
-			nextBeam[i].Score = scoreTimetableState(nextBeam[i], optimiserRequest)
+			nextBeam[i].Score = scoreTimetableState(nextBeam[i], recordings, optimiserRequest)
 		}
 		sort.Slice(nextBeam, func(i, j int) bool {
 			return nextBeam[i].Score < nextBeam[j].Score
@@ -313,9 +313,8 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 }
 
 // isLessonRecorded determines if a lesson is marked as recorded/online by the user.
-// Recorded lessons don't require physical travel, so they're excluded from walking-distance
-// calculations. They still count towards the time-based scoring (lunch, gaps, consecutive
-// hours) since they occupy a scheduled slot in the timetable.
+// Recorded lessons don't require physical attendance, so they're excluded from distance
+// calculations and free day constraints.
 // lessonKey is in "MODULE|LessonType" format, matching the recordings map keys.
 func isLessonRecorded(lessonKey string, recordings map[string]struct{}) bool {
 	_, ok := recordings[lessonKey]
@@ -330,26 +329,26 @@ func isInvalidCoordinates(coord models.Coordinates) bool {
 // scoreTimetableState assigns a heuristic score to a timetable state to determine its quality.
 // Lower scores indicate better (more preferred) timetables.
 //
-// The scoring function combines multiple factors, applied to all lessons (including
-// recorded ones, since they still occupy a scheduled slot in the timetable):
+// The scoring function combines multiple factors:
 //   - Lunch break availability: Bonus if >= 60min gap in lunch window, penalty otherwise
 //   - Large gaps between classes: Penalizes gaps > 2 hours to avoid excessive downtime
 //   - Consecutive hours: Penalizes too many back-to-back classes without breaks
-//   - Walking distance: Accumulated distance penalties between physical lesson venues
-//     from all days (recorded lessons are excluded from this component only)
+//   - Walking distance: Accumulated distance penalties between physical lesson venues from all days
 func scoreTimetableState(
 	state models.TimetableState,
+	recordings map[string]struct{},
 	optimiserRequest models.OptimiserRequest,
 ) float64 {
 	var totalScore float64
 	for d := 0; d < constants.DaysPerWeek; d++ {
-		daySlots := state.DaySlots[d]
-		if len(daySlots) == 0 {
+		if len(state.DaySlots[d]) == 0 {
 			continue
 		}
 
+		physicalSlots := getPhysicalSlots(state.DaySlots[d], recordings)
+
 		// Apply lunch penalty/bonus
-		lunchGap := calculateLunchGap(daySlots, optimiserRequest)
+		lunchGap := calculateLunchGap(physicalSlots, optimiserRequest)
 		if lunchGap >= constants.LunchRequiredTime {
 			totalScore += constants.LunchBonus
 		} else {
@@ -357,17 +356,36 @@ func scoreTimetableState(
 		}
 
 		// Apply gap penalty for large gaps of > 2 hours between classes
-		largestGap := calculateLargestGap(daySlots)
+		largestGap := calculateLargestGap(physicalSlots)
 		if largestGap > constants.GapPenaltyThreshold {
 			totalScore += constants.GapPenaltyRate * float64(largestGap-constants.GapPenaltyThreshold) / 60
 		}
 
 		// Apply penalty for more than max consecutive hours of study
-		totalScore += float64(scoreConsecutiveHoursOfStudy(daySlots, optimiserRequest.MaxConsecutiveHours))
+		totalScore += float64(scoreConsecutiveHoursOfStudy(physicalSlots, optimiserRequest.MaxConsecutiveHours))
 	}
 
 	// Add penalty for walking distance
 	return totalScore + state.TotalDistance
+}
+
+// getPhysicalSlots filters out recorded lessons from a day's schedule, returning
+// only lessons that require physical attendance. This is used when evaluating constraints
+// that only apply to in-person classes (e.g., lunch breaks, consecutive hours on campus).
+func getPhysicalSlots(daySlots []models.ModuleSlot, recordings map[string]struct{}) []models.ModuleSlot {
+	if len(daySlots) == 0 || len(recordings) == 0 {
+		return daySlots
+	}
+
+	physicalSlots := make([]models.ModuleSlot, 0, len(daySlots))
+	for i := range daySlots {
+		slot := &daySlots[i]
+		if !isLessonRecorded(slot.LessonKey, recordings) {
+			physicalSlots = append(physicalSlots, *slot)
+		}
+	}
+
+	return physicalSlots
 }
 
 // calculateLunchGap finds the largest gap within the user's preferred lunch time window
