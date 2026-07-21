@@ -1,6 +1,7 @@
 import { CS1010S, CS3216, MA1521 } from '__mocks__/modules';
-import { LessonOption, TimeRange } from 'types/optimiser';
+import { LessonOption, PinnedSlots, TimeRange } from 'types/optimiser';
 import { Module, WorkingDays } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
 import { shuffle } from 'lodash-es';
 import { OptimiseResponse } from 'apis/optimiser';
 import {
@@ -18,8 +19,12 @@ import {
   getFreeDayConflicts,
   getLessonOptions,
   getLessonTypes,
+  getPinnedClashConflicts,
+  getPinnedSlotsPayload,
   getRecordedLessonOptions,
   getLessonKey,
+  getTimeRangeConflicts,
+  getTimetableClassNos,
   isSaturdayInOptions,
   sortDays,
   getUnassignedLessonOptions,
@@ -28,6 +33,7 @@ import {
   getOptimiserTime,
 } from './optimiser';
 import { getModuleTimetable } from './modules';
+import { serializeLessonDetails } from './timetables';
 
 const defaultModule = CS1010S;
 
@@ -179,7 +185,7 @@ describe('getFreeDayConflicts', () => {
         days: ['Monday', 'Tuesday', 'Thursday'],
       },
     ];
-    const conflicts = getFreeDayConflicts(modules, 1, physicalLessonOptions, selectedFreeDays);
+    const conflicts = getFreeDayConflicts(modules, 1, physicalLessonOptions, {}, selectedFreeDays);
     expect(conflicts).toEqual(expected);
   });
 
@@ -199,7 +205,46 @@ describe('getFreeDayConflicts', () => {
       },
     ];
     const selectedFreeDays = new Set(['Monday', 'Thursday']);
-    const conflicts = getFreeDayConflicts(modules, 1, physicalLessonOptions, selectedFreeDays);
+    const conflicts = getFreeDayConflicts(modules, 1, physicalLessonOptions, {}, selectedFreeDays);
+    expect(conflicts).toHaveLength(0);
+  });
+
+  // CS1010S Tutorial has classes on both Monday and Tuesday; class 1 is on Monday
+  // 09:00-10:00 and class 10 is on Tuesday 09:00-10:00
+  it('should report a conflict when the pinned class falls on a free day', () => {
+    const pinnedClassNos: PinnedSlots = { 'CS1010S|Tutorial': '1' };
+    const conflicts = getFreeDayConflicts(
+      [CS1010S],
+      1,
+      [defaultTutorialOption],
+      pinnedClassNos,
+      new Set(['Monday']),
+    );
+    expect(conflicts).toEqual([
+      {
+        moduleCode: defaultTutorialOption.moduleCode,
+        lessonType: defaultTutorialOption.lessonType,
+        displayText: defaultTutorialOption.displayText,
+        days: ['Monday'],
+      },
+    ]);
+  });
+
+  it('should report no conflict when the pinned class avoids the free days', () => {
+    const pinnedClassNos: PinnedSlots = { 'CS1010S|Tutorial': '10' };
+    const conflicts = getFreeDayConflicts(
+      [CS1010S],
+      1,
+      [defaultTutorialOption],
+      pinnedClassNos,
+      new Set(['Monday']),
+    );
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('should skip pinned lessons that are not attended live', () => {
+    const pinnedClassNos: PinnedSlots = { 'CS1010S|Tutorial': '1' };
+    const conflicts = getFreeDayConflicts([CS1010S], 1, [], pinnedClassNos, new Set(['Monday']));
     expect(conflicts).toHaveLength(0);
   });
 });
@@ -258,6 +303,218 @@ describe('isSaturdayInOptions', () => {
       },
     ];
     expect(isSaturdayInOptions(lessonOptions)).toBe(true);
+  });
+});
+
+describe('getTimetableClassNos', () => {
+  const getLessonId = (lessonType: string, classNo: string) => {
+    const lesson = getModuleTimetable(CS1010S, 1).find(
+      (l) => l.lessonType === lessonType && l.classNo === classNo,
+    );
+    if (!lesson) throw new Error(`expected CS1010S ${lessonType} ${classNo} in mock data`);
+    return serializeLessonDetails(lesson);
+  };
+
+  it('should resolve a V2 lesson-id config to its classNo', () => {
+    const timetable: SemTimetableConfig = {
+      CS1010S: {
+        Tutorial: [getLessonId('Tutorial', '2')],
+        Lecture: [getLessonId('Lecture', '1')],
+      },
+    };
+    expect(getTimetableClassNos(timetable, [CS1010S], 1)).toEqual({
+      'CS1010S|Tutorial': '2',
+      'CS1010S|Lecture': '1',
+    });
+  });
+
+  it('should resolve a V1 classNo config directly', () => {
+    const timetable: SemTimetableConfig = {
+      CS1010S: { Tutorial: ['2'], Lecture: ['1'] },
+    };
+    expect(getTimetableClassNos(timetable, [CS1010S], 1)).toEqual({
+      'CS1010S|Tutorial': '2',
+      'CS1010S|Lecture': '1',
+    });
+  });
+
+  it('should skip a V1 classNo that no longer exists', () => {
+    const timetable: SemTimetableConfig = {
+      CS1010S: { Tutorial: ['999'] },
+    };
+    expect(getTimetableClassNos(timetable, [CS1010S], 1)).toEqual({});
+  });
+
+  it('should skip lessons whose selection cannot be resolved', () => {
+    const timetable: SemTimetableConfig = {
+      CS1010S: { Laboratory: ['nonexistent-lesson-id'] },
+    };
+    expect(getTimetableClassNos(timetable, [CS1010S], 1)).toEqual({});
+  });
+
+  it('should skip modules that are not loaded', () => {
+    const timetable: SemTimetableConfig = {
+      CS9999: { Lecture: [getLessonId('Lecture', '1')] },
+    };
+    expect(getTimetableClassNos(timetable, [CS1010S], 1)).toEqual({});
+  });
+});
+
+describe('getTimeRangeConflicts', () => {
+  const defaultTimeRange: TimeRange = { earliest: '0800', latest: '1900' };
+  // CS1010S Tutorial class 1 is on Monday 09:00-10:00, Recitation class 1 is on
+  // Thursday 12:00-13:00
+  const pinnedClassNos: PinnedSlots = { 'CS1010S|Tutorial': '1' };
+  const physicalLessonOptions = [defaultTutorialOption];
+
+  it('should report a pinned class starting before the earliest time', () => {
+    const conflicts = getTimeRangeConflicts([CS1010S], 1, physicalLessonOptions, pinnedClassNos, {
+      earliest: '1000',
+      latest: '1900',
+    });
+    expect(conflicts).toEqual([
+      {
+        moduleCode: defaultTutorialOption.moduleCode,
+        lessonType: defaultTutorialOption.lessonType,
+        displayText: defaultTutorialOption.displayText,
+        classNo: '1',
+      },
+    ]);
+  });
+
+  it('should report a pinned class ending after the latest time', () => {
+    const conflicts = getTimeRangeConflicts(
+      [CS1010S],
+      1,
+      [defaultRecitationOption],
+      { 'CS1010S|Recitation': '1' },
+      { earliest: '0800', latest: '1200' },
+    );
+    expect(conflicts).toHaveLength(1);
+    expect(conflicts[0].classNo).toEqual('1');
+    expect(conflicts[0].lessonType).toEqual(defaultRecitationOption.lessonType);
+  });
+
+  it('should report no conflict when the pinned class is within the time range', () => {
+    const conflicts = getTimeRangeConflicts(
+      [CS1010S],
+      1,
+      physicalLessonOptions,
+      pinnedClassNos,
+      defaultTimeRange,
+    );
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('should skip unpinned lessons', () => {
+    const conflicts = getTimeRangeConflicts(
+      [CS1010S],
+      1,
+      physicalLessonOptions,
+      {},
+      { earliest: '1000', latest: '1900' },
+    );
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('should skip pinned lessons that are not attended live', () => {
+    const conflicts = getTimeRangeConflicts([CS1010S], 1, [], pinnedClassNos, {
+      earliest: '1000',
+      latest: '1900',
+    });
+    expect(conflicts).toHaveLength(0);
+  });
+});
+
+describe('getPinnedClashConflicts', () => {
+  const ma1521LectureOption: LessonOption = {
+    moduleCode: 'MA1521',
+    lessonType: 'Lecture',
+    colorIndex: 1,
+    lessonKey: 'MA1521|Lecture',
+    displayText: 'MA1521 Lecture',
+    days: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
+  };
+  const lessonOptions = [defaultTutorialOption, ma1521LectureOption];
+
+  it('should report two pinned classes that overlap', () => {
+    // CS1010S Tutorial 2 is Monday 10:00-11:00; MA1521 Lecture 2 is Monday 10:00-12:00
+    // and Thursday 10:00-12:00
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
+      'CS1010S|Tutorial': '2',
+      'MA1521|Lecture': '2',
+    });
+    expect(conflicts).toEqual([
+      {
+        first: {
+          moduleCode: defaultTutorialOption.moduleCode,
+          lessonType: defaultTutorialOption.lessonType,
+          displayText: defaultTutorialOption.displayText,
+          classNo: '2',
+        },
+        second: {
+          moduleCode: ma1521LectureOption.moduleCode,
+          lessonType: ma1521LectureOption.lessonType,
+          displayText: ma1521LectureOption.displayText,
+          classNo: '2',
+        },
+      },
+    ]);
+  });
+
+  it('should not report adjacent classes as a clash', () => {
+    // CS1010S Tutorial 1 is Monday 09:00-10:00, ending exactly when MA1521 Lecture 2 starts
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
+      'CS1010S|Tutorial': '1',
+      'MA1521|Lecture': '2',
+    });
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('should not report classes on different days', () => {
+    // CS1010S Tutorial 1 is Monday 09:00-10:00; MA1521 Lecture 1 is Tuesday and
+    // Friday 08:00-10:00
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
+      'CS1010S|Tutorial': '1',
+      'MA1521|Lecture': '1',
+    });
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('should not report a single pinned lesson', () => {
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
+      'MA1521|Lecture': '2',
+    });
+    expect(conflicts).toHaveLength(0);
+  });
+
+  it('should report clashes for recorded pinned lessons too', () => {
+    // All lesson options are considered — a pinned class clashes on the timetable
+    // whether or not it is attended live
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {
+      'CS1010S|Tutorial': '2',
+      'MA1521|Lecture': '2',
+    });
+    expect(conflicts).toHaveLength(1);
+  });
+
+  it('should report no clashes when nothing is pinned', () => {
+    const conflicts = getPinnedClashConflicts([CS1010S, MA1521], 1, lessonOptions, {});
+    expect(conflicts).toHaveLength(0);
+  });
+});
+
+describe('getPinnedSlotsPayload', () => {
+  it('should serialise pins into MODULE|LessonType|ClassNo entries', () => {
+    const pinnedSlots: PinnedSlots = { 'CS1010S|Tutorial': '08', 'MA1521|Lecture': '1' };
+    expect(getPinnedSlotsPayload(pinnedSlots).sort()).toEqual([
+      'CS1010S|Tutorial|08',
+      'MA1521|Lecture|1',
+    ]);
+  });
+
+  it('should return an empty array when nothing is pinned', () => {
+    expect(getPinnedSlotsPayload({})).toEqual([]);
   });
 });
 

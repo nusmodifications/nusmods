@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash-es';
 import { FreeDayConflict } from 'types/optimiser';
 
 import { X } from 'react-feather';
-import styles from './OptimiserFreeDayConflicts.scss';
+import styles from './OptimiserConflicts.scss';
 
 type Props = {
   freeDayConflicts: FreeDayConflict[];
@@ -19,8 +19,8 @@ const OptimiserFreeDayConflicts: React.FC<Props> = ({ freeDayConflicts }) =>
       <h4>The following lesson(s) require live attendance on your selected free days:</h4>
 
       <ul>
-        {freeDayConflicts.map((conflict, index) => (
-          <li key={index}>
+        {freeDayConflicts.map((conflict) => (
+          <li key={`${conflict.moduleCode}-${conflict.lessonType}`}>
             <strong>{conflict.displayText}</strong> cannot be assigned due to your free days:{' '}
             {conflict.days.join(', ')}
           </li>

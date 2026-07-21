@@ -8,15 +8,25 @@ import Title from 'views/components/Title';
 import ApiError from 'views/errors/ApiError';
 import { SemTimetableConfig } from 'types/timetables';
 import { getSemesterModules } from 'utils/timetables';
+import { pick } from 'lodash-es';
 import {
   getFreeDayConflicts,
   getLessonOptions,
   getOptimiserAcadYear,
+  getPinnedClashConflicts,
+  getPinnedSlotsPayload,
   getRecordedLessonOptions,
+  getTimeRangeConflicts,
+  getTimetableClassNos,
   getUnassignedLessonOptions,
   isSaturdayInOptions,
 } from 'utils/optimiser';
-import { FreeDayConflict, LessonOption } from 'types/optimiser';
+import {
+  FreeDayConflict,
+  LessonOption,
+  PinnedClashConflict,
+  TimeRangeConflict,
+} from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserContent.scss';
 import OptimiserHeader from '../OptimiserHeader';
@@ -36,6 +46,8 @@ const OptimiserContent: React.FC = () => {
   const {
     liveLessonOptions: physicalLessonOptions,
     setLiveLessonOptions: setPhysicalLessonOptions,
+    pinnedLessonKeys,
+    setPinnedLessonKeys,
     freeDays,
     lessonTimeRange,
     lunchTimeRange,
@@ -53,10 +65,51 @@ const OptimiserContent: React.FC = () => {
     return getLessonOptions(modules, activeSemester, colors);
   }, [timetable, modulesMap, activeSemester, colors]);
 
+  // The classNo currently selected in the timetable tab for every lesson; pinning a
+  // lesson locks it to this class
+  const timetableClassNos = useMemo(() => {
+    const modules = getSemesterModules(timetable, modulesMap);
+    return getTimetableClassNos(timetable, modules, activeSemester);
+  }, [timetable, modulesMap, activeSemester]);
+
+  const pinnedClassNos = useMemo(
+    () => pick(timetableClassNos, Array.from(pinnedLessonKeys)),
+    [timetableClassNos, pinnedLessonKeys],
+  );
+
   const freeDayConflicts: FreeDayConflict[] = useMemo(() => {
     const modules = getSemesterModules(timetable, modulesMap);
-    return getFreeDayConflicts(modules, activeSemester, physicalLessonOptions, freeDays);
-  }, [timetable, modulesMap, activeSemester, physicalLessonOptions, freeDays]);
+    return getFreeDayConflicts(
+      modules,
+      activeSemester,
+      physicalLessonOptions,
+      pinnedClassNos,
+      freeDays,
+    );
+  }, [timetable, modulesMap, activeSemester, physicalLessonOptions, pinnedClassNos, freeDays]);
+
+  const timeRangeConflicts: TimeRangeConflict[] = useMemo(() => {
+    const modules = getSemesterModules(timetable, modulesMap);
+    return getTimeRangeConflicts(
+      modules,
+      activeSemester,
+      physicalLessonOptions,
+      pinnedClassNos,
+      lessonTimeRange,
+    );
+  }, [
+    timetable,
+    modulesMap,
+    activeSemester,
+    physicalLessonOptions,
+    pinnedClassNos,
+    lessonTimeRange,
+  ]);
+
+  const pinnedClashConflicts: PinnedClashConflict[] = useMemo(() => {
+    const modules = getSemesterModules(timetable, modulesMap);
+    return getPinnedClashConflicts(modules, activeSemester, lessonOptions, pinnedClassNos);
+  }, [timetable, modulesMap, activeSemester, lessonOptions, pinnedClassNos]);
 
   const recordedLessonOptions: LessonOption[] = useMemo(
     () => getRecordedLessonOptions(lessonOptions, physicalLessonOptions),
@@ -70,7 +123,12 @@ const OptimiserContent: React.FC = () => {
     setPhysicalLessonOptions((prev) =>
       prev.filter((lesson) => availableKeys.has(lesson.lessonKey)),
     );
-  }, [lessonOptions, setPhysicalLessonOptions]);
+    // Drop pins whose lesson no longer exists (e.g. module removed from timetable)
+    setPinnedLessonKeys((prev) => {
+      const next = new Set(Array.from(prev).filter((lessonKey) => availableKeys.has(lessonKey)));
+      return next.size === prev.size ? prev : next;
+    });
+  }, [lessonOptions, setPhysicalLessonOptions, setPinnedLessonKeys]);
 
   const buttonOnClick = async () => {
     setShareableLink(null);
@@ -85,6 +143,7 @@ const OptimiserContent: React.FC = () => {
       earliestTime: lessonTimeRange.earliest,
       latestTime: lessonTimeRange.latest,
       recordings: recordedLessonOptions.map((lessonOption) => lessonOption.lessonKey),
+      pinnedSlots: getPinnedSlotsPayload(pinnedClassNos),
       lunchStart: lunchTimeRange.earliest,
       lunchEnd: lunchTimeRange.latest,
       maxConsecutiveHours,
@@ -122,7 +181,10 @@ const OptimiserContent: React.FC = () => {
 
       <OptimiserForm
         lessonOptions={lessonOptions}
+        timetableClassNos={timetableClassNos}
         freeDayConflicts={freeDayConflicts}
+        timeRangeConflicts={timeRangeConflicts}
+        pinnedClashConflicts={pinnedClashConflicts}
         hasSaturday={hasSaturday}
         optimiserFormFields={optimiserFormFields}
       />
@@ -131,6 +193,8 @@ const OptimiserContent: React.FC = () => {
         isOptimising={isOptimising}
         lessonOptions={lessonOptions}
         freeDayConflicts={freeDayConflicts}
+        timeRangeConflicts={timeRangeConflicts}
+        pinnedClashConflicts={pinnedClashConflicts}
         onClick={buttonOnClick}
       />
 

@@ -42,9 +42,9 @@ A single request moves through the following stages:
 
 1. **`optimise.go` — HTTP handler**: Decodes the JSON request body into `OptimiserRequest` and calls `solver.Solve`.
 
-2. **`_modules/GetAllModuleSlots`**: For each requested module, fetches timetable data from the NUSMods API (`_client`). Slots are then filtered (removing those outside the time window or on free days) and deduplicated — two class numbers that share the same day, start time, and building are treated as equivalent and merged to reduce the search space. Returns a map of `Module → LessonType → ClassNo → []Slot`.
+2. **`_modules/GetAllModuleSlots`**: For each requested module, fetches timetable data from the NUSMods API (`_client`). Slots are then filtered (removing those outside the time window or on free days) and deduplicated — two class numbers that share the same day, start time, and building are treated as equivalent and merged to reduce the search space. Lessons pinned via `pinnedSlots` (format `"MODULE|LessonType|ClassNo"`) are reduced to just the pinned class. Pinned lessons must satisfy the free-day and time-range constraints.
 
-3. **`_solver/beamSearch`**: Lessons are first sorted by number of available options (fewest first — the **Minimum Remaining Values** heuristic). The beam search then assigns one lesson type at a time, expanding each partial timetable into up to `BranchingFactor` candidates, scoring them all, and keeping only the top `BeamWidth`. This repeats until all lessons are assigned.
+3. **`_solver/beamSearch`**: Lessons are first sorted pinned-first, then by number of available options (fewest first — the **Minimum Remaining Values** heuristic) — this ensures a pinned lesson always claims its slot before an unrelated single-option lesson can occupy it and force the pin out. The beam search then assigns one lesson type at a time, expanding each partial timetable into up to `BranchingFactor` candidates, scoring them all, and keeping only the top `BeamWidth`. This repeats until all lessons are assigned.
 
 4. **`_solver/FillDefaultsAndGenerateShareableLinks`**: Converts the final assignment map into 2 shareable URLs (one without default slots and one with default slots). (see [Response fields](#response) below).
 
@@ -57,11 +57,11 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 1. **State Space**: Each state represents a partial timetable assignment
 2. **Beam Width**: Maintains the top 5000 most promising states at each step (configurable via `BeamWidth` constant)
 3. **Branching Factor**: Limits the number of options considered per lesson type to 100 (configurable via `BranchingFactor` constant)
-4. **MRV Heuristic**: Lessons with fewer class options are assigned first, pruning infeasible branches early
+4. **MRV Heuristic**: Pinned lessons are assigned first, then lessons with fewer class options, pruning infeasible branches early
 5. **Scoring Function**: Evaluates states based on:
-   - Total walking distance between consecutive classes using haversine formula
+   - Total walking distance between consecutive physical classes using haversine formula
    - Having a one-hour break within provided lunch time window
-   - <= Maximum hours of consecutive live lessons
+   - <= Maximum hours of consecutive lessons
    - <= 2 hours max gap between classes (configurable)
 
 ### Hard vs Soft Constraints
@@ -72,8 +72,9 @@ Understanding this distinction is essential before modifying the solver.
 
 - `freeDays` — non-recorded lessons on a free day are filtered out
 - `earliestTime` / `latestTime` — slots outside this window are filtered out
+- `pinnedSlots` — a pinned lesson's other classes are removed from the search space; a non-recorded pinned class that violates `freeDays` or the time window fails validation with a 400 error (`_modules/validatePinnedSlots`)
 
-**Soft constraints** are penalties applied by the scoring function in `_solver/scoreTimetableState`. They influence which timetable is chosen but do not guarantee the result satisfies them (if no feasible option avoids the penalty, the least-bad option is returned):
+**Soft constraints** are penalties applied by the scoring function in `_solver/scoreTimetableState`. They influence which timetable is chosen but do not guarantee the result satisfies them (if no feasible option avoids the penalty, the least-bad option is returned).
 
 - Lunch break availability
 - Consecutive hours of study
@@ -123,6 +124,7 @@ The scoring function combines four penalty/bonus terms. All values were empirica
 {
   "modules": ["CS1010S", "CS2030S", "MA1521"],
   "recordings": ["CS1010S|Lecture", "CS2030S|Laboratory"],
+  "pinnedSlots": ["MA1521|Tutorial|01"],
   "freeDays": ["Monday", "Friday"],
   "maxConsecutiveHours": 4,
   "earliestTime": "0900",
@@ -225,18 +227,19 @@ The scoring function combines four penalty/bonus terms. All values were empirica
 
 #### Parameters
 
-| Field                 | Type       | Description                                                                              |
-| --------------------- | ---------- | ---------------------------------------------------------------------------------------- |
-| `modules`             | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S")                   |
-| `recordings`          | `[]string` | Lessons marked as recorded/online (format: "MODULE\|LessonType") e.g. "CS1010S\|Lecture" |
-| `freeDays`            | `[]string` | Days to keep free of physical classes e.g. "Monday"                                      |
-| `earliestTime`        | `string`   | Earliest acceptable class time (HHMM format)                                             |
-| `latestTime`          | `string`   | Latest acceptable class time (HHMM format)                                               |
-| `acadYear`            | `string`   | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"                                     |
-| `acadSem`             | `int`      | Semester number: 1 (Sem 1), 2 (Sem 2), 3 (Special Term I), 4 (Special Term II)           |
-| `lunchStart`          | `string`   | Preferred lunch break start time (HHMM)                                                  |
-| `lunchEnd`            | `string`   | Preferred lunch break end time (HHMM)                                                    |
-| `maxConsecutiveHours` | `int`      | Maximum consecutive live lesson hours allowed                                            |
+| Field                 | Type       | Description                                                                                                                                                                                                                                                      |
+| --------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `modules`             | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S")                                                                                                                                                                                           |
+| `recordings`          | `[]string` | Lessons marked as recorded/online (format: "MODULE\|LessonType") e.g. "CS1010S\|Lecture"                                                                                                                                                                         |
+| `pinnedSlots`         | `[]string` | Classes to keep fixed (format: "MODULE\|LessonType\|ClassNo") e.g. "MA1521\|Tutorial\|01". 400 if the class does not exist, the module is not requested, entries are duplicated/malformed, or a non-recorded pin violates `freeDays`/`earliestTime`/`latestTime` |
+| `freeDays`            | `[]string` | Days to keep free of physical classes e.g. "Monday"                                                                                                                                                                                                              |
+| `earliestTime`        | `string`   | Earliest acceptable class time (HHMM format)                                                                                                                                                                                                                     |
+| `latestTime`          | `string`   | Latest acceptable class time (HHMM format)                                                                                                                                                                                                                       |
+| `acadYear`            | `string`   | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"                                                                                                                                                                                                             |
+| `acadSem`             | `int`      | Semester number: 1 (Sem 1), 2 (Sem 2), 3 (Special Term I), 4 (Special Term II)                                                                                                                                                                                   |
+| `lunchStart`          | `string`   | Preferred lunch break start time (HHMM)                                                                                                                                                                                                                          |
+| `lunchEnd`            | `string`   | Preferred lunch break end time (HHMM)                                                                                                                                                                                                                            |
+| `maxConsecutiveHours` | `int`      | Maximum consecutive live lesson hours allowed                                                                                                                                                                                                                    |
 
 ## Getting Started
 
