@@ -13,6 +13,7 @@ import {
 } from 'lodash-es';
 import {
   AcadYear,
+  ClassNo,
   Day,
   DayText,
   LessonTime,
@@ -23,10 +24,22 @@ import {
   Semester,
   WorkingDays,
 } from 'types/modules';
-import { DisplayText, FreeDayConflict, LessonOption, LessonKey, TimeRange } from 'types/optimiser';
+import {
+  DisplayText,
+  FreeDayConflict,
+  LessonOption,
+  LessonKey,
+  PinnedClashConflict,
+  PinnedClashLesson,
+  PinnedSlots,
+  TimeRange,
+  TimeRangeConflict,
+} from 'types/optimiser';
 import { ColorMapping } from 'types/reducers';
+import { SemTimetableConfig } from 'types/timetables';
 import { LessonSlot, OptimiseResponse } from 'apis/optimiser';
-import { getModuleTimetable } from './modules';
+import { getModuleLessonMap, getModuleTimetable } from './modules';
+import { doLessonsOverlap, getClosestClassNo, isClassNo } from './timetables';
 import {
   convertIndexToTime,
   convertTimeToIndex,
@@ -119,11 +132,14 @@ export function getConflictingDays(
   return isConflictFree ? [] : sortDays(uniq(flatten(conflictingDays)));
 }
 
-// For each physical lesson option, check if that lessonType will have conflicts
+// For each physical lesson option, check if that lessonType will have conflicts.
+// A pinned lesson is fixed to the single class chosen in the timetable, so only that
+// class's days are considered for it.
 export function getFreeDayConflicts(
   modules: Module[],
   semester: Semester,
   physicalLessonOptions: LessonOption[],
+  pinnedClassNos: PinnedSlots,
   selectedFreeDays: Set<DayText>,
 ): FreeDayConflict[] {
   const groupedPhysicalLessonOptions = groupBy(
@@ -137,8 +153,13 @@ export function getFreeDayConflicts(
     const lessonOptions = get(groupedPhysicalLessonOptions, moduleCode, []);
     return compact(
       lessonOptions.map((lessonOption) => {
-        const { lessonType, displayText } = lessonOption;
-        const filteredLessons = lessons.filter((lesson) => lesson.lessonType === lessonType);
+        const { lessonType, lessonKey, displayText } = lessonOption;
+        const pinnedClassNo = pinnedClassNos[lessonKey];
+        const filteredLessons = lessons.filter(
+          (lesson) =>
+            lesson.lessonType === lessonType &&
+            (!pinnedClassNo || lesson.classNo === pinnedClassNo),
+        );
         const conflictingDays = getConflictingDays(filteredLessons, selectedFreeDays);
         return isEmpty(conflictingDays)
           ? null
@@ -151,6 +172,125 @@ export function getFreeDayConflicts(
       }),
     );
   });
+}
+
+// Resolves each lesson to the classNo currently selected in the timetable tab, keyed by
+// lessonKey. Handles both lesson config formats: V1 stores the classNo directly, V2 stores
+// serialised lesson ids (resolved to their classNo). Lessons whose selection cannot be
+// resolved (e.g. lesson removed from the module) are skipped, so they cannot be pinned.
+export function getTimetableClassNos(
+  timetable: SemTimetableConfig,
+  modules: Module[],
+  semester: Semester,
+): Record<LessonKey, ClassNo> {
+  const timetableClassNos: Record<LessonKey, ClassNo> = {};
+  modules.forEach((module) => {
+    const { moduleCode } = module;
+    const lessonMap = getModuleLessonMap(module, semester);
+    Object.entries(timetable[moduleCode] ?? {}).forEach(([lessonType, lessonConfig]) => {
+      const lessonTypeLessons = lessonMap[lessonType] ?? {};
+      let classNo: ClassNo | null = null;
+      if (isClassNo(lessonConfig)) {
+        // V1 config: the value is the classNo itself; keep it only if it still exists
+        const [candidate] = lessonConfig;
+        if (values(lessonTypeLessons).some((lesson) => lesson.classNo === candidate)) {
+          classNo = candidate;
+        }
+      } else {
+        // V2 config: serialised lesson ids, resolve to the majority classNo
+        classNo = getClosestClassNo(lessonTypeLessons, lessonConfig);
+      }
+      if (classNo) timetableClassNos[getLessonKey(moduleCode, lessonType)] = classNo;
+    });
+  });
+  return timetableClassNos;
+}
+
+// For each live pinned lesson, report a conflict when its pinned class falls outside the
+// selected lesson time range. Recorded lessons need no physical attendance, so they are
+// exempt (only physical lesson options are checked).
+export function getTimeRangeConflicts(
+  modules: Module[],
+  semester: Semester,
+  physicalLessonOptions: LessonOption[],
+  pinnedClassNos: PinnedSlots,
+  lessonTimeRange: TimeRange,
+): TimeRangeConflict[] {
+  const groupedPhysicalLessonOptions = groupBy(
+    physicalLessonOptions,
+    (lessonOption) => lessonOption.moduleCode,
+  );
+
+  return modules.flatMap((module) => {
+    const { moduleCode } = module;
+    const lessons = getModuleTimetable(module, semester);
+    const lessonOptions = get(groupedPhysicalLessonOptions, moduleCode, []);
+    return compact(
+      lessonOptions.map((lessonOption) => {
+        const { lessonType, lessonKey, displayText } = lessonOption;
+        const classNo = pinnedClassNos[lessonKey];
+        if (!classNo) return null;
+
+        const classLessons = lessons.filter(
+          (lesson) => lesson.lessonType === lessonType && lesson.classNo === classNo,
+        );
+        // "HHMM" strings compare correctly lexicographically
+        const isOutsideTimeRange = classLessons.some(
+          (lesson) =>
+            lesson.startTime < lessonTimeRange.earliest || lesson.endTime > lessonTimeRange.latest,
+        );
+        return isOutsideTimeRange ? { moduleCode, lessonType, displayText, classNo } : null;
+      }),
+    );
+  });
+}
+
+// Reports each pair of pinned lessons whose classes overlap in time. The solver can
+// never schedule both, so these conflicts block optimising. Unlike the free-day and
+// time-range checks, recorded lessons are NOT exempt: two pinned classes that clash
+// overlap on the timetable itself, regardless of live attendance.
+export function getPinnedClashConflicts(
+  modules: Module[],
+  semester: Semester,
+  lessonOptions: LessonOption[],
+  pinnedClassNos: PinnedSlots,
+): PinnedClashConflict[] {
+  const groupedLessonOptions = groupBy(lessonOptions, (lessonOption) => lessonOption.moduleCode);
+
+  // Collect each pinned lesson with the sessions of its pinned class (a class can
+  // meet multiple times a week)
+  const pinnedLessons = modules.flatMap((module) => {
+    const { moduleCode } = module;
+    const lessons = getModuleTimetable(module, semester);
+    const moduleLessonOptions = get(groupedLessonOptions, moduleCode, []);
+    return compact(
+      moduleLessonOptions.map((lessonOption) => {
+        const { lessonType, lessonKey, displayText } = lessonOption;
+        const classNo = pinnedClassNos[lessonKey];
+        if (!classNo) return null;
+
+        const classLessons = lessons.filter(
+          (lesson) => lesson.lessonType === lessonType && lesson.classNo === classNo,
+        );
+        const pinnedLesson: PinnedClashLesson = { moduleCode, lessonType, displayText, classNo };
+        return { pinnedLesson, classLessons };
+      }),
+    );
+  });
+
+  return pinnedLessons.flatMap((first, index) =>
+    pinnedLessons.slice(index + 1).flatMap((second) => {
+      const doClash = first.classLessons.some((firstLesson) =>
+        second.classLessons.some((secondLesson) => doLessonsOverlap(firstLesson, secondLesson)),
+      );
+      return doClash ? [{ first: first.pinnedLesson, second: second.pinnedLesson }] : [];
+    }),
+  );
+}
+
+// Serialises pinned slots into the API wire format, e.g. ["CS2040S|Tutorial|08"]
+export function getPinnedSlotsPayload(pinnedSlots: PinnedSlots): string[] {
+  return Object.entries(pinnedSlots).map(([lessonKey, classNo]) => `${lessonKey}|${classNo}`);
 }
 
 export function getUnassignedLessonOptions(

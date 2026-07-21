@@ -1,6 +1,7 @@
 package solver
 
 import (
+	"errors"
 	"net/http"
 	"sort"
 	"strings"
@@ -34,6 +35,10 @@ func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 
 	slots, defaultSlots, recordings, err := modules.GetAllModuleSlots(&req)
 	if err != nil {
+		var solveErr *models.SolveError
+		if errors.As(err, &solveErr) {
+			return models.SolveResponse{}, solveErr
+		}
 		return models.SolveResponse{}, &models.SolveError{Code: http.StatusInternalServerError, Message: err.Error()}
 	}
 
@@ -49,8 +54,16 @@ func Solve(req models.OptimiserRequest) (models.SolveResponse, error) {
 		}
 	}
 
-	// Sort lessons by Minimum Remaining Value (MRV) heuristic
+	// Pinned lessons are always ordered before non-pinned ones, so a pin always claims its
+	// slot in the beam before an unrelated single-option lesson can occupy it and force the
+	// pin to be dropped by hasConflict. Ties within each group fall back to the Minimum
+	// Remaining Value (MRV) heuristic (fewest options first).
 	sort.Slice(lessons, func(i, j int) bool {
+		_, iPinned := req.PinnedMap[lessons[i]]
+		_, jPinned := req.PinnedMap[lessons[j]]
+		if iPinned != jPinned {
+			return iPinned
+		}
 		return len(lessonToSlots[lessons[i]]) < len(lessonToSlots[lessons[j]])
 	})
 
