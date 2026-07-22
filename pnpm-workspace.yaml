@@ -1,6 +1,7 @@
 packages:
   - 'website'
   - 'export'
+  - 'mcp'
   - 'packages/*'
   - 'scrapers/*'
 

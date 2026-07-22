@@ -1,0 +1,17 @@
+{
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm typecheck",
+  "functions": {
+    "api/mcp.ts": {
+      "maxDuration": 30
+    },
+    "api/health.ts": {
+      "maxDuration": 5
+    }
+  },
+  "rewrites": [
+    { "source": "/mcp", "destination": "/api/mcp" },
+    { "source": "/", "destination": "/api/health" }
+  ],
+  "ignoreCommand": "bash ../vercel_ignore_build.sh"
+}
