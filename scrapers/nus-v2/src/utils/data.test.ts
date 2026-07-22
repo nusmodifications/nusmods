@@ -3,10 +3,10 @@ import { VenueLesson } from '../types/venues';
 import { EVERY_WEEK } from './test-utils';
 
 import {
-  // compareWeeks,
   getDuplicateModules,
   mergeDualCodedModules,
   removeEmptyValues,
+  stripTags,
   titleize,
   trimValues,
   decodeHTMLEntities,
@@ -41,6 +41,19 @@ describe(decodeHTMLEntities, () => {
     expect(
       decodeHTMLEntities('&amp; Schr&#246;dinger cried, &quot;Oh l&#224; l&#224;!&quot;'),
     ).toEqual('& Schrödinger cried, "Oh là là!"');
+  });
+});
+
+describe(stripTags, () => {
+  test('should remove html tags', () => {
+    expect(stripTags('<h1>Hello World!</h1>')).toEqual('Hello World!');
+  });
+
+  test('should remove html tags while preserving literal angle brackets text', () => {
+    expect(stripTags('6 < 7')).toEqual('6 < 7');
+    expect(
+      stripTags('<5% of users were disatisfied. >20% of users were highly satisfied.'),
+    ).toEqual('<5% of users were disatisfied. >20% of users were highly satisfied.');
   });
 });
 
