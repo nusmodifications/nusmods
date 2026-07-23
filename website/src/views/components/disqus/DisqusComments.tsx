@@ -72,11 +72,12 @@ class DisqusComments extends PureComponent<Props, State> {
     // Disqus is configured using a function that modifies 'this', so we cannot use
     // arrow functions here, which also means we need to rebind values from the outer
     // this if we need to use them inside the function
-    const { url, title } = this.props;
+    const { identifier, url, title } = this.props;
 
     // Can't be arsed to type this bullshit
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return function configDisqus(this: any) {
+      this.page.identifier = identifier;
       this.page.url = url;
       this.page.title = title;
     };

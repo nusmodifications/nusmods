@@ -9,6 +9,7 @@ vi.mock('utils/insertScript', () => ({ default: vi.fn() }));
 (insertScript as MockedFunction<typeof insertScript>).mockResolvedValue(new Event('mock event'));
 
 const disqusConfig = {
+  identifier: 'CS1010',
   url: 'https://nusmods.com/courses/CS1010/reviews',
   title: 'CS1010 Programming Methodology',
 };

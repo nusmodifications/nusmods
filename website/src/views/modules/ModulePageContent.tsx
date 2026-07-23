@@ -57,8 +57,12 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   const semesters = getSemestersOffered(module);
   const isArchive = !!archiveYear;
   const offered = isOffered(module);
+  const disqusIdentifier = Array.from(new Set([moduleCode, ...(module.aliases ?? [])]))
+    .sort()
+    .join('/');
 
   const disqusConfig = {
+    identifier: disqusIdentifier,
     url: `https://nusmods.com/courses/${moduleCode}/reviews`,
     title: pageTitle,
   };
