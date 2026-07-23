@@ -33,7 +33,7 @@ function loadInstance() {
   }
 }
 
-export const CommentCountComponent: React.FC<Props> = ({ identifier, url, loadDisqusManually }) => {
+export const CommentCountComponent: React.FC<Props> = ({ url, loadDisqusManually }) => {
   useEffect(() => {
     if (!loadDisqusManually) {
       loadInstance();
@@ -47,11 +47,7 @@ export const CommentCountComponent: React.FC<Props> = ({ identifier, url, loadDi
       <span className={styles.icon}>
         <MessageSquare aria-label="Comment count" />
       </span>
-      <span
-        className="disqus-comment-count"
-        data-disqus-identifier={identifier}
-        data-disqus-url={url}
-      />
+      <span className="disqus-comment-count" data-disqus-url={url} />
     </span>
   );
 };
