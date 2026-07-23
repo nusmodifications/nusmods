@@ -10,7 +10,6 @@ vi.mock('utils/insertScript', () => ({ default: vi.fn() }));
 
 const disqusConfig = {
   url: 'https://nusmods.com/courses/CS1010/reviews',
-  identifier: 'CS1010',
   title: 'CS1010 Programming Methodology',
 };
 

@@ -60,7 +60,6 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
 
   const disqusConfig = {
     url: `https://nusmods.com/courses/${moduleCode}/reviews`,
-    identifier: moduleCode,
     title: pageTitle,
   };
 

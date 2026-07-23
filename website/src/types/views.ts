@@ -32,7 +32,6 @@ export type RefinementItem = { key: string; doc_count?: number; missing?: boolea
 export type RefinementDisplayItem = RefinementItem & { selected: boolean };
 
 export type DisqusConfig = {
-  readonly identifier: string;
   readonly url: string;
   readonly title: string;
 };
