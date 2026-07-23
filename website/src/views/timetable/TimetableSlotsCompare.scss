@@ -1,0 +1,41 @@
+@import '~styles/utils/modules-entry';
+
+.compare {
+  margin-top: 0.5rem;
+}
+
+.compareHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+}
+
+.pane {
+  margin-bottom: 1.5rem;
+}
+
+.paneHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+
+  select {
+    max-width: 14rem;
+  }
+}
+
+.moduleCount {
+  flex: 1;
+  font-size: $font-size-sm;
+}
+
+.grid {
+  overflow-x: auto;
+}
