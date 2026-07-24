@@ -58,7 +58,7 @@ const CANONICAL = '/courses/CS1010S/programming-methodology';
 const initialState = reducers(undefined, initAction());
 
 function make(location: string = CANONICAL) {
-  const { store } = configureStore(initialState);
+  const store = configureStore(initialState);
 
   return renderWithRouterMatch(
     <Provider store={store}>

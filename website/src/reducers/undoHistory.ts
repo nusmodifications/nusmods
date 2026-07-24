@@ -2,7 +2,7 @@ import { get, last, pick, set, takeRight } from 'lodash-es';
 
 import { REDO, UNDO } from 'actions/constants';
 import { UndoHistoryState } from 'types/reducers';
-import { Actions } from 'types/actions';
+import { AnyAction } from 'redux';
 
 export type UndoHistoryConfig = {
   limit?: number;
@@ -10,17 +10,19 @@ export type UndoHistoryConfig = {
   storedKeyPaths: string[];
 };
 
+export const defaultUndoHistoryState = {
+  past: [],
+  present: undefined, // Don't pretend to know the present
+  future: [],
+};
+
 // Update undo history using the action and app states
 // Basically a reducer but not really, as it needs to know the previous state.
 // Passing state in even though state === presentAppState[config.reducerName] as the "reducer"
 // doesn't need to know that.
 export function computeUndoStacks<T extends { undoHistory: UndoHistoryState<T> }>(
-  state: UndoHistoryState<T> = {
-    past: [],
-    present: undefined, // Don't pretend to know the present
-    future: [],
-  },
-  action: Actions,
+  state: UndoHistoryState<T> = defaultUndoHistoryState,
+  action: AnyAction,
   previousAppState: Partial<T>,
   presentAppState: Partial<T>,
   config: UndoHistoryConfig,
@@ -89,7 +91,7 @@ export function mergePresent<T extends Record<string, unknown>>(
 export default function createUndoReducer<T extends { undoHistory: UndoHistoryState<T> }>(
   config: UndoHistoryConfig,
 ) {
-  return (previousState: T, presentState: T, action: Actions) => {
+  return (previousState: T, presentState: T, action: AnyAction) => {
     // Calculate un/redone history
     const undoHistoryState = presentState.undoHistory;
     const updatedHistory = computeUndoStacks(
