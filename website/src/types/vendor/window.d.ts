@@ -20,9 +20,6 @@ declare global {
     // Injected by Matomo
     Piwik: { getTracker(url: string, id: string): Tracker };
 
-    // For the Redux developer extension
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
-
     // Allows debugging
     [debugHooks: DEBUG_HOOK_NAMES]: (newValue: any) => void;
   }

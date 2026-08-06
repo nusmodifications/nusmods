@@ -19,7 +19,7 @@ import {
   TOGGLE_FEEDBACK_MODAL,
 } from 'actions/app';
 
-const defaultAppState = (): AppState => ({
+export const defaultAppState = (): AppState => ({
   // Default to the current semester from config.
   activeSemester: config.semester,
   // The lesson being modified on the timetable.

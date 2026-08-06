@@ -1,6 +1,5 @@
 import { isEqual } from 'lodash-es';
 import { produce } from 'immer';
-import { REHYDRATE, createMigrate } from 'redux-persist';
 
 import { SettingsState } from 'types/reducers';
 import { Actions } from 'types/actions';
@@ -24,6 +23,7 @@ import { SYSTEM_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 import config from 'config';
 import { isRoundDismissed } from 'selectors/modreg';
 import { colorSchemeToPreference } from 'utils/colorScheme';
+import { REMEMBER_REHYDRATED } from 'redux-remember';
 
 export const defaultModRegNotificationState = {
   semesterKey: config.getSemesterKey(),
@@ -32,7 +32,7 @@ export const defaultModRegNotificationState = {
   scheduleType: 'Undergraduate' as const,
 };
 
-const defaultSettingsState: SettingsState = {
+export const defaultSettingsState: SettingsState = {
   newStudent: false,
   faculty: '',
   colorScheme: SYSTEM_COLOR_SCHEME_PREFERENCE,
@@ -122,7 +122,7 @@ function settings(state: SettingsState = defaultSettingsState, action: Actions):
         prereqTreeOnLeft: action.payload,
       };
 
-    case REHYDRATE: {
+    case REMEMBER_REHYDRATED: {
       let nextState = state;
 
       // Rehydrating from store - check that the key is the same, and if not,
@@ -142,16 +142,3 @@ function settings(state: SettingsState = defaultSettingsState, action: Actions):
 }
 
 export default settings;
-
-export const persistConfig = {
-  version: 1,
-  migrate: createMigrate({
-    // any is used because migration typing is hard
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    1: ({ corsNotification, ...state }: any) => ({
-      // Rename corsNotification to modRegNotification and set the default modRegScheduleType
-      modRegNotification: defaultSettingsState.modRegNotification,
-      ...state,
-    }),
-  }),
-};

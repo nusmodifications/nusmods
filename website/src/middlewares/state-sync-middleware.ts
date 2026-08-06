@@ -1,6 +1,6 @@
 import { OPEN_NOTIFICATION, POP_NOTIFICATION } from 'actions/app';
 import type { AnyAction } from 'redux';
-import { PERSIST, PURGE, REHYDRATE } from 'redux-persist';
+import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from 'redux-remember';
 import {
   createStateSyncMiddleware,
   initStateWithPrevTab,
@@ -28,6 +28,7 @@ export const receiveState = (prevState: State, nextState: State): State => ({
   ...nextState,
   requests: prevState.requests,
   app: { ...nextState.app, notifications: prevState.app.notifications },
+  reduxRemember: prevState.reduxRemember,
 });
 
 const reduxStateSyncConfig = {
@@ -38,9 +39,8 @@ const reduxStateSyncConfig = {
   predicate: (action: AnyAction) => {
     // Reference: https://github.com/aohua/redux-state-sync/issues/53
     const blacklist = [
-      PERSIST,
-      PURGE,
-      REHYDRATE,
+      REMEMBER_PERSISTED,
+      REMEMBER_REHYDRATED,
       OPEN_NOTIFICATION,
       POP_NOTIFICATION,
       RECEIVE_INIT_STATE,

@@ -222,3 +222,11 @@ export type UndoHistoryState<T extends { undoHistory: UndoHistoryState<T> }> = {
 export type VenueBank = {
   readonly venueList: VenueList;
 };
+
+/**
+ * reduxRemember types
+ */
+export type ReduxRememberState = {
+  isRehydrated: boolean;
+  isPersisted: boolean;
+};
