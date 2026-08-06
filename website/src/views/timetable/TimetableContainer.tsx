@@ -12,6 +12,7 @@ import type { SemTimetableConfig } from 'types/timetables';
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import {
+  addTimetableSlot,
   fetchModules,
   setHiddenModulesFromImport,
   setTaModulesFromImport,
@@ -32,6 +33,7 @@ import qs from 'query-string';
 import { keys } from 'lodash-es';
 import styles from './TimetableContainer.scss';
 import TimetableContent from './TimetableContent';
+import TimetableSlotsSwitcher from './TimetableSlotsSwitcher';
 
 type Params = {
   action: string;
@@ -101,6 +103,16 @@ const SharingHeader: FC<{
     semester,
   ]);
 
+  // Imports into a fresh slot, leaving the user's current timetable untouched
+  // in its own slot
+  const importTimetableAsNew = useCallback(() => {
+    if (!importedTimetable) {
+      return;
+    }
+    dispatch(addTimetableSlot(semester, { title: 'Imported' }));
+    importTimetable();
+  }, [dispatch, importedTimetable, importTimetable, semester]);
+
   if (!importedTimetable) {
     return null;
   }
@@ -113,13 +125,17 @@ const SharingHeader: FC<{
         <div className={classnames('col')}>
           <h3>This timetable was shared with you</h3>
           <p>
-            Clicking import will <strong>replace</strong> your saved timetable with the one below.
+            Clicking import will <strong>replace</strong> your current timetable with the one below.
+            Import as new timetable keeps both.
           </p>
         </div>
 
         <div className={classnames('col-md-auto', styles.actions)}>
           <button className="btn btn-success" type="button" onClick={importTimetable}>
             Import
+          </button>
+          <button className="btn btn-outline-success" type="button" onClick={importTimetableAsNew}>
+            Import as new timetable
           </button>
           <button
             className="btn btn-outline-primary"
@@ -153,11 +169,14 @@ const TimetableHeader: FC<{
   );
 
   return (
-    <SemesterSwitcher
-      semester={semester}
-      onSelectSemester={handleSelectSemester}
-      readOnly={readOnly}
-    />
+    <>
+      <SemesterSwitcher
+        semester={semester}
+        onSelectSemester={handleSelectSemester}
+        readOnly={readOnly}
+      />
+      {!readOnly && <TimetableSlotsSwitcher semester={semester} />}
+    </>
   );
 };
 
