@@ -25,6 +25,10 @@
   // Body font color
   --body-color: #{$body-color};
 
+  // Tooltips (Tippy)
+  --tooltip-bg: #{$gray-dark};
+  --tooltip-color: #fff;
+
   // Shade of grays
   --gray: #{$gray};
   --gray-mid: #{$gray-mid};
@@ -56,6 +60,10 @@ body.mode-dark {
 
   // Body font color
   --body-color: #aaa;
+
+  // Tooltips (Tippy)
+  --tooltip-bg: #3a3a3a;
+  --tooltip-color: var(--body-color);
 
   // Shade of grays
   --gray: #aaa;

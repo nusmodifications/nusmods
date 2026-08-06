@@ -23,6 +23,7 @@ import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import ModuleExamInfo from 'views/components/module-info/ModuleExamInfo';
+import RequisiteRulePopup from 'views/components/module-info/RequisiteRulePopup';
 import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import SaveModuleButton from 'views/components/module-info/SaveModuleButton';
 import Announcements from 'views/components/notfications/Announcements';
@@ -257,7 +258,12 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
           </div>
 
           <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
-            <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
+            <div className={styles.sectionHeadingRow}>
+              <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
+              {module.prerequisiteRule && (
+                <RequisiteRulePopup rule={module.prerequisiteRule} summary={module.prerequisite} />
+              )}
+            </div>
             <ErrorBoundary>
               <ModuleTree
                 moduleCode={moduleCode}
