@@ -9,6 +9,8 @@ import { Semester } from 'types/modules';
 import {
   ADD_CUSTOM_PLANNER_DATA,
   ADD_PLANNER_MODULE,
+  ADD_PLANNER_PROGRAMME,
+  REMOVE_PLANNER_PROGRAMME,
   MOVE_PLANNER_MODULE,
   REMOVE_PLANNER_MODULE,
   SET_PLACEHOLDER_MODULE,
@@ -30,6 +32,7 @@ export const defaultPlannerState: PlannerState = {
 
   modules: {},
   custom: {},
+  programmes: [],
 };
 
 /**
@@ -78,6 +81,18 @@ export default function planner(
 
     case SET_PLANNER_IBLOCS:
       return { ...state, iblocs: action.payload };
+
+    case ADD_PLANNER_PROGRAMME:
+      if (state.programmes.includes(action.payload.programmeId)) return state;
+      return { ...state, programmes: [...state.programmes, action.payload.programmeId] };
+
+    case REMOVE_PLANNER_PROGRAMME:
+      return {
+        ...state,
+        programmes: state.programmes.filter(
+          (programmeId) => programmeId !== action.payload.programmeId,
+        ),
+      };
 
     case SET_IGNORE_PREREQUISITES_CHECK:
       return { ...state, ignorePrereqCheck: action.payload };
@@ -198,11 +213,24 @@ export function migrateV0toV1(
   };
 }
 
+// Migration from state V1 -> V2: adds the programmes field
+type PlannerStateV1 = Omit<PlannerState, 'programmes'>;
+export function migrateV1toV2(
+  oldState: PlannerStateV1 & PersistedState,
+): PlannerState & PersistedState {
+  return {
+    ...oldState,
+    programmes: [],
+  };
+}
+
 export const persistConfig = {
-  version: 1,
+  version: 2,
   migrate: createMigrate({
     // The typings for this seems really weird
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     1: migrateV0toV1 as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    2: migrateV1toV2 as any,
   }),
 };
