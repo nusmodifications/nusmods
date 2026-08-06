@@ -1,11 +1,12 @@
 import { difference, get, omit, uniq, values } from 'lodash-es';
-import { produce } from 'immer';
+import { Draft, produce } from 'immer';
 import { createMigrate } from 'redux-persist';
+import { PersistedState } from 'redux-persist/es/types';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { LessonId, ModuleCode } from 'types/modules';
+import { LessonId, ModuleCode, Semester } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, TimetablesState } from 'types/reducers';
+import { ColorMapping, TimetableSlot, TimetableSlotData, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
@@ -24,10 +25,28 @@ import {
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
   REMOVE_TA_MODULE,
+  ADD_TIMETABLE_SLOT,
+  RENAME_TIMETABLE_SLOT,
+  SWITCH_TIMETABLE_SLOT,
+  DELETE_TIMETABLE_SLOT,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { Actions } from '../types/actions';
+
+// v3 introduces timetable save slots. Existing timetables become the implicit
+// default slot lazily (see ensureSlots), so the migration only has to add the
+// new empty maps.
+export const migrateV2toV3 = (state: PersistedState) => ({
+  ...state,
+  slots: {},
+  activeSlot: {},
+  // FIXME: Remove the next line when _persist is optional again.
+  // Cause: https://github.com/rt2zz/redux-persist/pull/919
+  // Issue: https://github.com/rt2zz/redux-persist/pull/1170
+  // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+  _persist: state?._persist!,
+});
 
 export const persistConfig = {
   /* eslint-disable no-useless-computed-key */
@@ -50,9 +69,10 @@ export const persistConfig = {
       // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
+    3: migrateV2toV3,
   }),
   /* eslint-enable */
-  version: 2,
+  version: 3,
 
   // Our own state reconciler archives old timetables if the acad year is different,
   // otherwise use the persisted timetable state
@@ -73,6 +93,9 @@ export const persistConfig = {
       );
     }
 
+    // Only the active timetable's lessons are archived - saved slots are
+    // dropped along with the rest of last year's state, since the archive
+    // shape only holds one TimetableConfig per academic year
     return {
       ...original,
       archive: {
@@ -225,11 +248,52 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions): ModuleCode[] {
   }
 }
 
+export const DEFAULT_SLOT_ID = '0';
+export const DEFAULT_SLOT_TITLE = 'Timetable 1';
+const DEFAULT_SLOT_DATA: TimetableSlotData = { lessons: {}, colors: {}, hidden: [], ta: [] };
+
+export function nextSlotId(slots: TimetableSlot[]): string {
+  const ids = slots.map((slot) => Number(slot.id));
+  if (ids.length === 0) return DEFAULT_SLOT_ID;
+  return String(Math.max(...ids) + 1);
+}
+
+function snapshotSlotData(state: TimetablesState, semester: Semester): TimetableSlotData {
+  return {
+    lessons: state.lessons[semester] ?? DEFAULT_SEM_TIMETABLE_CONFIG,
+    colors: state.colors[semester] ?? DEFAULT_SEM_COLOR_MAP,
+    hidden: state.hidden[semester] ?? DEFAULT_HIDDEN_STATE,
+    ta: state.ta[semester] ?? DEFAULT_TA_STATE,
+  };
+}
+
+// Semesters that have never used slots implicitly have a single active slot
+// holding the live timetable. Materialize it before any slot manipulation.
+function ensureSlots(
+  draft: Draft<TimetablesState>,
+  semester: Semester,
+  liveData: TimetableSlotData,
+) {
+  if (!draft.slots[semester] || draft.slots[semester].length === 0) {
+    draft.slots[semester] = [{ id: DEFAULT_SLOT_ID, title: DEFAULT_SLOT_TITLE, data: liveData }];
+    draft.activeSlot[semester] = DEFAULT_SLOT_ID;
+  }
+}
+
+function loadSlotData(draft: Draft<TimetablesState>, semester: Semester, data: TimetableSlotData) {
+  draft.lessons[semester] = data.lessons;
+  draft.colors[semester] = data.colors;
+  draft.hidden[semester] = data.hidden;
+  draft.ta[semester] = data.ta;
+}
+
 export const defaultTimetableState: TimetablesState = {
   lessons: {},
   colors: {},
   hidden: {},
   ta: {},
+  slots: {},
+  activeSlot: {},
   academicYear: config.academicYear,
   archive: {},
 };
@@ -284,6 +348,88 @@ function timetables(
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
         draft.ta[semester] = semTaModules(state.ta[semester], action);
+      });
+    }
+
+    case ADD_TIMETABLE_SLOT: {
+      const { semester, title, duplicateCurrent } = action.payload;
+
+      return produce(state, (draft) => {
+        const liveData = snapshotSlotData(state, semester);
+        ensureSlots(draft, semester, liveData);
+        const slots = draft.slots[semester];
+
+        // Persist the current timetable into the outgoing active slot
+        const active = slots.find((slot) => slot.id === draft.activeSlot[semester]);
+        if (active) active.data = liveData;
+
+        const newSlot = {
+          id: nextSlotId(slots),
+          title: title?.trim() || `Timetable ${slots.length + 1}`,
+          data: duplicateCurrent ? liveData : DEFAULT_SLOT_DATA,
+        };
+        slots.push(newSlot);
+        draft.activeSlot[semester] = newSlot.id;
+        loadSlotData(draft, semester, newSlot.data);
+      });
+    }
+
+    case SWITCH_TIMETABLE_SLOT: {
+      const { semester, slotId } = action.payload;
+      const slots = state.slots[semester];
+      // Semesters without materialized slots only have the implicit active
+      // slot, so there is nothing to switch to
+      if (!slots || slots.length === 0) return state;
+
+      const activeId = state.activeSlot[semester] ?? DEFAULT_SLOT_ID;
+      const target = slots.find((slot) => slot.id === slotId);
+      if (slotId === activeId || !target) return state;
+
+      return produce(state, (draft) => {
+        const active = draft.slots[semester].find((slot) => slot.id === activeId);
+        if (active) active.data = snapshotSlotData(state, semester);
+        draft.activeSlot[semester] = slotId;
+        loadSlotData(draft, semester, target.data);
+      });
+    }
+
+    case RENAME_TIMETABLE_SLOT: {
+      const { semester, slotId, title } = action.payload;
+      const trimmedTitle = title.trim();
+      if (!trimmedTitle) return state;
+
+      const slots = state.slots[semester];
+      const slotExists =
+        slots && slots.length > 0
+          ? slots.some((slot) => slot.id === slotId)
+          : slotId === DEFAULT_SLOT_ID;
+      if (!slotExists) return state;
+
+      return produce(state, (draft) => {
+        ensureSlots(draft, semester, snapshotSlotData(state, semester));
+        const slot = draft.slots[semester].find((s) => s.id === slotId);
+        if (slot) slot.title = trimmedTitle;
+      });
+    }
+
+    case DELETE_TIMETABLE_SLOT: {
+      const { semester, slotId } = action.payload;
+      const slots = state.slots[semester];
+      // The last remaining (or implicit) slot cannot be deleted
+      if (!slots || slots.length <= 1) return state;
+
+      const index = slots.findIndex((slot) => slot.id === slotId);
+      if (index === -1) return state;
+
+      return produce(state, (draft) => {
+        draft.slots[semester].splice(index, 1);
+
+        if (state.activeSlot[semester] === slotId) {
+          // Activate the neighbouring slot and load its saved timetable
+          const neighbour = slots[index + 1] ?? slots[index - 1];
+          draft.activeSlot[semester] = neighbour.id;
+          loadSlotData(draft, semester, neighbour.data);
+        }
       });
     }
 
