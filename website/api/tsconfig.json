@@ -3,6 +3,12 @@
     "target": "ES2020",
     "module": "commonjs",
     "lib": ["ES2020"],
+    // Serverless functions run on Node, so pull in Node's globals (fs, path,
+    // __dirname, URL, console) rather than the DOM lib. Restricting `types`
+    // also stops TS from auto-loading every @types/* package (e.g. the
+    // conflicting React typings) into the program.
+    "types": ["node"],
+    "skipLibCheck": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -11,6 +17,14 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    // Match the main tsconfig's module resolution so the src/* files these
+    // functions import (bare `types/*` imports, JSON data) resolve correctly.
+    "baseUrl": "../src/",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
+  },
+  // Include the ambient globals (NUSMODS_ENV, etc.) injected at build time,
+  // which are referenced transitively via src/config.
+  "include": ["**/*.ts", "../src/types/global.d.ts"]
 }

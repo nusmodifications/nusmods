@@ -61,7 +61,7 @@ export function decodeHTMLEntities(string: string) {
  */
 export function stripTags(string: string) {
   return string
-    .replaceAll(/<[^>]*>?/gm, ' ')
+    .replaceAll(/<!--[\s\S]*?-->|<\/?[A-Za-z][^>]*>/gm, ' ')
     .replaceAll(/\s+/g, ' ')
     .trim();
 }

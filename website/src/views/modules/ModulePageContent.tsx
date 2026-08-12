@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash-es';
@@ -68,6 +68,21 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   if (module.aliases) moduleCodes.push(...module.aliases);
 
   useScrollToTop();
+
+  // Smoothly scroll to section anchors from the side menu, but only while on
+  // this page. `scroll-behavior` must live on the scrolling root (`html`), so
+  // we scope it to the module page's lifecycle here instead of a global
+  // stylesheet rule that would leak to every other route. Respects
+  // `prefers-reduced-motion` for users who opt out of animations.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    const { style } = document.documentElement;
+    style.scrollBehavior = 'smooth';
+    return () => {
+      style.scrollBehavior = '';
+    };
+  }, []);
 
   return (
     <div className={classnames('page-container', styles.moduleInfoPage)}>
