@@ -57,7 +57,7 @@ const config: Config = {
 
   // Other config
   academicYear: '2026/2027',
-  dataPath: path.resolve(__dirname, '../data'),
+  dataPath: path.resolve(__dirname, '../../data'),
   specialTermAcademicYear: env.specialTermAcademicYear ?? null,
 };
 

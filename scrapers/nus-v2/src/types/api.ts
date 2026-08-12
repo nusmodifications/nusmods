@@ -57,6 +57,8 @@ export type ModuleInfo = Readonly<{
   AdditionalInformation: string | null;
   ApplicableFromSem: string;
   ApplicableFromYear: string;
+  BaseVersionMajor: number;
+  BaseVersionMinor: number;
   CatalogNumber: string;
   Code: string;
   CorequisiteRule: string | null;
@@ -78,6 +80,8 @@ export type ModuleInfo = Readonly<{
   Title: string;
   UnitsMax: number | null;
   UnitsMin: number | null;
+  VersionMajor: number;
+  VersionMinor: number;
   WorkloadHoursNUSMods: string | null;
   YearLong: 'Y' | 'N';
   // TODO: Investigate why PrintCatalog was removed from the API response

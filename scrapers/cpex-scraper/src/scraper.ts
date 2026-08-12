@@ -143,7 +143,7 @@ export async function scraper({
   env,
   academicYear,
   threshold,
-  outputDir = path.join(__dirname, '../../data'),
+  outputDir = path.join(__dirname, '../../../data'),
   now = new Date(),
   axiosClient = axios,
   fileSystem = fs,

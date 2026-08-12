@@ -220,14 +220,16 @@ export { findExamClashes } from './exams';
 export { isInteractable, getInteractableLessons } from './interactabilityHydration';
 export { hydrateSemTimetableWithLessons } from './lessonHydration';
 export {
+  getClosestClassNo,
   getClosestLessonConfig,
   getRecoveryClassNo,
+  isClassNo,
   getRecoverySerializedLessonDetails,
   makeModuleLessonMap,
   serializeLessonDetails,
 } from './lessonId';
 export { LESSON_ABBREV_TYPE, LESSON_TYPE_ABBREV, getLessonIdentifier } from './lessonId';
-export { arrangeLessonsForWeek, groupLessonsByDay } from './lessonsArrangement';
+export { arrangeLessonsForWeek, doLessonsOverlap, groupLessonsByDay } from './lessonsArrangement';
 export { migrateSemTimetableConfig } from './migration';
 export {
   deserializeTimetable,

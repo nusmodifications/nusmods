@@ -3,6 +3,7 @@ package modules
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"sort"
 	"strconv"
 	"strings"
@@ -88,6 +89,18 @@ func GetAllModuleSlots(
 			moduleTimetable[i].WeeksString = strings.Join(weeksStrings, ",")
 		}
 
+		if err := validatePinnedSlots(
+			moduleTimetable,
+			module,
+			optimiserRequest.PinnedMap,
+			recordingsMap,
+			freeDaysMap,
+			optimiserRequest.EarliestMin,
+			optimiserRequest.LatestMin,
+		); err != nil {
+			return nil, nil, nil, err
+		}
+
 		// Store the module slots for the module
 		moduleSlots[module], defaultSlots[module] = mergeAndFilterModuleSlots(
 			moduleTimetable,
@@ -95,6 +108,7 @@ func GetAllModuleSlots(
 			module,
 			recordingsMap,
 			freeDaysMap,
+			optimiserRequest.PinnedMap,
 			optimiserRequest.EarliestMin,
 			optimiserRequest.LatestMin,
 		)
@@ -102,6 +116,94 @@ func GetAllModuleSlots(
 	}
 
 	return moduleSlots, defaultSlots, recordingsMap, nil
+}
+
+// validatePinnedSlots ensures every pinned slot for this module references an existing
+// lessonType and classNo in the module's raw timetable, and that a physical (non-recorded)
+// pinned class does not fall on a free day or outside the requested time range. This must
+// be checked against the raw timetable (not the merged output) because merging drops
+// duplicate-schedule classes by design, and a pin on an existing class must never be
+// rejected as missing.
+func validatePinnedSlots(
+	moduleTimetable []models.ModuleSlot,
+	module string,
+	pinnedMap map[string]models.ClassNo,
+	recordingsMap map[string]struct{},
+	freeDaysMap map[string]struct{},
+	earliestMin int,
+	latestMin int,
+) error {
+	lessonTypeClasses := make(map[models.LessonType]map[models.ClassNo][]models.ModuleSlot)
+	for i := range moduleTimetable {
+		slot := &moduleTimetable[i]
+		if lessonTypeClasses[slot.LessonType] == nil {
+			lessonTypeClasses[slot.LessonType] = make(map[models.ClassNo][]models.ModuleSlot)
+		}
+		lessonTypeClasses[slot.LessonType][slot.ClassNo] = append(
+			lessonTypeClasses[slot.LessonType][slot.ClassNo],
+			*slot,
+		)
+	}
+
+	modulePrefix := strings.ToUpper(module) + "|"
+	for lessonKey, classNo := range pinnedMap {
+		if !strings.HasPrefix(lessonKey, modulePrefix) {
+			continue
+		}
+		lessonType := strings.TrimPrefix(lessonKey, modulePrefix)
+		classNos, ok := lessonTypeClasses[lessonType]
+		if !ok {
+			return &models.SolveError{
+				Code:    http.StatusBadRequest,
+				Message: fmt.Sprintf("pinned lesson type %s not found for %s", lessonType, strings.ToUpper(module)),
+			}
+		}
+		slots, ok := classNos[classNo]
+		if !ok {
+			return &models.SolveError{
+				Code: http.StatusBadRequest,
+				Message: fmt.Sprintf(
+					"pinned class %s not found for %s %s",
+					classNo,
+					strings.ToUpper(module),
+					lessonType,
+				),
+			}
+		}
+
+		// Recorded lessons need no physical attendance, so their pins never conflict
+		// with free days or the time range.
+		if _, isRecorded := recordingsMap[lessonKey]; isRecorded {
+			continue
+		}
+		for i := range slots {
+			slot := &slots[i]
+			if _, ok := freeDaysMap[slot.Day]; ok {
+				return &models.SolveError{
+					Code: http.StatusBadRequest,
+					Message: fmt.Sprintf(
+						"pinned class %s for %s %s falls on free day %s",
+						classNo,
+						strings.ToUpper(module),
+						lessonType,
+						slot.Day,
+					),
+				}
+			}
+			if isSlotOutsideTimeRange(*slot, earliestMin, latestMin) {
+				return &models.SolveError{
+					Code: http.StatusBadRequest,
+					Message: fmt.Sprintf(
+						"pinned class %s for %s %s is outside the allowed time range",
+						classNo,
+						strings.ToUpper(module),
+						lessonType,
+					),
+				}
+			}
+		}
+	}
+	return nil
 }
 
 // Gets all venue information from venues.json
@@ -121,6 +223,7 @@ func mergeAndFilterModuleSlots(
 	module string,
 	recordingsMap map[string]struct{},
 	freeDaysMap map[string]struct{},
+	pinnedMap map[string]models.ClassNo,
 	earliestMin int,
 	latestMin int,
 ) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot) {
@@ -149,15 +252,30 @@ func mergeAndFilterModuleSlots(
 	validClassGroups := make(map[string][]models.ModuleSlot)
 
 	for groupKey, slots := range classGroups {
-		lessonType := strings.Split(groupKey, "|")[0]
+		parts := strings.SplitN(groupKey, "|", 2)
+		lessonType := parts[0]
+		classNo := parts[1]
 		lessonKey := strings.ToUpper(module) + "|" + lessonType
 		_, isRecorded := recordingsMap[lessonKey]
+
+		// The user fixed this lesson to a specific class; drop all other classes so the
+		// solver is forced to pick the pinned one. This must happen here, before the
+		// duplicate-schedule merge below, so the pinned class can never be merged away.
+		pinnedClassNo, isPinned := pinnedMap[lessonKey]
+		if isPinned && classNo != pinnedClassNo {
+			continue
+		}
+
 		allValid := true
-		if defaultSlots[lessonType] == nil {
+		// The pinned class also becomes the default/backup slot, so that the default
+		// shareable link respects the pin (map iteration order is random otherwise)
+		if defaultSlots[lessonType] == nil || isPinned {
 			defaultSlots[lessonType] = slots
 		}
 
-		// Only apply filters to physical lessons
+		// Only apply filters to physical lessons. Pinned classes pass these filters by
+		// construction: validatePinnedSlots rejects the request if a physical pin
+		// conflicts with a free day or the time range.
 		if !isRecorded {
 			for i := range slots {
 				slot := &slots[i]
