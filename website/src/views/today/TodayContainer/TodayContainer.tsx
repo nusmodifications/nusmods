@@ -40,7 +40,7 @@ import withTimer, { TimerData } from 'views/hocs/withTimer';
 import makeResponsive from 'views/hocs/makeResponsive';
 import NoFooter from 'views/layout/NoFooter';
 import MapContext from 'views/components/map/MapContext';
-import { formatTime, getDayIndex } from 'utils/timify';
+import { formatTime, getDayIndex, toSingaporeTime } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { State as StoreState } from 'types/state';
 
@@ -178,7 +178,15 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   };
 
   groupLessons() {
-    const { colors, currentTime, timetableWithLessons } = this.props;
+    const { colors, timetableWithLessons } = this.props;
+
+    // The Today view is Singapore-centric: lesson times are in SGT, so derive
+    // "today" and each subsequent day from the SGT wall-clock rather than the
+    // viewer's local timezone. Without this, a viewer whose local date differs
+    // from Singapore's (e.g. still Monday evening in the US while it is already
+    // Tuesday in Singapore) would see the wrong day marked as today and an
+    // incorrect "time till next class" countdown.
+    const currentTime = toSingaporeTime(this.props.currentTime);
 
     const timetableLessons: Lesson[] = timetableLessonsArray(timetableWithLessons);
 
@@ -276,7 +284,11 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     let beforeFirstLessonCard = null;
 
     if (isToday) {
-      const { currentTime } = this.props;
+      // Lesson times are in Singapore time, so reason about "now" using the SGT
+      // wall-clock instead of the viewer's local timezone. This keeps which
+      // lessons are past, whether the next one is ongoing, the now marker, and
+      // the countdown in BeforeLessonCard accurate for overseas students.
+      const currentTime = toSingaporeTime(this.props.currentTime);
       // Don't show any lessons in the past, and add the current time marker
       const time = getHours(currentTime) * 100 + getMinutes(currentTime);
       // eslint-disable-next-line no-param-reassign
@@ -352,8 +364,13 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const { modules } = state.moduleBank;
 
-  const lastDay = addDays(ownProps.currentTime, DAYS); // current date plus 7 days
-  const todayWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(ownProps.currentTime);
+  // Semester/week selection must match the Singapore-based day grouping in the
+  // component (see groupLessons), so an overseas viewer whose local date trails
+  // Singapore's doesn't load the previous semester's timetable while the day
+  // list already shows the new semester's lessons.
+  const currentTime = toSingaporeTime(ownProps.currentTime);
+  const lastDay = addDays(currentTime, DAYS); // current date plus 7 days
+  const todayWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(currentTime);
   const nextWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
 
   const todaySemester = semesterNameMap[todayWeekInfo.sem];
