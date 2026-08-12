@@ -4852,7 +4852,7 @@
     }
   },
   "RC1-02-04": {
-    "roomName": "RC1-02-04",
+    "roomName": "Saga Classroom 7",
     "floor": 1,
     "location": {
       "x": 103.77199798822406,
@@ -4860,11 +4860,11 @@
     }
   },
   "RC3-01-01": {
-    "roomName": "RC3-01-01",
-    "floor": 3,
+    "roomName": "Cendana Classroom 19",
+    "floor": 1,
     "location": {
-      "x": 103.77236250653517,
-      "y": 1.3078495446060228
+      "x": 103.77240031957628,
+      "y": 1.3081230586393935
     }
   },
   "S16-0208": {
@@ -5252,7 +5252,7 @@
     }
   },
   "RC3-02-01": {
-    "roomName": "rc3-02-01",
+    "roomName": "Cendana Classroom 21",
     "floor": 2,
     "location": {
       "x": 103.7725478410721,
@@ -5395,12 +5395,60 @@
       "y": 1.307142
     }
   },
-  "EC-02-17": {
-    "roomName": "Science Blk Classroom 17",
+  "EC-02-11": {
+    "roomName": "Library Seminar Room 1",
     "floor": 2,
     "location": {
-      "x": 103.772676,
-      "y": 1.307812
+      "x": 103.7725478410721,
+      "y": 1.3069646460585158
+    }
+  },
+  "EC-02-12": {
+    "roomName": "Library Seminar Room 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77250492572786,
+      "y": 1.306766214220211
+    }
+  },
+  "EC-02-06": {
+    "roomName": "Library Seminar Room 3",
+    "floor": 2,
+    "location": {
+      "x": 103.77266558099701,
+      "y": 1.307038358988767
+    }
+  },
+  "EC-02-17": {
+    "roomName": "Learning Commons Classroom 02-17",
+    "floor": 2,
+    "location": {
+      "x": 103.77267122268678,
+      "y": 1.3079782570960305
+    }
+  },
+  "EC-02-18": {
+    "roomName": "Learning Commons Classroom 02-18",
+    "floor": 2,
+    "location": {
+      "x": 103.77268195152284,
+      "y": 1.3077798253378377
+    }
+  },
+  "EC-03-15": {
+    "roomName": "Learning Commons Classroom 03-15",
+    "floor": 3,
+    "location": {
+      "x": 103.77266854047777,
+      "y": 1.3079782570960305
+    }
+  },
+  "EC-03-16": {
+    "roomName": "Learning Commons Classroom 03-16",
+    "floor": 3,
+    "location": {
+      "x": 103.77268463373187,
+      "y": 1.3077851883585319
     }
   },
   "RC3-B-01": {
@@ -5443,16 +5491,16 @@
       "y": 1.305859
     }
   },
-  "RC1-01-4K": {
+  "RC1-01-04K": {
     "roomName": "Saga Classroom 5",
     "floor": 1,
     "location": {
-      "x": 103.771788,
-      "y": 1.305859
+      "x": 103.77176719753734,
+      "y": 1.3059794457512233
     }
   },
   "RC1-02-01": {
-    "roomName": "CR6",
+    "roomName": "Saga Classroom 6",
     "floor": 2,
     "location": {
       "x": 103.77231437089056,
@@ -5492,23 +5540,23 @@
     }
   },
   "RC3-01-04": {
-    "roomName": "Classroom 18 (RC3-01-04)",
+    "roomName": "Cendana Classroom 18",
     "floor": 1,
     "location": {
-      "x": 103.77215039111273,
-      "y": 1.3080272605840715
+      "x": 103.77204626798631,
+      "y": 1.3079943461568155
     }
   },
   "RC3-01-02": {
-    "roomName": "Cendana College - Classroom 20",
+    "roomName": "Cendana Classroom 20 (J&S Aspiration Room)",
     "floor": 1,
     "location": {
-      "x": 103.77215597089427,
-      "y": 1.3081995151835102
+      "x": 103.77249687910083,
+      "y": 1.3079675310554435
     }
   },
   "RC3-02-04F": {
-    "roomName": "Cendana College - Classroom 23",
+    "roomName": "Cendana Classroom 23",
     "floor": 2,
     "location": {
       "x": 103.77215597089427,
