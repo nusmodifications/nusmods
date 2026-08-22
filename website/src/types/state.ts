@@ -8,6 +8,7 @@ import {
   UndoHistoryState,
   VenueBank,
   ModuleBank,
+  ReduxRememberState,
 } from './reducers';
 
 export type State = {
@@ -20,4 +21,5 @@ export type State = {
   settings: SettingsState;
   planner: PlannerState;
   undoHistory: UndoHistoryState<State>;
+  reduxRemember: ReduxRememberState;
 };

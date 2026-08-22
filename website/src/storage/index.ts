@@ -1,6 +1,7 @@
-import { isString } from 'lodash-es';
+import { get, isString } from 'lodash-es';
 import { captureException } from 'utils/error';
 import getLocalStorage from './localStorage';
+import migratePersistToRemember from 'bootstrapping/migrate-persist-to-remember';
 
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
 function setItem(key: string, value: unknown) {
@@ -26,17 +27,34 @@ function setItem(key: string, value: unknown) {
   }
 }
 
+/**
+ * This function is augmented with logic to migrate data from redux-persist to redux-remember\
+ * Redux-remember uses the `@@remember-` prefix whereas redux-persist used the `persist:` prefix\
+ * This function attempts to look for data stored by redux-remember (with the prefix `@@remember-`) and if the key does not exists, it constructs the key used by redux-persist (with the prefix `persist:`), gets and parses the value.
+ * @param key used as the key in localStorage
+ * @returns the value stored in `localStorage`.\
+ * If no value is found and the key has redux-remember's prefix, it checks if the same key with redux-persist's prefix exists. If yes, it accesses, migrates and returns the data.\
+ * Otherwise, returns null.
+ */
 function getItem(key: string): unknown {
-  let value;
+  const reduxRememberValue = getLocalStorage().getItem(key);
+
+  if (reduxRememberValue === null) {
+    const rememberPrefixMatches = key.match(/(?<=@@remember-)(.*)/);
+    if (!rememberPrefixMatches) return null;
+    const baseKey = get(rememberPrefixMatches, 0);
+
+    const persistValue = getLocalStorage().getItem(`persist:${baseKey}`);
+    if (persistValue === null) return null;
+
+    return migratePersistToRemember(persistValue);
+  }
+
   try {
-    value = getLocalStorage().getItem(key);
-    if (value && value !== '') {
-      return JSON.parse(value);
-    }
-    return undefined;
-  } catch (e) {
-    captureException(e);
-    return value;
+    return JSON.parse(reduxRememberValue);
+  } catch (error) {
+    captureException(error);
+    return reduxRememberValue;
   }
 }
 

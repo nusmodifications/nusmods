@@ -504,10 +504,7 @@ THEN
 
   it('parses omitted course counts in separate clauses as one-of groups', () => {
     const result: PrereqTree = {
-      and: [
-        { or: ['EE2012:D', 'ST2334:D'] },
-        { or: ['EE2023:D', 'CG2023:D'] },
-      ],
+      and: [{ or: ['EE2012:D', 'ST2334:D'] }, { or: ['EE2023:D', 'CG2023:D'] }],
     };
     expect(
       parse(

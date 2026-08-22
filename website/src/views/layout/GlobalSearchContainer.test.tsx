@@ -40,7 +40,7 @@ const relevantStoreContents = {
 const initialState = reducers(undefined, initAction());
 
 function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
-  const { store } = configureStore(
+  const store = configureStore(
     produce(initialState, (draft) => {
       draft.moduleBank.moduleList = (storeOverrides.moduleBank?.moduleList ??
         relevantStoreContents.moduleBank.moduleList) as typeof draft.moduleBank.moduleList;

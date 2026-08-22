@@ -1,8 +1,7 @@
-import { Reducer } from 'redux';
+import { AnyAction } from 'redux';
 
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
-import persistReducer from 'storage/persistReducer';
 import { withReduxStateSync, receiveState } from 'middlewares/state-sync-middleware';
 import { State } from 'types/state';
 import { Actions } from 'types/actions';
@@ -10,23 +9,19 @@ import { Actions } from 'types/actions';
 // Non-persisted reducers
 import requests from './requests';
 import app from './app';
-import createUndoReducer from './undoHistory';
+import createUndoReducer, { defaultUndoHistoryState } from './undoHistory';
 
 // Persisted reducers
-import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';
-import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
-import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
+import moduleBankReducer from './moduleBank';
+import venueBankReducer from './venueBank';
+import timetablesReducer from './timetables';
 import themeReducer from './theme';
-import settingsReducer, { persistConfig as settingsPersistConfig } from './settings';
-import plannerReducer, { persistConfig as plannerPersistConfig } from './planner';
-
-// Persist reducers
-const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPersistConfig);
-const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersistConfig);
-const timetables = persistReducer('timetables', timetablesReducer, timetablesPersistConfig);
-const theme = persistReducer('theme', themeReducer);
-const settings = persistReducer('settings', settingsReducer, settingsPersistConfig);
-const planner = persistReducer('planner', plannerReducer, plannerPersistConfig);
+import settingsReducer from './settings';
+import plannerReducer from './planner';
+import { rememberReducer } from 'redux-remember';
+import reduxRemember from './reduxRemember';
+import { UndoHistoryState } from 'types/reducers';
+import { combineReducers } from 'redux';
 
 // State default is delegated to its child reducers.
 const defaultState = {} as unknown as State;
@@ -36,26 +31,31 @@ const undoReducer = createUndoReducer<State>({
   storedKeyPaths: ['timetables', 'theme.colors'],
 });
 
-function reducers(state: State = defaultState, action: Actions): State {
-  // Update every reducer except the undo reducer
-  const newState: State = {
-    moduleBank: moduleBank(state.moduleBank, action),
-    venueBank: venueBank(state.venueBank, action),
-    requests: requests(state.requests, action),
-    timetables: timetables(state.timetables, action),
-    app: app(state.app, action),
-    theme: theme(state.theme, action),
-    settings: settings(state.settings, action),
-    planner: planner(state.planner, action),
-    undoHistory: state.undoHistory,
-  };
+const reducers = {
+  moduleBank: moduleBankReducer,
+  venueBank: venueBankReducer,
+  requests,
+  timetables: timetablesReducer,
+  app,
+  theme: themeReducer,
+  settings: settingsReducer,
+  planner: plannerReducer,
+  reduxRemember: reduxRemember.reducer,
+  // State members are required to have a reducer
+  // The reducer is required to return a state, but the history reducer runs after state reducer
+  // Thus we initialize undo history state if it was uninitialized
+  undoHistory: (state: UndoHistoryState<State> = defaultUndoHistoryState, _action: Actions) =>
+    state,
+};
+
+const reducer = rememberReducer(combineReducers(reducers));
+
+export function rootReducer(state: State = defaultState, action: AnyAction): State {
+  const newState = reducer(state, action);
   return undoReducer(state, newState, action);
 }
 
 // withReduxStateSync intercepts RECEIVE_INIT_STATE (from initStateWithPrevTab)
 // and adopts the peer tab's state, including non-persisted slices like
 // undoHistory so undo/redo stay in sync across tabs.
-export default withReduxStateSync(
-  reducers as unknown as Reducer<State>,
-  receiveState,
-) as unknown as Reducer<State, Actions>;
+export default withReduxStateSync(rootReducer, receiveState);
