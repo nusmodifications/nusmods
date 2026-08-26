@@ -150,7 +150,7 @@
     "nightwatch": "3.12.2",
     "npm-run-all": "catalog:",
     "oxlint": "catalog:",
-    "postcss": "8.4.49",
+    "postcss": "8.5.23",
     "postcss-loader": "8.1.1",
     "react-dev-utils": "11.0.4",
     "react-refresh": "0.16.0",
