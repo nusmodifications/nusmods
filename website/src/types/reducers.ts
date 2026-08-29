@@ -176,6 +176,10 @@ export type PlannerState = Readonly<{
 
   modules: { [id: string]: PlannerTime };
   custom: CustomModuleData;
+  // IDs of programmes (specialisations, focus areas, minors) the student is
+  // pursuing, referencing data/programmes. Unknown IDs are ignored at read
+  // time so that programmes can be renamed or removed from the dataset.
+  programmes: string[];
 }>;
 
 /* moduleBank.js */
