@@ -98,6 +98,66 @@ describe(actions.addModule, () => {
   });
 });
 
+describe('timetable slot thunks', () => {
+  // Two slots for semester 1: '0' (inactive, holds CS1010S) and '1' (active, blank)
+  const slotState: any = {
+    moduleBank: { moduleCodes: {}, modules: {} },
+    timetables: {
+      ...initialState,
+      lessons: { [1]: {} },
+      slots: {
+        [1]: [
+          {
+            id: '0',
+            title: 'Timetable 1',
+            data: { lessons: { CS1010S: {} }, colors: { CS1010S: 0 }, hidden: [], ta: [] },
+          },
+          { id: '1', title: 'Timetable 2', data: { lessons: {}, colors: {}, hidden: [], ta: [] } },
+        ],
+      },
+      activeSlot: { [1]: '1' },
+    },
+  };
+
+  // Dispatch mock that executes thunks so nested fetch/validate thunks run
+  const makeDispatch = (state: any) => {
+    const dispatch: any = vi.fn((action) =>
+      typeof action === 'function' ? action(dispatch, () => state) : action,
+    );
+    return dispatch;
+  };
+
+  // The timetable cannot render modules missing from the module bank, so the
+  // incoming slot's modules must be fetched before its data is loaded into
+  // the live timetable
+  const actionTypes = (dispatch: any) =>
+    dispatch.mock.calls.map(([action]: [any]) =>
+      typeof action === 'function' ? 'thunk' : action.type,
+    );
+
+  test('switchTimetableSlot should fetch slot modules before switching', async () => {
+    const dispatch = makeDispatch(slotState);
+    await actions.switchTimetableSlot(1, '0')(dispatch, () => slotState);
+
+    expect(dispatch).toHaveBeenCalledWith(actions.Internal.switchTimetableSlot(1, '0'));
+
+    const calls = actionTypes(dispatch);
+    const switchIndex = calls.indexOf(actions.SWITCH_TIMETABLE_SLOT);
+    expect(calls.slice(0, switchIndex)).toContain('thunk');
+  });
+
+  test('deleteTimetableSlot should fetch neighbouring slot modules before deleting', async () => {
+    const dispatch = makeDispatch(slotState);
+    await actions.deleteTimetableSlot(1, '1')(dispatch, () => slotState);
+
+    expect(dispatch).toHaveBeenCalledWith(actions.Internal.deleteTimetableSlot(1, '1'));
+
+    const calls = actionTypes(dispatch);
+    const deleteIndex = calls.indexOf(actions.DELETE_TIMETABLE_SLOT);
+    expect(calls.slice(0, deleteIndex)).toContain('thunk');
+  });
+});
+
 test('removeLesson should return information to remove module', () => {
   const semester: Semester = 1;
   const moduleCode: ModuleCode = 'CS1010';
