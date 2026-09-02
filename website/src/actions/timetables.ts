@@ -456,6 +456,7 @@ export function disableTaModule(semester: Semester, moduleCode: ModuleCode) {
     const semesterData: SemesterData | undefined = getModuleSemesterData(module, semester);
     if (!semesterData) {
       dispatch(removeTaModule(semester, moduleCode, taModuleLessonConfig));
+      dispatch(validateTimetable(semester));
       return;
     }
     const lessonConfig: ModuleLessonConfig = getClosestLessonConfig(
@@ -464,5 +465,6 @@ export function disableTaModule(semester: Semester, moduleCode: ModuleCode) {
     );
 
     dispatch(removeTaModule(semester, moduleCode, lessonConfig));
+    dispatch(validateTimetable(semester));
   };
 }
