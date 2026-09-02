@@ -594,9 +594,9 @@ describe(actions.disableTaModule, () => {
     const dispatch = jest.fn();
     const action = actions.disableTaModule(semester, 'CS1010S');
     action(dispatch, () => state);
-    const [[firstAction]] = dispatch.mock.calls;
+    const [[firstAction], [secondAction]] = dispatch.mock.calls;
 
-    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledTimes(2);
     expect(firstAction).toEqual({
       payload: {
         lessonConfig: {
@@ -609,6 +609,7 @@ describe(actions.disableTaModule, () => {
       },
       type: 'REMOVE_TA_MODULE',
     });
+    expect(secondAction).toEqual(expect.any(Function));
   });
 
   test('should dispatch action with serializedLessonDetails lessonId if semesterData cannot be found to create non-TA lessonConfig', () => {
@@ -621,9 +622,9 @@ describe(actions.disableTaModule, () => {
     const dispatch = jest.fn();
     const action = actions.disableTaModule(semester, 'CS1010S');
     action(dispatch, () => state);
-    const [[firstAction]] = dispatch.mock.calls;
+    const [[firstAction], [secondAction]] = dispatch.mock.calls;
 
-    expect(dispatch).toHaveBeenCalled();
+    expect(dispatch).toHaveBeenCalledTimes(2);
     expect(firstAction).toEqual({
       payload: {
         lessonConfig: {
@@ -636,5 +637,6 @@ describe(actions.disableTaModule, () => {
       },
       type: 'REMOVE_TA_MODULE',
     });
+    expect(secondAction).toEqual(expect.any(Function));
   });
 });
