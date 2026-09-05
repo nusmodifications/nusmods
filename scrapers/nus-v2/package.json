@@ -44,7 +44,7 @@
     "@nkzw/oxlint-config": "catalog:",
     "@types/bunyan": "1.8.11",
     "@types/deep-diff": "1.0.5",
-    "@types/fs-extra": "9.0.13",
+    "@types/fs-extra": "11.0.4",
     "@types/he": "1.2.3",
     "@types/lodash": "4.17.24",
     "@types/mock-fs": "4.13.4",
