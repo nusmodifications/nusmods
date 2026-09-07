@@ -1,0 +1,50 @@
+@import '~styles/utils/modules-entry';
+
+.slotsSwitcher {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.6rem;
+  gap: 0.4rem;
+}
+
+.tab {
+  overflow: hidden;
+  max-width: 12rem;
+  border-radius: 10rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iconButton {
+  border-radius: 10rem;
+}
+
+.menu {
+  position: relative;
+
+  .dropdownMenu {
+    svg {
+      margin-right: 0.2rem;
+      vertical-align: middle;
+    }
+
+    @include media-breakpoint-up(md) {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.modalHeader {
+  svg {
+    width: 3.8rem;
+    height: 3.8rem;
+    margin-bottom: 0.6rem;
+    color: theme-color();
+  }
+}
+
+.modalAction {
+  margin-top: 1rem;
+}

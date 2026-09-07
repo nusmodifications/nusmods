@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
+import { DELETE_TIMETABLE_SLOT, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
 import persistReducer from 'storage/persistReducer';
 import { withReduxStateSync, receiveState } from 'middlewares/state-sync-middleware';
@@ -32,7 +32,10 @@ const planner = persistReducer('planner', plannerReducer, plannerPersistConfig);
 const defaultState = {} as unknown as State;
 const undoReducer = createUndoReducer<State>({
   limit: 1,
-  actionsToWatch: [REMOVE_MODULE, SET_TIMETABLE],
+  // SWITCH/ADD_TIMETABLE_SLOT are deliberately not watched: switching is
+  // losslessly reversible by switching back, and with limit: 1 watching them
+  // would clobber the user's single undo step
+  actionsToWatch: [REMOVE_MODULE, SET_TIMETABLE, DELETE_TIMETABLE_SLOT],
   storedKeyPaths: ['timetables', 'theme.colors'],
 });
 

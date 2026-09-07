@@ -88,6 +88,19 @@ test('getLRUModule should return the LRU and non-timetable module', () => {
   expect(resultOfAction).toMatchSnapshot();
 });
 
+test('getLRUModule should not evict modules saved in timetable slots', () => {
+  const modules: any = {
+    ACC1001: { timestamp: 1 }, // in an inactive slot - must not be evicted
+    ACC1002: { timestamp: 2 }, // not referenced anywhere - evictable
+    ACC1003: { timestamp: 3 }, // in the live timetable
+  };
+
+  // Lesson configs may come from live timetables and saved slots alike
+  const lessonConfigs: any = [{ ACC1003: {} }, { ACC1001: {} }];
+
+  expect(getLRUModules(modules, lessonConfigs, 'ACC1004')).toEqual(['ACC1002']);
+});
+
 test('removeLRUModule should return an action', () => {
   const resultOfAction = actions.Internal.removeLRUModule(['ACC1001']);
   expect(resultOfAction).toMatchSnapshot();
