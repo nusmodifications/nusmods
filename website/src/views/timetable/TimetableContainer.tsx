@@ -10,8 +10,14 @@ import type { State } from 'types/state';
 import type { SemTimetableConfig } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
-import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import {
+  getActiveSlotId,
+  getSemesterTimetableColors,
+  getSemesterTimetableLessons,
+  getTimetableSlots,
+} from 'selectors/timetables';
+import {
+  addTimetableSlot,
   fetchModules,
   setHiddenModulesFromImport,
   setTaModulesFromImport,
@@ -32,6 +38,8 @@ import qs from 'query-string';
 import { keys } from 'lodash-es';
 import styles from './TimetableContainer.scss';
 import TimetableContent from './TimetableContent';
+import TimetableSlotsCompare from './TimetableSlotsCompare';
+import TimetableSlotsSwitcher from './TimetableSlotsSwitcher';
 
 type Params = {
   action: string;
@@ -101,6 +109,16 @@ const SharingHeader: FC<{
     semester,
   ]);
 
+  // Imports into a fresh slot, leaving the user's current timetable untouched
+  // in its own slot
+  const importTimetableAsNew = useCallback(() => {
+    if (!importedTimetable) {
+      return;
+    }
+    dispatch(addTimetableSlot(semester, { title: 'Imported' }));
+    importTimetable();
+  }, [dispatch, importedTimetable, importTimetable, semester]);
+
   if (!importedTimetable) {
     return null;
   }
@@ -113,13 +131,17 @@ const SharingHeader: FC<{
         <div className={classnames('col')}>
           <h3>This timetable was shared with you</h3>
           <p>
-            Clicking import will <strong>replace</strong> your saved timetable with the one below.
+            Clicking import will <strong>replace</strong> your current timetable with the one below.
+            Import as new timetable keeps both.
           </p>
         </div>
 
         <div className={classnames('col-md-auto', styles.actions)}>
           <button className="btn btn-success" type="button" onClick={importTimetable}>
             Import
+          </button>
+          <button className="btn btn-outline-success" type="button" onClick={importTimetableAsNew}>
+            Import as new timetable
           </button>
           <button
             className="btn btn-outline-primary"
@@ -137,7 +159,8 @@ const SharingHeader: FC<{
 const TimetableHeader: FC<{
   semester: Semester;
   readOnly?: boolean;
-}> = ({ semester, readOnly }) => {
+  onCompare?: () => void;
+}> = ({ semester, readOnly, onCompare }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -153,11 +176,14 @@ const TimetableHeader: FC<{
   );
 
   return (
-    <SemesterSwitcher
-      semester={semester}
-      onSelectSemester={handleSelectSemester}
-      readOnly={readOnly}
-    />
+    <>
+      <SemesterSwitcher
+        semester={semester}
+        onSelectSemester={handleSelectSemester}
+        readOnly={readOnly}
+      />
+      {!readOnly && <TimetableSlotsSwitcher semester={semester} onCompare={onCompare} />}
+    </>
   );
 };
 
@@ -185,6 +211,12 @@ export const TimetableContainerComponent: FC = () => {
   const [importedHidden, setImportedHidden] = useState<ModuleCode[] | null>(null);
 
   const [importedTa, setImportedTa] = useState<ModuleCode[] | null>(null);
+
+  // When set, the timetable is replaced by a side-by-side comparison of the
+  // two slots
+  const [compareSlots, setCompareSlots] = useState<[string, string] | null>(null);
+  const getSlots = useSelector(getTimetableSlots);
+  const getActiveSlot = useSelector(getActiveSlotId);
 
   const dispatch = useDispatch();
 
@@ -252,6 +284,21 @@ export const TimetableContainerComponent: FC = () => {
   );
   const readOnly = displayedTimetable === importedTimetable;
 
+  // Leave compare mode when the semester changes - the slot ids refer to the
+  // previous semester's slots
+  useEffect(() => {
+    setCompareSlots(null);
+  }, [semester]);
+
+  const startCompare = useCallback(() => {
+    if (semester == null) return;
+    const slots = getSlots(semester);
+    const activeSlotId = getActiveSlot(semester);
+    const otherSlot = slots.find((slot) => slot.id !== activeSlotId);
+    if (!otherSlot) return;
+    setCompareSlots([activeSlotId, otherSlot.id]);
+  }, [semester, getSlots, getActiveSlot]);
+
   useScrollToTop();
 
   // 1. If the URL doesn't look correct, we'll direct the user to the home page
@@ -263,6 +310,24 @@ export const TimetableContainerComponent: FC = () => {
   //    loaded first, and display a spinner if they're not.
   if (isLoading) {
     return <LoadingSpinner />;
+  }
+
+  // 3. Comparison mode replaces the interactive timetable with two read-only
+  //    grids of the chosen slots.
+  if (compareSlots) {
+    return (
+      <div className="page-container">
+        <TimetableHeader semester={semester} readOnly />
+        <TimetableSlotsCompare
+          semester={semester}
+          slotIds={compareSlots}
+          onSelectSlot={(pane, slotId) =>
+            setCompareSlots(pane === 0 ? [slotId, compareSlots[1]] : [compareSlots[0], slotId])
+          }
+          onExit={() => setCompareSlots(null)}
+        />
+      </div>
+    );
   }
 
   return (
@@ -283,7 +348,7 @@ export const TimetableContainerComponent: FC = () => {
             taImportedModules={importedTa}
             setImportedTimetable={setImportedTimetable}
           />
-          <TimetableHeader semester={semester} readOnly={readOnly} />
+          <TimetableHeader semester={semester} readOnly={readOnly} onCompare={startCompare} />
         </>
       }
       readOnly={readOnly}

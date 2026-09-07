@@ -43,6 +43,8 @@ export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
 export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
 export const SET_TA_IMPORTED = 'SET_TA_IMPORTED' as const;
+export const SWITCH_TIMETABLE_SLOT = 'SWITCH_TIMETABLE_SLOT' as const;
+export const DELETE_TIMETABLE_SLOT = 'DELETE_TIMETABLE_SLOT' as const;
 export const Internal = {
   setTimetable(
     semester: Semester,
@@ -67,7 +69,77 @@ export const Internal = {
       },
     };
   },
+
+  switchTimetableSlot(semester: Semester, slotId: string) {
+    return {
+      type: SWITCH_TIMETABLE_SLOT,
+      payload: { semester, slotId },
+    };
+  },
+
+  deleteTimetableSlot(semester: Semester, slotId: string) {
+    return {
+      type: DELETE_TIMETABLE_SLOT,
+      payload: { semester, slotId },
+    };
+  },
 };
+
+export const ADD_TIMETABLE_SLOT = 'ADD_TIMETABLE_SLOT' as const;
+export function addTimetableSlot(
+  semester: Semester,
+  options: { title?: string; duplicateCurrent?: boolean } = {},
+) {
+  return {
+    type: ADD_TIMETABLE_SLOT,
+    payload: {
+      semester,
+      title: options.title,
+      duplicateCurrent: options.duplicateCurrent ?? false,
+    },
+  };
+}
+
+export const RENAME_TIMETABLE_SLOT = 'RENAME_TIMETABLE_SLOT' as const;
+export function renameTimetableSlot(semester: Semester, slotId: string, title: string) {
+  return {
+    type: RENAME_TIMETABLE_SLOT,
+    payload: { semester, slotId, title },
+  };
+}
+
+// The timetable cannot render modules that are missing from the module bank,
+// so a slot's modules must be fetched BEFORE its data is loaded into the live
+// timetable. Modules only referenced by a saved slot may have been evicted
+// from the module bank by older versions of the LRU logic.
+export function switchTimetableSlot(semester: Semester, slotId: string) {
+  return (dispatch: Dispatch, getState: GetState) => {
+    const slot = getState().timetables.slots[semester]?.find((s) => s.id === slotId);
+    return dispatch(fetchTimetableModules([slot?.data.lessons ?? {}])).then(() => {
+      dispatch(Internal.switchTimetableSlot(semester, slotId));
+      return dispatch(validateTimetable(semester));
+    });
+  };
+}
+
+export function deleteTimetableSlot(semester: Semester, slotId: string) {
+  return (dispatch: Dispatch, getState: GetState) => {
+    const { slots, activeSlot } = getState().timetables;
+    const semesterSlots = slots[semester] ?? [];
+    const index = semesterSlots.findIndex((slot) => slot.id === slotId);
+    // Deleting the active slot loads the neighbouring slot's timetable, so
+    // fetch the neighbour's modules first
+    const neighbour =
+      activeSlot[semester] === slotId
+        ? (semesterSlots[index + 1] ?? semesterSlots[index - 1])
+        : undefined;
+
+    return dispatch(fetchTimetableModules([neighbour?.data.lessons ?? {}])).then(() => {
+      dispatch(Internal.deleteTimetableSlot(semester, slotId));
+      return dispatch(validateTimetable(semester));
+    });
+  };
+}
 
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Dispatch, getState: GetState) =>
