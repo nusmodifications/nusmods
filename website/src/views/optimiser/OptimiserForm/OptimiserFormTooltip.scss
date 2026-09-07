@@ -4,7 +4,7 @@
   composes: svg svg-small from global;
   margin: auto;
   margin-left: 1ch;
-  color: #69707a;
+  color: var(--muted-foreground);
   cursor: pointer;
 
   @include media-breakpoint-down(xs) {

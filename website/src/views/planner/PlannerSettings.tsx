@@ -1,6 +1,6 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 
 import config from 'config';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
@@ -54,11 +54,9 @@ function graduationLabel(offset: number) {
 function buttonProps(selected: boolean, disabled: boolean) {
   return {
     disabled,
-    className: classnames('btn btn-block', {
-      'btn-outline-secondary': disabled,
-      'btn-outline-primary': !selected && !disabled,
-      'btn-primary': selected,
-    }),
+    variant: selected ? ('default' as const) : ('outline' as const),
+    className: 'btn-block',
+    'aria-pressed': selected,
   };
 }
 
@@ -77,7 +75,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
 
             return (
               <li key={year}>
-                <button
+                <Button
                   type="button"
                   onClick={() => props.setMinYear(year)}
                   {...buttonProps(props.minYear === year, year > props.maxYear)}
@@ -90,7 +88,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
                       : graduationLabel(-offset).toLowerCase()}
                     )
                   </span>
-                </button>
+                </Button>
               </li>
             );
           })}
@@ -102,14 +100,14 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
         <ul className={styles.years}>
           {graduationLabels.map((year, offset) => (
             <li key={year}>
-              <button
+              <Button
                 type="button"
                 onClick={() => props.setMaxYear(year)}
                 {...buttonProps(props.maxYear === year, year < props.minYear)}
               >
                 {graduationLabel(offset)}
                 <span className={styles.subtitle}>(AY{acadYearLabel(year)})</span>
-              </button>
+              </Button>
             </li>
           ))}
         </ul>

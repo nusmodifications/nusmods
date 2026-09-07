@@ -8,14 +8,14 @@
 .feedbackBtn {
   margin-top: 1rem;
 
-  :global(.btn) {
+  :global(.ui-button) {
     margin: 0 0 0 0.4rem;
   }
 
   @include media-breakpoint-down(sm) {
     text-align: center;
 
-    :global(.btn) {
+    :global(.ui-button) {
       display: block;
       width: 100%;
       margin: 0.3rem 0 0 0;
@@ -30,8 +30,10 @@
 }
 
 .feedback {
-  :global(.btn) {
+  :global(.ui-button) {
     display: block;
+    width: 100%;
+    height: auto;
     padding: 2rem 1rem;
     margin-bottom: 1rem;
     white-space: normal;
@@ -44,7 +46,7 @@
 
     &:hover {
       svg {
-        color: theme-color();
+        color: var(--primary);
       }
     }
   }

@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { useCallback, useState } from 'react';
 import Downshift, { ChildrenFunction } from 'downshift';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,18 +64,19 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
 
       return (
         <div className={styles.exportMenu}>
-          <button
+          <Button
+            variant="outline"
             ref={(r) => {
               ComponentMap.downloadButton = r;
             }}
-            className={classnames(styles.toggle, 'btn btn-outline-primary btn-svg')}
+            className={classnames(styles.toggle, 'btn-svg')}
             type="button"
             onClick={() => toggleMenu()}
           >
             <Download className="svg svg-small" />
             Download
             <ChevronDown className={classnames(styles.chevron, 'svg-small')} />
-          </button>
+          </Button>
 
           <div
             className={classnames('dropdown-menu', styles.dropdownMenu, { show: isOpen })}
@@ -109,7 +111,8 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
             </Online>
 
             {SUPPORTS_DOWNLOAD && (
-              <button
+              <Button
+                variant="ghost"
                 className={classnames('dropdown-item', {
                   'dropdown-selected': counter.matches(highlightedIndex),
                 })}
@@ -120,7 +123,7 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
                 iCalendar File (.ics)
                 <br />
                 (For Google Calendar / Outlook)
-              </button>
+              </Button>
             )}
           </div>
 
@@ -130,12 +133,14 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
               <p>The calendar you have just downloaded may not work with the macOS Calendar app.</p>
             </div>
             <div className={styles.modalButtons}>
-              <Link to="/faq#mac-calendar" className="btn btn-outline-primary">
-                Find out more
-              </Link>
-              <button type="button" className="btn btn-primary" onClick={closeMacOSWarningModal}>
+              <Button asChild variant="outline">
+                <Link to="/faq#mac-calendar" className="">
+                  Find out more
+                </Link>
+              </Button>
+              <Button variant="default" type="button" onClick={closeMacOSWarningModal}>
                 Gotcha
-              </button>
+              </Button>
             </div>
           </Modal>
         </div>

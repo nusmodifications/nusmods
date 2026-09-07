@@ -2,7 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 import type { FC, PropsWithChildren } from 'react';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
-import { DARK_COLOR_SCHEME } from 'types/settings';
+import {
+  DARK_COLOR_SCHEME,
+  DARK_COLOR_SCHEME_PREFERENCE,
+  LIGHT_COLOR_SCHEME_PREFERENCE,
+} from 'types/settings';
+import { Moon, Sun } from 'react-feather';
+import { selectColorScheme } from 'actions/settings';
+import { Button } from 'components/ui/button';
 
 import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -115,22 +122,19 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
   const moduleList = useSelector((state: State) => state.moduleBank.moduleList);
   const isModuleListReady = moduleList.length;
 
+  const dispatch = useDispatch();
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === DARK_COLOR_SCHEME;
 
   const theme = useSelector((state: State) => state.theme.id);
 
-  if (!isModuleListReady && moduleListError) {
-    return <ApiError dataName="course information" retry={refetchModuleListAndTimetableModules} />;
-  }
-
   return (
     <div className="app-container">
       <Helmet>
+        <html className={isDarkMode ? 'dark' : 'light'} />
         <body
           className={classnames(`theme-${theme}`, {
             'mode-dark': isDarkMode,
-            'mdc-theme--dark': isDarkMode,
             'mobile-safari': isIOS,
           })}
         />
@@ -147,6 +151,22 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
           </ErrorBoundary>
 
           <div className={styles.weekText}>{weekText}</div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className={styles.themeButton}
+            aria-label={isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            title={isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            onClick={() =>
+              dispatch(
+                selectColorScheme(
+                  isDarkMode ? LIGHT_COLOR_SCHEME_PREFERENCE : DARK_COLOR_SCHEME_PREFERENCE,
+                ),
+              )
+            }
+          >
+            {isDarkMode ? <Sun /> : <Moon />}
+          </Button>
         </div>
       </nav>
 
@@ -154,7 +174,9 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
         <Navtabs />
 
         <main className="main-content">
-          {isModuleListReady ? (
+          {!isModuleListReady && moduleListError ? (
+            <ApiError dataName="course information" retry={refetchModuleListAndTimetableModules} />
+          ) : isModuleListReady ? (
             <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
               {children}
             </ErrorBoundary>

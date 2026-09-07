@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -74,13 +75,13 @@ export class UnmappedVenuesComponent extends PureComponent<Props, State> {
             </div>
             {!expanded && (
               <p className={styles.showMore}>
-                <button
-                  className="btn btn-outline-primary"
+                <Button
+                  variant="outline"
                   type="button"
                   onClick={() => this.setState({ expanded: true })}
                 >
                   Show More
-                </button>
+                </Button>
               </p>
             )}
           </div>

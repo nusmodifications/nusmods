@@ -1,76 +1,39 @@
 @import '~styles/utils/modules-entry';
 
-$header-margin-top: 1rem;
-$animation-duration: 0.3s;
 $offset-top: $navbar-height + 1rem;
 
-// Side menu styles
-//  - md and above, display as sticky side menu
-//  - sm and below, display as FAB + menu drawer appearing from below
-
 .fab {
-  display: none;
-}
-
-.overlay {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: $side-menu-overlay-z-index;
-  background: var(--body-bg-40);
-
-  :global {
-    animation: fadeIn $animation-duration;
-  }
+  right: 1rem;
+  bottom: 1rem;
+  z-index: $fab-z-index;
+  display: none;
 }
 
 .boundaryContainer {
   position: sticky;
   top: $offset-top;
-  display: flex;
-  pointer-events: none;
 }
 
 .sideMenu {
   composes: scrollable from global;
   max-height: calc(100vh - #{$offset-top});
-  pointer-events: auto;
   overscroll-behavior: contain;
+}
+
+.sheet {
+  max-height: calc(100vh - #{$offset-top});
+  padding: 3rem 1rem max(1.5rem, env(safe-area-inset-bottom));
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
 }
 
 @include media-breakpoint-down(sm) {
   .fab {
     display: block;
-  }
-
-  .boundaryContainer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: $side-menu-z-index;
-    flex-direction: column-reverse; // Menu should stick to bottom of screen
-    width: 100%;
-  }
-
-  .sideMenu {
-    // Translate top of menu to the bottom of the screen. Add an additional
-    // offset to prevent closed menu from appearing behind iOS Safari's toolbar.
-    $closed-menu-translation: calc(100% + 120px);
-
-    width: 100%;
-    padding: 3rem 0 3rem;
-    background: var(--body-bg);
-
-    // Entry/exit animation
-    transform: translateY($closed-menu-translation);
-    transition:
-      transform $animation-duration,
-      box-shadow $animation-duration;
-    &.isOpen {
-      box-shadow: 0 -10px 20px var(--navtab-shadow);
-      transform: translateY(0);
-    }
   }
 }

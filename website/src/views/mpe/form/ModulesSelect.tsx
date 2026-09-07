@@ -1,3 +1,6 @@
+import { Label } from 'components/ui/label';
+import { Input } from 'components/ui/input';
+import { Button } from 'components/ui/button';
 import { Component } from 'react';
 import { omit } from 'lodash-es';
 import Downshift, {
@@ -124,10 +127,10 @@ export class ModulesSelectComponent extends Component<Props, State> {
 
     return (
       <div className={styles.container}>
-        <label className="sr-only" {...getLabelProps()}>
+        <Label className="sr-only" {...getLabelProps()}>
           {placeholder}
-        </label>
-        <input
+        </Label>
+        <Input
           {...getInputProps({
             className: classnames(styles.input, elements.addModuleInput),
             autoFocus: isModalOpen,
@@ -166,16 +169,18 @@ export class ModulesSelectComponent extends Component<Props, State> {
                   {module.isAdded && (
                     <div className={styles.optionActions}>
                       <Tooltip content={removeBtnLabel(module.moduleCode)} touch="hold">
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           type="button"
-                          className={classnames('btn btn-svg btn-sm', styles.actionButton)}
+                          className={classnames(' btn-svg ', styles.actionButton)}
                           aria-label={removeBtnLabel(module.moduleCode)}
                           onClick={() => {
                             this.props.onRemoveModule(module.moduleCode);
                           }}
                         >
                           <Trash className={styles.actionIcon} />{' '}
-                        </button>
+                        </Button>
                       </Tooltip>
                       <span className="badge badge-info">Added</span>
                     </div>
@@ -237,14 +242,15 @@ export class ModulesSelectComponent extends Component<Props, State> {
 
     return (
       <>
-        <button
+        <Button
+          variant="ghost"
           type="button"
           className={classnames(styles.input, elements.addModuleInput)}
           onClick={this.openSelect}
           disabled={disabled}
         >
           {this.props.placeholder}
-        </button>
+        </Button>
         <Modal
           isOpen={!disabled && isOpen}
           onRequestClose={this.closeSelect}

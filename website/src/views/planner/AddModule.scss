@@ -1,6 +1,7 @@
 @import '~styles/utils/modules-entry';
 
-:global(.btn).toggle {
+.toggle {
+  justify-content: flex-start;
   padding-left: 0;
   text-align: left;
 

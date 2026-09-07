@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -87,14 +88,16 @@ class DisqusComments extends PureComponent<Props, State> {
     if (this.props.loadDisqusManually && !this.state.allowDisqus) {
       return (
         <div className="text-center">
-          <button
+          <Button
+            variant="outline"
+            size="lg"
             type="button"
             onClick={() => this.setState({ allowDisqus: true })}
-            className={classnames(styles.loadDisqusBtn, 'btn btn-lg btn-outline-primary')}
+            className={classnames(styles.loadDisqusBtn, ' ')}
           >
             <MessageSquare />
             Load Disqus Comments
-          </button>
+          </Button>
         </div>
       );
     }

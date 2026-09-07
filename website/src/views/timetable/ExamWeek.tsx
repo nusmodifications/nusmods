@@ -1,3 +1,4 @@
+import { Badge } from 'components/ui/badge';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { range } from 'lodash-es';
@@ -61,7 +62,7 @@ const ExamWeekComponent: React.FC<Props> = (props) => {
         return (
           <th className={styles.dayDate} key={examDateString}>
             <time dateTime={date.toDateString()}>{examDateString}</time>
-            {isSameDay(currentTime, date) && <span className={styles.todayBadge}>Today</span>}
+            {isSameDay(currentTime, date) && <Badge className={styles.todayBadge}>Today</Badge>}
           </th>
         );
       })}

@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -20,16 +21,19 @@ const ModuleFinderPagerButton: React.FC<Props> = ({
   children,
 }) => {
   const button = (
-    <button
+    <Button
       type="button"
-      className={classnames('btn', styles.pagerButton, {
+      variant={active ? 'default' : 'ghost'}
+      size="sm"
+      aria-current={active ? 'page' : undefined}
+      className={classnames(styles.pagerButton, {
         [styles.active]: active,
       })}
       disabled={disabled}
       onClick={onClick}
     >
       {children}
-    </button>
+    </Button>
   );
   return (
     <li>

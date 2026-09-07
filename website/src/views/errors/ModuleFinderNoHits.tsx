@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import Omelette, { matchEgg } from 'views/components/Omelette';
 import Warning from './Warning';
@@ -33,14 +34,14 @@ const ModuleFinderNoHits: React.FC<NoHitsDisplayProps> = ({
 
     <div className={styles.buttons}>
       {!!suggestion && (
-        <button type="button" className="btn btn-outline-primary" onClick={setSuggestionFn}>
+        <Button variant="outline" type="button" onClick={setSuggestionFn}>
           {translate('NoHits.DidYouMean', { suggestion })}
-        </button>
+        </Button>
       )}
       {filtersCount > 0 && (
-        <button type="button" className="btn btn-outline-primary" onClick={resetFiltersFn}>
+        <Button variant="outline" type="button" onClick={resetFiltersFn}>
           {translate('NoHits.SearchWithoutFilters', { query })}
-        </button>
+        </Button>
       )}
     </div>
   </>

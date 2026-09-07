@@ -1,4 +1,5 @@
 import { shallow } from 'enzyme';
+import { Button } from 'components/ui/button';
 
 import SemesterSwitcher from './SemesterSwitcher';
 
@@ -7,7 +8,7 @@ describe('<SemesterSwitcher />', () => {
   test('simulates click events', () => {
     const onButtonClick = jest.fn();
     const wrapper = shallow(<SemesterSwitcher semester={2} onSelectSemester={onButtonClick} />);
-    const buttons = wrapper.find('button');
+    const buttons = wrapper.find(Button);
     buttons.at(0).simulate('click');
     expect(onButtonClick).toBeCalledWith(1);
     buttons.at(1).simulate('click');
@@ -18,7 +19,7 @@ describe('<SemesterSwitcher />', () => {
     test('left button', () => {
       const onButtonClick = jest.fn();
       const wrapper = shallow(<SemesterSwitcher semester={1} onSelectSemester={onButtonClick} />);
-      const buttons = wrapper.find('button');
+      const buttons = wrapper.find(Button);
       buttons.at(0).simulate('click');
       expect(onButtonClick).not.toBeCalled();
       buttons.at(1).simulate('click');
@@ -28,7 +29,7 @@ describe('<SemesterSwitcher />', () => {
     test('right button', () => {
       const onButtonClick = jest.fn();
       const wrapper = shallow(<SemesterSwitcher semester={4} onSelectSemester={onButtonClick} />);
-      const buttons = wrapper.find('button');
+      const buttons = wrapper.find(Button);
       buttons.at(1).simulate('click');
       expect(onButtonClick).not.toBeCalled();
       buttons.at(0).simulate('click');

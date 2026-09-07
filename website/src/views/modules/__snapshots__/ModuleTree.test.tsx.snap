@@ -269,7 +269,8 @@ exports[`ModuleTreeComponent > should grey out modules that are not in module ba
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
@@ -395,7 +396,8 @@ exports[`ModuleTreeComponent > should render a bare cohort eligibility constrain
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
@@ -529,7 +531,8 @@ exports[`ModuleTreeComponent > should render a cohort-gated prereq tree > NGT200
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
@@ -843,7 +846,8 @@ exports[`ModuleTreeComponent > should render a prereq tree with multiple cohort 
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
@@ -963,7 +967,8 @@ exports[`ModuleTreeComponent > should render a program-type-gated prereq tree > 
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
@@ -1233,7 +1238,8 @@ exports[`ModuleTreeComponent > should render prereq branch with nOf condition > 
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
@@ -1645,7 +1651,8 @@ exports[`ModuleTreeComponent > should render prereq tree of module > CS3244 1`] 
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
@@ -1737,7 +1744,8 @@ exports[`ModuleTreeComponent > should render prereq tree to the right when tree 
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a
@@ -2005,7 +2013,8 @@ exports[`ModuleTreeComponent > should render requirements fulfilled tree of modu
     </ul>
   </div>,
   <p
-    class="alert alert-warning"
+    class="ui-alert ui-alert-warning alert alert-warning"
+    role="alert"
   >
     This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
     <a

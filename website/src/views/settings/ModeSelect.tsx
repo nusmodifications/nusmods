@@ -1,5 +1,5 @@
+import { ToggleGroup, ToggleGroupItem } from 'components/ui/toggle-group';
 import * as React from 'react';
-import classnames from 'classnames';
 import {
   ColorSchemePreference,
   SYSTEM_COLOR_SCHEME_PREFERENCE,
@@ -30,21 +30,20 @@ const MODES: ModeOption[] = [
 ];
 
 const ModeSelect: React.FC<Props> = ({ colorScheme, onSelectColorScheme }) => (
-  <div className="btn-group" role="group">
+  <ToggleGroup
+    type="single"
+    value={colorScheme}
+    onValueChange={(value) => {
+      if (value) onSelectColorScheme(value as ColorSchemePreference);
+    }}
+    aria-label="Night Mode"
+  >
     {MODES.map(({ value, label }) => (
-      <button
-        type="button"
-        key={value}
-        className={classnames('btn', {
-          'btn-primary': colorScheme === value,
-          'btn-outline-primary': colorScheme !== value,
-        })}
-        onClick={() => onSelectColorScheme(value)}
-      >
+      <ToggleGroupItem value={value} key={value}>
         {label}
-      </button>
+      </ToggleGroupItem>
     ))}
-  </div>
+  </ToggleGroup>
 );
 
 export default ModeSelect;

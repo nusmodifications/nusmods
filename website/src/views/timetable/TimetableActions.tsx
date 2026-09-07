@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -41,36 +42,35 @@ const TimetableActions: React.FC<Props> = (props) => (
     aria-label="Timetable utilities"
   >
     <div className={styles.buttonGroup} role="group" aria-label="Timetable manipulation">
-      <button
+      <Button
+        variant="outline"
         type="button"
-        className={classnames('btn btn-outline-primary btn-svg')}
+        className={classnames('btn-svg')}
         onClick={props.toggleTimetableOrientation}
         disabled={props.showExamCalendar}
       >
         <Sidebar className={styles.sidebarIcon} />
         {props.isVerticalOrientation ? 'Horizontal Mode' : 'Vertical Mode'}
-      </button>
+      </Button>
 
       {!props.isVerticalOrientation && (
-        <button
+        <Button
+          variant="outline"
           type="button"
-          className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
+          className={classnames(styles.titleBtn, 'btn-svg')}
           onClick={props.toggleTitleDisplay}
           disabled={props.showExamCalendar}
         >
           <Type className={styles.titleIcon} />
           {props.showTitle ? 'Hide Titles' : 'Show Titles'}
-        </button>
+        </Button>
       )}
 
       {config.examAvailabilitySet.has(props.semester) && (
-        <button
+        <Button
+          variant="outline"
           type="button"
-          className={classnames(
-            styles.calendarBtn,
-            elements.examCalendarBtn,
-            'btn-outline-primary btn btn-svg',
-          )}
+          className={classnames(styles.calendarBtn, elements.examCalendarBtn, 'btn-svg')}
           onClick={props.toggleExamCalendar}
         >
           {props.showExamCalendar ? (
@@ -82,7 +82,7 @@ const TimetableActions: React.FC<Props> = (props) => (
               <Calendar className="svg svg-small" /> Exam Calendar
             </>
           )}
-        </button>
+        </Button>
       )}
     </div>
 

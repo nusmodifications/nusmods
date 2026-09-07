@@ -1,3 +1,5 @@
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
 import type { Mocked } from 'vitest';
 import axios, { AxiosResponse } from 'axios';
 import { shallow, ShallowWrapper } from 'enzyme';
@@ -35,11 +37,11 @@ describe('ShareTimetable', () => {
     },
   };
 
-  const openModal = (wrapper: ShallowWrapper) => wrapper.find('button').first().simulate('click');
+  const openModal = (wrapper: ShallowWrapper) => wrapper.find(Button).first().simulate('click');
   const closeModal = (wrapper: ShallowWrapper) =>
     wrapper.find(Modal).first().props().onRequestClose!({} as any);
   const shorten = (wrapper: ShallowWrapper) =>
-    wrapper.find('button[aria-label="Shorten URL"]').simulate('click');
+    wrapper.find(Button).filter('[aria-label="Shorten URL"]').simulate('click');
   const shortenAndWait = async (wrapper: ShallowWrapper) => {
     shorten(wrapper);
     await waitFor(() => {
@@ -114,7 +116,7 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
     await shortenAndWait(wrapper);
 
-    expect(wrapper.find('input').prop('value')).toEqual(MOCK_SHORTURL);
+    expect(wrapper.find(Input).prop('value')).toEqual(MOCK_SHORTURL);
     expect(wrapper.find(Maximize2).exists()).toBe(true);
   });
 
@@ -127,8 +129,8 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
     await shortenAndWait(wrapper);
 
-    expect(wrapper.find('button').at(1).prop('disabled')).toBe(true);
-    expect(wrapper.find('input').prop('value')).toBeTruthy();
+    expect(wrapper.find(Button).at(1).prop('disabled')).toBe(true);
+    expect(wrapper.find(Input).prop('value')).toBeTruthy();
   });
 
   test('should display long URL if the endpoint returns an error', async () => {
@@ -140,8 +142,8 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
     await shortenAndWait(wrapper);
 
-    expect(wrapper.find('button').at(1).prop('disabled')).toBe(true);
-    expect(wrapper.find('input').prop('value')).toBeTruthy();
+    expect(wrapper.find(Button).at(1).prop('disabled')).toBe(true);
+    expect(wrapper.find(Input).prop('value')).toBeTruthy();
   });
 
   test('should not include hidden key in long URL if there are no hidden modules', async () => {
@@ -153,7 +155,7 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
     await shortenAndWait(wrapper);
 
-    expect(wrapper.find('input').prop('value')).not.toContain('hidden');
+    expect(wrapper.find(Input).prop('value')).not.toContain('hidden');
   });
 
   test('should include hidden key in long URL if there are hidden modules', async () => {
@@ -170,7 +172,7 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
     await shortenAndWait(wrapper);
 
-    expect(wrapper.find('input').prop('value')).toContain('hidden=CS1010S,CS1231S');
+    expect(wrapper.find(Input).prop('value')).toContain('hidden=CS1010S,CS1231S');
   });
 
   test('should not include TA key in long URL if there are no TA modules', async () => {
@@ -182,7 +184,7 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
     await shortenAndWait(wrapper);
 
-    expect(wrapper.find('input').prop('value')).not.toContain('ta=CS1010S');
+    expect(wrapper.find(Input).prop('value')).not.toContain('ta=CS1010S');
   });
 
   test('should include TA key in long URL if there are TA modules', async () => {
@@ -199,7 +201,7 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
     await shortenAndWait(wrapper);
 
-    expect(wrapper.find('input').prop('value')).toContain('ta=CS1010S');
+    expect(wrapper.find(Input).prop('value')).toContain('ta=CS1010S');
   });
 
   test('should change to original url and display shorten url button when clicked on show original url button', async () => {
@@ -209,12 +211,12 @@ describe('ShareTimetable', () => {
 
     openModal(wrapper);
     await shortenAndWait(wrapper);
-    expect(wrapper.find('input').prop('value')).toEqual(MOCK_SHORTURL);
+    expect(wrapper.find(Input).prop('value')).toEqual(MOCK_SHORTURL);
     expect(wrapper.find(Maximize2).exists()).toBe(true);
 
     await shortenAndWait(wrapper);
     expect(wrapper.find(Maximize2).exists()).toBe(false);
     expect(wrapper.find(Minimize2).exists()).toBe(true);
-    expect(wrapper.find('input').prop('value')).not.toBe(MOCK_SHORTURL);
+    expect(wrapper.find(Input).prop('value')).not.toBe(MOCK_SHORTURL);
   });
 });

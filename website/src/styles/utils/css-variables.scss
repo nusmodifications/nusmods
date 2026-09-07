@@ -1,78 +1,144 @@
-// Based on the original Bootstrap colors for alerts
-@mixin alert-variables($name) {
-  --alert-#{$name}-color: #{theme-color-level($name, 6)};
-  --alert-#{$name}-background: #{theme-color-level($name, -10)};
-  --alert-#{$name}-border: #{theme-color-level($name, -7)};
+// The single source of truth for the website palette. Components consume semantic
+// shadcn tokens; aliases keep domain-specific calendars and maps on the same theme.
+@mixin light-palette {
+  --background: #f8f9fb;
+  --foreground: #252830;
+  --card: #fff;
+  --card-foreground: #252830;
+  --popover: #fff;
+  --popover-foreground: #252830;
+  --primary: #df432f;
+  --primary-hover: #c73525;
+  --primary-foreground: #fff;
+  --secondary: #edf0f4;
+  --secondary-foreground: #3b4251;
+  --muted: #f0f2f6;
+  --muted-foreground: #667085;
+  --accent: #fff0ec;
+  --accent-foreground: #c73625;
+  --success: #238255;
+  --success-foreground: #166343;
+  --success-muted: #ecf8f1;
+  --warning: #aa721e;
+  --warning-foreground: #835519;
+  --warning-muted: #fff7e7;
+  --destructive: #c72f3d;
+  --destructive-foreground: #fff;
+  --border: #e2e6ed;
+  --input: #d5dae3;
+  --ring: #ef705d;
+  --sidebar: #fff;
+  --shadow: 0 2px 8px rgb(28 36 52 / 4%);
+  --shadow-popover: 0 12px 36px rgb(28 36 52 / 12%);
+  --navtab-shadow: rgb(28 36 52 / 6%);
+  --body-bg-40: rgb(248 249 251 / 40%);
+  --body-bg-70: rgb(248 249 251 / 70%);
+  --body-bg-transparent: rgb(248 249 251 / 0%);
+  --gray-mid: #7b8190;
+  --gray-light: #929aab;
+  --alert-success-color: #166343;
+  --alert-success-background: #ecf8f1;
+  --alert-success-border: #bce3ce;
+  --alert-info-color: #235a84;
+  --alert-info-background: #edf5fc;
+  --alert-info-border: #c7ddf0;
+  --alert-warning-color: #835519;
+  --alert-warning-background: #fff7e7;
+  --alert-warning-border: #edd7ac;
+  --alert-danger-color: #a52a37;
+  --alert-danger-background: #fdf0f1;
+  --alert-danger-border: #efc8ce;
+
+  color-scheme: light;
 }
 
-@mixin alert-variables-dark($name) {
-  --alert-#{$name}-color: #{theme-color-level($name, -6)};
-  --alert-#{$name}-background: #{theme-color-level($name, 9)};
-  --alert-#{$name}-border: #{theme-color-level($name, 6)};
+@mixin dark-palette {
+  --background: #17191e;
+  --foreground: #e8eaf0;
+  --card: #202329;
+  --card-foreground: #e8eaf0;
+  --popover: #262930;
+  --popover-foreground: #e8eaf0;
+  --primary: #fa806d;
+  --primary-hover: #ff9c8d;
+  --primary-foreground: #251713;
+  --secondary: #2d313a;
+  --secondary-foreground: #e0e3ea;
+  --muted: #252830;
+  --muted-foreground: #a0a8b9;
+  --accent: #3d2a28;
+  --accent-foreground: #ff9b8a;
+  --success: #79cda0;
+  --success-foreground: #93d8b1;
+  --success-muted: #20372d;
+  --warning: #e5be7a;
+  --warning-foreground: #e5c18a;
+  --warning-muted: #393024;
+  --destructive: #ff7e8a;
+  --destructive-foreground: #31171c;
+  --border: #353944;
+  --input: #454b58;
+  --ring: #fa806d;
+  --sidebar: #1c1f25;
+  --shadow: 0 2px 8px rgb(0 0 0 / 12%);
+  --shadow-popover: 0 12px 36px rgb(0 0 0 / 30%);
+  --navtab-shadow: rgb(0 0 0 / 18%);
+  --body-bg-40: rgb(23 25 30 / 40%);
+  --body-bg-70: rgb(23 25 30 / 70%);
+  --body-bg-transparent: rgb(23 25 30 / 0%);
+  --gray-mid: #959daf;
+  --gray-light: #737d90;
+  --alert-success-color: #93d8b1;
+  --alert-success-background: #20372d;
+  --alert-success-border: #365746;
+  --alert-info-color: #a0cbed;
+  --alert-info-background: #22313f;
+  --alert-info-border: #374d62;
+  --alert-warning-color: #e5c18a;
+  --alert-warning-background: #393024;
+  --alert-warning-border: #5c4b32;
+  --alert-danger-color: #f0a2ac;
+  --alert-danger-background: #3d282e;
+  --alert-danger-border: #664049;
+
+  color-scheme: dark;
 }
 
-// Root and dark mode CSS variable declaration
+@mixin legacy-aliases {
+  --body-bg: var(--background);
+  --body-color: var(--foreground);
+  --gray: var(--muted-foreground);
+  --gray-lighter: var(--border);
+  --gray-lightest: var(--muted);
+  --gray-dark: var(--foreground);
+}
+
 :root {
-  // Body background
-  --body-bg: #{$body-bg};
-  --body-bg-40: #{rgba($body-bg, 0.4)};
-  --body-bg-70: #{rgba($body-bg, 0.7)};
-  --body-bg-transparent: #{rgba($body-bg, 0)};
+  --radius: 0.625rem;
+  --font-sans:
+    'Inter Variable', 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', sans-serif;
+  @include light-palette;
+  @include legacy-aliases;
 
-  // Shadows
-  --navtab-shadow: #{rgba(#000, 0.1)};
-
-  // Body font color
-  --body-color: #{$body-color};
-
-  // Shade of grays
-  --gray: #{$gray};
-  --gray-mid: #{$gray-mid};
-  --gray-light: #{$gray-light};
-  --gray-lighter: #{$gray-lighter};
-  --gray-lightest: #{$gray-lightest};
-  --gray-dark: #{$gray-dark};
-
-  // Alert colors
-  @each $color in $alert-override-themes {
-    @include alert-variables($color);
-  }
-
-  // Workload colors
   @each $name, $color in $workload-colors {
     --workload-#{$name}-bg: #{$color};
     --workload-#{$name}-color: #{darken($color, 50)};
   }
 }
 
+:root.dark,
 body.mode-dark {
-  --body-bg: #{$gray-dark};
-  --body-bg-40: #{rgba($gray-dark, 0.4)};
-  --body-bg-70: #{rgba($gray-dark, 0.7)};
-  --body-bg-transparent: #{rgba($gray-dark, 0)};
+  @include dark-palette;
+  @include legacy-aliases;
 
-  // Shadows
-  --navtab-shadow: #{rgba(#000, 0.26)};
-
-  // Body font color
-  --body-color: #aaa;
-
-  // Shade of grays
-  --gray: #aaa;
-  --gray-mid: #7d7d7d;
-  --gray-light: #666;
-  --gray-lighter: #474747;
-  --gray-lightest: #292929;
-  --gray-dark: #{invert($gray-dark)};
-
-  // Alert colors
-  @each $color in $alert-override-themes {
-    @include alert-variables-dark($color);
-  }
-
-  // Workload colors
   @each $name, $color in $workload-colors {
     --workload-#{$name}-bg: #{darken($color, 65)};
     --workload-#{$name}-color: #{darken($color, 30)};
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not(.dark) {
+    @include dark-palette;
   }
 }

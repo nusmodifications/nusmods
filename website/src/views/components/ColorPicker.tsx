@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { memo } from 'react';
 import classnames from 'classnames';
 import Downshift, { ChildrenFunction } from 'downshift';
@@ -38,13 +39,14 @@ const ColorPicker = memo<Props>((props) => {
           [styles.ta]: isTa,
         })}
       >
-        <button
+        <Button
+          variant="ghost"
           type="button"
           {...getToggleButtonProps({
             title: label,
           })}
           className={classnames(
-            'btn btn-block hoverable',
+            'btn-block hoverable',
             color === TRANSPARENT_COLOR_INDEX ? styles.transparentColor : `color-${color}`,
             styles.moduleColor,
             {
@@ -58,10 +60,12 @@ const ColorPicker = memo<Props>((props) => {
           {...getMenuProps()}
         >
           {range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
-            <button
+            <Button
+              variant="ghost"
               type="button"
               {...getItemProps({ item: index === color ? TRANSPARENT_COLOR_INDEX : index })}
               key={index}
+              aria-label={`${label}: ${index + 1}`}
               className={classnames(styles.option, `color-${index}`, {
                 [styles.selected]: index === color,
               })}
@@ -69,7 +73,7 @@ const ColorPicker = memo<Props>((props) => {
               {index === color && (
                 <TransparentIcon className={styles.transparentIcon} fill="currentColor" />
               )}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

@@ -24,7 +24,7 @@
   }
 
   .actions {
-    :global(.btn) {
+    :global(.ui-button) {
       margin-left: 0.5rem;
     }
   }
@@ -41,7 +41,7 @@
       margin-top: 1rem;
       text-align: left;
 
-      :global(.btn) {
+      :global(.ui-button) {
         margin-right: 0.5rem;
         margin-left: 0;
       }

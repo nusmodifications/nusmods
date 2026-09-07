@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { memo, Fragment, FC } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -84,14 +85,16 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
                 <h4>{config.semesterNames[semester]}</h4>
                 <div className={styles.reviewWrapper}>
                   {moduleCondensed.map(({ moduleCode, title }) => (
-                    <Link
-                      key={moduleCode}
-                      className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
-                      to={`${modulePage(moduleCode, title)}#reviews`}
-                      target="_blank"
-                    >
-                      Review <span className={styles.reviewModuleCode}>{moduleCode}</span> {title}
-                    </Link>
+                    <Button asChild variant="outline">
+                      <Link
+                        key={moduleCode}
+                        className={classnames(styles.reviewButton, ' ')}
+                        to={`${modulePage(moduleCode, title)}#reviews`}
+                        target="_blank"
+                      >
+                        Review <span className={styles.reviewModuleCode}>{moduleCode}</span> {title}
+                      </Link>
+                    </Button>
                   ))}
                 </div>
               </Fragment>
@@ -138,13 +141,9 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
             <>
               <p>You are already in the beta program.</p>
               <p className="text-center">
-                <button
-                  type="button"
-                  className="btn btn-lg btn-outline-primary"
-                  onClick={props.toggleFeedback}
-                >
+                <Button variant="outline" size="lg" type="button" onClick={props.toggleFeedback}>
                   Give Feedback
-                </button>
+                </Button>
               </p>
               <p>
                 Go to <Link to="/settings#beta">settings</Link> if you wish to stop using NUSMods
@@ -153,14 +152,16 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
             </>
           ) : (
             <p className="text-center">
-              <button
+              <Button
+                variant="outline"
+                size="lg"
                 type="button"
-                className={classnames(styles.betaButton, 'btn btn-lg btn-outline-primary')}
+                className={classnames(styles.betaButton, ' ')}
                 onClick={props.toggleBetaTesting}
               >
                 <Zap />
                 Join NUSMods Beta
-              </button>
+              </Button>
             </p>
           )}
         </section>
@@ -206,13 +207,15 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
         </p>
 
         <p className="text-center">
-          <ExternalLink
-            href="https://opencollective.com/nusmods"
-            className={classnames(styles.donateButton, 'btn btn-lg btn-outline-primary')}
-          >
-            <DollarSign />
-            Donate to NUSMods
-          </ExternalLink>
+          <Button asChild variant="outline" size="lg">
+            <ExternalLink
+              href="https://opencollective.com/nusmods"
+              className={classnames(styles.donateButton, ' ')}
+            >
+              <DollarSign />
+              Donate to NUSMods
+            </ExternalLink>
+          </Button>
         </p>
       </section>
 
@@ -232,20 +235,18 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
         </p>
 
         <div className={styles.githubLinks}>
-          <ExternalLink
-            className="btn btn-outline-primary"
-            href="https://github.com/nusmodifications/nusmods/issues/new?template=Bug_report.md"
-          >
-            <h4>Bug Report</h4>
-            <p>Create a report to help reproduce and fix the issue</p>
-          </ExternalLink>
-          <ExternalLink
-            className="btn btn-outline-primary"
-            href="https://github.com/nusmodifications/nusmods/issues/new?template=Feature_request.md"
-          >
-            <h4>Feature Request</h4>
-            <p>Suggest a new feature or enhancement for the project</p>
-          </ExternalLink>
+          <Button asChild variant="outline">
+            <ExternalLink href="https://github.com/nusmodifications/nusmods/issues/new?template=Bug_report.md">
+              <h4>Bug Report</h4>
+              <p>Create a report to help reproduce and fix the issue</p>
+            </ExternalLink>
+          </Button>
+          <Button asChild variant="outline">
+            <ExternalLink href="https://github.com/nusmodifications/nusmods/issues/new?template=Feature_request.md">
+              <h4>Feature Request</h4>
+              <p>Suggest a new feature or enhancement for the project</p>
+            </ExternalLink>
+          </Button>
         </div>
       </section>
 
@@ -264,38 +265,36 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
         </p>
 
         <div className={styles.contributeLinks}>
-          <ExternalLink
-            className="btn btn-outline-primary"
-            href="https://github.com/nusmodifications/nusmods/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22+-label%3ATaken"
-          >
-            <h4>Good First Issues</h4>
-            <p>Issues with limited scope good for first time contributors</p>
-          </ExternalLink>
-          <ExternalLink
-            className="btn btn-outline-primary"
-            href="https://github.com/nusmodifications/nusmods/blob/master/CONTRIBUTING.md"
-          >
-            <h4>Contribution Guide</h4>
-            <p>Information for first time contributors</p>
-          </ExternalLink>
-          <ExternalLink className="btn btn-outline-primary" href="https://t.me/NUSMods">
-            <h4>Telegram Chat</h4>
-            <p>Talk to us about NUSMods design and development</p>
-          </ExternalLink>
-          <ExternalLink
-            className="btn btn-outline-primary"
-            href="https://groups.google.com/forum/#!forum/nusmods"
-          >
-            <h4>Mailing List</h4>
-            <p>Subscribe to news and updates</p>
-          </ExternalLink>
-          <ExternalLink
-            className="btn btn-outline-primary"
-            href="https://github.com/nusmodifications/nusmods/blob/master/CONTRIBUTING.md#other-open-source-projects"
-          >
-            <h4>Other Open Source Projects</h4>
-            <p>Contribute to other open source projects</p>
-          </ExternalLink>
+          <Button asChild variant="outline">
+            <ExternalLink href="https://github.com/nusmodifications/nusmods/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22+-label%3ATaken">
+              <h4>Good First Issues</h4>
+              <p>Issues with limited scope good for first time contributors</p>
+            </ExternalLink>
+          </Button>
+          <Button asChild variant="outline">
+            <ExternalLink href="https://github.com/nusmodifications/nusmods/blob/master/CONTRIBUTING.md">
+              <h4>Contribution Guide</h4>
+              <p>Information for first time contributors</p>
+            </ExternalLink>
+          </Button>
+          <Button asChild variant="outline">
+            <ExternalLink href="https://t.me/NUSMods">
+              <h4>Telegram Chat</h4>
+              <p>Talk to us about NUSMods design and development</p>
+            </ExternalLink>
+          </Button>
+          <Button asChild variant="outline">
+            <ExternalLink href="https://groups.google.com/forum/#!forum/nusmods">
+              <h4>Mailing List</h4>
+              <p>Subscribe to news and updates</p>
+            </ExternalLink>
+          </Button>
+          <Button asChild variant="outline">
+            <ExternalLink href="https://github.com/nusmodifications/nusmods/blob/master/CONTRIBUTING.md#other-open-source-projects">
+              <h4>Other Open Source Projects</h4>
+              <p>Contribute to other open source projects</p>
+            </ExternalLink>
+          </Button>
         </div>
 
         <p>
@@ -307,9 +306,9 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
         <ContributorList size={12} />
 
         <p className="text-right">
-          <Link to="/contributors" className="btn btn-outline-primary">
-            View all contributors →
-          </Link>
+          <Button asChild variant="outline">
+            <Link to="/contributors">View all contributors →</Link>
+          </Button>
         </p>
       </section>
 

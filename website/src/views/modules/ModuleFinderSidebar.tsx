@@ -1,3 +1,5 @@
+import { Button } from 'components/ui/button';
+import { Card } from 'components/ui/card';
 import * as React from 'react';
 import { memo, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -100,7 +102,7 @@ const ModuleFinderSidebar: React.FC = () => {
       toggleMenu={() => setMenuOpen(!isMenuOpen)}
       openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}
     >
-      <div className={styles.moduleFilters}>
+      <Card className={styles.moduleFilters}>
         <header className={styles.filterHeader}>
           <h3>Refine by</h3>
           <ResetFilters
@@ -108,13 +110,9 @@ const ModuleFinderSidebar: React.FC = () => {
             options={RESET_FILTER_OPTIONS}
             component={({ hasFilters, resetFilters }: ResetFiltersDisplayProps) =>
               hasFilters && (
-                <button
-                  className="btn btn-link btn-sm"
-                  type="button"
-                  onClick={() => resetFilters()}
-                >
+                <Button variant="link" size="sm" type="button" onClick={() => resetFilters()}>
                   Clear Filters
-                </button>
+                </Button>
               )
             }
           />
@@ -222,7 +220,7 @@ const ModuleFinderSidebar: React.FC = () => {
         />
 
         <RandomPicker buttonComponent={ModuleRandomButton} />
-      </div>
+      </Card>
     </SideMenu>
   );
 };

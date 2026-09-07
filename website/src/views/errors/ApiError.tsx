@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -64,9 +65,9 @@ export default class ApiError extends React.PureComponent<Props> {
 
           {retry && (
             <div>
-              <button type="button" className="btn btn-primary btn-lg" onClick={retry}>
+              <Button variant="default" size="lg" type="button" onClick={retry}>
                 Click to try again
-              </button>
+              </Button>
             </div>
           )}
         </div>

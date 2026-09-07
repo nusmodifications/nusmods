@@ -1,3 +1,9 @@
+import { Alert } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
+import { NativeSelect } from 'components/ui/native-select';
+import { Textarea } from 'components/ui/textarea';
+import { Label } from 'components/ui/label';
 import { FC, FormEventHandler, memo, useCallback, useState } from 'react';
 import { castArray, groupBy } from 'lodash-es';
 import classnames from 'classnames';
@@ -178,18 +184,17 @@ const ReportError = memo<Props>(({ module }) => {
 
   return (
     <>
-      <button
+      <Button
         type="button"
-        className={classnames(
-          'btn',
-          styles.button,
-          enhanceReportVisibility ? ['btn-primary btn-block', styles.enhanceButton] : 'btn-link',
-        )}
+        variant={enhanceReportVisibility ? 'default' : 'link'}
+        className={classnames(styles.button, {
+          [styles.enhanceButton]: enhanceReportVisibility,
+        })}
         onClick={() => setIsOpen(!isOpen)}
       >
         <AlertTriangle className={styles.icon} />
         Report errors
-      </button>
+      </Button>
       {enhanceReportVisibility && (
         <p className={styles.infoText}>
           For clarifications on how we handle issues, read our <a href="/faq">FAQ</a>.
@@ -216,23 +221,29 @@ const ReportError = memo<Props>(({ module }) => {
         </p>
 
         {debug && (
-          <div className="alert alert-warning">
-            <strong>Debug mode</strong> - this form will email modules@nusmods.com instead
-          </div>
+          <Alert asChild variant="warning">
+            <div className="alert alert-warning">
+              <strong>Debug mode</strong> - this form will email modules@nusmods.com instead
+            </div>
+          </Alert>
         )}
 
         {formState.type === 'error' && (
-          <div className="alert alert-danger" role="alert">
-            There was an error submitting the form. Please try again later or send the email
-            yourself.
-          </div>
+          <Alert asChild variant="destructive">
+            <div className="alert alert-danger" role="alert">
+              There was an error submitting the form. Please try again later or send the email
+              yourself.
+            </div>
+          </Alert>
         )}
 
         {formState.type === 'submitted' ? (
-          <div className="alert alert-success">
-            Thank you for reporting the error. A copy of the email that was sent to the faculty has
-            also been cc'd to you.
-          </div>
+          <Alert asChild variant="success">
+            <div className="alert alert-success">
+              Thank you for reporting the error. A copy of the email that was sent to the faculty
+              has also been cc'd to you.
+            </div>
+          </Alert>
         ) : (
           <FormContent
             formData={formData}
@@ -272,9 +283,8 @@ const FormContent: FC<FormContentProps> = ({
       }}
     >
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-name">Your full name</label>
-        <input
-          className="form-control"
+        <Label htmlFor="report-error-name">Your full name</Label>
+        <Input
           id="report-error-name"
           value={formData.name}
           onChange={updateFormValue('name')}
@@ -283,10 +293,9 @@ const FormContent: FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-matric-number">Your matriculation number</label>
-        <input
+        <Label htmlFor="report-error-matric-number">Your matriculation number</Label>
+        <Input
           id="report-error-matric-number"
-          className="form-control"
           value={formData.matricNumber}
           onChange={updateFormValue('matricNumber')}
           placeholder="A1234567B"
@@ -298,9 +307,8 @@ const FormContent: FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-faculty">Department/faculty offering the course</label>
-        <select
-          className="form-control"
+        <Label htmlFor="report-error-faculty">Department/faculty offering the course</Label>
+        <NativeSelect
           id="report-error-faculty"
           value={formData.contactId}
           onChange={updateFormValue('contactId')}
@@ -312,7 +320,7 @@ const FormContent: FC<FormContentProps> = ({
               {config.label}
             </option>
           ))}
-        </select>
+        </NativeSelect>
 
         {selectedContact && (
           <p className="form-text text-muted">
@@ -335,11 +343,10 @@ const FormContent: FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-email">Your school email</label>
-        <input
+        <Label htmlFor="report-error-email">Your school email</Label>
+        <Input
           type="email"
           id="report-error-email"
-          className="form-control"
           pattern=".+@.+nus.+"
           value={formData.replyTo}
           placeholder="e0012345@u.nus.edu"
@@ -349,10 +356,9 @@ const FormContent: FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-message">Describe in detail the issues with the course</label>
-        <textarea
+        <Label htmlFor="report-error-message">Describe in detail the issues with the course</Label>
+        <Textarea
           id="report-error-message"
-          className="form-control"
           value={formData.message}
           onChange={updateFormValue('message')}
           rows={8}
@@ -361,9 +367,9 @@ const FormContent: FC<FormContentProps> = ({
       </div>
 
       <footer className={classnames(styles.footer, 'col-sm-12')}>
-        <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
+        <Button type="submit" size="lg" disabled={isSubmitting}>
           {isSubmitting && <LoadingSpinner small white />} Submit
-        </button>
+        </Button>
       </footer>
     </form>
   );

@@ -8,28 +8,15 @@
     margin-bottom: 1rem;
   }
 
-  :global(.btn-group) {
-    // Make the btn-group children fill up all available space
+  :global(.ui-toggle-group) {
     display: flex;
     margin-bottom: 1rem;
 
-    :global(.btn) {
+    :global(.ui-toggle-group-item) {
       flex: 1 auto;
-      padding: 0.4rem 0 0.3rem;
-      margin-right: 3px;
-      border-width: 0 0 0.1rem;
-      border-radius: 0;
+      min-width: 0;
+      padding: 0.35rem 0.25rem;
       font-size: $font-size-xs;
-
-      &:last-child {
-        margin-right: 0;
-      }
-
-      &:disabled {
-        border-color: var(--gray-light);
-        color: var(--gray);
-        cursor: not-allowed;
-      }
     }
   }
 

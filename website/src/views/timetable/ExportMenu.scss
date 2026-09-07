@@ -47,14 +47,14 @@
     width: $size;
     height: $size;
     margin-right: 1.2rem;
-    color: theme-color(warning);
+    color: var(--warning);
   }
 }
 
 .modalButtons {
   text-align: right;
 
-  :global(.btn) {
+  :global(.ui-button) {
     margin-right: 0.5rem;
   }
 }

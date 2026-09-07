@@ -1,3 +1,6 @@
+import { Label } from 'components/ui/label';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
 import { useMemo, useRef, useState } from 'react';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import classnames from 'classnames';
@@ -131,9 +134,9 @@ const ModuleForm: React.FC<Props> = ({
     status = (
       <p className={classnames(styles.status, 'text-danger')}>
         Changes could not be saved.{' '}
-        <button
+        <Button
+          variant="default"
           type="button"
-          className="btn btn-primary"
           onClick={() => {
             updateSubmission({
               intendedMCs,
@@ -142,7 +145,7 @@ const ModuleForm: React.FC<Props> = ({
           }}
         >
           Retry Saving Changes
-        </button>
+        </Button>
       </p>
     );
   } else if (isUpdating) {
@@ -153,12 +156,12 @@ const ModuleForm: React.FC<Props> = ({
 
   return (
     <div className={styles.formContainer}>
-      <label className={classnames('row', styles.mcTextField)}>
+      <Label className={classnames('row', styles.mcTextField)}>
         <div className="col-sm-8">
           Intended number of units (does not affect how many courses you can select):
         </div>
         <div className="col-sm-4">
-          <input
+          <Input
             type="number"
             min="0"
             inputMode="numeric"
@@ -173,7 +176,7 @@ const ModuleForm: React.FC<Props> = ({
             onBlur={() => setIntendedMCsInput(intendedMCs.toString())}
           />
         </div>
-      </label>
+      </Label>
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Course</div>

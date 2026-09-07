@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { XSquare } from 'react-feather';
 
@@ -37,10 +38,10 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <button type="button" className="btn btn-outline-primary btn-svg" onClick={this.openModal}>
+        <Button variant="outline" type="button" className="btn-svg" onClick={this.openModal}>
           <XSquare className="svg svg-small" />
           Reset
-        </button>
+        </Button>
 
         <Modal isOpen={isOpen} onRequestClose={this.closeModal} animate>
           <CloseButton absolutePositioned onClick={this.closeModal} />
@@ -54,13 +55,14 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
             </p>
           </div>
 
-          <button
+          <Button
+            variant="default"
             type="button"
-            className="btn btn-primary btn-block"
+            className="btn-block"
             onClick={() => resetTimetable()}
           >
             Reset
-          </button>
+          </Button>
         </Modal>
       </>
     );

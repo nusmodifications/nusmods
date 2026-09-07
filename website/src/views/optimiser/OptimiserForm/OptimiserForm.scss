@@ -4,7 +4,15 @@
 .optimiserForm {
   display: flex;
   flex-direction: column;
+  padding: 1.5rem;
   margin-top: $form-fields-gap;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+
+  @include media-breakpoint-down(xs) {
+    padding: 1rem;
+  }
 }
 
 .priorityNotice {
@@ -16,13 +24,13 @@
   .prioritised {
     opacity: 0.85;
     font-weight: bold;
-    color: #ff5138;
+    color: var(--primary);
   }
 
   .notGuaranteed {
     font-weight: 600;
     text-decoration: underline;
-    text-decoration-color: #ff5138;
+    text-decoration-color: var(--primary);
     text-decoration-thickness: 2px;
     text-underline-offset: 2px;
   }
@@ -39,12 +47,9 @@
 }
 
 .optimiserDropdown {
-  composes: custom-select from global;
-  border: 1px solid var(--gray-lighter);
-  border-radius: 0.25rem;
-  color: inherit;
-
-  @include night-mode {
-    background-color: var(--gray-lightest);
-  }
+  width: auto;
+  min-width: 6rem;
+  border-color: var(--input);
+  color: var(--foreground);
+  background-color: var(--card);
 }

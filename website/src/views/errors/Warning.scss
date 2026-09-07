@@ -5,5 +5,5 @@
 
   width: $size;
   height: $size;
-  color: theme-color();
+  color: var(--primary);
 }

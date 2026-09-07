@@ -24,11 +24,12 @@ $arrow-height: 1.5rem;
   }
 }
 
-:global(.btn).moduleColor {
+:global(.ui-button).moduleColor {
   $button-size: 1.25rem;
 
   width: $button-size;
   height: $button-size;
+  min-height: 0;
   padding: 0;
   border: 0;
 
@@ -84,10 +85,11 @@ $arrow-height: 1.5rem;
 }
 
 .option {
-  composes: btn from global;
   position: relative;
   width: $size;
   height: $size;
+  min-height: 0;
+  padding: 0;
   margin-bottom: $margin-bottom;
 
   // Add a cross mark to indicate the currently selected color
@@ -103,7 +105,7 @@ $arrow-height: 1.5rem;
 }
 
 // Override .btn styles
-:global(.btn).option {
+:global(.ui-button).option {
   border: 0;
   border-radius: 0;
 }

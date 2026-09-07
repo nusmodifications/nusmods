@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import { Button } from 'components/ui/button';
 import { Zap } from 'react-feather';
 import {
   FreeDayConflict,
@@ -35,13 +35,10 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
 
   return (
     <div className={styles.optimizeButtonSection}>
-      <button
+      <Button
+        variant="default"
         type="button"
-        className={classnames(
-          'btn',
-          styles.optimizeButton,
-          isDisabled ? styles.disabled : styles.enabled,
-        )}
+        className={styles.optimizeButton}
         disabled={isDisabled}
         onClick={onClick}
       >
@@ -52,16 +49,11 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
           </span>
         ) : (
           <>
-            <Zap
-              size={20}
-              className={classnames(styles.zapIcon, {
-                [styles.disabled]: isDisabled,
-              })}
-            />
+            <Zap size={20} className={styles.zapIcon} />
             Optimise Timetable
           </>
         )}
-      </button>
+      </Button>
 
       <div className={styles.estimateTime}>
         <div>estimated time:</div>

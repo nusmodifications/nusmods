@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
@@ -213,17 +214,15 @@ export class VenuesContainerComponent extends Component<Props, State> {
           onSearch={this.onSearch}
         />
 
-        <button
-          className={classnames(
-            'btn btn-block btn-svg',
-            styles.availabilityToggle,
-            isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
-          )}
+        <Button
+          variant={isAvailabilityEnabled ? 'default' : 'outline'}
+          aria-pressed={isAvailabilityEnabled}
+          className={styles.availabilityToggle}
           onClick={this.onFindFreeRoomsClicked}
           type="button"
         >
           <Clock className="svg" /> Find free rooms
-        </button>
+        </Button>
 
         {isAvailabilityEnabled && (
           <div className={styles.availabilitySearch}>
@@ -250,13 +249,13 @@ export class VenuesContainerComponent extends Component<Props, State> {
               ? 'There is a venue that is not shown because it is not free'
               : `There are ${unfilteredCount} venues that are not shown because they are not free`}
             <br />
-            <button
+            <Button
               type="button"
-              className="btn btn-link"
+              variant="link"
               onClick={() => this.setState({ isAvailabilityEnabled: false })}
             >
               Show all rooms
-            </button>
+            </Button>
           </p>
         )}
       </>
@@ -346,13 +345,14 @@ export class VenuesContainerComponent extends Component<Props, State> {
               className={styles.venueDetailModal}
               fullscreen
             >
-              <button
+              <Button
                 type="button"
-                className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
+                variant="outline"
+                className={styles.closeButton}
                 onClick={this.onClearVenueSelect}
               >
                 Back to Venues
-              </button>
+              </Button>
               {this.renderSelectedVenue(matchedVenues)}
             </Modal>
           ) : (

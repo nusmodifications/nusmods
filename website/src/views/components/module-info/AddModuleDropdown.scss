@@ -1,17 +1,38 @@
 @import '~styles/utils/modules-entry';
 
 .buttonGroup {
-  :global(.btn) {
+  position: relative;
+  display: inline-flex;
+
+  &.block {
+    display: flex;
+    width: 100%;
+  }
+
+  > button {
+    height: auto;
+    min-height: 3rem;
+  }
+  :global(.ui-button) {
     line-height: 1.2;
   }
 
-  strong {
-    font-size: 1.2em;
+  > button:first-child:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
-  :global(.dropdown-toggle.dropdown-toggle-split) {
+  strong {
+    font-size: 1em;
+  }
+
+  .dropdownTrigger {
+    flex: 0 0 auto;
     width: 2rem;
+    padding: 0;
     border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 
     @include media-breakpoint-down(sm) {
       // Long selector for specificity
@@ -31,4 +52,9 @@
   strong {
     font-size: 1em;
   }
+}
+
+.block {
+  flex: 1;
+  width: 100%;
 }

@@ -1,6 +1,6 @@
 # NUSMods R
 
-NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstrap], and is designed to be **fast, modern and responsive**.
+NUSMods R is built using [React][react], [Redux][redux], and [shadcn/ui](https://ui.shadcn.com) components, with the existing Bootstrap layout utilities, and is designed to be **fast, modern and responsive**.
 
 - Production: https://nusmods.com/
 - Latest build: https://latest.nusmods.com/
@@ -76,11 +76,28 @@ import styles from './MyComponent.scss';
 
 Note that specificity still matters. This is important if you are trying to override Bootstrap styles.
 
-#### SCSS variables vs. CSS custom properties
+#### Components and themes
 
-Both SCSS and CSS variables (aka. custom properties) are used. In most cases, **prefer SCSS variables** as they can be used with SCSS mixins and functions, and integrate with Bootstrap. CSS variable generates more code (since we need to include a fallback for browsers that don't support it), and doesn't play well with SCSS.
+Reusable controls live in `src/components/ui`. They follow shadcn/ui's owned-source
+component patterns, with Radix handling dialogs, menus, selection controls, and
+notifications. Their styles are expressed in `src/styles/components/ui.scss` so
+Webpack, Sass/CSS Modules, PostCSS, and pnpm retain the existing build flow. No
+Tailwind compilation step is required. Import individual primitives directly,
+for example `import { Button } from 'components/ui/button'`, and use `asChild` for
+links styled as actions.
 
-Currently CSS variables are used only for colors that change under night mode.
+`src/styles/utils/css-variables.scss` is the central theme definition. Edit its
+light and dark palettes to change backgrounds, text, accents, borders, focus
+rings, and status colors across the website. Components should consume semantic
+CSS variables such as `var(--card)`, `var(--foreground)`, and `var(--primary)`.
+The older body and gray variables are aliases for domain-specific calendar and
+map styles. `src/styles/design-system.scss` contains shared typography and layout
+rules; Inter is self-hosted from `static/base/fonts` with its license alongside it.
+
+The existing persisted color-scheme setting remains the source of truth. The
+system setting follows the device preference, Settings allows an explicit choice,
+and the header toggle switches directly between light and dark. Timetable course
+color schemes remain separate from the website palette.
 
 ### Importing images
 
@@ -387,9 +404,7 @@ For service-level deployment details outside Vercel, see [../DEPLOYMENT.md](../D
 │       ├── components       - Legacy component styles
 │       │                      (new components should colocate their styles)
 │       ├── layout           - Site-wide layout styles
-│       ├── material         - Material components
 │       ├── pages            - Page specific styles
-│       ├── tippy            - Styles for tippy.js tooltips
 │       └── utils            - Utility classes, mixins, functions
 ├── static                   - Static assets, eg. favicons
 │                              These will be copied directly into /dist

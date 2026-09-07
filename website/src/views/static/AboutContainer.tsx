@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -47,29 +48,31 @@ const AboutContainer: React.FC<Props> = (props) => (
 
     <div className={classnames('row no-gutters', styles.actionContainer)}>
       <div className={classnames('col-lg', styles.btnContainer)}>
-        <button
+        <Button
+          variant="default"
           type="button"
           onClick={props.toggleFeedback}
-          className="btn btn-primary btn-svg btn-block"
+          className=" btn-svg btn-block"
         >
           <Mail className="svg" />
           We need feedback!
-        </button>
+        </Button>
       </div>
       <div className={classnames('col-lg', styles.btnContainer)}>
-        <ExternalLink href={config.contact.telegram} className="btn btn-primary btn-svg btn-block">
-          <Layers className="svg" />
-          We need designers!
-        </ExternalLink>
+        <Button asChild variant="default">
+          <ExternalLink href={config.contact.telegram} className=" btn-svg btn-block">
+            <Layers className="svg" />
+            We need designers!
+          </ExternalLink>
+        </Button>
       </div>
       <div className={classnames('col-lg', styles.btnContainer)}>
-        <ExternalLink
-          href={config.contact.githubRepo}
-          className="btn btn-primary btn-svg btn-block"
-        >
-          <GitHub className="svg" />
-          We need code!
-        </ExternalLink>
+        <Button asChild variant="default">
+          <ExternalLink href={config.contact.githubRepo} className=" btn-svg btn-block">
+            <GitHub className="svg" />
+            We need code!
+          </ExternalLink>
+        </Button>
       </div>
     </div>
 

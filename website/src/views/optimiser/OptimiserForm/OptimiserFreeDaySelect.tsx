@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import classNames from 'classnames';
 import { dropRight } from 'lodash-es';
 import { useCallback } from 'react';
@@ -43,7 +44,8 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
           // TODO: consider using checkbox instead if redesigning
           // https://getbootstrap.com/docs/4.6/components/forms/#custom-forms
           return (
-            <button
+            <Button
+              variant={checked ? 'secondary' : 'outline'}
               type="button"
               role="checkbox"
               aria-checked={checked}
@@ -53,7 +55,7 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
             >
               {checked ? <CheckSquare /> : <Square />}
               {day}
-            </button>
+            </Button>
           );
         })}
       </div>

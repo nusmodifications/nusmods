@@ -37,7 +37,7 @@ exports[`ModuleFinderApiError > should render 1`] = `
       </p>
       <div>
         <button
-          class="btn btn-primary btn-lg"
+          class="ui-button ui-button-default ui-button-size-lg"
           type="button"
         >
           Click to try again
@@ -85,7 +85,7 @@ exports[`ModuleFinderApiError > should render with url 1`] = `
       </p>
       <div>
         <button
-          class="btn btn-primary btn-lg"
+          class="ui-button ui-button-default ui-button-size-lg"
           type="button"
         >
           Click to try again

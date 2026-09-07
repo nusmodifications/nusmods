@@ -4,12 +4,12 @@ exports[`SearchBox > should match snapshot 1`] = `
 <div
   className=""
 >
-  <label
+  <Label
     className="sr-only"
     htmlFor="search-box"
   >
     Search
-  </label>
+  </Label>
   <form
     className="searchWrapper"
     onSubmit={[Function]}
@@ -17,7 +17,7 @@ exports[`SearchBox > should match snapshot 1`] = `
     <Search
       className="leftAccessory searchIcon"
     />
-    <input
+    <Input
       autoComplete="off"
       className="form-control form-control-lg"
       id="search-box"
@@ -37,12 +37,12 @@ exports[`SearchBox > should match snapshot 2`] = `
 <div
   className=""
 >
-  <label
+  <Label
     className="sr-only"
     htmlFor="search-box"
   >
     Search
-  </label>
+  </Label>
   <form
     className="searchWrapper"
     onSubmit={[Function]}
@@ -55,7 +55,7 @@ exports[`SearchBox > should match snapshot 2`] = `
         small={true}
       />
     </div>
-    <input
+    <Input
       autoComplete="off"
       className="form-control form-control-lg"
       id="search-box"
@@ -75,12 +75,12 @@ exports[`SearchBox > should match snapshot 3`] = `
 <div
   className=""
 >
-  <label
+  <Label
     className="sr-only"
     htmlFor="search-box"
   >
     Search
-  </label>
+  </Label>
   <form
     className="searchWrapper"
     onSubmit={[Function]}
@@ -88,12 +88,16 @@ exports[`SearchBox > should match snapshot 3`] = `
     <Search
       className="leftAccessory searchIcon"
     />
-    <X
+    <Button
+      aria-label="Clear search"
       className="removeInput"
       onClick={[Function]}
-      pointerEvents="bounding-box"
-    />
-    <input
+      size="icon"
+      variant="ghost"
+    >
+      <X />
+    </Button>
+    <Input
       autoComplete="off"
       className="form-control form-control-lg"
       id="search-box"

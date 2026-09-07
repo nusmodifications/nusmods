@@ -1,3 +1,6 @@
+import { Input } from 'components/ui/input';
+import { NativeSelect } from 'components/ui/native-select';
+import { Label } from 'components/ui/label';
 import { FC, useRef, useState } from 'react';
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { ListProps } from 'searchkit';
@@ -23,12 +26,12 @@ type DisplayProps = {
 
 // Use a native select for mobile devices
 const MobileFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, placeholder }) => (
-  <select
+  <NativeSelect
     className="form-control"
     onChange={(evt) => {
       onSelectItem(evt.target.value);
       // Reset selection to the first placeholder item so that the last selected item
-      // is not left selected in the <select>
+      // is not left selected in the <NativeSelect>
       evt.target.selectedIndex = 0; // eslint-disable-line no-param-reassign
     }}
   >
@@ -39,7 +42,7 @@ const MobileFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pla
         {selected && '☑'} {key} {showCount && !missing && `(${count})`}
       </option>
     ))}
-  </select>
+  </NativeSelect>
 );
 
 // Use a search-select combo dropdown on desktop
@@ -103,7 +106,7 @@ const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pl
             })}
           >
             <Search className={styles.searchIcon} onClick={focusInput} />
-            <input
+            <Input
               ref={searchInput}
               {...getInputProps({
                 onFocus: () => {
@@ -131,13 +134,13 @@ const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pl
                     }),
                   })}
                 >
-                  <input
+                  <Input
                     id={key}
                     className="form-check-input"
                     type="checkbox"
                     defaultChecked={selected}
                   />
-                  <label htmlFor={key} className={classnames('form-check-label', styles.label)}>
+                  <Label htmlFor={key} className={classnames('form-check-label', styles.label)}>
                     {highlight(key, downshiftInputValue || '')}
                     {showCount && typeof count !== 'undefined' && (
                       <>
@@ -145,7 +148,7 @@ const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pl
                         <span className="text-muted">({count})</span>
                       </>
                     )}
-                  </label>
+                  </Label>
                 </div>
               ))}
             </div>

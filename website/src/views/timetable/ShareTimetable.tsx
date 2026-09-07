@@ -1,3 +1,5 @@
+import { Input } from 'components/ui/input';
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import axios from 'axios';
 import classnames from 'classnames';
@@ -173,34 +175,25 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     return (
       <div>
         <div className={classnames('input-group input-group-lg', styles.linkInputGroup)}>
-          <input
-            value={url}
-            className={classnames('form-control', styles.url)}
-            ref={this.urlInput}
-            readOnly
-          />
+          <Input value={url} className={classnames(styles.url)} ref={this.urlInput} readOnly />
           <Tooltip content={getToolTipContent(shortUrl, isFullUrl, isLoading)} touch="hold">
             <span className="input-group-append">
-              <button
-                className={classnames('btn btn-primary', styles.buttonContainer)}
+              <Button
+                variant="default"
+                className={classnames(styles.buttonContainer)}
                 type="button"
                 aria-label="Shorten URL"
                 onClick={this.toggleShortenUrl}
                 disabled={shortUrl === null || isLoading}
               >
                 {isLoading ? <LoadingSpinner small white /> : toggleUrlButton}
-              </button>
+              </Button>
             </span>
           </Tooltip>
           <div className="input-group-append">
-            <button
-              className="btn btn-primary"
-              type="button"
-              aria-label="Copy URL"
-              onClick={this.copyText}
-            >
+            <Button variant="default" type="button" aria-label="Copy URL" onClick={this.copyText}>
               <Copy />
-            </button>
+            </Button>
           </div>
 
           {this.state.urlCopied === COPY_SUCCESS && (
@@ -221,40 +214,46 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>Via email</h3>
 
-            <a
-              className="btn btn-outline-primary btn-block btn-svg"
-              href={`mailto:?${qs.stringify({
-                subject: 'NUSMods timetable',
-                body:
-                  `My timetable for ${config.academicYear} ${config.semesterNames[semester]}` +
-                  ` can be found at ${url}`,
-              })}`}
-            >
-              <Mail className="svg" /> Send Email
-            </a>
+            <Button asChild variant="outline">
+              <a
+                className=" btn-block btn-svg"
+                href={`mailto:?${qs.stringify({
+                  subject: 'NUSMods timetable',
+                  body:
+                    `My timetable for ${config.academicYear} ${config.semesterNames[semester]}` +
+                    ` can be found at ${url}`,
+                })}`}
+              >
+                <Mail className="svg" /> Send Email
+              </a>
+            </Button>
           </div>
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>Via messaging apps</h3>
 
-            <a
-              className="btn btn-outline-primary btn-block"
-              href={`https://api.whatsapp.com/send?${qs.stringify({
-                text: `My timetable: ${url}`,
-              })}`}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              WhatsApp
-            </a>
+            <Button asChild variant="outline">
+              <a
+                className=" btn-block"
+                href={`https://api.whatsapp.com/send?${qs.stringify({
+                  text: `My timetable: ${url}`,
+                })}`}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                WhatsApp
+              </a>
+            </Button>
 
-            <a
-              className="btn btn-outline-primary btn-block"
-              href={`https://t.me/share/url?${qs.stringify({ url })}`}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Telegram
-            </a>
+            <Button asChild variant="outline">
+              <a
+                className=" btn-block"
+                href={`https://t.me/share/url?${qs.stringify({ url })}`}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Telegram
+              </a>
+            </Button>
           </div>
         </div>
       </div>
@@ -266,16 +265,17 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <button
+        <Button
+          variant="outline"
           type="button"
-          className="btn btn-outline-primary btn-svg"
+          className="btn-svg"
           onClick={this.openModal}
           onMouseOver={this.updateFullUrl}
           onFocus={this.updateFullUrl}
         >
           <Repeat className="svg svg-small" />
           Share/Sync
-        </button>
+        </Button>
 
         <Modal isOpen={isOpen} onRequestClose={this.closeModal} animate>
           <CloseButton absolutePositioned onClick={this.closeModal} />

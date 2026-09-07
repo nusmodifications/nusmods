@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { Shuffle } from 'react-feather';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -21,10 +22,15 @@ const ModuleRandomButton: React.FC<RandomPickerProps> = ({ getRandomModuleCode }
   };
 
   return (
-    <button type="button" className={styles.moduleRandomButton} onClick={handleClick}>
+    <Button
+      variant="secondary"
+      type="button"
+      className={styles.moduleRandomButton}
+      onClick={handleClick}
+    >
       <Shuffle className="svg svg-small" />
       Random Course
-    </button>
+    </Button>
   );
 };
 

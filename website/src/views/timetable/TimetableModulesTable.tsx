@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -69,19 +70,21 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
           <Tooltip content={removeBtnLabel} touch={['hold', 50]}>
-            <button
+            <Button
+              variant="outline"
               type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              className={classnames('btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
               onClick={() => props.onRemoveModule(module.moduleCode)}
             >
               <Trash className={styles.actionIcon} />
-            </button>
+            </Button>
           </Tooltip>
           <Tooltip content={hideBtnLabel} touch={['hold', 50]}>
-            <button
+            <Button
+              variant="outline"
               type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              className={classnames('btn-svg', styles.moduleAction)}
               aria-label={hideBtnLabel}
               onClick={() => {
                 if (module.isHiddenInTimetable) {
@@ -96,12 +99,13 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               ) : (
                 <EyeOff className={styles.actionIcon} />
               )}
-            </button>
+            </Button>
           </Tooltip>
           <Tooltip content={taBtnLabel} touch={['hold', 50]}>
-            <button
+            <Button
+              variant="outline"
               type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              className={classnames('btn-svg', styles.moduleAction)}
               aria-label={taBtnLabel}
               onClick={() => {
                 if (module.isTaInTimetable) {
@@ -116,7 +120,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               ) : (
                 <Book className={styles.actionIcon} />
               )}
-            </button>
+            </Button>
           </Tooltip>
         </div>
       </div>

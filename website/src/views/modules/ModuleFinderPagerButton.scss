@@ -1,17 +1,12 @@
-@import '~styles/utils/modules-entry';
-
 .pagerButton {
-  min-width: 2.3em;
-  border-width: 0;
-  font-weight: bold;
-  color: inherit;
+  min-width: 2.3rem;
 
   &:disabled {
     visibility: hidden;
   }
 
   &.active {
-    color: white;
-    background-color: $primary;
+    color: var(--primary-foreground);
+    background: var(--primary);
   }
 }

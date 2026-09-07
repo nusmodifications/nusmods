@@ -1,3 +1,4 @@
+import { Card } from 'components/ui/card';
 import type { FC, PropsWithChildren } from 'react';
 import classnames from 'classnames';
 
@@ -15,7 +16,9 @@ const StaticPage: FC<PropsWithChildren<Props>> = ({ title, className, children }
     <div className={classnames('page-container', className)}>
       <Title>{title}</Title>
       <div className="row">
-        <div className="col-md-8 offset-md-1">{children}</div>
+        <div className="col-xl-10">
+          <Card className="static-page-content">{children}</Card>
+        </div>
       </div>
     </div>
   );

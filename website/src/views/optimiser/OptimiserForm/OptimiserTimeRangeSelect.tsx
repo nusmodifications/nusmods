@@ -1,3 +1,5 @@
+import { Label } from 'components/ui/label';
+import { NativeSelect } from 'components/ui/native-select';
 import { useCallback } from 'react';
 import { getOptimiserTime, getTimeValues } from 'utils/optimiser';
 import { LessonTime } from 'types/modules';
@@ -20,10 +22,10 @@ const OptimiserTimeRangeSelect: React.FC<TimeRangeSelectProps> = ({
   setTime,
 }) => (
   <>
-    <label htmlFor={id} hidden>
+    <Label htmlFor={id} hidden>
       Choose a time from the given range
-    </label>
-    <select
+    </Label>
+    <NativeSelect
       id={id}
       className={styles.optimiserDropdown}
       value={currentValue}
@@ -34,7 +36,7 @@ const OptimiserTimeRangeSelect: React.FC<TimeRangeSelectProps> = ({
           {getOptimiserTime(value)}
         </option>
       ))}
-    </select>
+    </NativeSelect>
   </>
 );
 

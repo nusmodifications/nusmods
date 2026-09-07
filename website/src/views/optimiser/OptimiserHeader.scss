@@ -21,7 +21,7 @@
   font-weight: bold;
   font-size: 1.3rem;
   letter-spacing: 0.05rem;
-  color: #ff5138;
+  color: var(--primary);
   gap: 0.5rem;
 
   @include media-breakpoint-down(md) {
@@ -47,5 +47,5 @@
 }
 
 .titleIcon {
-  color: #ff5138;
+  color: var(--primary);
 }

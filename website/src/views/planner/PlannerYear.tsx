@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { PureComponent, createRef } from 'react';
 import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash-es';
@@ -116,14 +117,15 @@ export default class PlannerYear extends PureComponent<Props, State> {
 
         {showSpecialSemToggle && (
           <div className={styles.specialSemToggle}>
-            <button
+            <Button
+              variant="outline"
+              size="sm"
               type="button"
-              className="btn btn-sm btn-outline-primary"
               onClick={() => this.setState({ showSpecialSem: !showSpecialSem })}
             >
               {showSpecialSem ? <Minus /> : <Plus />}
               Special Term
-            </button>
+            </Button>
           </div>
         )}
       </section>

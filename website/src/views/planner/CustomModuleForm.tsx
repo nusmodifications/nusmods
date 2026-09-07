@@ -1,3 +1,6 @@
+import { Label } from 'components/ui/label';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
@@ -74,46 +77,39 @@ export const CustomModuleFormComponent: React.FC<Props> = (props) => {
 
       <div className="form-row">
         <div className="col-md-3">
-          <label htmlFor="input-mc">Units</label>
-          <input
+          <Label htmlFor="input-mc">Units</Label>
+          <Input
             ref={inputModuleCredit}
             id="input-mc"
             type="number"
-            className="form-control"
             defaultValue={moduleCredit ? String(moduleCredit) : ''}
             required
             min="0"
           />
         </div>
         <div className="col-md-9">
-          <label htmlFor="input-title">Title (optional)</label>
-          <input
-            ref={inputTitle}
-            id="input-title"
-            type="text"
-            className="form-control"
-            defaultValue={title || ''}
-          />
+          <Label htmlFor="input-title">Title (optional)</Label>
+          <Input ref={inputTitle} id="input-title" type="text" defaultValue={title || ''} />
         </div>
       </div>
 
       <div className={styles.formAction}>
         <div>
-          <button type="submit" className="btn btn-primary">
+          <Button variant="default" type="submit">
             Save
-          </button>
-          <button type="button" className="btn btn-link" onClick={props.onFinishEditing}>
+          </Button>
+          <Button variant="link" type="button" onClick={props.onFinishEditing}>
             Cancel
-          </button>
+          </Button>
         </div>
 
         {moduleInfo && (
           <Tooltip
             content={`Reset title to "${moduleInfo.title}" and credits to ${moduleInfo.moduleCredit}`}
           >
-            <button type="button" className="btn btn-secondary" onClick={resetCustomInfo}>
+            <Button variant="secondary" type="button" onClick={resetCustomInfo}>
               Reset Info
-            </button>
+            </Button>
           </Tooltip>
         )}
       </div>

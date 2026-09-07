@@ -57,7 +57,7 @@ $gutter: 0.75rem;
 
 .nowMarker {
   font-weight: bold;
-  color: theme-color('danger');
+  color: var(--destructive);
 
   &::after {
     content: '•';

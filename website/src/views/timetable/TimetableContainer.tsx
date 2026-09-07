@@ -1,3 +1,5 @@
+import { Alert } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
@@ -106,31 +108,29 @@ const SharingHeader: FC<{
   }
 
   return (
-    <div className={classnames('alert', 'alert-success', styles.importAlert)}>
-      <Repeat />
+    <Alert asChild variant="success">
+      <div className={classnames('alert', 'alert-success', styles.importAlert)}>
+        <Repeat />
 
-      <div className={classnames('row', styles.row)}>
-        <div className={classnames('col')}>
-          <h3>This timetable was shared with you</h3>
-          <p>
-            Clicking import will <strong>replace</strong> your saved timetable with the one below.
-          </p>
-        </div>
+        <div className={classnames('row', styles.row)}>
+          <div className={classnames('col')}>
+            <h3>This timetable was shared with you</h3>
+            <p>
+              Clicking import will <strong>replace</strong> your saved timetable with the one below.
+            </p>
+          </div>
 
-        <div className={classnames('col-md-auto', styles.actions)}>
-          <button className="btn btn-success" type="button" onClick={importTimetable}>
-            Import
-          </button>
-          <button
-            className="btn btn-outline-primary"
-            type="button"
-            onClick={clearImportedTimetable}
-          >
-            Back to saved timetable
-          </button>
+          <div className={classnames('col-md-auto', styles.actions)}>
+            <Button variant="default" type="button" onClick={importTimetable}>
+              Import
+            </Button>
+            <Button variant="outline" type="button" onClick={clearImportedTimetable}>
+              Back to saved timetable
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </Alert>
   );
 };
 

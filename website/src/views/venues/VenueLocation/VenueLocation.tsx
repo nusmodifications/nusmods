@@ -1,5 +1,5 @@
+import { Button } from 'components/ui/button';
 import { PureComponent } from 'react';
-import classnames from 'classnames';
 
 import type {
   LatLngTuple,
@@ -66,9 +66,9 @@ export default class VenueLocation extends PureComponent<Props, State> {
         <>
           <div className={styles.noLocation}>
             <p>We don&apos;t have data for this venue.</p>
-            <button type="button" className="btn btn-outline-primary" onClick={this.openModal}>
+            <Button type="button" variant="outline" onClick={this.openModal}>
               Help us map this venue
-            </button>
+            </Button>
           </div>
 
           {this.renderFeedbackMenu()}
@@ -99,21 +99,17 @@ export default class VenueLocation extends PureComponent<Props, State> {
 
             <p className={styles.feedbackBtn}>
               See a problem?{' '}
-              <button
-                type="button"
-                className={classnames('btn btn-outline-primary')}
-                onClick={this.openModal}
-              >
+              <Button type="button" variant="outline" onClick={this.openModal}>
                 Help us improve this map
-              </button>
+              </Button>
             </p>
           </>
         ) : (
           <>
             <p>We don&apos;t have the location of this venue, sorry :(</p>
-            <button type="button" className="btn btn-outline-primary" onClick={this.openModal}>
+            <Button type="button" variant="outline" onClick={this.openModal}>
               Help us map this venue
-            </button>
+            </Button>
           </>
         )}
 

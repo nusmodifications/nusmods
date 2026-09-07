@@ -1,3 +1,4 @@
+import { NativeSelect } from 'components/ui/native-select';
 import classnames from 'classnames';
 import { MpePreference, MODULE_TYPES } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
@@ -13,7 +14,7 @@ type Props = {
 };
 
 const ModuleTypeMenu: React.FC<Props> = ({ moduleCode, updateModuleType, moduleType }) => (
-  <select
+  <NativeSelect
     value={moduleType}
     className={classnames('form-control', styles.menu)}
     onChange={(e) => {
@@ -26,7 +27,7 @@ const ModuleTypeMenu: React.FC<Props> = ({ moduleCode, updateModuleType, moduleT
         {label}
       </option>
     ))}
-  </select>
+  </NativeSelect>
 );
 
 export default ModuleTypeMenu;

@@ -1,3 +1,6 @@
+import { Alert } from 'components/ui/alert';
+import { Label } from 'components/ui/label';
+import { NativeSelect } from 'components/ui/native-select';
 import * as React from 'react';
 import classnames from 'classnames';
 import { map, sumBy } from 'lodash-es';
@@ -62,10 +65,12 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
     <div className={classnames(styles.footer, 'row align-items-center')}>
       <div className="col-12">
         {!config.examAvailabilitySet.has(props.semester) && (
-          <div className="alert alert-warning">
-            Exam dates are not available for this semester yet. Course combinations may not be
-            available due to conflicting exams.
-          </div>
+          <Alert asChild variant="warning">
+            <div className="alert alert-warning">
+              Exam dates are not available for this semester yet. Course combinations may not be
+              available due to conflicting exams.
+            </div>
+          </Alert>
         )}
         <hr />
       </div>
@@ -80,10 +85,10 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
         </div>
       </div>
       <div className={classnames(styles.moduleOrder, 'col no-export')}>
-        <label htmlFor="moduleOrder">Order</label>
-        <select
+        <Label htmlFor="moduleOrder">Order</Label>
+        <NativeSelect
           onChange={(evt) => props.setModuleTableOrder(evt.target.value as ModuleTableOrder)}
-          className={classnames(styles.moduleOrder, 'form-control form-control-sm')}
+          className={styles.moduleOrder}
           value={props.moduleTableOrder}
           id="moduleOrder"
         >
@@ -92,7 +97,7 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
               {label}
             </option>
           ))}
-        </select>
+        </NativeSelect>
       </div>
     </div>
   );

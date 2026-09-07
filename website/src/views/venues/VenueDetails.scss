@@ -14,12 +14,12 @@
     text-align: center;
   }
 
-  :global(.btn) {
+  :global(.ui-button) {
     white-space: normal;
     justify-self: start;
   }
 
-  :global(.btn):last-child {
+  :global(.ui-button):last-child {
     justify-self: end;
   }
 
@@ -34,13 +34,13 @@
       justify-self: center;
     }
 
-    :global(.btn):first-child {
+    :global(.ui-button):first-child {
       grid-row: 2;
       grid-column: 1;
       justify-self: start;
     }
 
-    :global(.btn):last-child {
+    :global(.ui-button):last-child {
       grid-row: 2;
       grid-column: 2;
       justify-self: end;

@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { FC, useState } from 'react';
 import { XSquare } from 'react-feather';
 import CloseButton from 'views/components/CloseButton';
@@ -16,14 +17,10 @@ const PlannerClearButton: FC<Props> = (props: Props) => {
 
   return (
     <>
-      <button
-        className="btn btn-svg btn-outline-primary"
-        type="button"
-        onClick={() => setIsOpen(true)}
-      >
+      <Button variant="outline" className="btn-svg" type="button" onClick={() => setIsOpen(true)}>
         <XSquare className="svg" />
         <p>Reset</p>
-      </button>
+      </Button>
 
       <Modal isOpen={isOpen} onRequestClose={closeModal} animate>
         <CloseButton absolutePositioned onClick={closeModal} />
@@ -38,16 +35,17 @@ const PlannerClearButton: FC<Props> = (props: Props) => {
           </p>
         </div>
 
-        <button
+        <Button
+          variant="default"
           type="button"
-          className="btn btn-primary btn-block"
+          className="btn-block"
           onClick={() => {
             props.clearPlanner();
             closeModal();
           }}
         >
           Reset
-        </button>
+        </Button>
       </Modal>
     </>
   );

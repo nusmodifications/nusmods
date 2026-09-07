@@ -1,9 +1,26 @@
 .buttonGroup {
-  :global(.btn) {
+  position: relative;
+  display: inline-flex;
+
+  &.block {
+    display: flex;
+    width: 100%;
+  }
+
+  > button {
+    height: auto;
+    min-height: 3rem;
+  }
+  :global(.ui-button) {
     line-height: 1.2;
   }
 
   strong {
-    font-size: 1.2em;
+    font-size: 1em;
   }
+}
+
+.block {
+  flex: 1;
+  width: 100%;
 }

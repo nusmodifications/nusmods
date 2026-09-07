@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -10,9 +11,9 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const Fab: React.FC<Props> = ({ children, className, ...otherProps }) => (
   <div className={classnames(className, styles.fab)}>
-    <button type="button" className="mdc-fab material-icons" {...otherProps}>
+    <Button type="button" size="icon" className="ui-fab" {...otherProps}>
       {children}
-    </button>
+    </Button>
   </div>
 );
 

@@ -25,20 +25,16 @@
 
   &.selected {
     opacity: 1;
-    filter: brightness(1);
-    transform: scale(1);
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 
   &.unselected {
-    opacity: 0.6;
-    filter: brightness(0.8);
-    transform: scale(0.98);
+    opacity: 0.65;
   }
 
   &:hover:not(:disabled) {
-    opacity: 1 !important;
-    filter: brightness(1.1) !important;
-    transform: scale(1.02) !important;
+    opacity: 1;
   }
 
   &:disabled {

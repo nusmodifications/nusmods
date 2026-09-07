@@ -1,3 +1,6 @@
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
 import * as React from 'react';
 import classnames from 'classnames';
 import { debounce } from 'lodash-es';
@@ -100,9 +103,9 @@ export default class SearchBox extends React.PureComponent<Props, State> {
           [styles.searchBoxFocused]: this.state.isFocused,
         })}
       >
-        <label htmlFor="search-box" className="sr-only">
+        <Label htmlFor="search-box" className="sr-only">
           Search
-        </label>
+        </Label>
         <form
           className={styles.searchWrapper}
           onSubmit={(evt) => {
@@ -118,13 +121,17 @@ export default class SearchBox extends React.PureComponent<Props, State> {
             <Search className={classnames(styles.leftAccessory, styles.searchIcon)} />
           )}
           {value && (
-            <X
+            <Button
+              variant="ghost"
+              size="icon"
               className={styles.removeInput}
               onClick={this.onRemoveInput}
-              pointerEvents="bounding-box"
-            />
+              aria-label="Clear search"
+            >
+              <X />
+            </Button>
           )}
-          <input
+          <Input
             id="search-box"
             className="form-control form-control-lg"
             type="search"

@@ -1,3 +1,7 @@
+import { Alert } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
+import { Card } from 'components/ui/card';
+import { NativeSelect } from 'components/ui/native-select';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -103,10 +107,8 @@ const SettingsContainer: React.FC<Props> = ({
       </Online>
 
       <h1 className={styles.title}>Settings</h1>
-      <hr />
-
       {supportsCSSVariables() && (
-        <div>
+        <Card className={styles.settingsSection}>
           <h4 id="night-mode">Night Mode</h4>
           <div className={styles.toggleRow}>
             <div className={styles.toggleDescription}>
@@ -122,198 +124,202 @@ const SettingsContainer: React.FC<Props> = ({
               <ModeSelect colorScheme={colorScheme} onSelectColorScheme={props.selectColorScheme} />
             </div>
           </div>
-          <hr />
-        </div>
+        </Card>
       )}
 
-      <h4 id="theme">Theme</h4>
+      <Card className={styles.settingsSection}>
+        <h4 id="theme">Theme</h4>
 
-      <p>Liven up your timetable with different color schemes!</p>
-      <p>
-        Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
-      </p>
+        <p>Liven up your timetable with different color schemes!</p>
+        <p>
+          Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
+        </p>
 
-      <div className={styles.preview}>
-        <Timetable lessons={previewTimetable} />
-      </div>
-
-      <div>
-        {availableThemes.map((theme) => (
-          <ThemeOption
-            key={theme.id}
-            className={styles.themeOption}
-            theme={theme}
-            isSelected={currentThemeId === theme.id}
-            onSelectTheme={props.selectTheme}
-          />
-        ))}
-      </div>
-
-      <hr />
-
-      <h4 id="prereqTreeDirection">Prerequisite Tree Direction</h4>
-
-      <div className={styles.toggleRow}>
-        <div className={styles.toggleDescription}>
-          <p>
-            Course prerequsites appear to the {prereqTreeOnLeft ? 'left' : 'right'} of the course in
-            its prerequisite tree.
-          </p>
+        <div className={styles.preview}>
+          <Timetable lessons={previewTimetable} />
         </div>
-        <div className={styles.toggle}>
-          <Toggle
-            labels={['Left', 'Right']}
-            isOn={prereqTreeOnLeft}
-            onChange={props.togglePreReqTreeDirection}
-          />
+
+        <div className={styles.themeGrid}>
+          {availableThemes.map((theme) => (
+            <ThemeOption
+              key={theme.id}
+              className={styles.themeOption}
+              theme={theme}
+              isSelected={currentThemeId === theme.id}
+              onSelectTheme={props.selectTheme}
+            />
+          ))}
         </div>
-      </div>
+      </Card>
 
-      <hr />
+      <Card className={styles.settingsSection}>
+        <h4 id="prereqTreeDirection">Prerequisite Tree Direction</h4>
 
-      <h4 id="modreg">CourseReg Reminder</h4>
-
-      <div className={styles.notificationPreview}>
-        <ModRegNotification dismissible />
-      </div>
-
-      <div className={styles.toggleRow}>
-        <div className={styles.toggleDescription}>
-          <p>
-            You can get a reminder about when CourseReg rounds starts with a small notification.
-          </p>
-        </div>
-        <div className={styles.toggle}>
-          <Toggle
-            isOn={modRegNotification.enabled}
-            onChange={() => props.toggleModRegNotificationGlobally(!modRegNotification.enabled)}
-          />
-        </div>
-      </div>
-
-      {modRegNotification.enabled && (
-        <>
-          <div className="row">
-            <div className="col-sm-12">
-              <h5>Course Type</h5>
-            </div>
-            <div className="col-sm-8">
-              <p>Choose your course type so we can show you the appropriate CourseReg schedule</p>
-            </div>
-            <div className="col-sm-4">
-              <select
-                className="form-control"
-                onChange={(evt) => props.setModRegScheduleType(evt.target.value as ScheduleType)}
-              >
-                {SCHEDULE_TYPES.map((type) => (
-                  <option value={type} key={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
+            <p>
+              Course prerequsites appear to the {prereqTreeOnLeft ? 'left' : 'right'} of the course
+              in its prerequisite tree.
+            </p>
           </div>
+          <div className={styles.toggle}>
+            <Toggle
+              labels={['Left', 'Right']}
+              isOn={prereqTreeOnLeft}
+              onChange={props.togglePreReqTreeDirection}
+            />
+          </div>
+        </div>
+      </Card>
 
-          {rounds.map((round) => {
-            const roundKey = getModRegRoundKey(round);
-            const isSnoozed = modRegNotification.dismissed.find((dismissed) =>
-              isEqual(dismissed, roundKey),
-            );
+      <Card className={styles.settingsSection}>
+        <h4 id="modreg">CourseReg Reminder</h4>
 
-            return (
-              <Fragment key={round.type}>
-                <h5>
-                  {round.type} {round.name ? `(Round ${round.name})` : ''}
-                </h5>
-                <div className={styles.toggleRow}>
-                  <div className={styles.toggleDescription}>
-                    <p>
-                      {isSnoozed
-                        ? 'You have snoozed reminders until the end of this round'
-                        : 'You can also temporarily snooze the notification until the end of this round.'}
-                    </p>
+        <div className={styles.notificationPreview}>
+          <ModRegNotification dismissible />
+        </div>
+
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
+            <p>
+              You can get a reminder about when CourseReg rounds starts with a small notification.
+            </p>
+          </div>
+          <div className={styles.toggle}>
+            <Toggle
+              isOn={modRegNotification.enabled}
+              onChange={() => props.toggleModRegNotificationGlobally(!modRegNotification.enabled)}
+            />
+          </div>
+        </div>
+
+        {modRegNotification.enabled && (
+          <>
+            <div className="row">
+              <div className="col-sm-12">
+                <h5>Course Type</h5>
+              </div>
+              <div className="col-sm-8">
+                <p>Choose your course type so we can show you the appropriate CourseReg schedule</p>
+              </div>
+              <div className="col-sm-4">
+                <NativeSelect
+                  onChange={(evt) => props.setModRegScheduleType(evt.target.value as ScheduleType)}
+                >
+                  {SCHEDULE_TYPES.map((type) => (
+                    <option value={type} key={type}>
+                      {type}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </div>
+            </div>
+
+            {rounds.map((round) => {
+              const roundKey = getModRegRoundKey(round);
+              const isSnoozed = modRegNotification.dismissed.find((dismissed) =>
+                isEqual(dismissed, roundKey),
+              );
+
+              return (
+                <Fragment key={round.type}>
+                  <h5>
+                    {round.type} {round.name ? `(Round ${round.name})` : ''}
+                  </h5>
+                  <div className={styles.toggleRow}>
+                    <div className={styles.toggleDescription}>
+                      <p>
+                        {isSnoozed
+                          ? 'You have snoozed reminders until the end of this round'
+                          : 'You can also temporarily snooze the notification until the end of this round.'}
+                      </p>
+                    </div>
+                    <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+                      <Button
+                        variant="outline"
+                        type="button"
+                        onClick={() =>
+                          isSnoozed
+                            ? props.enableModRegNotification(round)
+                            : props.dismissModregNotification(round)
+                        }
+                      >
+                        {isSnoozed ? 'Unsnooze' : 'Snooze'}
+                      </Button>
+                    </div>
                   </div>
-                  <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-                    <button
-                      className="btn btn-outline-primary"
-                      type="button"
-                      onClick={() =>
-                        isSnoozed
-                          ? props.enableModRegNotification(round)
-                          : props.dismissModregNotification(round)
-                      }
-                    >
-                      {isSnoozed ? 'Unsnooze' : 'Snooze'}
-                    </button>
-                  </div>
-                </div>
-              </Fragment>
-            );
-          })}
-        </>
-      )}
-
-      <hr />
+                </Fragment>
+              );
+            })}
+          </>
+        )}
+      </Card>
 
       <BetaToggle betaTester={betaTester} toggleStates={props.toggleBetaTesting} />
 
-      <h4 id="privacy">Privacy</h4>
+      <Card className={styles.settingsSection}>
+        <h4 id="privacy">Privacy</h4>
 
-      <div className="row">
-        <div className="col-md-8">
-          <p>
-            We collect anonymous, aggregated usage information on NUSMods - think of it as a survey
-            that tells us which browsers to support and what features are popular. If you opt out,
-            we could end up removing features that you use since we won&apos;t know if anyone is
-            using them.
-          </p>
-          <p>
-            We do not use this information for advertising, or share this information with anybody.
-            You can see the data we collect at{' '}
-            <ExternalLink href="https://analytics.nusmods.com/">analytics.nusmods.com</ExternalLink>
-            .
-          </p>
+        <div className="row">
+          <div className="col-md-8">
+            <p>
+              We collect anonymous, aggregated usage information on NUSMods - think of it as a
+              survey that tells us which browsers to support and what features are popular. If you
+              opt out, we could end up removing features that you use since we won&apos;t know if
+              anyone is using them.
+            </p>
+            <p>
+              We do not use this information for advertising, or share this information with
+              anybody. You can see the data we collect at{' '}
+              <ExternalLink href="https://analytics.nusmods.com/">
+                analytics.nusmods.com
+              </ExternalLink>
+              .
+            </p>
+          </div>
+
+          <div className="col-md-4">
+            {navigator.doNotTrack === '1' ? (
+              <Alert asChild variant="warning">
+                <div className="alert alert-warning">
+                  You have enabled{' '}
+                  <ExternalLink href="https://en.wikipedia.org/wiki/Do_Not_Track">
+                    do not track
+                  </ExternalLink>{' '}
+                  in your browser, so you will not be tracked until that option is disabled.
+                </div>
+              </Alert>
+            ) : (
+              <div className="text-right">
+                <Toggle
+                  labels={['Allow', 'Opt out']}
+                  isOn={allowTracking}
+                  onChange={onToggleTracking}
+                />
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="col-md-4">
-          {navigator.doNotTrack === '1' ? (
-            <div className="alert alert-warning">
-              You have enabled{' '}
-              <ExternalLink href="https://en.wikipedia.org/wiki/Do_Not_Track">
-                do not track
-              </ExternalLink>{' '}
-              in your browser, so you will not be tracked until that option is disabled.
-            </div>
-          ) : (
-            <div className="text-right">
-              <Toggle
-                labels={['Allow', 'Opt out']}
-                isOn={allowTracking}
-                onChange={onToggleTracking}
-              />
-            </div>
-          )}
-        </div>
-      </div>
+        <br />
 
-      <br />
-
-      <div className="row">
-        <div className="col-md-8">
-          <p>
-            We use Disqus for comments. Disqus may load its own tracking code which we cannot
-            control. To improve privacy you may opt to load Disqus only when you wish to see or read
-            the comments.
-          </p>
+        <div className="row">
+          <div className="col-md-8">
+            <p>
+              We use Disqus for comments. Disqus may load its own tracking code which we cannot
+              control. To improve privacy you may opt to load Disqus only when you wish to see or
+              read the comments.
+            </p>
+          </div>
+          <div className="col-md-4 text-right">
+            <Toggle
+              labels={['Load Manually', 'Always Load']}
+              isOn={loadDisqusManually}
+              onChange={props.setLoadDisqusManually}
+            />
+          </div>
         </div>
-        <div className="col-md-4 text-right">
-          <Toggle
-            labels={['Load Manually', 'Always Load']}
-            isOn={loadDisqusManually}
-            onChange={props.setLoadDisqusManually}
-          />
-        </div>
-      </div>
+      </Card>
     </div>
   );
 };

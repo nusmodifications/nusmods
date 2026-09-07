@@ -16,14 +16,14 @@
     margin: 0;
     font-weight: bold;
     font-size: 1rem;
-    color: #ff8c00;
+    color: var(--warning, #c77d12);
     gap: 0.5rem;
   }
 
   h4 {
     margin: 0;
     font-size: 0.9rem;
-    color: #d67c00;
+    color: var(--warning-foreground);
   }
 
   ul {
@@ -40,6 +40,6 @@
     margin: 0.5rem 0;
     font-style: italic;
     font-size: 0.8rem;
-    color: #69707a;
+    color: var(--muted-foreground);
   }
 }

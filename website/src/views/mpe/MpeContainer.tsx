@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { useCallback, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import classnames from 'classnames';
@@ -185,13 +186,14 @@ const MpeContainer: React.FC = () => {
             animate
           >
             <p>Your session has expired. Please sign in again!</p>
-            <button
+            <Button
+              variant="outline"
               type="button"
-              className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
+              className={classnames(' btn-svg', styles.ErrorButton)}
               onClick={() => setIsModalOpen(false)}
             >
               OK
-            </button>
+            </Button>
           </Modal>
         </>
       ) : (

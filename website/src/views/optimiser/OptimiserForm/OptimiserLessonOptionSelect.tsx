@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { isEmpty } from 'lodash-es';
 import { LessonOption } from 'types/optimiser';
 
@@ -58,14 +59,16 @@ const OptimiserLessonOptionSelect: React.FC<Props> = ({ lessonOptions, optimiser
             );
 
             return (
-              <button
+              <Button
+                variant="outline"
+                aria-pressed={isSelected}
                 key={option.lessonKey}
                 type="button"
                 onClick={() => toggleLiveLessonOption(option)}
                 className={className}
               >
                 {option.displayText}
-              </button>
+              </Button>
             );
           })}
         </div>

@@ -1,3 +1,7 @@
+import { Label } from 'components/ui/label';
+import { Badge } from 'components/ui/badge';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
 import { FC, useCallback, useState, useRef } from 'react';
 import { omit } from 'lodash-es';
 import Downshift, {
@@ -124,10 +128,10 @@ const ModulesSelect: FC<Props> = ({
 
     return (
       <div className={styles.container}>
-        <label className="sr-only" {...getLabelProps()}>
+        <Label className="sr-only" {...getLabelProps()}>
           {placeholder}
-        </label>
-        <input
+        </Label>
+        <Input
           {...getInputProps({
             className: classnames(styles.input, elements.addModuleInput),
             autoFocus: isModalOpen,
@@ -164,24 +168,26 @@ const ModulesSelect: FC<Props> = ({
                 {module.isAdded && (
                   <div className={styles.optionActions}>
                     <Tooltip content={removeBtnLabel(module.moduleCode)} touch="hold">
-                      <button
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         type="button"
-                        className={classnames('btn btn-svg btn-sm', styles.actionButton)}
+                        className={classnames('btn-svg', styles.actionButton)}
                         aria-label={removeBtnLabel(module.moduleCode)}
                         onClick={() => {
                           onRemoveModule(module.moduleCode);
                         }}
                       >
                         <Trash className={styles.actionIcon} />{' '}
-                      </button>
+                      </Button>
                     </Tooltip>
-                    <span className="badge badge-info">Added</span>
+                    <Badge variant="secondary">Added</Badge>
                   </div>
                 )}
 
                 {module.isAdding && (
                   <div>
-                    <span className="badge badge-warning">Adding...</span>
+                    <Badge variant="outline">Adding...</Badge>
                   </div>
                 )}
               </li>
@@ -230,14 +236,15 @@ const ModulesSelect: FC<Props> = ({
 
   return (
     <>
-      <button
+      <Button
+        variant="outline"
         type="button"
         className={classnames(styles.input, elements.addModuleInput)}
         onClick={openSelect}
         disabled={disabled}
       >
         {placeholder}
-      </button>
+      </Button>
       <Modal
         isOpen={!disabled && isOpen}
         onRequestClose={closeSelectAndEmptyInput}

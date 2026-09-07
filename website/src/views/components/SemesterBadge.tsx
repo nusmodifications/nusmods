@@ -1,3 +1,4 @@
+import { Badge } from 'components/ui/badge';
 import * as React from 'react';
 import classnames from 'classnames';
 import config from 'config';
@@ -21,14 +22,14 @@ type Props = {
 const SemesterBadge: React.FC<Props> = ({ className, semesters }) => (
   <span className={classnames(className, styles.semesters)}>
     {semesters.map((semester) => (
-      <span
+      <Badge
         key={semester}
-        className={classnames('badge', BADGE_COLOR[semester])}
+        className={classnames(BADGE_COLOR[semester])}
         title={config.semesterNames[semester]}
         aria-label={config.semesterNames[semester]}
       >
         {config.shortSemesterNames[semester]}
-      </span>
+      </Badge>
     ))}
   </span>
 );

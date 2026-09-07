@@ -13,7 +13,7 @@
   width: 8rem;
   height: 8rem;
   margin: 0 auto;
-  color: #f31c25;
+  color: var(--primary);
 
   :global {
     animation: pulse 1.5s infinite;
@@ -29,46 +29,18 @@
 
   a {
     flex: 1 0 31%;
-    height: 8rem;
+    flex-direction: column;
+    height: 7rem;
     padding: 1rem;
     margin: 0 1% 0.5rem;
     font-weight: bold;
     line-height: 1.2;
-    color: #fff;
-    transition: $transition-base;
+    color: var(--foreground);
+    background: var(--card);
 
     &:hover {
-      color: #fff;
-    }
-
-    &.telegram {
-      $button-bg: #3aa8db;
-
-      background: $button-bg;
-
-      &:hover {
-        background: lighten($button-bg, 15);
-      }
-    }
-
-    &.github {
-      $button-bg: #000;
-
-      background: $button-bg;
-
-      &:hover {
-        background: lighten($button-bg, 15);
-      }
-    }
-
-    &.email {
-      $button-bg: theme-color();
-
-      background: $button-bg;
-
-      &:hover {
-        background: lighten($button-bg, 15);
-      }
+      color: var(--accent-foreground);
+      background: var(--accent);
     }
   }
 

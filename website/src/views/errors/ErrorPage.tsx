@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import * as Sentry from '@sentry/browser';
 import classnames from 'classnames';
@@ -37,13 +38,14 @@ const ErrorPage: React.FC<Props> = ({ error, showReportDialog, showRefresh = tru
           <p>
             An error report has been made and we will look into this. We would really appreciate it
             if you could{' '}
-            <button
+            <Button
+              variant="link"
               type="button"
-              className={classnames('btn btn-link', styles.link)}
+              className={classnames(' btn-link', styles.link)}
               onClick={() => Sentry.showReportDialog()}
             >
               tell us more about what happened
-            </button>{' '}
+            </Button>{' '}
             so we can better fix this.
           </p>
         </Online>
@@ -51,13 +53,9 @@ const ErrorPage: React.FC<Props> = ({ error, showReportDialog, showRefresh = tru
 
       {showRefresh && (
         <Online>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => window.location.reload()}
-          >
+          <Button variant="default" type="button" onClick={() => window.location.reload()}>
             Refresh
-          </button>
+          </Button>
         </Online>
       )}
     </div>

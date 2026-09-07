@@ -1,5 +1,12 @@
+import { Button } from 'components/ui/button';
 import { PureComponent } from 'react';
-import Downshift from 'downshift';
+import { ChevronDown } from 'react-feather';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from 'components/ui/dropdown-menu';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { get } from 'lodash-es';
@@ -95,68 +102,43 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
     const otherSemesters = this.otherSemesters(defaultSemester);
     const id = `add-to-timetable-${module.moduleCode}`;
 
-    /* eslint-disable jsx-a11y/label-has-for */
     return (
-      <Downshift>
-        {({ getLabelProps, getItemProps, isOpen, toggleMenu, highlightedIndex, getMenuProps }) => (
-          <div>
-            <label {...getLabelProps({ htmlFor: id })} className="sr-only">
-              Add course to timetable
-            </label>
+      <div
+        className={classnames(styles.buttonGroup, className, {
+          [styles.block]: block,
+        })}
+      >
+        <Button
+          type="button"
+          variant="outline"
+          className={classnames({ [styles.block]: block })}
+          onClick={() => this.onSelect(defaultSemester)}
+        >
+          <span>{this.buttonLabel(defaultSemester)}</span>
+        </Button>
 
-            <div
-              className={classnames('btn-group', styles.buttonGroup, className, {
-                'btn-block': block,
-              })}
-            >
-              <button
-                type="button"
-                className={classnames('btn btn-outline-primary', {
-                  'btn-block': block,
-                })}
-                onClick={() => this.onSelect(defaultSemester)}
-              >
-                {this.buttonLabel(defaultSemester)}
-              </button>
-
-              {!!otherSemesters.length && (
-                <>
-                  <button
-                    id={id}
-                    type="button"
-                    className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
-                    onClick={() => toggleMenu()}
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded={isOpen}
-                  >
-                    <span className="sr-only">Toggle Dropdown</span>
-                  </button>
-
-                  <div
-                    className={classnames('dropdown-menu', { show: isOpen })}
-                    {...getMenuProps()}
-                  >
-                    {otherSemesters.map((semester, index) => (
-                      <button
-                        {...getItemProps({ item: semester })}
-                        type="button"
-                        key={semester}
-                        className={classnames('dropdown-item', styles.dropdownItem, {
-                          'dropdown-selected': index === highlightedIndex,
-                        })}
-                        onClick={() => this.onSelect(semester)}
-                      >
-                        {this.buttonLabel(semester)}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
+        {!!otherSemesters.length && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button id={id} type="button" variant="outline" className={styles.dropdownTrigger}>
+                <ChevronDown aria-hidden="true" />
+                <span className="sr-only">Toggle Dropdown</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" aria-label="Add course to timetable">
+              {otherSemesters.map((semester) => (
+                <DropdownMenuItem
+                  key={semester}
+                  className={styles.dropdownItem}
+                  onSelect={() => this.onSelect(semester)}
+                >
+                  <span>{this.buttonLabel(semester)}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
-      </Downshift>
+      </div>
     );
   }
 }

@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 
@@ -39,26 +40,25 @@ export default class FeedbackModal extends PureComponent<Props, State> {
         return (
           <div className={classnames('row flex-fill text-center', styles.feedback)}>
             <div className="col-sm-6">
-              <ExternalLink
-                className="btn btn-outline-secondary"
-                href="https://www.openstreetmap.org/fixthemap"
-              >
-                <MapIcon />
-                <h3>Problem with map data</h3>
-                <p>eg. incorrect building outline, missing walkways</p>
-              </ExternalLink>
+              <Button asChild variant="outline">
+                <ExternalLink href="https://www.openstreetmap.org/fixthemap">
+                  <MapIcon />
+                  <h3>Problem with map data</h3>
+                  <p>eg. incorrect building outline, missing walkways</p>
+                </ExternalLink>
+              </Button>
             </div>
 
             <div className="col-sm-6">
-              <button
+              <Button
                 type="button"
-                className="btn btn-outline-secondary"
+                variant="outline"
                 onClick={() => this.setState({ page: 'form' })}
               >
                 <MapPin />
                 <h3>Problem with venue data</h3>
                 <p>eg. incorrect room name, floor, location of the map pin</p>
-              </button>
+              </Button>
             </div>
           </div>
         );

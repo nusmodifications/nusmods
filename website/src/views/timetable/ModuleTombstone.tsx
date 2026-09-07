@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -16,23 +17,27 @@ const ModuleTombstone: React.FC<Props> = (props) => (
     <span>{props.module.moduleCode} removed</span>
 
     <div className={styles.moduleActionButtons}>
-      <button
+      <Button
+        variant="link"
+        size="sm"
         type="button"
-        className={classnames('btn btn-sm btn-link', styles.moduleAction)}
+        className={classnames(styles.moduleAction)}
         onClick={props.resetTombstone}
       >
         Dismiss
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="link"
+        size="sm"
         type="button"
-        className={classnames('btn btn-sm btn-link', styles.moduleAction)}
+        className={classnames(styles.moduleAction)}
         onClick={() => {
           props.undo();
           props.resetTombstone();
         }}
       >
         Undo
-      </button>
+      </Button>
     </div>
   </div>
 );

@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -15,13 +16,15 @@ const GamePaused: React.FC<Props> = (props) => (
     <p>
       Score: <strong className={styles.finalScore}>{props.score}</strong>
     </p>
-    <button
-      className={classnames('btn btn-lg btn-primary')}
+    <Button
+      variant="default"
+      size="lg"
+      className={classnames(' ')}
       type="button"
       onClick={props.resumeGame}
     >
       Resume
-    </button>
+    </Button>
   </GameOverlay>
 );
 

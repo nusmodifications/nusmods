@@ -1,3 +1,6 @@
+import { Label } from 'components/ui/label';
+import { Button } from 'components/ui/button';
+import { NativeSelect } from 'components/ui/native-select';
 import * as React from 'react';
 import classnames from 'classnames';
 import { map } from 'lodash-es';
@@ -76,14 +79,16 @@ export default class AddModule extends React.PureComponent<Props, State> {
     if (!this.state.isOpen) {
       return (
         <div className={this.props.className}>
-          <button
+          <Button
+            variant="link"
+            size="sm"
             type="button"
-            className={classnames(styles.toggle, 'btn btn-sm btn-link btn-block')}
+            className={classnames(styles.toggle, 'btn-block')}
             onClick={() => this.setState({ isOpen: true })}
           >
             <Plus />
             Add Courses
-          </button>
+          </Button>
         </div>
       );
     }
@@ -95,9 +100,9 @@ export default class AddModule extends React.PureComponent<Props, State> {
     return (
       <>
         <form onSubmit={this.onSubmit} className={classnames(this.props.className, styles.form)}>
-          <label htmlFor={inputId} className="sr-only">
+          <Label htmlFor={inputId} className="sr-only">
             Course Code
-          </label>
+          </Label>
           <div className="input-group">
             <PlannerModuleSelect
               id={inputId}
@@ -112,23 +117,24 @@ export default class AddModule extends React.PureComponent<Props, State> {
             <span>or</span>
           </div>
 
-          <select className="form-control form-control-sm" ref={this.selectRef} defaultValue="">
+          <NativeSelect ref={this.selectRef} defaultValue="">
             <option value="">Select category</option>
             {placeholderOptions}
-          </select>
+          </NativeSelect>
 
           <div className={styles.actions}>
-            <button className={classnames('btn btn-primary')} type="submit">
+            <Button variant="default" type="submit">
               Add Category
-            </button>
-            <button
-              className={classnames(styles.cancel, 'btn btn-svg')}
+            </Button>
+            <Button
+              variant="ghost"
+              className={classnames(styles.cancel, 'btn-svg')}
               type="button"
               onClick={this.onCancel}
             >
               <Close />
               <span className="sr-only">Cancel</span>
-            </button>
+            </Button>
             <p className={styles.tip}>
               Tip: You can add multiple courses at once, eg. copy from your transcript
             </p>

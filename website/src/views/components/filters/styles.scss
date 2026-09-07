@@ -26,12 +26,12 @@ $h-padding: $grid-gutter-width * 0.5;
   }
 
   &:hover {
-    color: theme-color();
+    color: var(--primary);
   }
 
   &.enabled {
     font-weight: bold;
-    color: theme-color();
+    color: var(--primary);
   }
 
   .checklist &,
@@ -98,7 +98,7 @@ $h-padding: $grid-gutter-width * 0.5;
     }
 
     &.focused svg {
-      color: theme-color();
+      color: var(--primary);
     }
   }
 

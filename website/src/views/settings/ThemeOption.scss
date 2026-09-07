@@ -1,37 +1,39 @@
 @import '~styles/utils/modules-entry';
 
-$theme-selected-bg-color: var(--gray-lighter);
-$theme-hover-bg-color: var(--gray-lightest);
-$theme-option-gap: 0.7rem;
-
 .option {
-  padding: $theme-option-gap;
-  border-width: 0;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color $desktop-entering-duration $material-deceleration-curve;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: auto;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: left;
+  background: var(--card);
 
   &:hover {
-    background-color: $theme-hover-bg-color;
-  }
-
-  &:focus {
-    outline: 0;
+    background: var(--accent);
   }
 
   &.isSelected {
-    background-color: $theme-selected-bg-color;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+
+  small {
+    font-weight: 550;
+    font-size: 0.8rem;
   }
 }
 
 .colorList {
-  $number-colors: 8;
+  display: flex;
+  overflow: hidden;
+  margin: 0.3rem 0 0;
+  border-radius: calc(var(--radius) - 4px);
 
   .colorItem {
-    $size: 12.5%; // 100% / $number-colors
-
-    display: inline-block;
-    width: $size;
-    padding-bottom: $size;
+    flex: 1;
+    height: 1.4rem;
   }
 }
