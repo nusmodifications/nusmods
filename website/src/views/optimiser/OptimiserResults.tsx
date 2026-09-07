@@ -1,3 +1,5 @@
+import { Button } from 'components/ui/button';
+import { Card } from 'components/ui/card';
 import React, { useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import { AlertTriangle, Zap, ExternalLink } from 'react-feather';
@@ -55,7 +57,7 @@ const OptimiserResultPartialTimetable: React.FC<OptimiserResultsPartialProps> = 
   defaultShareableLink,
   unassignedLessons,
 }) => (
-  <div className={styles.unassignedWarning}>
+  <Card className={styles.unassignedWarning}>
     <div className={styles.unassignedHeader}>
       <AlertTriangle size={24} />
       Partial Timetable Generated
@@ -109,18 +111,22 @@ const OptimiserResultPartialTimetable: React.FC<OptimiserResultsPartialProps> = 
     </div>
 
     <div className={styles.warningButtonContainer}>
-      <a className={styles.warningShareableButton} href={shareableLink} target="blank">
-        <ExternalLink size={20} />
-        View Optimised Lessons Only
-      </a>
-      {defaultShareableLink && (
-        <a className={styles.warningShareableButton} href={defaultShareableLink} target="blank">
+      <Button asChild variant="outline">
+        <a className={styles.warningShareableButton} href={shareableLink} target="blank">
           <ExternalLink size={20} />
-          View All Lessons
+          View Optimised Lessons Only
         </a>
+      </Button>
+      {defaultShareableLink && (
+        <Button asChild variant="outline">
+          <a className={styles.warningShareableButton} href={defaultShareableLink} target="blank">
+            <ExternalLink size={20} />
+            View All Lessons
+          </a>
+        </Button>
       )}
     </div>
-  </div>
+  </Card>
 );
 
 interface OptimiserResultsFullTimetableProps {
@@ -130,10 +136,10 @@ interface OptimiserResultsFullTimetableProps {
 const OptimiserResultsFullTimetable: React.FC<OptimiserResultsFullTimetableProps> = ({
   shareableLink,
 }) => (
-  <div className={styles.shareableLinkSection}>
+  <Card className={styles.shareableLinkSection}>
     <div className={styles.successMessage}>
       <div className={styles.successHeader}>
-        <Zap size={24} fill="#28a745" />
+        <Zap size={24} fill="currentColor" />
         Optimisation Complete!
       </div>
       <div className={styles.successDescription}>
@@ -141,11 +147,13 @@ const OptimiserResultsFullTimetable: React.FC<OptimiserResultsFullTimetableProps
       </div>
     </div>
 
-    <a className={styles.shareableLinkButton} href={shareableLink} target="blank">
-      <ExternalLink size={20} />
-      Open Optimised Timetable
-    </a>
-  </div>
+    <Button asChild variant="outline">
+      <a className={styles.shareableLinkButton} href={shareableLink} target="blank">
+        <ExternalLink size={20} />
+        Open Optimised Timetable
+      </a>
+    </Button>
+  </Card>
 );
 
 export default OptimiserResults;

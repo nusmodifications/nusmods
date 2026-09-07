@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -63,14 +64,12 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
 
             <div className={styles.buttons}>
               {this.props.availableArchive.map((year) => (
-                <Link
-                  className="btn btn-outline-primary"
-                  to={moduleArchive(moduleCode, year)}
-                  key={year}
-                >
-                  AY
-                  {year} archive
-                </Link>
+                <Button asChild variant="outline">
+                  <Link to={moduleArchive(moduleCode, year)} key={year}>
+                    AY
+                    {year} archive
+                  </Link>
+                </Button>
               ))}
             </div>
 
@@ -96,16 +95,12 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
             </p>
 
             <div className={styles.buttons}>
-              <button
-                type="button"
-                className="btn btn-outline-primary"
-                onClick={() => Sentry.showReportDialog()}
-              >
+              <Button variant="outline" type="button" onClick={() => Sentry.showReportDialog()}>
                 {moduleCode} should be here
-              </button>
-              <Link className="btn btn-primary" to="/">
-                Bring me home
-              </Link>
+              </Button>
+              <Button asChild variant="default">
+                <Link to="/">Bring me home</Link>
+              </Button>
             </div>
           </>
         )}

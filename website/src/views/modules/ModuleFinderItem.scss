@@ -2,11 +2,14 @@
 
 .modulesItem {
   overflow-wrap: break-word;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 
   .modulesTitle {
     margin-top: 0.15rem; // align baseline with semester switcher
-    font-size: $font-size-lg;
+    font-weight: 650;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
   }
 
   .notOffered {
@@ -22,5 +25,29 @@
     p {
       margin-bottom: 0;
     }
+  }
+}
+
+.resultCard {
+  padding: 1.4rem;
+
+  header > p {
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+  }
+
+  dl {
+    margin-bottom: 0;
+    font-size: 0.85rem;
+  }
+
+  dt {
+    margin-top: 0.6rem;
+    font-weight: 600;
+  }
+
+  dd {
+    margin-bottom: 0;
+    color: var(--muted-foreground);
   }
 }

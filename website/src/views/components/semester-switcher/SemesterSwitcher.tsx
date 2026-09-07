@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { memo } from 'react';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 
@@ -25,8 +26,9 @@ const SemesterSwitcher = memo<Props>(({ readOnly, semester, onSelectSemester }) 
   return (
     <div className={styles.semesterSwitcher}>
       {!readOnly && (
-        <button
-          className="btn btn-link"
+        <Button
+          variant="ghost"
+          size="icon"
           type="button"
           aria-label="Previous Semester"
           onClick={() => {
@@ -35,13 +37,14 @@ const SemesterSwitcher = memo<Props>(({ readOnly, semester, onSelectSemester }) 
           disabled={!isValidSemester(semester - 1)}
         >
           <ChevronLeft />
-        </button>
+        </Button>
       )}
       <span className="sr-only">Current semester:</span>
       <span className={styles.semesterName}>{config.semesterNames[semester]}</span>
       {!readOnly && (
-        <button
-          className="btn btn-link"
+        <Button
+          variant="ghost"
+          size="icon"
           type="button"
           aria-label="Next Semester"
           onClick={() => {
@@ -50,7 +53,7 @@ const SemesterSwitcher = memo<Props>(({ readOnly, semester, onSelectSemester }) 
           disabled={!isValidSemester(semester + 1)}
         >
           <ChevronRight />
-        </button>
+        </Button>
       )}
     </div>
   );

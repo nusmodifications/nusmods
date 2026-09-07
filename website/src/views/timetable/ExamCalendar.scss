@@ -76,7 +76,6 @@
 }
 
 .todayBadge {
-  composes: badge badge-primary from global;
   margin-left: 0.4rem;
   vertical-align: text-bottom;
 }

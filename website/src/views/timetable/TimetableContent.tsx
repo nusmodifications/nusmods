@@ -1,3 +1,4 @@
+import { Alert } from 'components/ui/alert';
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -331,9 +332,11 @@ class TimetableContent extends React.Component<Props, State> {
       <>
         {!isEmpty(clashes) && (
           <>
-            <div className="alert alert-danger">
-              Warning! There are clashes in your exam timetable.
-            </div>
+            <Alert asChild variant="destructive">
+              <div className="alert alert-danger">
+                Warning! There are clashes in your exam timetable.
+              </div>
+            </Alert>
             {Object.keys(clashes)
               .sort()
               .map((clashDate) => (

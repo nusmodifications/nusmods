@@ -1,3 +1,4 @@
+import { Card } from 'components/ui/card';
 import * as React from 'react';
 
 import classnames from 'classnames';
@@ -51,13 +52,13 @@ const BeforeLessonCard: React.FC<Props> = (props) => {
         {marker}
         <p />
       </div>
-      <div className={classnames(cardStyles.card, styles.inBetweenClass)}>
+      <Card className={classnames(cardStyles.card, styles.inBetweenClass)}>
         <p>
           You have <strong>{formatDistanceStrict(nextLessonDate, currentTime)}</strong> till the
           next class.
         </p>
         {comment}
-      </div>
+      </Card>
     </div>
   );
 };

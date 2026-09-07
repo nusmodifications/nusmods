@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -19,13 +20,15 @@ const GameOver: React.FC<Props> = (props) => (
 
     <HighScoreForm score={props.score} />
 
-    <button
-      className={classnames('btn btn-lg btn-primary')}
+    <Button
+      variant="default"
+      size="lg"
+      className={classnames(' ')}
       type="button"
       onClick={props.resetGame}
     >
       Continue
-    </button>
+    </Button>
   </GameOverlay>
 );
 

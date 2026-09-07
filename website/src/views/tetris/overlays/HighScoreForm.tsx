@@ -1,3 +1,7 @@
+import { Label } from 'components/ui/label';
+import { Input } from 'components/ui/input';
+import { Button } from 'components/ui/button';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from 'components/ui/table';
 import { last, sortBy } from 'lodash-es';
 import * as React from 'react';
 import classnames from 'classnames';
@@ -37,10 +41,10 @@ export default class HighScoreForm extends React.PureComponent<Props, State> {
     return (
       <form className={styles.form} onSubmit={this.onSubmit}>
         <div className="input-group">
-          <label className="sr-only" htmlFor="score-name">
+          <Label className="sr-only" htmlFor="score-name">
             Name
-          </label>
-          <input
+          </Label>
+          <Input
             required
             type="text"
             className={classnames('form-control form-control-sm')}
@@ -49,9 +53,9 @@ export default class HighScoreForm extends React.PureComponent<Props, State> {
             onChange={(evt) => this.setState({ name: evt.target.value })}
           />
           <div className="input-group-append">
-            <button type="submit" className="btn btn-sm btn-primary">
+            <Button variant="default" size="sm" type="submit">
               Save!
-            </button>
+            </Button>
           </div>
         </div>
       </form>
@@ -88,25 +92,27 @@ export default class HighScoreForm extends React.PureComponent<Props, State> {
 
     return (
       <div className={styles.highScore}>
-        <table className={classnames(styles.table, 'table table-sm table-borderless')}>
-          <thead>
-            <tr>
-              <th aria-label="Rank" />
-              <th>Name</th>
-              <th>Score</th>
-            </tr>
-          </thead>
+        <Table className={classnames(styles.table, 'table table-sm table-borderless')}>
+          <TableHeader>
+            <TableRow>
+              <TableHead aria-label="Rank" />
+              <TableHead>Name</TableHead>
+              <TableHead>Score</TableHead>
+            </TableRow>
+          </TableHeader>
 
-          <tbody>
+          <TableBody>
             {sortedEntries.map(([entryScore, entry], index) => (
-              <tr key={index}>
-                <th>{index + 1}</th>
-                <td className={styles.nameCell}>{entry ? entry.name : this.renderForm()}</td>
-                <td className={styles.scoreCell}>{entryScore}</td>
-              </tr>
+              <TableRow key={index}>
+                <TableHead>{index + 1}</TableHead>
+                <TableCell className={styles.nameCell}>
+                  {entry ? entry.name : this.renderForm()}
+                </TableCell>
+                <TableCell className={styles.scoreCell}>{entryScore}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     );
   }

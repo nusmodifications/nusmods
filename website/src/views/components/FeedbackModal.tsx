@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Heart, GitHub, Mail, Send } from 'react-feather';
@@ -18,18 +19,24 @@ type Props = {
 export const FeedbackButtons: React.FC = () => (
   <div>
     <div className={styles.links}>
-      <ExternalLink className={styles.telegram} href={config.contact.telegram}>
-        <Send />
-        Telegram
-      </ExternalLink>
-      <ExternalLink className={styles.github} href={config.contact.githubRepo}>
-        <GitHub />
-        GitHub
-      </ExternalLink>
-      <ExternalLink className={styles.email} href={`mailto:${config.contact.email}`}>
-        <Mail />
-        Email
-      </ExternalLink>
+      <Button asChild variant="outline">
+        <ExternalLink href={config.contact.telegram}>
+          <Send />
+          Telegram
+        </ExternalLink>
+      </Button>
+      <Button asChild variant="outline">
+        <ExternalLink href={config.contact.githubRepo}>
+          <GitHub />
+          GitHub
+        </ExternalLink>
+      </Button>
+      <Button asChild variant="outline">
+        <ExternalLink href={`mailto:${config.contact.email}`}>
+          <Mail />
+          Email
+        </ExternalLink>
+      </Button>
     </div>
     <p className="text-muted">
       To email us privately, such as for security issues, please use{' '}

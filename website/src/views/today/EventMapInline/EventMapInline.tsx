@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -32,9 +33,14 @@ const EventMapInline: React.FunctionComponent<Props> = ({
   if (!isOpen) {
     return (
       <div className={className}>
-        <button type="button" onClick={toggleOpen} className={classnames(styles.openMap)}>
+        <Button
+          variant="ghost"
+          type="button"
+          onClick={toggleOpen}
+          className={classnames(styles.openMap)}
+        >
           Open Map
-        </button>
+        </Button>
       </div>
     );
   }

@@ -4,20 +4,25 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 1.2rem;
   user-select: none;
+  gap: 0.25rem;
 
   .filterHeader {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
-    line-height: 1;
+    line-height: 1.3;
 
     h3 {
       margin: 0;
-      font-size: $font-size-lg;
-      color: var(--gray-light);
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--foreground);
     }
 
-    :global(.btn) {
+    :global(.ui-button) {
       padding-top: 0;
       padding-bottom: 0;
       margin-left: 0.5rem;
@@ -25,8 +30,7 @@
   }
 
   @include media-breakpoint-up(md) {
-    max-width: 16rem;
-    padding-right: 0.5rem;
+    max-width: none;
   }
 
   @include media-breakpoint-down(sm) {
@@ -34,7 +38,7 @@
     padding-bottom: 4rem;
 
     .filterHeader {
-      padding: $navtab-height ($grid-gutter-width * 0.5) 0.6rem;
+      padding: $navtab-height 0 0.6rem;
 
       h3 {
         margin-bottom: 0;

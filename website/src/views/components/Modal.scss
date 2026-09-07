@@ -1,89 +1,45 @@
 @import '~styles/utils/modules-entry.scss';
 
-/*
-  Remove scroll on the body when react-modal is open
-  Link: https://github.com/reactjs/react-modal#body-class
-  iOS bug: https://www.eventbrite.com/engineering/mobile-safari-why/
-  Workaround for iOS bug: always shows bottom nav bar.
-  See ModulesSelect.jsx with noScroll implementation.
-*/
-:global(.ReactModal__Body--open) {
-  overflow: hidden;
+.modal {
+  composes: scrollable-y from global;
+  padding: 1.5rem;
+
+  @include media-breakpoint-up(md) {
+    padding: 2rem;
+  }
+}
+
+.modal.fullscreen {
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  transform: none;
 }
 
 .animated {
-  :global {
-    animation: zoomIn 0.2s;
+  animation: dialog-enter 0.15s ease-out;
+}
+
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    scale: 0.98;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
   }
 }
 
-:global(.ReactModal__Overlay--before-close) {
+@media (prefers-reduced-motion: reduce) {
   .animated {
-    :global {
-      // Update closeTimeoutMS prop in Modal.jsx if this duration is changed
-      animation: zoomOut 0.15s forwards;
-    }
+    animation: none;
   }
-}
-
-.modal {
-  $spacing: 1rem;
-
-  composes: scrollable-y from global;
-  position: absolute;
-  top: $spacing;
-  right: $spacing;
-  left: $spacing;
-  max-width: 40rem;
-  max-height: calc(100% - #{2 * $spacing});
-  padding: 1rem;
-  margin: 0 auto;
-  background: var(--body-bg);
-  box-shadow: 0 6px 24px rgba(#000, 0.18);
-
-  @include media-breakpoint-down(xs) {
-    &.fullscreen {
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      max-width: 100%;
-      max-height: 100%;
-      padding: 0;
-    }
-  }
-
-  @include media-breakpoint-up(sm) {
-    &.fullscreen {
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      max-width: 100%;
-      max-height: 100%;
-      padding: 0;
-    }
-  }
-
-  @include media-breakpoint-up(md) {
-    top: 5%;
-    max-height: 90%;
-    padding: 2rem;
-  }
-
-  @include night-mode {
-    border: 1px solid #444;
-    box-shadow: 0 6px 24px rgba(#000, 0.5);
-  }
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: $modal-z-index;
-  overflow-y: hidden;
-  background: var(--body-bg-70);
 }

@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { FC, useState, useContext, useCallback, memo } from 'react';
 import { Map } from 'leaflet';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
@@ -43,12 +44,14 @@ const LocationMap: FC<Props> = ({ position, className, height }) => {
       style={style}
       className={classnames(styles.mapWrapper, className, { [styles.expanded]: isExpanded })}
     >
-      <ExternalLink
-        href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
-        className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
-      >
-        Open in Google Maps
-      </ExternalLink>
+      <Button asChild variant="default" size="sm">
+        <ExternalLink
+          href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
+          className={classnames(' ', styles.gmapBtn)}
+        >
+          Open in Google Maps
+        </ExternalLink>
+      </Button>
 
       <MapContainer center={position} zoom={18} maxZoom={18} className={styles.map}>
         <MapViewportChanger center={position} />

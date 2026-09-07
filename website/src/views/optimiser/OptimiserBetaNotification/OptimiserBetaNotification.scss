@@ -1,6 +1,5 @@
 @import '~styles/utils/modules-entry';
 
-
 .announcement {
   z-index: 1;
   display: flex;
@@ -62,50 +61,6 @@
   }
 }
 
-
 .actionButton {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.3rem 0.75rem;
-  border: 1.5px solid #28a745;
-  border-radius: 4px;
-  font-weight: 600;
   font-size: 0.8rem;
-  text-decoration: none;
-  white-space: nowrap;
-  letter-spacing: 0.02em;
-  color: #28a745;
-  background: transparent;
-  transition: background 0.15s ease, color 0.15s ease;
-  gap: 0.35rem;
-
-  svg {
-    flex-shrink: 0;
-  }
-
-  &:hover {
-    text-decoration: none;
-    color: var(--body-bg);
-    background: #28a745;
-  }
-
-  @include media-breakpoint-down(sm) {
-    justify-content: center;
-    width: 100%;
-  }
-}
-
-.backgroundIcon {
-  position: absolute;
-  top: -1rem;
-  left: -1rem;
-  opacity: 0.1;
-  width: 8rem;
-  height: 8rem;
-  pointer-events: none;
-}
-
-
-.heading {
-  letter-spacing: 0.1rem;
 }

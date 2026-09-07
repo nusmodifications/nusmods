@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import classnames from 'classnames';
 import { useCallback } from 'react';
 import { X } from 'react-feather';
@@ -14,14 +15,15 @@ const DeleteButton: React.FC<Props> = ({ label, removeModule, moduleCode }) => {
   const handleClick = useCallback(() => removeModule(moduleCode), [moduleCode, removeModule]);
   return (
     <Tooltip content={label} touch="hold">
-      <button
+      <Button
+        variant="outline"
         type="button"
-        className={classnames('btn btn-outline-secondary btn-svg', styles.delete)}
+        className={classnames(' btn-svg', styles.delete)}
         aria-label={label}
         onClick={handleClick}
       >
         <X className={styles.x} />
-      </button>
+      </Button>
     </Tooltip>
   );
 };

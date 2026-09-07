@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -47,22 +48,23 @@ export class SaveModuleButtonComponent extends PureComponent<Props, State> {
     const hasModule = findModule(module, planToTakeModules);
     return (
       <div
-        className={classnames('btn-group', styles.buttonGroup, className, {
-          'btn-block': block,
+        className={classnames(styles.buttonGroup, className, {
+          [styles.block]: block,
         })}
       >
-        <button
+        <Button
           type="button"
-          className={classnames('btn btn-outline-primary', {
-            'btn-block': block,
+          variant="outline"
+          className={classnames({
+            [styles.block]: block,
           })}
           onClick={() => this.onSelect()}
         >
-          <>
+          <span>
             {hasModule ? 'Remove from' : 'Add to'} <br />
             <strong>Planner</strong>
-          </>
-        </button>
+          </span>
+        </Button>
       </div>
     );
   }

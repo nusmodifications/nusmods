@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry';
 
 div.modulesPageContainer {
-  max-width: 75rem;
+  max-width: 92rem;
   margin-left: 0;
   animation-name: $page-entering-animation;
 }
@@ -9,17 +9,18 @@ div.modulesPageContainer {
 .moduleFinderLayout {
   display: flex;
   flex-wrap: nowrap;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .searchResultsColumn {
+  position: relative;
   flex: 1;
   min-width: 0; // Allows the column to shrink below its content size
 }
 
 .sidebarColumn {
   flex-shrink: 0; // Prevents the sidebar from shrinking
-  width: 300px; // Adjust this width as needed
+  width: 280px;
 }
 
 .modulesList {
@@ -34,12 +35,11 @@ div.modulesPageContainer {
 
 .modulePageDivider {
   width: 100%;
-  padding: 0.6rem;
+  padding: 0.25rem 0;
   margin: 1rem 0;
-  border-bottom: 1px solid var(--gray-lighter);
   font-size: $font-size-sm;
-  text-align: right;
-  color: var(--gray);
+  text-align: left;
+  color: var(--muted-foreground);
 }
 
 .loadingOverlay {

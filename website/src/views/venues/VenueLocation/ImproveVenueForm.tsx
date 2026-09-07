@@ -1,3 +1,8 @@
+import { Alert } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
+import { NativeSelect } from 'components/ui/native-select';
+import { Label } from 'components/ui/label';
 import * as React from 'react';
 import type { LatLng } from 'leaflet';
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
@@ -205,16 +210,17 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
       <form className="form-row" onSubmit={this.onSubmit}>
         {this.state.error && (
           <div className="col-sm-12">
-            <div className="alert alert-warning">
-              There was a problem submitting your feedback. Please try again later.
-            </div>
+            <Alert asChild variant="warning">
+              <div className="alert alert-warning">
+                There was a problem submitting your feedback. Please try again later.
+              </div>
+            </Alert>
           </div>
         )}
 
         <div className="form-group col-sm-12">
-          <label htmlFor="improve-venue-email">Email (optional)</label>
-          <input
-            className="form-control"
+          <Label htmlFor="improve-venue-email">Email (optional)</Label>
+          <Input
             id="improve-venue-email"
             aria-describedby="improve-venue-email-help"
             type="email"
@@ -229,9 +235,8 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
         </div>
 
         <div className="form-group col-sm-7">
-          <label htmlFor="improve-venue-room">Room Name</label>
-          <input
-            className="form-control"
+          <Label htmlFor="improve-venue-room">Room Name</Label>
+          <Input
             id="improve-venue-room"
             type="text"
             placeholder="eg. Seminar Room 2, Physics Lab 5"
@@ -242,9 +247,8 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
         </div>
 
         <div className="form-group col-sm-5">
-          <label htmlFor="improve-venue-floor">What floor is this room on?</label>
-          <input
-            className="form-control"
+          <Label htmlFor="improve-venue-floor">What floor is this room on?</Label>
+          <Input
             id="improve-venue-floor"
             aria-describedby="improve-venue-floor-help"
             type="number"
@@ -293,17 +297,14 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
             )}
           </MapContainer>
 
-          <select
-            className={classnames('form-control', styles.jumpSelect)}
-            onChange={this.onMapJump}
-          >
+          <NativeSelect className={styles.jumpSelect} onChange={this.onMapJump}>
             <option>Jump to...</option>
             {Object.keys(wellKnownLocations).map((name) => (
               <option key={name} value={name}>
                 {name}
               </option>
             ))}
-          </select>
+          </NativeSelect>
 
           <small
             className={classnames(styles.instructions, {
@@ -315,15 +316,17 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
           </small>
 
           {'geolocation' in navigator && (
-            <button
-              className={classnames('btn btn-sm btn-secondary', styles.geolocate)}
+            <Button
+              variant="secondary"
+              size="sm"
+              className={styles.geolocate}
               title="Center on my location"
               aria-label="Center on my location"
               type="button"
               onClick={this.geolocate}
             >
               <MapPin /> Use my location
-            </button>
+            </Button>
           )}
         </div>
 
@@ -335,19 +338,20 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
 
         <div className={classnames(styles.actions, 'col-sm-12')}>
           {this.props.onBack && (
-            <button type="button" className="btn btn-lg btn-secondary" onClick={this.props.onBack}>
+            <Button type="button" variant="secondary" size="lg" onClick={this.props.onBack}>
               Back
-            </button>
+            </Button>
           )}
 
-          <button
-            className={classnames('btn btn-lg btn-primary', {
+          <Button
+            size="lg"
+            className={classnames({
               disabled: !this.state.latlngUpdated,
             })}
             type="submit"
           >
             Submit
-          </button>
+          </Button>
         </div>
       </form>
     );

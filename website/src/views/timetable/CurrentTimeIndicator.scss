@@ -27,7 +27,7 @@ $line-width: 0.1rem;
   width: $circle-diameter;
   height: $circle-diameter;
   border-radius: 50%;
-  background: theme-color();
+  background: var(--primary);
 }
 
 .linePart {
@@ -36,7 +36,7 @@ $line-width: 0.1rem;
   left: -$line-width * 0.5;
   width: $line-width;
   height: 100%;
-  background: theme-color();
+  background: var(--primary);
 }
 
 :global(.verticalMode) .linePart {

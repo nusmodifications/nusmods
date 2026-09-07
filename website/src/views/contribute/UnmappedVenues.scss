@@ -14,7 +14,7 @@ $gradient-height: 6rem;
   position: relative;
   overflow: hidden;
   max-height: 20rem;
-  border-bottom: 1px solid theme-color();
+  border-bottom: 1px solid var(--primary);
 
   &::after {
     content: '';

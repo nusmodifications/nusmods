@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { range } from 'lodash-es';
 import classnames from 'classnames';
@@ -17,7 +18,9 @@ const ThemeOption: React.FC<Props> = (props) => {
   const { theme, isSelected, onSelectTheme, className } = props;
 
   return (
-    <button
+    <Button
+      variant="outline"
+      aria-pressed={isSelected}
       type="button"
       className={classnames(className, styles.option, `theme-${theme.id}`, {
         [styles.isSelected]: isSelected,
@@ -32,7 +35,7 @@ const ThemeOption: React.FC<Props> = (props) => {
           <li key={index} className={classnames(styles.colorItem, `hoverable color-${index}`)} />
         ))}
       </ul>
-    </button>
+    </Button>
   );
 };
 

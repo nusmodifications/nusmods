@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { isEmpty } from 'lodash-es';
 import { useCallback } from 'react';
 import classNames from 'classnames';
@@ -59,7 +60,9 @@ const OptimiserPinnedSlotSelect: React.FC<Props> = ({
           );
 
           return (
-            <button
+            <Button
+              variant="outline"
+              aria-pressed={isPinned}
               key={option.lessonKey}
               type="button"
               disabled={!classNo}
@@ -76,7 +79,7 @@ const OptimiserPinnedSlotSelect: React.FC<Props> = ({
               ) : (
                 option.displayText
               )}
-            </button>
+            </Button>
           );
         })}
       </div>

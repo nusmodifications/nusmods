@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { FC, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { openNotification } from 'actions/app';
@@ -58,11 +59,11 @@ const PlannerImportButton: FC<Props> = (props: Props) => {
   };
 
   return (
-    <button className="btn btn-svg btn-outline-primary" type="button" onClick={onClick}>
+    <Button variant="outline" className="btn-svg" type="button" onClick={onClick}>
       <Upload className="svg" />
       <p>Upload</p>
       <input type="file" accept=".json" ref={fileInputRef} onChange={handleFileUpload} hidden />
-    </button>
+    </Button>
   );
 };
 

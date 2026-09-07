@@ -1,3 +1,5 @@
+import { NativeSelect } from 'components/ui/native-select';
+import { Label } from 'components/ui/label';
 import * as React from 'react';
 import classnames from 'classnames';
 import { range } from 'lodash-es';
@@ -49,10 +51,9 @@ const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpda
   return (
     <div className={classnames(className, styles.search)}>
       <div className="form-group">
-        <label htmlFor="venue-day">On</label>
-        <select
+        <Label htmlFor="venue-day">On</Label>
+        <NativeSelect
           id="venue-day"
-          className="form-control"
           value={searchOptions.day}
           onChange={(evt) => onUpdateInner(evt, 'day')}
         >
@@ -61,14 +62,13 @@ const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpda
               {name}s
             </option>
           ))}
-        </select>
+        </NativeSelect>
       </div>
 
       <div className="form-group">
-        <label htmlFor="venue-time">From</label>
-        <select
+        <Label htmlFor="venue-time">From</Label>
+        <NativeSelect
           id="venue-time"
-          className="form-control"
           value={searchOptions.time}
           onChange={(evt) => onUpdateInner(evt, 'time')}
         >
@@ -77,14 +77,13 @@ const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpda
               {formatHour(hour)}
             </option>
           ))}
-        </select>
+        </NativeSelect>
       </div>
 
       <div className="form-group">
-        <label htmlFor="venue-duration">To</label>
-        <select
+        <Label htmlFor="venue-duration">To</Label>
+        <NativeSelect
           id="venue-duration"
-          className="form-control"
           value={searchOptions.duration}
           onChange={(evt) => onUpdateInner(evt, 'duration')}
         >
@@ -93,7 +92,7 @@ const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpda
               {formatHour(searchOptions.time + hour)} ({hour} {hour === 1 ? 'hr' : 'hrs'})
             </option>
           ))}
-        </select>
+        </NativeSelect>
       </div>
     </div>
   );

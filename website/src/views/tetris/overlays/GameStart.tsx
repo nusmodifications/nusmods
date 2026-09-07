@@ -1,3 +1,5 @@
+import { Button } from 'components/ui/button';
+import { Table, TableBody, TableRow, TableHead, TableCell } from 'components/ui/table';
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -16,13 +18,15 @@ const GameStart: React.FC<Props> = (props) => (
   <GameOverlay>
     <TetrisLogo />
 
-    <button
-      className={classnames(styles.primaryBtn, 'btn btn-lg btn-primary')}
+    <Button
+      variant="default"
+      size="lg"
+      className={classnames(styles.primaryBtn, ' ')}
       type="button"
       onClick={props.startGame}
     >
       Start
-    </button>
+    </Button>
 
     <h3>How to Play</h3>
     <div>
@@ -32,34 +36,34 @@ const GameStart: React.FC<Props> = (props) => (
     <section className={styles.scoreSection}>
       <div>
         <h3>Scores</h3>
-        <table className={classnames(styles.scoreTable, 'table table-sm table-borderless ')}>
-          <tbody>
-            <tr>
-              <th>Soft Drop</th>
-              <td>1 &times; distance</td>
-            </tr>
-            <tr>
-              <th>Hard Drop</th>
-              <td>2 &times; distance</td>
-            </tr>
-            <tr>
-              <th>1 row clear</th>
-              <td>100</td>
-            </tr>
-            <tr>
-              <th>2 rows clear</th>
-              <td>300</td>
-            </tr>
-            <tr>
-              <th>3 rows clear</th>
-              <td>500</td>
-            </tr>
-            <tr>
-              <th>4 rows clear</th>
-              <td>800</td>
-            </tr>
-          </tbody>
-        </table>
+        <Table className={classnames(styles.scoreTable, 'table table-sm table-borderless ')}>
+          <TableBody>
+            <TableRow>
+              <TableHead>Soft Drop</TableHead>
+              <TableCell>1 &times; distance</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>Hard Drop</TableHead>
+              <TableCell>2 &times; distance</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>1 row clear</TableHead>
+              <TableCell>100</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>2 rows clear</TableHead>
+              <TableCell>300</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>3 rows clear</TableHead>
+              <TableCell>500</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>4 rows clear</TableHead>
+              <TableCell>800</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
 
       <div>

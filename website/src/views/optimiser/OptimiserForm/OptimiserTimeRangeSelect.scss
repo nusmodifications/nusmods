@@ -4,6 +4,7 @@
 .timeControls {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   margin-top: $form-fields-gap;
   gap: 3rem;
 

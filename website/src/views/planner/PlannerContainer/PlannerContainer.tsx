@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash-es';
@@ -187,14 +188,15 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
             <PlannerImportButton importPlanner={this.onImportPlanner} />
             <PlannerExportButton downloadPlanner={this.props.downloadPlanner} />
 
-            <button
-              className={classnames('btn btn-svg btn-outline-primary', styles.settingsButton)}
+            <Button
+              variant="outline"
+              className={classnames('btn-svg', styles.settingsButton)}
               type="button"
               onClick={() => this.setState({ showSettings: true })}
             >
               <Settings className="svg" />
               <p>Settings</p>
-            </button>
+            </Button>
           </div>
         </div>
       </header>

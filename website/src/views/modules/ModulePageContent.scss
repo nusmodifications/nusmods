@@ -6,6 +6,7 @@ $sticky-top: $navbar-height;
 .pageTitle {
   margin: 0 0 0.5rem;
   font-size: $font-size-xlg;
+  letter-spacing: -0.04em;
 }
 
 .moduleInfoPage {
@@ -38,23 +39,26 @@ $sticky-top: $navbar-height;
   margin-bottom: 0.2rem;
   font-weight: bold;
   font-size: $font-size-xlg * 1.2;
-  color: theme-color();
+  color: var(--primary);
 }
 
 .header {
   padding: 0 0 1rem;
   margin-bottom: 1rem;
-  border-bottom: 1px solid var(--gray-lighter);
+  border-bottom: 1px solid var(--border);
 
   p {
+    margin-top: 0.55rem;
     margin-bottom: 0;
+    font-size: 0.85rem;
+    color: var(--muted-foreground);
   }
 }
 
 .sectionHeading {
   padding: 0.6rem 0;
   margin: 0 0 0.6rem;
-  border-bottom: 1px solid var(--gray-lighter);
+  border-bottom: 1px solid var(--border);
   font-weight: $font-weight-bold;
   font-size: $font-size-lg;
 }
@@ -81,7 +85,7 @@ $sticky-top: $navbar-height;
   .checkmark {
     width: 1.2rem;
     margin: 0 0.2rem 0 0.5rem;
-    color: theme-color(success);
+    color: var(--success);
   }
 }
 
@@ -170,15 +174,23 @@ $sticky-top: $navbar-height;
 
   a {
     display: block;
-    padding: 0.4rem 0 0.4rem 1rem;
-    border-left: 0.3rem solid var(--gray-lighter);
-    color: var(--gray-light);
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 0.2rem;
+    border: 0;
+    border-radius: calc(var(--radius) - 2px);
+    font-size: 0.85rem;
+    color: var(--muted-foreground);
+
+    &:hover {
+      color: var(--accent-foreground);
+      background: var(--accent);
+    }
   }
 
   .activeMenuItem a {
-    border-color: theme-color();
     font-weight: bold;
-    color: theme-color();
+    color: var(--primary);
+    background: var(--accent);
   }
 
   @include media-breakpoint-down(sm) {
@@ -190,4 +202,12 @@ $sticky-top: $navbar-height;
       font-size: 1.2rem;
     }
   }
+}
+
+.summaryCard {
+  padding: 1.5rem;
+}
+
+.sectionCard {
+  padding: 1.25rem;
 }

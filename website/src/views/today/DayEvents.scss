@@ -27,8 +27,9 @@
   overflow: hidden;
   flex: 1 0;
   padding: $v-padding $h-padding;
-  border-bottom: 0.3rem solid;
-  border-radius: 0.8rem;
+  border: 0;
+  border-left: 0.25rem solid;
+  border-radius: var(--radius);
   font-size: 0.9rem;
 
   h4 {

@@ -1,3 +1,6 @@
+import { Alert } from 'components/ui/alert';
+import { Card } from 'components/ui/card';
+import { Badge } from 'components/ui/badge';
 import { memo, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
@@ -91,23 +94,28 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
       <Announcements />
 
       {isArchive && (
-        <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
-          <Archive className={styles.archiveIcon} />
-          <p>
-            You are looking at archived information of this course from academic year{' '}
-            <strong>{archiveYear}</strong>. Information on this page may be out of date.
-          </p>
-        </div>
+        <Alert asChild variant="warning">
+          <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
+            <Archive className={styles.archiveIcon} />
+            <p>
+              You are looking at archived information of this course from academic year{' '}
+              <strong>{archiveYear}</strong>. Information on this page may be out of date.
+            </p>
+          </div>
+        </Alert>
       )}
 
       {!offered && (
-        <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
-          <Archive className={styles.archiveIcon} />
-          <p>
-            This course is not offered in this academic year. You may use this information to map
-            exchange courses or to see courses that were previously or may be offered in the future.
-          </p>
-        </div>
+        <Alert asChild variant="warning">
+          <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
+            <Archive className={styles.archiveIcon} />
+            <p>
+              This course is not offered in this academic year. You may use this information to map
+              exchange courses or to see courses that were previously or may be offered in the
+              future.
+            </p>
+          </div>
+        </Alert>
       )}
 
       <div className="row">
@@ -116,175 +124,185 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
             id={SIDE_MENU_ITEMS.details}
             className={classnames(styles.section, styles.firstSection)}
           >
-            <header className={styles.header}>
-              <h1 className={styles.pageTitle}>
-                <span className={styles.moduleCodeTitle}>{moduleCodes.join('/')}</span>
-                {title}
-              </h1>
+            <Card className={styles.summaryCard}>
+              <header className={styles.header}>
+                <h1 className={styles.pageTitle}>
+                  <span className={styles.moduleCodeTitle}>{moduleCodes.join('/')}</span>
+                  {title}
+                </h1>
 
-              <p>
-                {intersperse(
-                  [
-                    <span key="department">{module.department}</span>,
-                    <span key="faculty">{module.faculty}</span>,
-                    <span key="mc">{renderMCs(module.moduleCredit)}</span>,
-                  ],
-                  BULLET,
-                )}
-              </p>
+                <p>
+                  {intersperse(
+                    [
+                      <span key="department">{module.department}</span>,
+                      <span key="faculty">{module.faculty}</span>,
+                      <Badge key="mc" variant="secondary">
+                        {renderMCs(module.moduleCredit)}
+                      </Badge>,
+                    ],
+                    BULLET,
+                  )}
+                </p>
 
-              <p>
-                {intersperse(
-                  semesters.map((semester) => (
-                    <span key={semester}>{config.semesterNames[semester]}</span>
-                  )),
-                  BULLET,
-                )}
-              </p>
-            </header>
+                <p>
+                  {intersperse(
+                    semesters.map((semester) => (
+                      <Badge key={semester} variant="outline">
+                        {config.semesterNames[semester]}
+                      </Badge>
+                    )),
+                    BULLET,
+                  )}
+                </p>
+              </header>
 
-            <section className={classnames('row', styles.details)}>
-              <div className="col-sm-8">
-                {module.description && <p>{module.description}</p>}
+              <section className={classnames('row', styles.details)}>
+                <div className="col-sm-8">
+                  {module.description && <p>{module.description}</p>}
 
-                <dl>
-                  {module.prerequisite && (
+                  <dl>
+                    {module.prerequisite && (
+                      <>
+                        <dt>Prerequisite</dt>
+                        <dd>
+                          <LinkModuleCodes>{module.prerequisite}</LinkModuleCodes>
+                        </dd>
+                      </>
+                    )}
+
+                    {module.prerequisiteAdvisory && (
+                      <>
+                        <dt>Prerequisite Advisory</dt>
+                        <dd>
+                          <LinkModuleCodes>{module.prerequisiteAdvisory}</LinkModuleCodes>
+                        </dd>
+                      </>
+                    )}
+
+                    {module.corequisite && (
+                      <>
+                        <dt>Corequisite</dt>
+                        <dd>
+                          <LinkModuleCodes>{module.corequisite}</LinkModuleCodes>
+                        </dd>
+                      </>
+                    )}
+
+                    {module.preclusion && (
+                      <>
+                        <dt>Preclusion</dt>
+                        <dd>
+                          <LinkModuleCodes>{module.preclusion}</LinkModuleCodes>
+                        </dd>
+                      </>
+                    )}
+
+                    {module.attributes && (
+                      <>
+                        <dt>Additional Information</dt>
+                        <dd>
+                          <ul className={styles.attributes}>
+                            {Object.keys(module.attributes).map((key) => (
+                              <li key={key}>
+                                <Check className={styles.checkmark} />{' '}
+                                {attributeDescription[key as keyof NUSModuleAttributes]}
+                              </li>
+                            ))}
+                          </ul>
+                          {module.additionalInformation && <p>{module.additionalInformation}</p>}
+                        </dd>
+                      </>
+                    )}
+                  </dl>
+
+                  {module.workload ? (
+                    <ModuleWorkload workload={module.workload} />
+                  ) : (
                     <>
-                      <dt>Prerequisite</dt>
-                      <dd>
-                        <LinkModuleCodes>{module.prerequisite}</LinkModuleCodes>
-                      </dd>
+                      <h4>Workload</h4>
+                      <p>Workload not available</p>
                     </>
                   )}
-
-                  {module.prerequisiteAdvisory && (
-                    <>
-                      <dt>Prerequisite Advisory</dt>
-                      <dd>
-                        <LinkModuleCodes>{module.prerequisiteAdvisory}</LinkModuleCodes>
-                      </dd>
-                    </>
-                  )}
-
-                  {module.corequisite && (
-                    <>
-                      <dt>Corequisite</dt>
-                      <dd>
-                        <LinkModuleCodes>{module.corequisite}</LinkModuleCodes>
-                      </dd>
-                    </>
-                  )}
-
-                  {module.preclusion && (
-                    <>
-                      <dt>Preclusion</dt>
-                      <dd>
-                        <LinkModuleCodes>{module.preclusion}</LinkModuleCodes>
-                      </dd>
-                    </>
-                  )}
-
-                  {module.attributes && (
-                    <>
-                      <dt>Additional Information</dt>
-                      <dd>
-                        <ul className={styles.attributes}>
-                          {Object.keys(module.attributes).map((key) => (
-                            <li key={key}>
-                              <Check className={styles.checkmark} />{' '}
-                              {attributeDescription[key as keyof NUSModuleAttributes]}
-                            </li>
-                          ))}
-                        </ul>
-                        {module.additionalInformation && <p>{module.additionalInformation}</p>}
-                      </dd>
-                    </>
-                  )}
-                </dl>
-
-                {module.workload ? (
-                  <ModuleWorkload workload={module.workload} />
-                ) : (
-                  <>
-                    <h4>Workload</h4>
-                    <p>Workload not available</p>
-                  </>
-                )}
-              </div>
-
-              <div className="col-sm-4">
-                <div className={styles.gradingBasisDescription}>
-                  <h3 className={styles.descriptionHeading}>Grading Basis</h3>
-                  <p>{module.gradingBasisDescription ?? 'Information not available.'}</p>
                 </div>
-                {sortBy(module.semesterData, (semester) => semester.semester).map((semester) => (
-                  <div key={semester.semester} className={styles.exam}>
-                    <h3 className={styles.descriptionHeading}>
-                      {module.semesterData.length > 1 && config.semesterNames[semester.semester]}{' '}
-                      Exam
-                    </h3>
 
-                    <ModuleExamInfo semesterData={semester} />
-
-                    <ModuleExamClash
-                      semester={semester.semester}
-                      examDate={semester.examDate}
-                      moduleCode={moduleCode}
-                    />
+                <div className="col-sm-4">
+                  <div className={styles.gradingBasisDescription}>
+                    <h3 className={styles.descriptionHeading}>Grading Basis</h3>
+                    <p>{module.gradingBasisDescription ?? 'Information not available.'}</p>
                   </div>
-                ))}
+                  {sortBy(module.semesterData, (semester) => semester.semester).map((semester) => (
+                    <div key={semester.semester} className={styles.exam}>
+                      <h3 className={styles.descriptionHeading}>
+                        {module.semesterData.length > 1 && config.semesterNames[semester.semester]}{' '}
+                        Exam
+                      </h3>
 
-                {shouldShowSt2ExamExternalLink(module) && (
-                  <div className={styles.exam}>
-                    <h3 className={styles.descriptionHeading}>
-                      AY{getPreviousAyShortName()} Special Term II Exam
-                    </h3>
-                    <p>
-                      Please visit{' '}
-                      <a
-                        href={config.st2ExamTimetableUrl}
-                        target="_blank"
-                        rel="noopener noreferrer nofollow"
-                      >
-                        the exam timetable
-                      </a>{' '}
-                      instead.
-                    </p>
+                      <ModuleExamInfo semesterData={semester} />
+
+                      <ModuleExamClash
+                        semester={semester.semester}
+                        examDate={semester.examDate}
+                        moduleCode={moduleCode}
+                      />
+                    </div>
+                  ))}
+
+                  {shouldShowSt2ExamExternalLink(module) && (
+                    <div className={styles.exam}>
+                      <h3 className={styles.descriptionHeading}>
+                        AY{getPreviousAyShortName()} Special Term II Exam
+                      </h3>
+                      <p>
+                        Please visit{' '}
+                        <a
+                          href={config.st2ExamTimetableUrl}
+                          target="_blank"
+                          rel="noopener noreferrer nofollow"
+                        >
+                          the exam timetable
+                        </a>{' '}
+                        instead.
+                      </p>
+                    </div>
+                  )}
+
+                  {!isArchive && offered && (
+                    <>
+                      <div className={styles.addToTimetable}>
+                        <AddModuleDropdown module={module} block />
+                      </div>
+                      <div className={styles.addToTimetable}>
+                        <SaveModuleButton module={module} block />
+                      </div>
+                    </>
+                  )}
+
+                  <div>
+                    <ReportError module={module} />
                   </div>
-                )}
-
-                {!isArchive && offered && (
-                  <>
-                    <div className={styles.addToTimetable}>
-                      <AddModuleDropdown module={module} className="btn-group-sm" block />
-                    </div>
-                    <div className={styles.addToTimetable}>
-                      <SaveModuleButton module={module} className="btn-group-sm" block />
-                    </div>
-                  </>
-                )}
-
-                <div>
-                  <ReportError module={module} />
                 </div>
-              </div>
-            </section>
+              </section>
+            </Card>
           </div>
 
           <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
             <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
-            <ErrorBoundary>
-              <ModuleTree
-                moduleCode={moduleCode}
-                prereqTree={module.prereqTree}
-                fulfillRequirements={module.fulfillRequirements}
-              />
-            </ErrorBoundary>
+            <Card className={styles.sectionCard}>
+              <ErrorBoundary>
+                <ModuleTree
+                  moduleCode={moduleCode}
+                  prereqTree={module.prereqTree}
+                  fulfillRequirements={module.fulfillRequirements}
+                />
+              </ErrorBoundary>
+            </Card>
           </section>
 
           <section className={styles.section} id={SIDE_MENU_ITEMS.timetable}>
             <h2 className={styles.sectionHeading}>Timetable</h2>
-            <LessonTimetable allSemesterData={module.semesterData} />
+            <Card className={styles.sectionCard}>
+              <LessonTimetable allSemesterData={module.semesterData} />
+            </Card>
           </section>
 
           <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
@@ -294,34 +312,36 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                 isOnline ? (
                   <div className="row">
                     <div className="col-xl-4">
-                      <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
-                        <h3>Hi There!</h3>
-                        <p>
-                          We would like to encourage everyone who enjoyed using NUSMods to
-                          contribute back to the community by writing reviews for courses that you
-                          have taken before. Your efforts will go a long way in building up a
-                          vibrant and rich NUS community.
-                        </p>
-                        <strong>Please note:</strong>
-                        <ol className={styles.modReviewDescription}>
-                          <li>
-                            Because the experience of each course will differ according to the
-                            professor teaching the course, at the start of your review, please state
-                            the semester taken and the name of the professor who taught the course
-                            in that semester.
-                          </li>
-                          <li>
-                            Other students will read your review to get an idea of what taking the
-                            course will be like. If you'd like to give feedback about the course to
-                            NUS, please use the official Student Feedback system as NUS does not
-                            monitor these reviews.
-                          </li>
-                          <li>
-                            The claims made in these reviews have not been verified by NUS or
-                            NUSMods. Please take all claims with a grain of salt.
-                          </li>
-                        </ol>
-                      </div>
+                      <Alert asChild variant="warning">
+                        <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
+                          <h3>Hi There!</h3>
+                          <p>
+                            We would like to encourage everyone who enjoyed using NUSMods to
+                            contribute back to the community by writing reviews for courses that you
+                            have taken before. Your efforts will go a long way in building up a
+                            vibrant and rich NUS community.
+                          </p>
+                          <strong>Please note:</strong>
+                          <ol className={styles.modReviewDescription}>
+                            <li>
+                              Because the experience of each course will differ according to the
+                              professor teaching the course, at the start of your review, please
+                              state the semester taken and the name of the professor who taught the
+                              course in that semester.
+                            </li>
+                            <li>
+                              Other students will read your review to get an idea of what taking the
+                              course will be like. If you'd like to give feedback about the course
+                              to NUS, please use the official Student Feedback system as NUS does
+                              not monitor these reviews.
+                            </li>
+                            <li>
+                              The claims made in these reviews have not been verified by NUS or
+                              NUSMods. Please take all claims with a grain of salt.
+                            </li>
+                          </ol>
+                        </div>
+                      </Alert>
                     </div>
                     <div className="col-xl-8 order-xl-first">
                       <DisqusComments {...disqusConfig} />

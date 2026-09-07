@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { FC, memo, useLayoutEffect } from 'react';
 import { Maximize, Minimize } from 'react-feather';
 import { useMap } from 'react-leaflet';
@@ -37,14 +38,9 @@ const ExpandMap: FC<Props> = ({ isExpanded, onToggleExpand }) => {
   return (
     <LeafletControl position="bottomleft">
       <Tooltip content={label} touch="hold">
-        <button
-          aria-label={label}
-          type="button"
-          className="btn btn-sm btn-secondary"
-          onClick={onToggleExpand}
-        >
+        <Button variant="ghost" size="sm" aria-label={label} type="button" onClick={onToggleExpand}>
           {isExpanded ? <Minimize /> : <Maximize />}
-        </button>
+        </Button>
       </Tooltip>
     </LeafletControl>
   );

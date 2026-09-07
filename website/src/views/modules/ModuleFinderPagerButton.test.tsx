@@ -1,4 +1,5 @@
 import { shallow } from 'enzyme';
+import { Button } from 'components/ui/button';
 import { noop } from 'lodash-es';
 
 import Tooltip from 'views/components/Tooltip';
@@ -15,21 +16,21 @@ describe(ModuleFinderPagerButton, () => {
 
   test('should render inactive and enabled by default', () => {
     const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} />);
-    expect(componentWrapper.exists('button')).toBe(true);
-    const button = componentWrapper.find('button');
+    expect(componentWrapper.exists(Button)).toBe(true);
+    const button = componentWrapper.find(Button);
     expect(button.hasClass(styles.active)).toBe(false);
     expect(button.prop('disabled')).toBeFalsy();
   });
 
   test('should render active button', () => {
     const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} active />);
-    const button = componentWrapper.find('button');
+    const button = componentWrapper.find(Button);
     expect(button.hasClass(styles.active)).toBe(true);
   });
 
   test('should render disabled button', () => {
     const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} disabled />);
-    const button = componentWrapper.find('button');
+    const button = componentWrapper.find(Button);
     expect(button.prop('disabled')).toBe(true);
   });
 
@@ -48,7 +49,7 @@ describe(ModuleFinderPagerButton, () => {
     const componentWrapper = shallow(
       <ModuleFinderPagerButton {...defaultProps} onClick={onClick} />,
     );
-    componentWrapper.find('button').simulate('click');
+    componentWrapper.find(Button).simulate('click');
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 });

@@ -8,10 +8,11 @@ $padding-v: 0.5rem;
   top: 0;
   padding: $padding-v 0 $padding-v $padding-h;
   margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--gray-lighter);
+  border-bottom: 1px solid var(--border);
   font-weight: $font-weight-bold;
-  font-size: $font-size-lg;
-  background: var(--body-bg);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  background: var(--background);
 
   @include media-breakpoint-down(sm) {
     top: $navbar-height;
@@ -33,15 +34,23 @@ $padding-v: 0.5rem;
 
   li {
     flex: 1 1 7rem;
+    min-width: 0;
     margin: 1px 1px 0 0;
   }
 
-  :global(.btn) {
+  :global(.ui-button) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 2.5rem;
     padding-right: $padding-h;
     padding-left: $padding-h;
     border-color: transparent;
     text-align: left;
+    gap: 0.15rem;
   }
 }
 
@@ -49,7 +58,7 @@ $padding-v: 0.5rem;
   .subList {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-    grid-gap: 1px;
+    grid-gap: 0.25rem;
 
     li {
       margin: 0;
@@ -58,14 +67,13 @@ $padding-v: 0.5rem;
 }
 
 .subtitle {
+  max-width: 100%;
   font-size: $font-size-xs;
-  color: var(--gray);
+  color: var(--muted-foreground);
 }
 
-:global(.btn:hover) .subtitle {
-  color: white;
-}
-
-:global(.btn-primary) .subtitle {
-  color: white;
+:global([aria-current='location']) .subtitle {
+  opacity: 0.8;
+  max-width: 100%;
+  color: inherit;
 }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
+import { ToggleGroup, ToggleGroupItem } from 'components/ui/toggle-group';
 
 export type Props = {
   choices: string[];
@@ -29,25 +30,30 @@ const ButtonGroupSelector: React.FC<Props> = (props) => {
     const className = classNames[choice] || [];
 
     return (
-      <button
+      <ToggleGroupItem
         key={choice}
-        onClick={() => onChoiceSelect(choice)}
         type="button"
-        className={classnames('btn', ...className, {
-          'btn-primary': selectedChoice === choice,
-          'btn-outline-primary': selectedChoice !== choice,
-        })}
+        className={classnames(...className)}
         {...attr}
+        value={choice}
       >
         {choice}
-      </button>
+      </ToggleGroupItem>
     );
   });
 
   return (
-    <div className={classnames('btn-group', sizeClassName)} role="group" aria-label={ariaLabel}>
+    <ToggleGroup
+      type="single"
+      value={selectedChoice || ''}
+      onValueChange={(choice) => {
+        if (choice) onChoiceSelect(choice);
+      }}
+      className={classnames(sizeClassName)}
+      aria-label={ariaLabel}
+    >
       {buttons}
-    </div>
+    </ToggleGroup>
   );
 };
 

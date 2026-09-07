@@ -10,8 +10,8 @@
   background: var(--gray-lightest);
 
   &.currentYear {
-    border: 1px solid rgba(theme-color(), 0.5);
-    background: rgba(theme-color(), 0.1);
+    border: 1px solid var(--ring);
+    background: var(--accent);
   }
 }
 

@@ -30,9 +30,13 @@
   grid-gap: 0.5rem;
 
   button {
+    flex-direction: column;
     height: 100%;
+    min-height: 4rem;
     font-weight: bold;
     line-height: 1.25;
+    white-space: normal;
+    gap: 0;
   }
 
   .subtitle {

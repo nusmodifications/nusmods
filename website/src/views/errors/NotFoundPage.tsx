@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import * as Sentry from '@sentry/browser';
@@ -25,16 +26,12 @@ const NotFoundPage: React.FC = () => {
       <p>Are you sure you are at the right page?</p>
 
       <div className={styles.buttons}>
-        <button
-          type="button"
-          className="btn btn-outline-primary"
-          onClick={() => Sentry.showReportDialog()}
-        >
+        <Button variant="outline" type="button" onClick={() => Sentry.showReportDialog()}>
           Something should be here
-        </button>
-        <Link className="btn btn-primary" to="/">
-          Bring me home
-        </Link>
+        </Button>
+        <Button asChild variant="default">
+          <Link to="/">Bring me home</Link>
+        </Button>
       </div>
     </div>
   );

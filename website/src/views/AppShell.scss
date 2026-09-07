@@ -1,10 +1,5 @@
 @import '~styles/utils/modules-entry.scss';
 
-$vert-padding: 0.5rem;
-// Keep padding at whole number, 0.875rem = 14px
-// See: https://github.com/nusmodifications/nusmods/pull/1567
-$logo-vert-padding: 0.875rem;
-
 .navbar {
   position: fixed;
   top: 0;
@@ -13,55 +8,61 @@ $logo-vert-padding: 0.875rem;
   z-index: $navbar-z-index;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: $navbar-height;
-  padding: 0; // For Microsoft Edge 18
   padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
-  background: var(--gray-lightest);
+  border-bottom: 1px solid var(--border);
+  background: var(--sidebar);
 }
 
 .brand {
   display: flex;
-  // Explicit width so the logo will not expand
-  // to occupy the entire navbar
-  width: 12rem;
-  padding: $logo-vert-padding $grid-gutter-width;
+  width: $side-nav-width-lg;
+  padding: 1.15rem 1.5rem;
 }
 
 .brandLogo {
   width: 100%;
+  height: 1.45rem;
 }
 
 .navRight {
   display: flex;
   align-items: center;
-  padding: $vert-padding $grid-gutter-width * 0.5;
+  padding: 0.625rem 1.5rem;
+  gap: 1rem;
 }
 
 .weekText {
-  padding-left: $grid-gutter-width * 0.5;
-  font-size: $font-size-xs;
-  line-height: 1.15;
-  text-align: right;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--muted-foreground);
+  background: var(--muted);
 }
 
-@include media-breakpoint-up(xl) {
+.themeButton {
+  flex: 0 0 auto;
+  color: var(--muted-foreground);
+}
+
+@include media-breakpoint-down(sm) {
   .brand {
-    // Padding to match navtab left padding
-    padding-left: 2rem;
+    width: 10.25rem;
+    padding: 1.1rem 1rem;
   }
 
   .navRight {
-    padding: $vert-padding $grid-gutter-width * 0.5 $vert-padding 2rem;
-  }
-}
-
-@include media-breakpoint-down(xs) {
-  .navRight {
-    display: none;
+    padding: 0.625rem 0.75rem;
+    gap: 0.5rem;
   }
 
-  .brand {
-    flex: 1;
-    padding: $logo-vert-padding 0;
+  .weekText {
+    border: 0;
+    font-size: 0.65rem;
+    background: transparent;
   }
 }

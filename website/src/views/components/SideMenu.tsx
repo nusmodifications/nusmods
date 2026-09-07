@@ -1,11 +1,10 @@
-import { FC, memo, useLayoutEffect, useRef } from 'react';
-import classnames from 'classnames';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-
+import { FC, memo, useCallback, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Menu, X as Close } from 'react-feather';
+import { Button } from 'components/ui/button';
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from 'components/ui/sheet';
 import useMediaQuery from 'views/hooks/useMediaQuery';
 import { breakpointUp } from 'utils/css';
-import Fab from './Fab';
 
 import styles from './SideMenu.scss';
 
@@ -30,53 +29,47 @@ export const SideMenuComponent: FC<Props> = ({
   toggleMenu,
   children,
 }) => {
-  const matchBreakpoint = useMediaQuery(breakpointUp('md'));
-  const isSideMenuShown = isOpen && !matchBreakpoint;
-
-  // Disable body scrolling if side menu is open, but allow side menu to scroll.
-  const scrollableRef = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    const scrollable = scrollableRef.current;
-    if (!scrollable) {
-      return undefined;
-    }
-    if (isSideMenuShown) {
-      disableBodyScroll(scrollable);
-      return () => enableBodyScroll(scrollable);
-    }
-    enableBodyScroll(scrollable);
-    return undefined;
-  }, [isSideMenuShown]);
+  const isDesktop = useMediaQuery(breakpointUp('md'));
+  // Searchkit filters register on mount. Keep one portal destination, including
+  // while the mobile sheet is closed, so changing its host never resets filters.
+  const [content] = useState(() => document.createElement('div'));
+  const attachContent = useCallback(
+    (host: HTMLDivElement | null) => {
+      if (host) host.appendChild(content);
+    },
+    [content],
+  );
 
   return (
-    <>
-      <Fab className={styles.fab} onClick={() => toggleMenu(!isOpen)}>
-        {isOpen ? closeIcon : openIcon}
-      </Fab>
-
-      {isSideMenuShown && (
-        // Key events are not sent to this div.
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-        <div className={styles.overlay} onClick={() => toggleMenu(false)} />
-      )}
-
-      {/* boundaryContainer defines the top and bottom boundaries which sideMenu can extend to */}
-      <div className={styles.boundaryContainer}>
-        {/*
-          sideMenu is the scrollable menu element. On mobile, it expands
-          from the bottom of the screen to the top boundary of the
-          container; i.e. if the menu's content is shorter than the
-          container, it'll appear as a little action sheet rising from the
-          bottom of the screen.
-        */}
-        <div
-          className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}
-          ref={scrollableRef}
-        >
-          {children}
-        </div>
+    <Sheet open={isOpen && !isDesktop} onOpenChange={toggleMenu}>
+      <div className={styles.fab}>
+        <SheetTrigger asChild>
+          <Button size="icon" className="ui-fab" aria-label={OPEN_MENU_LABEL}>
+            {openIcon}
+          </Button>
+        </SheetTrigger>
       </div>
-    </>
+      {isDesktop && (
+        <div className={styles.boundaryContainer}>
+          <div className={styles.sideMenu} ref={attachContent} />
+        </div>
+      )}
+      <SheetContent className={styles.sheet} aria-describedby={undefined}>
+        <SheetTitle className="sr-only">{OPEN_MENU_LABEL}</SheetTitle>
+        <SheetClose asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className={styles.closeButton}
+            aria-label={CLOSE_MENU_LABEL}
+          >
+            {closeIcon}
+          </Button>
+        </SheetClose>
+        <div ref={attachContent} />
+      </SheetContent>
+      {createPortal(children, content)}
+    </Sheet>
   );
 };
 

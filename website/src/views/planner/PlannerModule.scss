@@ -4,21 +4,19 @@
 .module {
   padding: $module-padding-v $module-padding-h;
   margin-bottom: 0.4rem;
-  border-bottom: 0.15rem solid darken(theme-color('success'), 10);
-  border-radius: 0.35rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--success, #18876a);
+  border-radius: var(--radius);
   font-size: 0.9rem;
   line-height: 1.3;
-  color: darken(theme-color('success'), 30);
-  background: lighten(theme-color('success'), 3);
+  color: var(--card-foreground);
+  background: var(--card);
+  box-shadow: 0 1px 3px rgba(#000, 0.04);
 
   &.warning {
-    border-color: darken(theme-color('warning'), 10);
-    color: darken(theme-color('warning'), 40);
-    background: theme-color('warning');
-
-    .menuBtn :global(.close) {
-      color: #000;
-    }
+    border-color: var(--warning, #c77d12);
+    color: var(--warning-foreground, #80520b);
+    background: var(--warning-muted, #fff5dd);
   }
 
   &.isDragging {
@@ -27,16 +25,8 @@
   }
 
   &.placeholder {
-    $stripe-light: lighten(theme-color('success'), 3.5);
-    $stripe-dark: darken(theme-color('success'), 0.5);
-
-    background-image: repeating-linear-gradient(
-      130deg,
-      $stripe-light,
-      $stripe-light 1rem,
-      $stripe-dark 1rem,
-      $stripe-dark 2rem
-    );
+    border-style: dashed;
+    background: var(--muted);
   }
 }
 
@@ -61,7 +51,10 @@
 
   :global(.close) {
     float: none;
-    color: #fff;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0.25rem;
+    color: inherit;
   }
 }
 
@@ -125,14 +118,14 @@
   resize: none;
 
   &::placeholder {
-    color: rgba(#fff, 0.5);
+    color: var(--muted-foreground);
   }
 }
 
 .conflicts {
   padding-top: 0.4rem;
   margin-top: 0.4rem;
-  border-top: 1px solid darken(theme-color('warning'), 10);
+  border-top: 1px solid var(--border);
   font-size: $font-size-s;
   line-height: 1.25;
 }

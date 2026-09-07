@@ -1,3 +1,5 @@
+import { Button } from 'components/ui/button';
+import { Table, TableBody, TableRow, TableHead, TableCell } from 'components/ui/table';
 import { memo, useEffect } from 'react';
 import classnames from 'classnames';
 import { entries, sortBy } from 'lodash-es';
@@ -38,9 +40,9 @@ export const ArrivalTimes = memo<Props>((props: Props) => {
       <>
         <h3 className={styles.heading}>{name}</h3>
         <p>Error loading arrival times</p>
-        <button type="button" className="btn btn-sm btn-primary" onClick={() => reload(code)}>
+        <Button variant="default" size="sm" type="button" onClick={() => reload(code)}>
           Retry
-        </button>
+        </Button>
       </>
     );
   }
@@ -51,27 +53,29 @@ export const ArrivalTimes = memo<Props>((props: Props) => {
   return (
     <>
       <h3 className={styles.heading}>{name}</h3>
-      <table className={classnames(styles.timings, 'table table-sm')}>
-        <tbody>
+      <Table className={classnames(styles.timings, 'table table-sm')}>
+        <TableBody>
           {timings.map(([route, timing]: [string, NextBus]) => {
             const className = classnames(
               styles.routeHeading,
               styles[`route${extractRouteStyle(route)}`],
             );
             return (
-              <tr key={route}>
-                <th className={className}>{simplifyRouteName(route)}</th>
-                <td>{renderTiming(timing.arrivalTime)}</td>
-                <td>{renderTiming(timing.nextArrivalTime)}</td>
-              </tr>
+              <TableRow key={route}>
+                <TableHead className={className}>{simplifyRouteName(route)}</TableHead>
+                <TableCell>{renderTiming(timing.arrivalTime)}</TableCell>
+                <TableCell>{renderTiming(timing.nextArrivalTime)}</TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
 
-      <button
+      <Button
+        variant="link"
+        size="sm"
         type="button"
-        className={classnames('btn btn-sm btn-link btn-svg', styles.refreshBtn, {
+        className={classnames(' btn-link btn-svg', styles.refreshBtn, {
           [styles.isLoading]: props.isLoading,
         })}
         disabled={props.isLoading}
@@ -79,7 +83,7 @@ export const ArrivalTimes = memo<Props>((props: Props) => {
       >
         <Refresh size={14} className={styles.refreshIcon} />
         {props.isLoading ? 'Loading...' : 'Refresh'}
-      </button>
+      </Button>
     </>
   );
 });

@@ -6,7 +6,6 @@
 // 3rd-party imports
 @import 'bootstrap/bootstrap';
 @import 'bootstrap/style-override';
-@import 'material/material';
 @import 'leaflet';
 @import 'leaflet-gesture-handling';
 
@@ -26,3 +25,7 @@
 @import 'components/kbd';
 @import 'components/select';
 @import 'components/form';
+
+// Shared shadcn components, adapted to the existing Sass pipeline.
+@import 'components/ui';
+@import 'design-system';

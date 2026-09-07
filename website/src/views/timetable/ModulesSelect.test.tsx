@@ -1,3 +1,6 @@
+import { Badge } from 'components/ui/badge';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
 import { mount, shallow } from 'enzyme';
 import Downshift from 'downshift';
 import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
@@ -62,7 +65,7 @@ describe(ModulesSelect, () => {
     input.simulate('change', { target: { value: 'T' } });
     const result = wrapper.find('li').at(1);
     expect(result.prop('disabled')).toBe(true);
-    expect(result.find('.badge').exists()).toBe(true);
+    expect(result.find(Badge).exists()).toBe(true);
   });
 
   it('should call onChange and empty input on regular Enter press', () => {
@@ -129,7 +132,7 @@ describe(ModulesSelect, () => {
 
     it('should open modal and downshift when clicked', () => {
       const wrapper = shallow(<ModulesSelect {...commonProps} />);
-      wrapper.find('button').simulate('click');
+      wrapper.find(Button).simulate('click');
       const modal = wrapper.find(Modal);
       const downshift = wrapper.find(Downshift);
       expect(modal.prop('isOpen')).toBe(true);
@@ -138,22 +141,22 @@ describe(ModulesSelect, () => {
 
     it('should not open modal when button is disabled', () => {
       const wrapper = shallow(<ModulesSelect {...commonProps} disabled />);
-      wrapper.find('button').simulate('click');
-      const modal = wrapper.find(Modal).shallow();
+      wrapper.find(Button).simulate('click');
+      const modal = wrapper.find(Modal);
       expect(modal.prop('isOpen')).toBe(false);
     });
 
     it('should show tip when it opens', () => {
       const wrapper = shallow(<ModulesSelect {...commonProps} />);
-      wrapper.find('button').simulate('click');
+      wrapper.find(Button).simulate('click');
       const downshift = wrapper.find(Downshift).shallow();
       expect(downshift.find('.tip')).toHaveLength(1);
     });
 
     it('should show tips when there are no results', () => {
       const wrapper = shallow(<ModulesSelect {...commonProps} />);
-      wrapper.find('button').simulate('click');
-      const input = wrapper.find(Downshift).shallow().find('input');
+      wrapper.find(Button).simulate('click');
+      const input = wrapper.find(Downshift).shallow().find(Input);
       input.simulate('focus');
       input.simulate('change', { target: { value: '%' } });
       const downshift = wrapper.find(Downshift).shallow();
@@ -176,7 +179,7 @@ describe(ModulesSelect, () => {
       const wrapper = shallow(<ModulesSelect {...commonProps} />);
       const downshift = wrapper.find(Downshift).shallow();
       // TODO: Check if this is correct
-      downshift.find('input').prop('onFocus')!({} as any);
+      downshift.find(Input).prop('onFocus')!({} as any);
       expect(wrapper.find(Downshift).prop('isOpen')).toBe(true);
       wrapper.prop('onOuterClick')();
       expect(wrapper.find(Downshift).prop('isOpen')).toBe(false);
@@ -191,7 +194,7 @@ describe(ModulesSelect, () => {
 
     it('should show tip when there are no results', () => {
       const wrapper = shallow(<ModulesSelect {...commonProps} />);
-      const input = wrapper.find(Downshift).shallow().find('input');
+      const input = wrapper.find(Downshift).shallow().find(Input);
       input.simulate('focus');
       input.simulate('change', { target: { value: '%' } });
       const downshift = wrapper.find(Downshift).shallow();

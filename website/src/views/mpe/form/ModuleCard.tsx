@@ -1,3 +1,5 @@
+import { Card } from 'components/ui/card';
+import { Badge } from 'components/ui/badge';
 import classnames from 'classnames';
 import type { MpePreference } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
@@ -20,7 +22,7 @@ const ModuleCard: React.FC<Props> = ({
   removeModule,
   updateModuleType,
 }) => (
-  <div className={classnames(styles.card, className)}>
+  <Card className={classnames(styles.card, className)}>
     <div className={styles.rank}>{rank + 1}</div>
     <div className={styles.container}>
       <div className={styles.moduleContainer}>
@@ -28,7 +30,9 @@ const ModuleCard: React.FC<Props> = ({
           <div className={styles.moduleCode}>{preference.moduleCode}</div>
           <div>{preference.moduleTitle}</div>
         </div>
-        <div className={styles.mc}>{preference.moduleCredits} MC</div>
+        <Badge variant="secondary" className={styles.mc}>
+          {preference.moduleCredits} MC
+        </Badge>
       </div>
       <div className={styles.moduleType}>
         <ModuleTypeMenu
@@ -43,7 +47,7 @@ const ModuleCard: React.FC<Props> = ({
       removeModule={removeModule}
       moduleCode={preference.moduleCode}
     />
-  </div>
+  </Card>
 );
 
 export default ModuleCard;

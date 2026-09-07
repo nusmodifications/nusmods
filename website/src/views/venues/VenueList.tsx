@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Button } from 'components/ui/button';
 import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash-es';
 import { Link, LinkProps } from 'react-router-dom';
@@ -35,29 +36,28 @@ const VenueList: React.FC<Props> = (props) => {
           <ul className={styles.subList}>
             {venues.map((venue) => (
               <li key={venue}>
-                <Link
-                  to={{
-                    pathname: venuePage(venue),
-                    search: window.location.search,
-                  }}
-                  className={classnames(
-                    'btn',
-                    venue === props.selectedVenue ? 'btn-primary' : 'btn-outline-primary',
-                  )}
-                  {...props.linkProps}
-                >
-                  <div>{highlight(venue, tokens)}</div>
-                  {props.venueLocations && props.venueLocations[venue] ? (
-                    <div
-                      className={classnames(
-                        'font-weight-light d-inline-block text-truncate',
-                        styles.subtitle,
-                      )}
-                    >
-                      <span>{highlight(`${props.venueLocations[venue].roomName}`, tokens)}</span>
-                    </div>
-                  ) : null}
-                </Link>
+                <Button asChild variant={venue === props.selectedVenue ? 'default' : 'ghost'}>
+                  <Link
+                    to={{
+                      pathname: venuePage(venue),
+                      search: window.location.search,
+                    }}
+                    aria-current={venue === props.selectedVenue ? 'location' : undefined}
+                    {...props.linkProps}
+                  >
+                    <div>{highlight(venue, tokens)}</div>
+                    {props.venueLocations && props.venueLocations[venue] ? (
+                      <div
+                        className={classnames(
+                          'font-weight-light d-inline-block text-truncate',
+                          styles.subtitle,
+                        )}
+                      >
+                        <span>{highlight(`${props.venueLocations[venue].roomName}`, tokens)}</span>
+                      </div>
+                    ) : null}
+                  </Link>
+                </Button>
               </li>
             ))}
           </ul>

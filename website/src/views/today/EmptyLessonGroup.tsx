@@ -1,3 +1,4 @@
+import { Card } from 'components/ui/card';
 import * as React from 'react';
 import { EmptyGroupType } from 'types/views';
 
@@ -86,7 +87,7 @@ function renderType(type: EmptyGroupType) {
 }
 
 const EmptyLessonGroup: React.FC<Props> = ({ type }) => (
-  <div className={styles.emptyGroup}>{renderType(type)}</div>
+  <Card className={styles.emptyGroup}>{renderType(type)}</Card>
 );
 
 export default EmptyLessonGroup;

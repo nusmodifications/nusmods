@@ -34,7 +34,7 @@ $btn-margin: 0.5rem;
   }
 
   @include media-breakpoint-up(md) {
-    :global(.btn) {
+    :global(.ui-button) {
       padding: 0.25rem 0.75rem;
       font-size: $font-size-sm;
     }

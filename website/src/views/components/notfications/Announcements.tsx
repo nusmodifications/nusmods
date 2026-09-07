@@ -1,3 +1,4 @@
+import { Alert } from 'components/ui/alert';
 import { memo, useState, useCallback } from 'react';
 import classnames from 'classnames';
 import { Heart } from 'react-feather';
@@ -59,29 +60,31 @@ const Announcements = memo(() => {
   }
 
   return (
-    <div
-      className={classnames(
-        'alert alert-success no-export',
-        styles.announcement,
-        // styles.wrapButtons, // Uncomment if needed
-      )}
-    >
-      <Heart className={styles.backgroundIcon} />
+    <Alert asChild variant="success">
+      <div
+        className={classnames(
+          'alert alert-success no-export',
+          styles.announcement,
+          // styles.wrapButtons, // Uncomment if needed
+        )}
+      >
+        <Heart className={styles.backgroundIcon} />
 
-      <div className={styles.body}>
-        <h3>AY2026/27 courses now available!</h3>
-        <p className={styles.bodyElement}>
-          NUSMods now has AY2026/27 course information available. The data is accurate but subject
-          to changes.
-        </p>
-        <p className={styles.bodyElement}>
-          If there are any discrepancies with course data, please contact your respective faculty's
-          office. Happy new academic year!
-        </p>
+        <div className={styles.body}>
+          <h3>AY2026/27 courses now available!</h3>
+          <p className={styles.bodyElement}>
+            NUSMods now has AY2026/27 course information available. The data is accurate but subject
+            to changes.
+          </p>
+          <p className={styles.bodyElement}>
+            If there are any discrepancies with course data, please contact your respective
+            faculty's office. Happy new academic year!
+          </p>
+        </div>
+
+        <div className={styles.buttons}>{key && <CloseButton onClick={dismiss} />}</div>
       </div>
-
-      <div className={styles.buttons}>{key && <CloseButton onClick={dismiss} />}</div>
-    </div>
+    </Alert>
   );
 });
 

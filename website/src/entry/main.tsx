@@ -7,7 +7,6 @@ import 'bootstrapping/sentry';
 import 'core-js/es/promise/finally';
 
 import { createRoot } from 'react-dom/client';
-import ReactModal from 'react-modal';
 
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
@@ -21,9 +20,6 @@ import App from './App';
 const { store, persistor } = configureStore();
 
 subscribeOnlineEvents(store);
-
-// Initialize ReactModal
-ReactModal.setAppElement('#app');
 
 const container = document.getElementById('app');
 if (!container) {

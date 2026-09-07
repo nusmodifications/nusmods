@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { memo, useLayoutEffect, useRef, useState } from 'react';
 
 import { ChevronDown } from 'react-feather';
@@ -56,8 +57,9 @@ const ModuleMenu = memo((props: Props) => {
     >
       {({ getItemProps, getMenuProps, highlightedIndex, isOpen, toggleMenu }) => (
         <div className={styles.menuBtn}>
-          <button
-            className={classnames('btn close')}
+          <Button
+            variant="ghost"
+            className={classnames('close')}
             type="button"
             onClick={() => {
               toggleMenu();
@@ -68,7 +70,7 @@ const ModuleMenu = memo((props: Props) => {
             aria-expanded={isOpen}
           >
             <ChevronDown />
-          </button>
+          </Button>
           <div
             className={classnames(
               styles.menu,
@@ -79,7 +81,8 @@ const ModuleMenu = memo((props: Props) => {
             {...getMenuProps({ ref: myRef })}
           >
             {menuItems.map(({ label, className }, itemIndex) => (
-              <button
+              <Button
+                variant="ghost"
                 type="button"
                 key={label}
                 className={classnames('dropdown-item', className, {
@@ -88,7 +91,7 @@ const ModuleMenu = memo((props: Props) => {
                 {...getItemProps({ item: label })}
               >
                 {label}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

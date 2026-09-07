@@ -6,3 +6,15 @@
   bottom: 1rem;
   z-index: $fab-z-index;
 }
+
+:global(.ui-fab) {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1.15rem;
+  box-shadow: 0 8px 24px color-mix(in sRGB, var(--primary), transparent 70%);
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

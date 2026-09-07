@@ -7,8 +7,8 @@
   width: 100%;
   height: fit-content;
   border: 1px solid var(--gray-lighter);
-  border-radius: 0.35rem;
-  background: var(--body-bg);
+  border-radius: var(--radius);
+  background: var(--card);
 }
 
 .rank {
@@ -28,12 +28,12 @@
 .mc {
   align-self: center;
   padding: 0.1rem 0.5rem;
-  border-radius: 0.35rem;
+  border-radius: var(--radius);
   font-weight: bold;
   font-size: 1rem;
   white-space: nowrap;
-  color: var(--body-bg);
-  background-color: var(--gray-light);
+  color: var(--secondary-foreground);
+  background-color: var(--secondary);
 }
 
 .moduleType {

@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import { memo, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
@@ -66,9 +67,9 @@ const PlannerModule = memo<Props>((props) => {
             <AlertTriangle className={styles.warningIcon} />
             <p>
               No data on this course.{' '}
-              <button type="button" className="btn btn-link btn-inline" onClick={editCustomData}>
+              <Button variant="link" type="button" className="btn-inline" onClick={editCustomData}>
                 Add data
-              </button>
+              </Button>
             </p>
           </div>
         );
@@ -147,15 +148,17 @@ const PlannerModule = memo<Props>((props) => {
     if (!isEditingPlaceholder) {
       return (
         <>
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             type="button"
-            className={classnames('btn btn-sm btn-svg', styles.placeholderSelect, {
+            className={classnames('btn-svg', styles.placeholderSelect, {
               [styles.empty]: !moduleCode,
             })}
             onClick={() => setEditingPlaceholder(true)}
           >
             {moduleCode || 'Select Course'} <ChevronDown />
-          </button>{' '}
+          </Button>{' '}
           {moduleCode && moduleTitle && (
             <Link to={modulePage(moduleCode, moduleTitle)}>{moduleTitle}</Link>
           )}

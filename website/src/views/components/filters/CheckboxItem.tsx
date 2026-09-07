@@ -1,3 +1,5 @@
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
 import * as React from 'react';
 import classnames from 'classnames';
 import { NBSP } from 'utils/react';
@@ -23,7 +25,7 @@ const CheckboxItem: React.FC<Props> = ({
   onClick,
 }) => (
   <li key={itemKey} className={classnames(styles.label, 'form-check')}>
-    <input
+    <Input
       id={itemKey}
       className="form-check-input"
       type="checkbox"
@@ -31,7 +33,7 @@ const CheckboxItem: React.FC<Props> = ({
       onChange={(e) => onClick(e)}
     />
 
-    <label
+    <Label
       htmlFor={itemKey}
       className={classnames('form-check-label', {
         [styles.enabled]: !disabled,
@@ -44,7 +46,7 @@ const CheckboxItem: React.FC<Props> = ({
           <span className="text-muted">({count})</span>{' '}
         </>
       )}
-    </label>
+    </Label>
   </li>
 );
 

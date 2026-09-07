@@ -1,4 +1,8 @@
 .emptyGroup {
+  padding: 0.5rem 1rem 1rem;
+  border-style: dashed;
+  background: var(--muted);
+
   svg {
     display: block;
     max-width: 8rem;

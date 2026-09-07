@@ -1,4 +1,5 @@
 import { FC, memo, useCallback, useMemo } from 'react';
+import { Button } from 'components/ui/button';
 import { Link, useHistory } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 import classnames from 'classnames';
@@ -57,29 +58,37 @@ const VenueDetailsComponent: FC<Props> = ({
       <Title description={`NUS classroom timetable for ${venue}`}>{`${venue} - Venues`}</Title>
 
       <header className={styles.header}>
-        <Link
-          className={classnames('btn btn-link btn-svg', {
-            disabled: !previous,
-          })}
-          to={{
-            pathname: venuePage(previous),
-            search: window.location.search,
-          }}
-        >
-          <ChevronLeft /> {previous}
-        </Link>
+        <Button asChild variant="ghost">
+          <Link
+            aria-disabled={!previous}
+            tabIndex={previous ? undefined : -1}
+            onClick={(event) => {
+              if (!previous) event.preventDefault();
+            }}
+            to={{
+              pathname: venuePage(previous),
+              search: window.location.search,
+            }}
+          >
+            <ChevronLeft /> {previous}
+          </Link>
+        </Button>
         <h1>{venue}</h1>
-        <Link
-          className={classnames('btn btn-link btn-svg', {
-            disabled: !next,
-          })}
-          to={{
-            pathname: venuePage(next),
-            search: window.location.search,
-          }}
-        >
-          {next} <ChevronRight />
-        </Link>
+        <Button asChild variant="ghost">
+          <Link
+            aria-disabled={!next}
+            tabIndex={next ? undefined : -1}
+            onClick={(event) => {
+              if (!next) event.preventDefault();
+            }}
+            to={{
+              pathname: venuePage(next),
+              search: window.location.search,
+            }}
+          >
+            {next} <ChevronRight />
+          </Link>
+        </Button>
       </header>
 
       <div className={styles.location}>

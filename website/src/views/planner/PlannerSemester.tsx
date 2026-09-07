@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import AddCalendarIcon from 'img/icons/add-calendar.svg';
@@ -163,14 +164,10 @@ const PlannerSemester: React.FC<Props> = ({
             modules.length > 0 &&
             !isSemesterInTimetable && (
               <div className={styles.addSemesterToTimetable}>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-link"
-                  onClick={addSemesterToTimetable}
-                >
+                <Button variant="link" size="sm" type="button" onClick={addSemesterToTimetable}>
                   <AddCalendarIcon />
                   Add Semester to Timetable
-                </button>
+                </Button>
               </div>
             )}
         </div>

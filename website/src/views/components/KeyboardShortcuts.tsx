@@ -1,3 +1,4 @@
+import { Table, TableBody, TableRow, TableHead, TableCell } from 'components/ui/table';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useStore } from 'react-redux';
@@ -166,23 +167,23 @@ const KeyboardShortcuts: React.FC = () => {
     <Modal isOpen={helpShown} onRequestClose={closeModal} className={styles.modal} animate>
       <h2>Keyboard shortcuts</h2>
 
-      <table className="table table-sm">
+      <Table className="table table-sm">
         {map(sections, (shortcutsInSection, heading) => (
-          <tbody key={heading}>
-            <tr>
-              <th aria-label="Key column" />
-              <th>{heading}</th>
-            </tr>
+          <TableBody key={heading}>
+            <TableRow>
+              <TableHead aria-label="Key column" />
+              <TableHead>{heading}</TableHead>
+            </TableRow>
 
             {shortcutsInSection.map((shortcut) => (
-              <tr key={shortcut.description}>
-                <td className={styles.key}>{renderShortcut(shortcut.key)}</td>
-                <td>{shortcut.description}</td>
-              </tr>
+              <TableRow key={shortcut.description}>
+                <TableCell className={styles.key}>{renderShortcut(shortcut.key)}</TableCell>
+                <TableCell>{shortcut.description}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
+          </TableBody>
         ))}
-      </table>
+      </Table>
     </Modal>
   );
 };

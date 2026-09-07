@@ -1,27 +1,18 @@
 @import '~styles/utils/modules-entry';
 
 :global(.page-container).settingsPage {
-  max-width: 60rem;
+  max-width: 66rem;
   margin-left: 0;
 
   :global {
     animation-name: $page-entering-animation;
   }
 
-  hr {
-    clear: both;
-  }
-
-  h4 {
-    margin-top: 2rem;
-  }
-
-  // Styles nested for specificity
   .toggleRow {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 1.5rem;
 
     .toggleDescription {
       flex: 1 1 auto;
@@ -34,14 +25,44 @@
       flex-direction: column;
       align-items: flex-end;
       width: auto;
-      margin-left: 1rem;
+    }
+
+    @include media-breakpoint-down(sm) {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+
+      .toggle {
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+      }
     }
   }
 }
 
 .title {
-  margin: 1rem 0 0;
+  margin: 0.5rem 0 1.5rem;
   font-size: $font-size-xlg;
+  letter-spacing: -0.04em;
+}
+
+.settingsSection {
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+
+  h4 {
+    margin: 0 0 1rem;
+    font-weight: 650;
+    font-size: 1.1rem;
+    letter-spacing: -0.025em;
+  }
+
+  p {
+    color: var(--muted-foreground);
+  }
+
+  @include media-breakpoint-down(sm) {
+    padding: 1.1rem;
+  }
 }
 
 .preview {
@@ -49,21 +70,27 @@
   clear: both;
   overflow-y: hidden;
   height: 13.8rem;
-  margin: 1rem 0 2rem;
+  padding: 0.75rem;
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+}
+
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .themeOption {
-  // See utils/themes.scss - used as a specificity override
   composes: theme-option from global;
-  float: left;
-  width: 25%;
-  margin-bottom: 0.4rem;
-  color: var(--body-color);
-  background: none;
-
-  @include media-breakpoint-down('sm') {
-    width: 50%;
-  }
+  width: 100%;
+  color: var(--foreground);
 }
 
 .betaToggle {

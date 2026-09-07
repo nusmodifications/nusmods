@@ -1,3 +1,5 @@
+import { Button } from 'components/ui/button';
+import { Alert } from 'components/ui/alert';
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -30,28 +32,30 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
     if (!this.state.isOpen) return null;
 
     return (
-      <div
-        className={classnames(
-          'alert alert-info no-export',
-          styles.announcement,
-          styles.hacktoberfest,
-        )}
-      >
-        <Heart className={styles.backgroundIcon} />
+      <Alert asChild variant="default">
+        <div
+          className={classnames(
+            'alert alert-info no-export',
+            styles.announcement,
+            styles.hacktoberfest,
+          )}
+        >
+          <Heart className={styles.backgroundIcon} />
 
-        <div className={styles.body}>
-          <h3>Hacktoberfest 2018 now open!</h3>
-          <p>Improve NUSMods by writing code and get free T-shirts at the same time!</p>
+          <div className={styles.body}>
+            <h3>Hacktoberfest 2018 now open!</h3>
+            <p>Improve NUSMods by writing code and get free T-shirts at the same time!</p>
+          </div>
+
+          <div className={styles.buttons}>
+            <Button asChild variant="secondary">
+              <Link to="/hacktoberfest">Find out more</Link>
+            </Button>
+
+            <CloseButton className={styles.closeButton} onClick={this.dismiss} />
+          </div>
         </div>
-
-        <div className={styles.buttons}>
-          <Link to="/hacktoberfest" className="btn btn-info">
-            Find out more
-          </Link>
-
-          <CloseButton className={styles.closeButton} onClick={this.dismiss} />
-        </div>
-      </div>
+      </Alert>
     );
   }
 }

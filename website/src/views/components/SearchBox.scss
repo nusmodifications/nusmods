@@ -4,11 +4,13 @@
   position: relative;
 
   input {
-    padding: 0.8rem 2rem 0.8rem 2rem;
-    border-width: 0 0 1px;
-    border-radius: 0;
+    min-height: 3rem;
+    padding: 0.8rem 3rem 0.8rem 2.75rem;
+    border: 1px solid var(--input);
+    border-radius: var(--radius);
     &:focus {
-      box-shadow: none;
+      border-color: var(--ring);
+      box-shadow: 0 0 0 3px color-mix(in sRGB, var(--ring), transparent 85%);
     }
   }
 
@@ -18,24 +20,27 @@
 
   .removeInput {
     position: absolute;
-    right: 0.2rem;
+    top: 0.25rem;
+    right: 0.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: calc(100% - 0.5rem);
     transition: color 0.3s;
   }
 
   .removeInput:hover {
-    color: theme-color();
+    color: var(--primary);
   }
 }
 
 .leftAccessory {
   position: absolute;
+  left: 0.85rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 1.15rem;
   height: 100%;
   transition: color 0.3s;
 
@@ -46,7 +51,7 @@
 
 .searchBoxFocused {
   .leftAccessory {
-    color: theme-color();
+    color: var(--primary);
   }
 }
 
@@ -62,7 +67,7 @@
   .searchWrapper {
     input {
       padding: 0.8rem 1.6rem 0.8rem 2.2rem;
-      border: 0;
+      border: 1px solid var(--input);
       font-size: 1rem;
     }
 

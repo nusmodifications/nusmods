@@ -20,7 +20,7 @@
   font-size: 2.5rem;
 }
 
-:global(.btn).link {
+:global(.ui-button).link {
   padding: 0;
   margin: 0;
   line-height: 1;
@@ -47,7 +47,7 @@
     flex-direction: row;
     justify-content: center;
 
-    :global(.btn) {
+    :global(.ui-button) {
       min-width: 12rem;
     }
   }

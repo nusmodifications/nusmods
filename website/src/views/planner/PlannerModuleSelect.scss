@@ -9,10 +9,12 @@
   position: absolute;
   z-index: 1;
   max-height: 15rem;
-  border: 1px solid var(--gray-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   font-size: $font-size-sm;
   color: var(--body-color);
-  background: var(--body-bg);
+  background: var(--card);
+  box-shadow: 0 8px 24px rgba(#000, 0.08);
 
   li {
     padding: 0.3rem 0.4rem;
@@ -20,8 +22,8 @@
     cursor: pointer;
 
     &.highlightItem {
-      color: theme-color();
-      background: var(--gray-lightest);
+      color: var(--accent-foreground);
+      background: var(--accent);
     }
   }
 }

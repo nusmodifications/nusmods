@@ -40,9 +40,10 @@ $venue-list-width: 16rem;
 
   .venuesList {
     width: $venue-list-width;
+    padding-right: 0.75rem;
     padding-bottom: 0; // For Microsoft Edge 18
     padding-bottom: env(safe-area-inset-bottom);
-    border-right: 1px solid var(--gray-lighter);
+    border-right: 1px solid var(--border);
 
     @include scrollable-y;
   }
@@ -80,6 +81,7 @@ $venue-list-width: 16rem;
   padding: 0;
 
   .closeButton {
+    width: 100%;
     padding: 0.5rem 0;
     margin-bottom: 1rem;
     border-width: 0 0 1px;
@@ -91,7 +93,7 @@ $venue-list-width: 16rem;
   margin: 0 0.5rem 1rem 0;
 
   h3 {
-    margin-bottom: 0;
+    margin-bottom: 0.75rem;
     font-weight: $font-weight-bold;
     font-size: $font-size-lg;
   }
@@ -109,21 +111,28 @@ $venue-list-width: 16rem;
   }
 }
 
+.availabilityToggle {
+  width: 100%;
+}
+
 .availabilitySearch {
-  padding: ($border-radius + 0.2rem) 1rem 1rem;
-  margin-top: -$border-radius;
-  border: 1px solid theme-color();
-  border-width: 0 1px 1px;
-  border-radius: 0 0 $border-radius $border-radius;
+  padding: 1rem;
+  margin-top: 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
 }
 
 .noVenueSelected {
   $icon-size: 6rem;
 
-  opacity: 0.6;
+  padding: 2rem;
   margin-top: 10vh;
-  font-size: 1.4rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
   text-align: center;
+  color: var(--muted-foreground);
 
   svg {
     width: $icon-size;

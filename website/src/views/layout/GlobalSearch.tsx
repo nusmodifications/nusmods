@@ -1,3 +1,6 @@
+import { Label } from 'components/ui/label';
+import { Input } from 'components/ui/input';
+import { Button } from 'components/ui/button';
 import { Component, Fragment } from 'react';
 import { omit, stubString } from 'lodash-es';
 import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
@@ -122,10 +125,10 @@ class GlobalSearch extends Component<Props, State> {
     const searchForm = (
       <Fragment key="search">
         <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
-        <label className="sr-only" {...getLabelProps()}>
+        <Label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
-        </label>
-        <input
+        </Label>
+        <Input
           ref={(r) => {
             this.input = r;
             ComponentMap.globalSearchInput = r;
@@ -170,29 +173,31 @@ class GlobalSearch extends Component<Props, State> {
                 </p>
                 <p>
                   Try searching all{' '}
-                  <button
+                  <Button
+                    variant="link"
                     {...getItemProps({
                       item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
                     })}
-                    className={classnames('btn btn-inline', {
+                    className={classnames(' btn-inline', {
                       [styles.selected]: highlightedIndex === 0,
                     })}
                     type="button"
                   >
                     courses
-                  </button>{' '}
+                  </Button>{' '}
                   or{' '}
-                  <button
+                  <Button
+                    variant="link"
                     {...getItemProps({
                       item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
                     })}
-                    className={classnames('btn btn-inline', {
+                    className={classnames(' btn-inline', {
                       [styles.selected]: highlightedIndex === 1,
                     })}
                     type="button"
                   >
                     venues
-                  </button>
+                  </Button>
                 </p>
               </div>
             </div>

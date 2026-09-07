@@ -1,3 +1,4 @@
+import { Alert } from 'components/ui/alert';
 import * as React from 'react';
 import classnames from 'classnames';
 import { flatten, values } from 'lodash-es';
@@ -247,23 +248,25 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
         Viewers are encouraged to double check details.
       </p> */}
 
-      <p className="alert alert-warning">
-        This new version of the prerequisite tree is being tested and may not be accurate. Viewers
-        are encouraged to double check details with the prerequisite text above. To report bugs with
-        the new tree, please post a bug report on GitHub (preferred) at{' '}
-        <a
-          href="https://github.com/nusmodifications/nusmods/issues/new/choose"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          our repository
-        </a>{' '}
-        or send an email to{' '}
-        <a href="mailto:bugs@nusmods.com" target="_blank" rel="noopener noreferrer nofollow">
-          bugs@nusmods.com
-        </a>
-        .
-      </p>
+      <Alert asChild variant="warning">
+        <p className="alert alert-warning">
+          This new version of the prerequisite tree is being tested and may not be accurate. Viewers
+          are encouraged to double check details with the prerequisite text above. To report bugs
+          with the new tree, please post a bug report on GitHub (preferred) at{' '}
+          <a
+            href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            our repository
+          </a>{' '}
+          or send an email to{' '}
+          <a href="mailto:bugs@nusmods.com" target="_blank" rel="noopener noreferrer nofollow">
+            bugs@nusmods.com
+          </a>
+          .
+        </p>
+      </Alert>
     </>
   );
 };

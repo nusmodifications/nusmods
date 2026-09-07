@@ -119,8 +119,8 @@ $btn-margin: 0.5rem;
   border: 1px dashed;
   border-radius: 0.4rem;
   text-align: center;
-  color: theme-color('danger');
-  background: rgba(theme-color('danger'), 0.1);
+  color: var(--destructive);
+  background: var(--alert-danger-background);
 
   &.isDraggingOver {
     opacity: 1;
@@ -128,8 +128,8 @@ $btn-margin: 0.5rem;
 
   @include night-mode {
     opacity: 0.75;
-    color: lighten(theme-color('danger'), 20);
-    background: rgba(lighten(theme-color('danger'), 20), 0.2);
+    color: var(--alert-danger-color);
+    background: var(--alert-danger-background);
   }
 }
 

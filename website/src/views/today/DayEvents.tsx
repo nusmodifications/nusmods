@@ -1,3 +1,4 @@
+import { Card } from 'components/ui/card';
 import * as React from 'react';
 import { AcadWeekInfo } from 'nusmoderator';
 import { isSameDay } from 'date-fns';
@@ -39,7 +40,7 @@ const DayEvents = React.memo<Props>((props) => {
           <p>{formatTime(lesson.endTime)}</p>
         </div>
 
-        <div className={classnames(styles.card, `color-${lesson.colorIndex}`)}>
+        <Card className={classnames(styles.card, `color-${lesson.colorIndex}`)}>
           <h4>
             {lesson.moduleCode} {lesson.title}
           </h4>
@@ -56,7 +57,7 @@ const DayEvents = React.memo<Props>((props) => {
               toggleOpen={() => onOpenLesson(date, lesson)}
             />
           </div>
-        </div>
+        </Card>
       </div>
     );
   };

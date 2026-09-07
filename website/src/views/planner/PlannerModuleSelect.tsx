@@ -1,3 +1,4 @@
+import { Textarea } from 'components/ui/textarea';
 import { HTMLProps, useEffect, useMemo, useRef } from 'react';
 import { connect } from 'react-redux';
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
@@ -120,7 +121,7 @@ export function PlannerModuleSelectComponent({
 
         return (
           <div className={styles.wrapper}>
-            <textarea
+            <Textarea
               {...(getInputProps({
                 // Passed props
                 id,
@@ -128,7 +129,7 @@ export function PlannerModuleSelectComponent({
                 // Hack to get a RefObject<HTMLTextArea> working here
                 // since Downshift assumes the input is always an <input>
                 ref: textareaRef,
-                className: classnames(className, 'form-control form-control-sm'),
+                className,
                 onKeyDown: (evt) => {
                   if (evt.key === 'Enter') {
                     if (filteredModules.length && highlightedIndex != null) {

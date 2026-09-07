@@ -1,4 +1,7 @@
+import { Alert } from 'components/ui/alert';
 import * as React from 'react';
+import { Card } from 'components/ui/card';
+import { Badge } from 'components/ui/badge';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
@@ -27,79 +30,87 @@ type Props = {
 
 const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => (
   <li className={styles.modulesItem}>
-    <div className="row">
-      <div className="col-lg-8 col-md-12 col-sm-8">
-        <header>
-          <h2 className={styles.modulesTitle}>
-            <Link to={modulePage(module.moduleCode, module.title)}>
-              <span
-                dangerouslySetInnerHTML={mergeModuleHighlight(
-                  module.moduleCode,
-                  highlight.moduleCode,
-                )}
-              />{' '}
-              <span dangerouslySetInnerHTML={mergeModuleHighlight(module.title, highlight.title)} />
-            </Link>
-          </h2>
-          <p>
-            {intersperse(
-              [
-                <span key="department">{module.department}</span>,
-                <span key="mc">{module.moduleCredit} Units</span>,
-              ],
-              BULLET,
+    <Card className={styles.resultCard}>
+      <div className="row">
+        <div className="col-lg-8 col-md-12 col-sm-8">
+          <header>
+            <h2 className={styles.modulesTitle}>
+              <Link to={modulePage(module.moduleCode, module.title)}>
+                <span
+                  dangerouslySetInnerHTML={mergeModuleHighlight(
+                    module.moduleCode,
+                    highlight.moduleCode,
+                  )}
+                />{' '}
+                <span
+                  dangerouslySetInnerHTML={mergeModuleHighlight(module.title, highlight.title)}
+                />
+              </Link>
+            </h2>
+            <p>
+              {intersperse(
+                [
+                  <span key="department">{module.department}</span>,
+                  <Badge key="mc" variant="secondary">
+                    {module.moduleCredit} Units
+                  </Badge>,
+                ],
+                BULLET,
+              )}
+            </p>
+          </header>
+          {module.description && (
+            <p
+              dangerouslySetInnerHTML={mergeModuleHighlight(
+                module.description,
+                highlight.description,
+              )}
+            />
+          )}
+          <dl>
+            {module.preclusion && (
+              <>
+                <dt>Preclusions</dt>
+                <dd>
+                  <LinkModuleCodes>{module.preclusion}</LinkModuleCodes>
+                </dd>
+              </>
             )}
-          </p>
-        </header>
-        {module.description && (
-          <p
-            dangerouslySetInnerHTML={mergeModuleHighlight(
-              module.description,
-              highlight.description,
+
+            {module.prerequisite && (
+              <>
+                <dt>Prerequisite</dt>
+                <dd>
+                  <LinkModuleCodes>{module.prerequisite}</LinkModuleCodes>
+                </dd>
+              </>
             )}
-          />
-        )}
-        <dl>
-          {module.preclusion && (
-            <>
-              <dt>Preclusions</dt>
-              <dd>
-                <LinkModuleCodes>{module.preclusion}</LinkModuleCodes>
-              </dd>
-            </>
-          )}
 
-          {module.prerequisite && (
-            <>
-              <dt>Prerequisite</dt>
-              <dd>
-                <LinkModuleCodes>{module.prerequisite}</LinkModuleCodes>
-              </dd>
-            </>
+            {module.corequisite && (
+              <>
+                <dt>Corequisite</dt>
+                <dd>
+                  <LinkModuleCodes>{module.corequisite}</LinkModuleCodes>
+                </dd>
+              </>
+            )}
+          </dl>
+        </div>
+        <div className="col-lg-4 col-md-12 col-sm-4">
+          {isOffered(module) ? (
+            <ModuleSemesterInfo semesters={module.semesterData} moduleCode={module.moduleCode} />
+          ) : (
+            <Alert asChild variant="warning">
+              <div className={classnames(styles.notOffered, 'alert alert-warning')}>
+                <Archive className={styles.archiveIcon} />
+                <p>This course is not offered this year</p>
+              </div>
+            </Alert>
           )}
-
-          {module.corequisite && (
-            <>
-              <dt>Corequisite</dt>
-              <dd>
-                <LinkModuleCodes>{module.corequisite}</LinkModuleCodes>
-              </dd>
-            </>
-          )}
-        </dl>
+          {module.workload && <ModuleWorkload workload={module.workload} />}
+        </div>
       </div>
-      <div className="col-lg-4 col-md-12 col-sm-4">
-        {isOffered(module) ? (
-          <ModuleSemesterInfo semesters={module.semesterData} moduleCode={module.moduleCode} />
-        ) : (
-          <div className={classnames(styles.notOffered, 'alert alert-warning')}>
-            <Archive className={styles.archiveIcon} />
-            <p>This course is not offered this year</p>
-          </div>
-        )}
-        {module.workload && <ModuleWorkload workload={module.workload} />}
-      </div>
-    </div>
+    </Card>
   </li>
 );
 

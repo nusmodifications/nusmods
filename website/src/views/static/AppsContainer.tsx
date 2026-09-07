@@ -1,3 +1,5 @@
+import { Alert } from 'components/ui/alert';
+import { Card } from 'components/ui/card';
 import * as React from 'react';
 import axios from 'axios';
 
@@ -25,24 +27,26 @@ type State = {
 };
 
 const AppEntry: React.FC<AppEntryProps> = ({ app }) => (
-  <section className={styles.appEntry}>
-    <div className="row">
-      <div className="col-lg-2 col-sm-3 text-center-md">
-        <ExternalLink href={app.url} className={styles.appIcon}>
-          <img className="rounded-circle img-fluid img-thumbnail" src={app.icon_url} alt="" />
-        </ExternalLink>
+  <Card asChild>
+    <section className={styles.appEntry}>
+      <div className="row">
+        <div className="col-lg-2 col-sm-3 text-center-md">
+          <ExternalLink href={app.url} className={styles.appIcon}>
+            <img className="rounded-circle img-fluid img-thumbnail" src={app.icon_url} alt="" />
+          </ExternalLink>
+        </div>
+        <div className="col-lg-10 col-sm-9">
+          <ExternalLink href={app.url}>
+            <h4 className={styles.appName}>{app.name}</h4>
+          </ExternalLink>
+          <p>
+            <small>{app.author}</small>
+          </p>
+          <p>{app.description}</p>
+        </div>
       </div>
-      <div className="col-lg-10 col-sm-9">
-        <ExternalLink href={app.url}>
-          <h4 className={styles.appName}>{app.name}</h4>
-        </ExternalLink>
-        <p>
-          <small>{app.author}</small>
-        </p>
-        <p>{app.description}</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </Card>
 );
 
 const title = 'Apps';
@@ -89,10 +93,12 @@ class AppsContainer extends React.Component<Props, State> {
 
         {this.state.isLoading && <LoadingSpinner />}
         {this.state.isError && (
-          <div className="alert alert-danger">
-            <strong>Something went wrong!</strong>
-            {this.state.errorMessage}
-          </div>
+          <Alert asChild variant="destructive">
+            <div className="alert alert-danger">
+              <strong>Something went wrong!</strong>
+              {this.state.errorMessage}
+            </div>
+          </Alert>
         )}
         {this.state.appsData &&
           this.state.appsData.map((app) => <AppEntry key={app.name} app={app} />)}

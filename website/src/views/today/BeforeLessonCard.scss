@@ -1,8 +1,9 @@
 @import '~styles/utils/modules-entry';
 
 .inBetweenClass {
-  border: 1px solid var(--gray-lighter);
-  box-shadow: 0 0.2rem 0.25rem rgba(#000, 0.2);
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 2px 8px rgba(#000, 0.04);
 
   p {
     margin-bottom: 0.4rem;

@@ -1,3 +1,4 @@
+import { Button } from 'components/ui/button';
 import * as React from 'react';
 import classnames from 'classnames';
 import { X as Close } from 'react-feather';
@@ -11,14 +12,16 @@ type Props = {
 };
 
 const RawCloseButton: React.FC<Props> = ({ onClick, className }) => (
-  <button
-    className={classnames('close', className)}
+  <Button
+    variant="ghost"
+    size="icon"
+    className={classnames(className)}
     type="button"
     onClick={onClick}
     aria-label="Close"
   >
     <Close />
-  </button>
+  </Button>
 );
 
 const CloseButton: React.FC<Props> = (props) => {

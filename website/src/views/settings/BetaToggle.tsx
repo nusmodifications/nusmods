@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { Button } from 'components/ui/button';
 import Toggle from 'views/components/Toggle';
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
@@ -47,9 +48,9 @@ const BetaToggle = memo<Props>((props) => {
         <div className={styles.toggle}>
           <Toggle className={styles.betaToggle} isOn={betaTester} onChange={toggleStates} />
           {betaTester && hasTests && (
-            <ExternalLink className="btn btn-success" href={config.contact.telegram}>
-              Leave Feedback
-            </ExternalLink>
+            <Button asChild>
+              <ExternalLink href={config.contact.telegram}>Leave Feedback</ExternalLink>
+            </Button>
           )}
         </div>
       </div>

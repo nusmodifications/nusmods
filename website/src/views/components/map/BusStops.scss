@@ -79,7 +79,7 @@ $route-colors: (
     white-space: nowrap;
 
     strong {
-      color: theme-color(success);
+      color: var(--success);
     }
   }
 

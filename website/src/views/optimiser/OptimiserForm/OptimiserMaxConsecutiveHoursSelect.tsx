@@ -1,3 +1,4 @@
+import { NativeSelect } from 'components/ui/native-select';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 import { range } from 'lodash-es';
 
@@ -20,7 +21,7 @@ const OptimiserMaxConsecutiveHoursSelect: React.FC<Props> = ({ optimiserFormFiel
         <OptimiserFormTooltip content="Prioritises having less than this number of consecutive hours of live lessons" />
       </h4>
 
-      <select
+      <NativeSelect
         value={maxConsecutiveHours}
         onChange={(e) => setMaxConsecutiveHours(parseInt(e.target.value, 10))}
         className={styles.optimiserDropdown}
@@ -30,7 +31,7 @@ const OptimiserMaxConsecutiveHoursSelect: React.FC<Props> = ({ optimiserFormFiel
             {value}
           </option>
         ))}
-      </select>
+      </NativeSelect>
     </div>
   );
 };

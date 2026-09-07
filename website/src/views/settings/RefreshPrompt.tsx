@@ -1,3 +1,5 @@
+import { Alert } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
 import { createRef, PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -45,27 +47,28 @@ class RefreshPrompt extends PureComponent<Props, State> {
     const { isReloading } = this.state;
 
     return (
-      <div className={classnames('alert alert-success', styles.announcement, styles.wrapButtons)}>
-        <Refresh className={styles.backgroundIcon} />
+      <Alert asChild variant="success">
+        <div className={classnames('alert alert-success', styles.announcement, styles.wrapButtons)}>
+          <Refresh className={styles.backgroundIcon} />
 
-        <div className={styles.body}>
-          <h3>A new version of NUSMods is available</h3>
-          <p>Please refresh the page to get the latest version.</p>
-        </div>
+          <div className={styles.body}>
+            <h3>A new version of NUSMods is available</h3>
+            <p>Please refresh the page to get the latest version.</p>
+          </div>
 
-        <div className={styles.buttons}>
-          <button
-            className="btn btn-success"
-            type="button"
-            onClick={this.onReload}
-            style={{ width: this.buttonWidth }}
-            disabled={isReloading}
-            ref={this.buttonRef}
-          >
-            {isReloading ? <LoadingSpinner small white /> : 'Refresh page'}
-          </button>
+          <div className={styles.buttons}>
+            <Button
+              type="button"
+              onClick={this.onReload}
+              style={{ width: this.buttonWidth }}
+              disabled={isReloading}
+              ref={this.buttonRef}
+            >
+              {isReloading ? <LoadingSpinner small white /> : 'Refresh page'}
+            </Button>
+          </div>
         </div>
-      </div>
+      </Alert>
     );
   }
 }

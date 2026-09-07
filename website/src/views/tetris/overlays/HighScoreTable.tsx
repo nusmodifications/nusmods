@@ -1,3 +1,4 @@
+import { Table, TableBody, TableRow, TableHead, TableCell } from 'components/ui/table';
 import * as React from 'react';
 import { getScoreData } from './score';
 
@@ -8,17 +9,17 @@ const HighScoreTable: React.FC = () => {
     <div>
       <h3>High Scores</h3>
       {highScores.length > 0 ? (
-        <table className="table table-sm table-borderless">
-          <tbody>
+        <Table className="table table-sm table-borderless">
+          <TableBody>
             {highScores.map((entry, index) => (
-              <tr key={entry.time}>
-                <th>{index + 1}</th>
-                <td className="text-right">{entry.name}</td>
-                <td>{entry.score}</td>
-              </tr>
+              <TableRow key={entry.time}>
+                <TableHead>{index + 1}</TableHead>
+                <TableCell className="text-right">{entry.name}</TableCell>
+                <TableCell>{entry.score}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       ) : (
         <p>No high scores yet!</p>
       )}

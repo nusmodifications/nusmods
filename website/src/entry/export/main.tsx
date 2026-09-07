@@ -31,6 +31,15 @@ const timetableRef = createRef<TimetableOnly>();
 window.setData = function setData(modules, data, callback) {
   const { semester, timetable, colors, hidden, ta } = data;
 
+  document.documentElement.classList.toggle(
+    'dark',
+    data.settings.colorScheme === DARK_COLOR_SCHEME,
+  );
+  document.documentElement.classList.toggle(
+    'light',
+    data.settings.colorScheme !== DARK_COLOR_SCHEME,
+  );
+
   if (document.body) {
     document.body.classList.toggle('mode-dark', data.settings.colorScheme === DARK_COLOR_SCHEME);
   }

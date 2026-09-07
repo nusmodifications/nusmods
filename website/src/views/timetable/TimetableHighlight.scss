@@ -1,12 +1,12 @@
 @import './_variables.scss';
 
-$color: theme-color('success');
+$color: var(--success);
 
 .highlight {
   position: absolute;
   height: 100%;
-  border: 1px solid $color;
-  background: rgba($color, 0.4);
+  border: 1px solid var(--success);
+  background: color-mix(in sRGB, var(--success), transparent 60%);
 
   @include vertical-mode {
     right: 0;
