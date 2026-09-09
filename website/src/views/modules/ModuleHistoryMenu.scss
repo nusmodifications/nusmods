@@ -1,0 +1,36 @@
+@import '~styles/utils/modules-entry';
+
+.container {
+  margin-top: 0.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.links {
+  composes: list-unstyled from global;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  gap: 0.25rem 0.5rem;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.25rem;
+}
+
+.chevron {
+  flex-shrink: 0;
+  margin-left: 0.25rem;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
