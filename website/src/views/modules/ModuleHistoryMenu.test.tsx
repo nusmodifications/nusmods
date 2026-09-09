@@ -140,7 +140,7 @@ describe(ModuleHistoryMenu, () => {
     mockAxiosRequest.mockResolvedValue(cs1010sResponse);
     make('2021/2022', '2021/2022');
 
-    expect(mockAxiosRequest).toHaveBeenCalledTimes(config.archiveYears.length);
+    expect(mockAxiosRequest).toHaveBeenCalledTimes(config.archiveYears.length + 1);
     expect(await screen.findByRole('link', { name: 'AY2021/2022' })).toBeInTheDocument();
     expect(await screen.findByRole('link', { name: 'AY2025/2026' })).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: /^AY/ })).toHaveLength(4);
@@ -176,5 +176,21 @@ describe(ModuleHistoryMenu, () => {
       'aria-current',
       'page',
     );
+  });
+
+  test('omits the current-course link when the current course is unavailable', async () => {
+    mockAxiosRequest.mockImplementation((request) => {
+      if (request.url?.includes('2026-2027')) {
+        return Promise.reject(notFoundError);
+      }
+
+      return Promise.resolve(cs1010sResponse);
+    });
+    make('2024/2025');
+
+    expect(await screen.findByRole('link', { name: 'AY2025/2026' })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByRole('link', { name: /current course/i })).not.toBeInTheDocument();
+    });
   });
 });

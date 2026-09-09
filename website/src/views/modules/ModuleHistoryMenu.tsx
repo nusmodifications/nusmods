@@ -9,7 +9,9 @@ import type { Dispatch } from 'types/redux';
 import type { State } from 'types/state';
 
 import config from 'config';
-import { fetchAllModuleArchive } from 'actions/moduleBank';
+import { fetchAllModuleArchive, fetchModule } from 'actions/moduleBank';
+import { fetchModuleRequest } from 'actions/constants';
+import { isFailure, isOngoing, isSuccess } from 'selectors/requests';
 import { availableArchive, isArchiveLoading } from 'selectors/timetables';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive, modulePage } from 'views/routes/paths';
@@ -31,7 +33,20 @@ const ModuleHistoryMenu: React.FC<Props> = ({ moduleCode, moduleTitle, archiveYe
   const archiveYears = useSelector((state: State) =>
     sortArchiveYears(availableArchive(state, moduleCode)),
   );
-  const isLoading = useSelector((state: State) => isArchiveLoading(state, moduleCode));
+  const currentModuleRequest = fetchModuleRequest(moduleCode);
+  const isCurrentCourseLoading = useSelector((state: State) =>
+    isOngoing(state, currentModuleRequest),
+  );
+  const hasCurrentCourseRequestFinished = useSelector(
+    (state: State) =>
+      isSuccess(state, currentModuleRequest) || isFailure(state, currentModuleRequest),
+  );
+  const hasCurrentCourse = useSelector(
+    (state: State) =>
+      isSuccess(state, currentModuleRequest) && Boolean(state.moduleBank.modules[moduleCode]),
+  );
+  const isArchiveDataLoading = useSelector((state: State) => isArchiveLoading(state, moduleCode));
+  const isLoading = isArchiveDataLoading || (Boolean(archiveYear) && isCurrentCourseLoading);
 
   const hasRequestedArchives = useRef(false);
   const [expanded, setExpanded] = useState(false);
@@ -56,6 +71,12 @@ const ModuleHistoryMenu: React.FC<Props> = ({ moduleCode, moduleTitle, archiveYe
     requestArchives();
   }, [archiveYears.length, requestArchives]);
 
+  useEffect(() => {
+    if (!archiveYear || isCurrentCourseLoading || hasCurrentCourseRequestFinished) return;
+
+    void dispatch(fetchModule(moduleCode)).catch(() => undefined);
+  }, [archiveYear, dispatch, hasCurrentCourseRequestFinished, isCurrentCourseLoading, moduleCode]);
+
   return (
     <div className={styles.container} aria-live="polite">
       <strong className={styles.label}>Course History</strong>
@@ -68,7 +89,7 @@ const ModuleHistoryMenu: React.FC<Props> = ({ moduleCode, moduleTitle, archiveYe
 
       {!isLoading && (archiveYear || archiveYears.length > 0) && (
         <ul id={yearsId} className={styles.links} aria-label="Course History years">
-          {archiveYear && (
+          {archiveYear && hasCurrentCourse && (
             <li>
               <Link className={styles.link} to={modulePage(moduleCode, moduleTitle)}>
                 Current course (AY{config.academicYear})
