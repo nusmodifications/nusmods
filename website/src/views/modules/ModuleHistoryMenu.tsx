@@ -51,9 +51,7 @@ const ModuleHistoryMenu: React.FC<Props> = ({ moduleCode, moduleTitle, archiveYe
   const hasRequestedArchives = useRef(false);
   const [expanded, setExpanded] = useState(false);
   const yearsId = useId();
-  const collapsedYears = archiveYears.filter((year, index) => index < 3 || year === archiveYear);
-  const visibleYears = expanded ? archiveYears : collapsedYears;
-  const hasMoreYears = collapsedYears.length < archiveYears.length;
+  const hasHistory = archiveYears.length > 0 || (Boolean(archiveYear) && hasCurrentCourse);
   const Chevron = expanded ? ChevronUp : ChevronDown;
 
   const requestArchives = useCallback(() => {
@@ -87,41 +85,46 @@ const ModuleHistoryMenu: React.FC<Props> = ({ moduleCode, moduleTitle, archiveYe
         </div>
       )}
 
-      {!isLoading && (archiveYear || archiveYears.length > 0) && (
-        <ul id={yearsId} className={styles.links} aria-label="Course History years">
-          {archiveYear && hasCurrentCourse && (
-            <li>
-              <Link className={styles.link} to={modulePage(moduleCode, moduleTitle)}>
-                Current course (AY{config.academicYear})
-              </Link>
-            </li>
-          )}
+      {!isLoading && hasHistory && (
+        <>
+          <button
+            type="button"
+            className={classnames('btn btn-link', styles.link)}
+            aria-expanded={expanded}
+            aria-controls={yearsId}
+            onClick={() => setExpanded((value) => !value)}
+          >
+            {expanded ? 'Hide past courses' : 'Show past courses'}
+            <Chevron className={classnames('svg-small', styles.chevron)} aria-hidden="true" />
+          </button>
 
-          {visibleYears.map((year) => (
-            <li key={year}>
-              <Link
-                className={styles.link}
-                to={moduleArchive(moduleCode, year, moduleTitle)}
-                aria-current={archiveYear === year ? 'page' : undefined}
-              >
-                AY{year}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+          <ul
+            id={yearsId}
+            className={styles.links}
+            aria-label="Course History years"
+            hidden={!expanded}
+          >
+            {archiveYear && hasCurrentCourse && (
+              <li>
+                <Link className={styles.link} to={modulePage(moduleCode, moduleTitle)}>
+                  Current course (AY{config.academicYear})
+                </Link>
+              </li>
+            )}
 
-      {!isLoading && hasMoreYears && (
-        <button
-          type="button"
-          className={classnames('btn btn-link', styles.link)}
-          aria-expanded={expanded}
-          aria-controls={yearsId}
-          onClick={() => setExpanded((value) => !value)}
-        >
-          {expanded ? 'Show fewer years' : 'Show all years'}
-          <Chevron className={classnames('svg-small', styles.chevron)} aria-hidden="true" />
-        </button>
+            {archiveYears.map((year) => (
+              <li key={year}>
+                <Link
+                  className={styles.link}
+                  to={moduleArchive(moduleCode, year, moduleTitle)}
+                  aria-current={archiveYear === year ? 'page' : undefined}
+                >
+                  AY{year}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       {!isLoading && hasRequestedArchives.current && !archiveYears.length && (

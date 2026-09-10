@@ -91,14 +91,15 @@ describe(ModuleHistoryMenu, () => {
     expect(mockAxiosRequest).toHaveBeenCalledTimes(config.archiveYears.length);
 
     resolveRequests(cs1010sResponse);
-    await screen.findByRole('link', { name: 'AY2025/2026' });
+    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
 
-    expect(screen.getAllByRole('link', { name: /^AY/ })).toHaveLength(3);
     const user = userEvent.setup();
-    const toggle = screen.getByRole('button', { name: 'Show all years' });
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'AY2025/2026' })).not.toBeInTheDocument();
+
     await user.click(toggle);
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(toggle).toHaveTextContent('Hide past courses');
 
     const archiveLinks = screen
       .getAllByRole('link', { name: /^AY/ })
@@ -112,10 +113,10 @@ describe(ModuleHistoryMenu, () => {
     );
 
     await user.keyboard('{Enter}');
-    expect(toggle).toHaveTextContent('Show all years');
+    expect(toggle).toHaveTextContent('Show past courses');
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
     expect(toggle).toHaveFocus();
-    expect(screen.getAllByRole('link', { name: /^AY/ })).toHaveLength(3);
+    expect(screen.queryByRole('link', { name: 'AY2025/2026' })).not.toBeInTheDocument();
     expect(mockAxiosRequest).toHaveBeenCalledTimes(config.archiveYears.length);
   });
 
@@ -129,8 +130,9 @@ describe(ModuleHistoryMenu, () => {
     });
     make();
 
-    expect(await screen.findByRole('link', { name: 'AY2024/2025' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Show all years' })).not.toBeInTheDocument();
+    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    await userEvent.click(toggle);
+    expect(screen.getByRole('link', { name: 'AY2024/2025' })).toBeInTheDocument();
     await waitFor(() => {
       expect(screen.queryByRole('link', { name: 'AY2025/2026' })).toBeNull();
     });
@@ -141,16 +143,20 @@ describe(ModuleHistoryMenu, () => {
     make('2021/2022', '2021/2022');
 
     expect(mockAxiosRequest).toHaveBeenCalledTimes(config.archiveYears.length + 1);
+    const user = userEvent.setup();
+    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    expect(screen.queryByRole('link', { name: 'AY2021/2022' })).not.toBeInTheDocument();
+    await user.click(toggle);
     expect(await screen.findByRole('link', { name: 'AY2021/2022' })).toBeInTheDocument();
     expect(await screen.findByRole('link', { name: 'AY2025/2026' })).toBeInTheDocument();
-    expect(screen.getAllByRole('link', { name: /^AY/ })).toHaveLength(4);
-    const user = userEvent.setup();
-    await user.click(screen.getByRole('button', { name: 'Show all years' }));
-    await user.click(screen.getByRole('button', { name: 'Show fewer years' }));
+    expect(screen.getAllByRole('link', { name: /^AY/ })).toHaveLength(config.archiveYears.length);
     expect(screen.getByRole('link', { name: 'AY2021/2022' })).toHaveAttribute(
       'aria-current',
       'page',
     );
+    await user.click(toggle);
+    expect(toggle).toHaveTextContent('Show past courses');
+    expect(screen.queryByRole('link', { name: 'AY2021/2022' })).not.toBeInTheDocument();
   });
 
   test('shows an empty state when all archive requests fail', async () => {
@@ -167,6 +173,9 @@ describe(ModuleHistoryMenu, () => {
     mockAxiosRequest.mockResolvedValue(cs1010sResponse);
     make('2024/2025');
 
+    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    expect(screen.queryByRole('link', { name: /current course/i })).not.toBeInTheDocument();
+    await user.click(toggle);
     const currentLink = await screen.findByRole('link', { name: /current course/i });
     await user.tab();
     expect(currentLink).toHaveFocus();
@@ -188,6 +197,8 @@ describe(ModuleHistoryMenu, () => {
     });
     make('2024/2025');
 
+    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    await userEvent.click(toggle);
     expect(await screen.findByRole('link', { name: 'AY2025/2026' })).toBeInTheDocument();
     await waitFor(() => {
       expect(screen.queryByRole('link', { name: /current course/i })).not.toBeInTheDocument();
