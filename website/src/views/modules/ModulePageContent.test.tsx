@@ -12,12 +12,12 @@ import renderWithRouterMatch from 'test-utils/renderWithRouterMatch';
 import ModulePageContent from './ModulePageContent';
 
 describe('ModulePageContent', () => {
-  function make(module: Module = CS1010S) {
+  function make(module: Module = CS1010S, archiveYear?: string) {
     const initialState = reducers(undefined, initAction());
     const { store } = configureStore(initialState);
     return renderWithRouterMatch(
       <Provider store={store}>
-        <ModulePageContent module={module} />
+        <ModulePageContent module={module} archiveYear={archiveYear} />
       </Provider>,
       {},
     );
@@ -29,6 +29,23 @@ describe('ModulePageContent', () => {
 
   afterEach(() => {
     mockDomReset();
+  });
+
+  test('shows course history after the report-error FAQ on current and archived course pages', () => {
+    const currentPage = make();
+    const currentHistory = screen.getByText('Course History');
+    const currentFaq = screen.getByRole('link', { name: 'FAQ' });
+    expect(currentFaq.compareDocumentPosition(currentHistory)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    currentPage.view.unmount();
+
+    make(CS1010S, '2024/2025');
+    const archiveHistory = screen.getByText('Course History');
+    const archiveFaq = screen.getByRole('link', { name: 'FAQ' });
+    expect(archiveFaq.compareDocumentPosition(archiveHistory)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
   });
 
   test('side menu items should appear in the same order in the document', () => {

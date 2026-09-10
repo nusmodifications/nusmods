@@ -43,7 +43,7 @@ PR2 is usually merged around July, while previous AY Special Term I and II run u
 
 - **Prepare "PR3"**
   - [ ] Ensure `specialTermAcademicYear` is `null` (overlap ends when Semester 1 starts per `packages/nusmods-academic-calendar/academic-calendar.json`)
-  - [ ] Add the previous academic year to `archiveYears` in `app-config.json`
+  - [ ] Add the previous academic year to `archiveYears` in `website/src/config/app-config.json` so course historical-data links include it
 
 ### When new AY Semester 1 starts
 
