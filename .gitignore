@@ -13,6 +13,7 @@ build/
 
 # Cache folders
 cache/
+.pnpm-store/
 .cache-loader
 
 # Env files
