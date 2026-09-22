@@ -33,6 +33,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 import ModuleTree from './ModuleTree';
+import ModuleHistoryMenu from './ModuleHistoryMenu';
 
 export type Props = {
   module: Module;
@@ -267,6 +268,12 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                 <div>
                   <ReportError module={module} />
                 </div>
+
+                <ModuleHistoryMenu
+                  moduleCode={moduleCode}
+                  moduleTitle={title}
+                  archiveYear={archiveYear}
+                />
               </div>
             </section>
           </div>
