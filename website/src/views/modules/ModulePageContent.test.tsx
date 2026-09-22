@@ -33,7 +33,7 @@ describe('ModulePageContent', () => {
 
   test('shows course history after the report-error FAQ on current and archived course pages', () => {
     const currentPage = make();
-    const currentHistory = screen.getByText('Course History');
+    const currentHistory = screen.getByRole('group', { name: 'Course history' });
     const currentFaq = screen.getByRole('link', { name: 'FAQ' });
     expect(currentFaq.compareDocumentPosition(currentHistory)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
@@ -41,7 +41,7 @@ describe('ModulePageContent', () => {
     currentPage.view.unmount();
 
     make(CS1010S, '2024/2025');
-    const archiveHistory = screen.getByText('Course History');
+    const archiveHistory = screen.getByRole('group', { name: 'Course history' });
     const archiveFaq = screen.getByRole('link', { name: 'FAQ' });
     expect(archiveFaq.compareDocumentPosition(archiveHistory)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,

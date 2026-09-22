@@ -4,11 +4,6 @@
   margin-top: 0.5rem;
 }
 
-.label {
-  display: block;
-  margin-bottom: 0.25rem;
-}
-
 .links {
   composes: list-unstyled from global;
   display: flex;

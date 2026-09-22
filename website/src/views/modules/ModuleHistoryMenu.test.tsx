@@ -84,14 +84,14 @@ describe(ModuleHistoryMenu, () => {
     mockAxiosRequest.mockReturnValue(pendingResponse);
     make();
 
-    expect(screen.getByText('Course History')).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Course history' })).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'AY2025/2026' })).not.toBeInTheDocument();
 
     expect(await screen.findByRole('status')).toHaveTextContent('Loading historical data...');
     expect(mockAxiosRequest).toHaveBeenCalledTimes(config.archiveYears.length);
 
     resolveRequests(cs1010sResponse);
-    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    const toggle = await screen.findByRole('button', { name: 'Show course history' });
 
     const user = userEvent.setup();
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
@@ -99,7 +99,7 @@ describe(ModuleHistoryMenu, () => {
 
     await user.click(toggle);
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
-    expect(toggle).toHaveTextContent('Hide past courses');
+    expect(toggle).toHaveTextContent('Hide course history');
 
     const archiveLinks = screen
       .getAllByRole('link', { name: /^AY/ })
@@ -113,7 +113,7 @@ describe(ModuleHistoryMenu, () => {
     );
 
     await user.keyboard('{Enter}');
-    expect(toggle).toHaveTextContent('Show past courses');
+    expect(toggle).toHaveTextContent('Show course history');
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
     expect(toggle).toHaveFocus();
     expect(screen.queryByRole('link', { name: 'AY2025/2026' })).not.toBeInTheDocument();
@@ -130,7 +130,7 @@ describe(ModuleHistoryMenu, () => {
     });
     make();
 
-    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    const toggle = await screen.findByRole('button', { name: 'Show course history' });
     await userEvent.click(toggle);
     expect(screen.getByRole('link', { name: 'AY2024/2025' })).toBeInTheDocument();
     await waitFor(() => {
@@ -144,7 +144,7 @@ describe(ModuleHistoryMenu, () => {
 
     expect(mockAxiosRequest).toHaveBeenCalledTimes(config.archiveYears.length + 1);
     const user = userEvent.setup();
-    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    const toggle = await screen.findByRole('button', { name: 'Show course history' });
     expect(screen.queryByRole('link', { name: 'AY2021/2022' })).not.toBeInTheDocument();
     await user.click(toggle);
     expect(await screen.findByRole('link', { name: 'AY2021/2022' })).toBeInTheDocument();
@@ -155,7 +155,7 @@ describe(ModuleHistoryMenu, () => {
       'page',
     );
     await user.click(toggle);
-    expect(toggle).toHaveTextContent('Show past courses');
+    expect(toggle).toHaveTextContent('Show course history');
     expect(screen.queryByRole('link', { name: 'AY2021/2022' })).not.toBeInTheDocument();
   });
 
@@ -173,7 +173,7 @@ describe(ModuleHistoryMenu, () => {
     mockAxiosRequest.mockResolvedValue(cs1010sResponse);
     make('2024/2025');
 
-    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    const toggle = await screen.findByRole('button', { name: 'Show course history' });
     expect(screen.queryByRole('link', { name: /current course/i })).not.toBeInTheDocument();
     await user.click(toggle);
     const currentLink = await screen.findByRole('link', { name: /current course/i });
@@ -197,7 +197,7 @@ describe(ModuleHistoryMenu, () => {
     });
     make('2024/2025');
 
-    const toggle = await screen.findByRole('button', { name: 'Show past courses' });
+    const toggle = await screen.findByRole('button', { name: 'Show course history' });
     await userEvent.click(toggle);
     expect(await screen.findByRole('link', { name: 'AY2025/2026' })).toBeInTheDocument();
     await waitFor(() => {

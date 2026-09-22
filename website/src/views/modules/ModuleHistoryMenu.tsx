@@ -76,9 +76,7 @@ const ModuleHistoryMenu: React.FC<Props> = ({ moduleCode, moduleTitle, archiveYe
   }, [archiveYear, dispatch, hasCurrentCourseRequestFinished, isCurrentCourseLoading, moduleCode]);
 
   return (
-    <div className={styles.container} aria-live="polite">
-      <strong className={styles.label}>Course History</strong>
-
+    <div className={styles.container} role="group" aria-label="Course history" aria-live="polite">
       {isLoading && (
         <div className={styles.status} role="status">
           <LoadingSpinner small /> Loading historical data...
@@ -94,14 +92,14 @@ const ModuleHistoryMenu: React.FC<Props> = ({ moduleCode, moduleTitle, archiveYe
             aria-controls={yearsId}
             onClick={() => setExpanded((value) => !value)}
           >
-            {expanded ? 'Hide past courses' : 'Show past courses'}
+            {expanded ? 'Hide course history' : 'Show course history'}
             <Chevron className={classnames('svg-small', styles.chevron)} aria-hidden="true" />
           </button>
 
           <ul
             id={yearsId}
             className={styles.links}
-            aria-label="Course History years"
+            aria-label="Course history years"
             hidden={!expanded}
           >
             {archiveYear && hasCurrentCourse && (
