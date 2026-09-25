@@ -47,3 +47,27 @@
   display: flex;
   align-items: center;
 }
+
+.programmeList {
+  composes: list-unstyled from global;
+  margin-bottom: 0.5rem;
+}
+
+.programmeItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--gray-lighter);
+  gap: 0.5rem;
+
+  .programmeName {
+    font-weight: bold;
+  }
+
+  .subtitle {
+    display: block;
+    font-weight: normal;
+    font-size: 0.9rem;
+  }
+}

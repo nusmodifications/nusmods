@@ -17,9 +17,13 @@ import {
   importPlanner,
   CLEAR_PLANNER,
   clearPlanner,
+  ADD_PLANNER_PROGRAMME,
+  addPlannerProgramme,
+  REMOVE_PLANNER_PROGRAMME,
+  removePlannerProgramme,
 } from 'actions/planner';
 import { PlannerState } from 'types/reducers';
-import reducer, { defaultPlannerState, migrateV0toV1, nextId } from './planner';
+import reducer, { defaultPlannerState, migrateV0toV1, migrateV1toV2, nextId } from './planner';
 
 const defaultState: PlannerState = {
   ...defaultPlannerState,
@@ -220,6 +224,7 @@ describe(IMPORT_PLANNER, () => {
     custom: {
       CS1010A: { title: 'CS1010B', moduleCredit: 4 },
     },
+    programmes: ['soc-minor-computer-science'],
   };
   test('should import the given planner', () => {
     expect(reducer(initial, importPlanner(importedState))).toEqual(importedState);
@@ -240,6 +245,35 @@ describe(CLEAR_PLANNER, () => {
   });
 });
 
+describe(ADD_PLANNER_PROGRAMME, () => {
+  test('should add a programme', () => {
+    expect(
+      reducer(defaultState, addPlannerProgramme('soc-minor-computer-science')).programmes,
+    ).toEqual(['soc-minor-computer-science']);
+  });
+
+  test('should not add a programme twice', () => {
+    const initial: PlannerState = { ...defaultState, programmes: ['soc-minor-computer-science'] };
+
+    expect(reducer(initial, addPlannerProgramme('soc-minor-computer-science')).programmes).toEqual([
+      'soc-minor-computer-science',
+    ]);
+  });
+});
+
+describe(REMOVE_PLANNER_PROGRAMME, () => {
+  test('should remove a programme', () => {
+    const initial: PlannerState = {
+      ...defaultState,
+      programmes: ['cs-focus-artificial-intelligence', 'soc-minor-computer-science'],
+    };
+
+    expect(
+      reducer(initial, removePlannerProgramme('cs-focus-artificial-intelligence')).programmes,
+    ).toEqual(['soc-minor-computer-science']);
+  });
+});
+
 describe(migrateV0toV1, () => {
   test('should migrate old modules state to new modules state', () => {
     expect(
@@ -257,5 +291,13 @@ describe(migrateV0toV1, () => {
       1: { id: '1', moduleCode: 'MA1101R', year: '2018/2019', semester: 1, index: 1 },
       2: { id: '2', moduleCode: 'CS1231', year: '2018/2019', semester: 2, index: 0 },
     });
+  });
+});
+
+describe(migrateV1toV2, () => {
+  test('should add an empty programmes array', () => {
+    const { programmes, ...v1State } = defaultState;
+
+    expect(migrateV1toV2({ _persist: {} as any, ...v1State })).toHaveProperty('programmes', []);
   });
 });

@@ -1,5 +1,15 @@
 import { clone } from 'lodash-es';
-import { getAcadYearModules, getPrereqModuleCode } from 'selectors/planner';
+import {
+  getAcadYearModules,
+  getPrereqModuleCode,
+  getProgrammeFulfilments,
+} from 'selectors/planner';
+import {
+  EXEMPTION_SEMESTER,
+  EXEMPTION_YEAR,
+  PLAN_TO_TAKE_SEMESTER,
+  PLAN_TO_TAKE_YEAR,
+} from 'utils/planner';
 import { PlannerState } from 'types/reducers';
 import { ModuleCode } from 'types/modules';
 
@@ -22,6 +32,7 @@ const defaultState: PlannerState = {
   ignorePrereqCheck: false,
   modules: {},
   custom: {},
+  programmes: [],
 };
 
 describe(getPrereqModuleCode, () => {
@@ -536,5 +547,96 @@ describe(getAcadYearModules, () => {
     });
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0.conflicts', []);
+  });
+});
+
+describe(getProgrammeFulfilments, () => {
+  const getState = (planner: PlannerState): State =>
+    ({
+      planner,
+      moduleBank: {
+        modules: {},
+        moduleCodes: {},
+      },
+    }) as any;
+
+  const plannerWithModules = (moduleCodes: ModuleCode[], year = '2018/2019'): PlannerState => ({
+    ...defaultState,
+    programmes: ['soc-minor-computer-science'],
+    modules: Object.fromEntries(
+      moduleCodes.map((moduleCode, index) => [
+        index,
+        { id: String(index), moduleCode, year, semester: 1, index },
+      ]),
+    ),
+  });
+
+  test('should check planned modules against the selected programmes', () => {
+    const state = getState(
+      plannerWithModules(['CS1010S', 'CS2030S', 'CS2040S', 'CS2100', 'CS3230']),
+    );
+
+    const fulfilments = getProgrammeFulfilments(state);
+    expect(fulfilments).toHaveLength(1);
+    expect(fulfilments[0].programme.id).toEqual('soc-minor-computer-science');
+    // Module credits default to 4 MCs when the module bank has no data
+    expect(fulfilments[0].totalMCs).toEqual(20);
+    expect(fulfilments[0].satisfied).toBe(true);
+  });
+
+  test('should ignore unknown programme ids', () => {
+    const state = getState({ ...defaultState, programmes: ['no-longer-exists'] });
+
+    expect(getProgrammeFulfilments(state)).toEqual([]);
+  });
+
+  test('should count exemptions but not plan to take modules', () => {
+    const exempted = getState({
+      ...plannerWithModules(['CS1010S'], EXEMPTION_YEAR),
+      modules: {
+        0: {
+          id: '0',
+          moduleCode: 'CS1010S',
+          year: EXEMPTION_YEAR,
+          semester: EXEMPTION_SEMESTER,
+          index: 0,
+        },
+      },
+    });
+    expect(getProgrammeFulfilments(exempted)[0].requirements[0].satisfied).toBe(true);
+
+    const planToTake = getState({
+      ...plannerWithModules(['CS1010S']),
+      modules: {
+        0: {
+          id: '0',
+          moduleCode: 'CS1010S',
+          year: PLAN_TO_TAKE_YEAR,
+          semester: PLAN_TO_TAKE_SEMESTER,
+          index: 0,
+        },
+      },
+    });
+    expect(getProgrammeFulfilments(planToTake)[0].requirements[0].satisfied).toBe(false);
+  });
+
+  test('should skip placeholders and use custom module credits', () => {
+    const state = getState({
+      ...plannerWithModules(['CS3230']),
+      modules: {
+        0: { id: '0', moduleCode: 'CS3230', year: '2018/2019', semester: 1, index: 0 },
+        1: { id: '1', placeholderId: 'ulr-ge', year: '2018/2019', semester: 1, index: 1 },
+      },
+      custom: {
+        CS3230: { title: null, moduleCredit: 6 },
+      },
+    });
+
+    const [fulfilment] = getProgrammeFulfilments(state);
+    const categoryIII = fulfilment.requirements.find(
+      (requirement) => requirement.requirement.id === 'category-iii',
+    );
+    expect(categoryIII?.fulfilledMCs).toEqual(6);
+    expect(fulfilment.totalMCs).toEqual(6);
   });
 });

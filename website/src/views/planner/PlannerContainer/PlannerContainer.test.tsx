@@ -53,6 +53,7 @@ function importedStateWith(modules: PlannerState['modules']): PlannerState {
     iblocs: false,
     modules,
     custom: {},
+    programmes: [],
   };
 }
 

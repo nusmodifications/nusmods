@@ -88,6 +88,22 @@ export function setPlaceholderModule(id: string, moduleCode: ModuleCode) {
   };
 }
 
+export const ADD_PLANNER_PROGRAMME = 'ADD_PLANNER_PROGRAMME' as const;
+export function addPlannerProgramme(programmeId: string) {
+  return {
+    type: ADD_PLANNER_PROGRAMME,
+    payload: { programmeId },
+  };
+}
+
+export const REMOVE_PLANNER_PROGRAMME = 'REMOVE_PLANNER_PROGRAMME' as const;
+export function removePlannerProgramme(programmeId: string) {
+  return {
+    type: REMOVE_PLANNER_PROGRAMME,
+    payload: { programmeId },
+  };
+}
+
 export const ADD_CUSTOM_PLANNER_DATA = 'ADD_CUSTOM_PLANNER_DATA' as const;
 export function addCustomModule(moduleCode: ModuleCode, data: CustomModule) {
   return {
