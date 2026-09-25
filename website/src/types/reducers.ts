@@ -5,6 +5,7 @@ import { ColorSchemePreference } from './settings';
 import {
   ColorIndex,
   Lesson,
+  SemTimetableConfig,
   TaModulesConfigV1,
   TimetableConfig,
   TimetableConfigV1,
@@ -123,11 +124,36 @@ export type HiddenModulesMap = { [semester: Semester]: ModuleCode[] };
 export type TaModulesMap = { [semester: Semester]: ModuleCode[] };
 export type TaModulesMapV1 = { [semester: Semester]: TaModulesConfigV1 };
 
+// A saved timetable arrangement ("save slot") for a single semester
+export type TimetableSlotData = {
+  readonly lessons: SemTimetableConfig;
+  readonly colors: ColorMapping;
+  readonly hidden: ModuleCode[];
+  readonly ta: ModuleCode[];
+};
+
+export type TimetableSlot = {
+  readonly id: string;
+  readonly title: string;
+  // Snapshot of this slot's timetable. Authoritative for INACTIVE slots only;
+  // the active slot's live data is in TimetablesState.{lessons,colors,hidden,ta}
+  // and this snapshot is only refreshed when the user switches away from it.
+  readonly data: TimetableSlotData;
+};
+
+// Slots are ordered - the array order is the display order
+export type TimetableSlotsMap = { [semester: Semester]: TimetableSlot[] };
+export type ActiveSlotMap = { [semester: Semester]: string };
+
 export type TimetablesState = {
   readonly lessons: TimetableConfig;
   readonly colors: SemesterColorMap;
   readonly hidden: HiddenModulesMap;
   readonly ta: TaModulesMap;
+  // Saved timetable arrangements per semester. Semesters without an entry
+  // implicitly have a single active slot holding the live timetable.
+  readonly slots: TimetableSlotsMap;
+  readonly activeSlot: ActiveSlotMap;
   readonly academicYear: string;
   // Mapping of academic year to old timetable config
   readonly archive: { [key: string]: TimetableConfig | TimetableConfigV2 | TimetableConfigV1 };

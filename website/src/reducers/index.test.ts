@@ -2,6 +2,8 @@ import { ExportData } from 'types/export';
 import { VERTICAL } from 'types/reducers';
 import reducers from 'reducers';
 import { setExportedData } from 'actions/export';
+import { addTimetableSlot, Internal } from 'actions/timetables';
+import { undo } from 'actions/undoHistory';
 import modules from '__mocks__/modules/index';
 import { DARK_COLOR_SCHEME, DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 import { SemTimetableConfig, TimetableConfig } from 'types/timetables';
@@ -74,6 +76,8 @@ test('reducers should set export data state', () => {
     },
     hidden: { [1]: ['PC1222'] },
     ta: { [1]: ['CS1010S'] },
+    slots: {},
+    activeSlot: {},
     academicYear: expect.any(String),
     archive: {},
   });
@@ -87,4 +91,18 @@ test('reducers should set export data state', () => {
     timetableOrientation: VERTICAL,
     showTitle: true,
   });
+});
+
+test('undo should restore a deleted timetable slot', () => {
+  let state = reducers({} as any, { type: 'INIT', payload: null } as any);
+  state = reducers(state, addTimetableSlot(1, { duplicateCurrent: true }));
+  const beforeDelete = state;
+  expect(state.timetables.slots[1]).toHaveLength(2);
+
+  state = reducers(state, Internal.deleteTimetableSlot(1, '0'));
+  expect(state.timetables.slots[1]).toHaveLength(1);
+
+  state = reducers(state, undo());
+  expect(state.timetables.slots[1]).toEqual(beforeDelete.timetables.slots[1]);
+  expect(state.timetables.activeSlot[1]).toBe(beforeDelete.timetables.activeSlot[1]);
 });
