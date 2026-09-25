@@ -95,7 +95,7 @@ importers:
         version: 5.0.0
       koa-views:
         specifier: 6.3.1
-        version: 6.3.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.3)
+        version: 6.3.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.4)
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -103,8 +103,8 @@ importers:
         specifier: 2.0.22
         version: 2.0.22
       pug:
-        specifier: 3.0.3
-        version: 3.0.3
+        specifier: 3.0.4
+        version: 3.0.4
       puppeteer-core:
         specifier: ^24.38.0
         version: 24.38.0
@@ -8504,8 +8504,8 @@ packages:
   pug-attrs@3.0.0:
     resolution: {integrity: sha512-azINV9dUtzPMFQktvTXciNAfAuVh/L/JCl0vtPCwvOA21uZrC08K/UnmrL+SXGEVc1FwzjW62+xw5S/uaLj6cA==}
 
-  pug-code-gen@3.0.3:
-    resolution: {integrity: sha512-cYQg0JW0w32Ux+XTeZnBEeuWrAY7/HNE6TWnhiHGnnRYlCgyAUPoyh9KzCMa9WhcJlJ1AtQqpEYHc+vbCzA+Aw==}
+  pug-code-gen@3.0.4:
+    resolution: {integrity: sha512-6okWYIKdasTyXICyEtvobmTZAVX57JkzgzIi4iRJlin8kmhG+Xry2dsus+Mun/nGCn6F2U49haHI5mkELXB14g==}
 
   pug-error@2.1.0:
     resolution: {integrity: sha512-lv7sU9e5Jk8IeUheHata6/UThZ7RK2jnaaNztxfPYUY+VxZyk/ePVaNZ/vwmH8WqGvDz3LrNYt/+gA55NDg6Pg==}
@@ -8534,8 +8534,8 @@ packages:
   pug-walk@2.0.0:
     resolution: {integrity: sha512-yYELe9Q5q9IQhuvqsZNwA5hfPkMJ8u92bQLIMcsMxf/VADjNtEYptU+inlufAFYcWdHlwNfZOEnOOQrZrcyJCQ==}
 
-  pug@3.0.3:
-    resolution: {integrity: sha512-uBi6kmc9f3SZ3PXxqcHiUZLmIXgfgWooKWXcwSGwQd2Zi5Rb0bT14+8CJjJgI8AB+nndLaNgHGrcc6bPIB665g==}
+  pug@3.0.4:
+    resolution: {integrity: sha512-kFfq5mMzrS7+wrl5pLJzZEzemx34OQ0w4SARfhy/3yxTlhbstsudDwJzhf1hP02yHzbjoVMSXUj/Sz6RNfMyXg==}
 
   pump@3.0.4:
     resolution: {integrity: sha512-VS7sjc6KR7e1ukRFhQSY5LM2uBWAUPiOPa/A3mkKmiMwSmRFUITt0xuj+/lesgnCv+dPIEYlkzrcyXgquIHMcA==}
@@ -15369,13 +15369,13 @@ snapshots:
 
   connect-history-api-fallback@2.0.0: {}
 
-  consolidate@0.15.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.3):
+  consolidate@0.15.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.4):
     dependencies:
       bluebird: 3.7.2
     optionalDependencies:
       ejs: 3.1.10
       lodash: 4.18.1
-      pug: 3.0.3
+      pug: 3.0.4
 
   constantinople@4.0.1:
     dependencies:
@@ -17870,9 +17870,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  koa-views@6.3.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.3):
+  koa-views@6.3.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.4):
     dependencies:
-      consolidate: 0.15.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.3)
+      consolidate: 0.15.1(ejs@3.1.10)(lodash@4.18.1)(pug@3.0.4)
       debug: 4.4.3
       get-paths: 0.0.7
       koa-send: 5.0.1
@@ -19975,7 +19975,7 @@ snapshots:
       js-stringify: 1.0.2
       pug-runtime: 3.0.1
 
-  pug-code-gen@3.0.3:
+  pug-code-gen@3.0.4:
     dependencies:
       constantinople: 4.0.1
       doctypes: 1.1.0
@@ -20025,9 +20025,9 @@ snapshots:
 
   pug-walk@2.0.0: {}
 
-  pug@3.0.3:
+  pug@3.0.4:
     dependencies:
-      pug-code-gen: 3.0.3
+      pug-code-gen: 3.0.4
       pug-filters: 4.0.0
       pug-lexer: 5.0.1
       pug-linker: 4.0.0
