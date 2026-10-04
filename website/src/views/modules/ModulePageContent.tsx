@@ -304,28 +304,31 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                       <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
                         <h3>Hi There!</h3>
                         <p>
-                          We would like to encourage everyone who enjoyed using NUSMods to
-                          contribute back to the community by writing reviews for courses that you
-                          have taken before. Your efforts will go a long way in building up a
-                          vibrant and rich NUS community.
+                          Help other students by reviewing courses you have taken. Please start your
+                          review with the semester taken and the professor who taught it.
                         </p>
+                        <strong>Guidelines:</strong>
+                        <ol className={styles.modReviewDescription}>
+                          <li>
+                            Critical and negative reviews are allowed as long as they are
+                            constructive and not personal attacks.
+                          </li>
+                          <li>No spam or advertising.</li>
+                          <li>No hate speech, slurs, threats, harassment or sexual content.</li>
+                          <li>
+                            Reviews that break these rules may be edited or removed, whether they
+                            are positive or negative and regardless of who reported them.
+                          </li>
+                        </ol>
                         <strong>Please note:</strong>
                         <ol className={styles.modReviewDescription}>
                           <li>
-                            Because the experience of each course will differ according to the
-                            professor teaching the course, at the start of your review, please state
-                            the semester taken and the name of the professor who taught the course
-                            in that semester.
+                            NUS does not monitor these reviews. For official feedback, use the
+                            Student Feedback system.
                           </li>
                           <li>
-                            Other students will read your review to get an idea of what taking the
-                            course will be like. If you'd like to give feedback about the course to
-                            NUS, please use the official Student Feedback system as NUS does not
-                            monitor these reviews.
-                          </li>
-                          <li>
-                            The claims made in these reviews have not been verified by NUS or
-                            NUSMods. Please take all claims with a grain of salt.
+                            Claims made here are not verified by NUS or NUSMods. Please take them
+                            with a grain of salt.
                           </li>
                         </ol>
                       </div>
