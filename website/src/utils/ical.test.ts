@@ -195,6 +195,19 @@ describe(calculateNumericWeek, () => {
     // First occurrence is the Saturday of week 1 (13 Aug 2016)
     expect(event.start).toEqual(new Date(2016, 7, 13, 14, 0));
   });
+
+  test('uses the correct weekday and start date for Sunday lessons', () => {
+    const event = calculateNumericWeek(
+      rawLesson({ day: 'Sunday' }),
+      1,
+      [1, 2, 3, 4, 5, 6],
+      firstDay,
+    );
+    const repeating = event.repeating as ICalRepeatingOptions;
+
+    expect(repeating.byDay).toEqual(['SU']);
+    expect(event.start).toEqual(new Date(2016, 7, 14, 14, 0));
+  });
 });
 
 describe(calculateWeekRange, () => {
@@ -214,6 +227,19 @@ describe(calculateWeekRange, () => {
     });
 
     expect(until).toEqual(new Date(2016, 10, 28, 17, 0));
+  });
+
+  test('keeps Sunday as the weekday for date-ranged classes', () => {
+    const event = calculateWeekRange(
+      rawLesson({ day: 'Sunday' }),
+      4,
+      { start: '2016-08-08', end: '2016-08-28' },
+    );
+    const repeating = event.repeating as ICalRepeatingOptions;
+
+    expect(repeating.byDay).toEqual(['SU']);
+    expect(event.start).toEqual(new Date(2016, 7, 14, 14, 0));
+    expect(repeating.until).toEqual(new Date(2016, 7, 28, 17, 0));
   });
 
   test('generate correct interval for week intervals', () => {
