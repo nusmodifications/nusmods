@@ -23,6 +23,7 @@ const lessonSchema = Joi.object({
 
   start_time: Joi.string(),
 
+  // NUS timetable day code 7 represents Sunday.
   day: Joi.string()
     .allow(...Object.keys(dayTextMap))
     .only(),
