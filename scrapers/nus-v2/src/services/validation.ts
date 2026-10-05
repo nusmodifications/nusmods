@@ -23,7 +23,6 @@ const lessonSchema = Joi.object({
 
   start_time: Joi.string(),
 
-  // Assume lessons on Sunday are invalid
   day: Joi.string()
     .allow(...Object.keys(dayTextMap))
     .only(),
