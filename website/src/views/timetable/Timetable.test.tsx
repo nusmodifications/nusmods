@@ -58,6 +58,28 @@ describe('Timetable weekend columns', () => {
     ]);
   });
 
+  it('shows Sunday and Saturday for a Sunday highlight when there are no Sunday lessons', () => {
+    const { container } = renderTimetable([], {
+      day: 6,
+      startTime: '1100',
+      endTime: '1200',
+    });
+
+    expect(getDayNames(container)).toEqual([
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+      'Sun',
+    ]);
+    const sunday = Array.from(container.querySelectorAll('.day')).find(
+      (column) => column.querySelector('.dayNameText')?.textContent === 'Sun',
+    );
+    expect(sunday?.querySelector('.highlight')).not.toBeNull();
+  });
+
   it('applies current-day shading and highlights to Sunday', () => {
     const { container } = renderTimetable(['Sunday'], {
       day: 6,

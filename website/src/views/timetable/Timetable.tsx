@@ -66,7 +66,8 @@ class Timetable extends React.PureComponent<Props, State> {
   override render() {
     const { highlightPeriod, currentTime } = this.props;
 
-    const hasSunday = Boolean(this.props.lessons.Sunday);
+    const hasSunday =
+      Boolean(this.props.lessons.Sunday) || highlightPeriod?.day === SCHOOLDAYS.indexOf('Sunday');
     const schoolDays = SCHOOLDAYS.filter((day) => {
       if (day === 'Saturday') return Boolean(this.props.lessons.Saturday) || hasSunday;
       if (day === 'Sunday') return hasSunday;
