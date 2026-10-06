@@ -59,7 +59,7 @@ const LessonParamsSeparator = ","
 const (
 	BeamWidth       = 5000
 	BranchingFactor = 100
-	DaysPerWeek     = 6
+	DaysPerWeek     = 7
 )
 
 // Indicates that a Coordinate was invalid

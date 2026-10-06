@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import { dropRight } from 'lodash-es';
 import { useCallback } from 'react';
-import { DayText, WorkingDays } from 'types/modules';
+import { DayText, DaysOfWeek } from 'types/modules';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 
 import { CheckSquare, Square } from 'react-feather';
@@ -10,12 +9,21 @@ import OptimiserFormTooltip from './OptimiserFormTooltip';
 
 type Props = {
   hasSaturday: boolean;
+  hasSunday: boolean;
   optimiserFormFields: OptimiserFormFields;
 };
 
-const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFields }) => {
+const OptimiserFreeDaySelect: React.FC<Props> = ({
+  hasSaturday,
+  hasSunday,
+  optimiserFormFields,
+}) => {
   const { freeDays, setFreeDays } = optimiserFormFields;
-  const days = hasSaturday ? [...WorkingDays] : dropRight([...WorkingDays], 1);
+  const days = DaysOfWeek.filter((day) => {
+    if (day === 'Saturday') return hasSaturday;
+    if (day === 'Sunday') return hasSunday;
+    return true;
+  });
 
   const toggleDay = useCallback(
     (day: DayText) => {

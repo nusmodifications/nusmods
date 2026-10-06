@@ -1,6 +1,6 @@
 import { difference, each } from 'lodash-es';
 import { ICalEventData, ICalEventRepeatingFreq, ICalTimezone, ICalWeekday } from 'ical-generator';
-import { addDays, addMinutes, addWeeks, isValid } from 'date-fns';
+import { addDays, addMinutes, addWeeks, getISODay, isValid } from 'date-fns';
 
 import {
   consumeWeeks,
@@ -192,15 +192,24 @@ export function calculateWeekRange(
 ): ICalEventData {
   const rangeStart = toSingaporeTime(parseDate(weekRange.start));
   const rangeEnd = toSingaporeTime(parseDate(weekRange.end));
-  const { start, end } = calculateStartEnd(rangeStart, lesson.startTime, lesson.endTime);
+  const lessonDayIndex = dayIndex(lesson.day);
+  const firstLessonDay = addDays(
+    rangeStart,
+    (lessonDayIndex - (getISODay(rangeStart) - 1) + SCHOOLDAYS.length) % SCHOOLDAYS.length,
+  );
+  const lastLessonDay = addDays(
+    rangeEnd,
+    -((getISODay(rangeEnd) - 1 - lessonDayIndex + SCHOOLDAYS.length) % SCHOOLDAYS.length),
+  );
+  const { start, end } = calculateStartEnd(firstLessonDay, lesson.startTime, lesson.endTime);
 
   const interval = weekRange.weekInterval || 1;
   const exclusions = [];
 
   if (weekRange.weeks) {
     for (
-      let current = rangeStart, weekNumber = 1;
-      current <= rangeEnd;
+      let current = firstLessonDay, weekNumber = 1;
+      current <= lastLessonDay;
       current = addWeeks(current, interval), weekNumber += interval
     ) {
       if (!weekRange.weeks.includes(weekNumber)) {
@@ -210,7 +219,7 @@ export function calculateWeekRange(
     }
   }
 
-  const lastLesson = calculateStartEnd(rangeEnd, lesson.startTime, lesson.endTime);
+  const lastLesson = calculateStartEnd(lastLessonDay, lesson.startTime, lesson.endTime);
 
   return {
     start,

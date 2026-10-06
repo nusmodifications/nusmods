@@ -15,6 +15,7 @@ import {
   AcadYear,
   ClassNo,
   Day,
+  DaysOfWeek,
   DayText,
   LessonTime,
   LessonType,
@@ -22,7 +23,6 @@ import {
   ModuleCode,
   RawLesson,
   Semester,
-  WorkingDays,
 } from 'types/modules';
 import {
   DisplayText,
@@ -115,7 +115,7 @@ export function getRecordedLessonOptions(
 }
 
 export function sortDays(days: DayText[]) {
-  return days.sort((a, b) => WorkingDays.indexOf(a as Day) - WorkingDays.indexOf(b as Day));
+  return days.sort((a, b) => DaysOfWeek.indexOf(a as Day) - DaysOfWeek.indexOf(b as Day));
 }
 
 // For each classNo, check if it's possible to fit the lessons within the free days constraint
@@ -311,6 +311,12 @@ export function isSaturdayInOptions(lessonOptions: LessonOption[]): boolean {
   return lessonOptions
     .flatMap((lessonOption) => lessonOption.days)
     .some((day) => day === 'Saturday');
+}
+
+export function isSundayInOptions(lessonOptions: LessonOption[]): boolean {
+  return lessonOptions
+    .flatMap((lessonOption) => lessonOption.days)
+    .some((day) => day === 'Sunday');
 }
 
 export function getTimeValues(timeRange: TimeRange) {
