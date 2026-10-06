@@ -75,6 +75,26 @@ describe(validateLesson, () => {
     ).toBe(true);
   });
 
+  test('should allow Sunday lessons', () => {
+    expect(
+      validateLesson({
+        activity: 'L',
+        csize: 50,
+        day: '7',
+        deptfac: '00602ACAD1',
+        end_time: '18:00',
+        eventdate: '2027-07-11',
+        modgrp: 'L1',
+        module: 'AI5207',
+        numweeks: 1,
+        room: 'COM3-01-25',
+        session: '1',
+        start_time: '08:00',
+        term: '2740',
+      }),
+    ).toBe(true);
+  });
+
   test('should allow lessons with null room', () => {
     expect(
       validateLesson({
