@@ -19,8 +19,8 @@ const CLASS_START_HOURS = range(FIRST_CLASS_HOUR, LAST_CLASS_HOUR + 1);
 export function defaultSearchOptions(
   now: Date = new Date(), // Used for tests only
 ): VenueSearchOptions {
-  // Set day of week - if it is not a school day, then set to Monday (0)
-  const day = getDayIndex(now) === 6 ? 0 : getDayIndex(now);
+  // SCHOOLDAYS includes every day of the week, so the weekday index can be used directly.
+  const day = getDayIndex(now);
 
   // Set time - if the current time is outside class hours, set it to the
   // time of the earliest lesson

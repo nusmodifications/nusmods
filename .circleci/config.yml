@@ -157,6 +157,8 @@ jobs:
       - run:
           name: Run tests
           command: |
+            go test ./_models ./_modules ./_solver -v
+
             go run ./_test/server/main.go -port 8020 &
             SERVER_PID=$!
 
