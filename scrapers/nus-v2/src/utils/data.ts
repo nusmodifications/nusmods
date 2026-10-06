@@ -196,7 +196,7 @@ export const dayTextMap: Record<string, DayText> = {
   '4': 'Thursday',
   '5': 'Friday',
   '6': 'Saturday',
-  // Assume lessons on Sunday (7) are invalid
+  '7': 'Sunday',
 };
 
 export const unrecognizedLessonTypes: Record<string, LessonType> = {
