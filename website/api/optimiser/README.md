@@ -196,6 +196,9 @@ The scoring function combines four penalty/bonus terms. All values were empirica
     ],
     [
       // Saturday slots
+    ],
+    [
+      // Sunday slots
     ]
   ],
   "DayDistance": [
@@ -204,7 +207,8 @@ The scoring function combines four penalty/bonus terms. All values were empirica
     0.6879499381097249, // Wednesday
     34.33700778293036, // Thursday
     7.738363670499865, // Friday
-    0 // Saturday
+    0, // Saturday
+    0 // Sunday
   ],
   "TotalDistance": 42.76332139153995,
   "Score": 150.5,
@@ -218,8 +222,8 @@ The scoring function combines four penalty/bonus terms. All values were empirica
 | Field                  | Description                                                                                                                                                                                                                                                                |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Assignments`          | Map of `"MODULE\|LessonType"` → chosen `classNo` for every lesson type that was successfully assigned.                                                                                                                                                                     |
-| `DaySlots`             | Array of 6 days (Mon–Sat), each containing time-sorted slots for that day. Mirrors `Assignments` but structured for rendering.                                                                                                                                             |
-| `DayDistance`          | Per-day walking penalty score (sum of haversine distances between consecutive physical lessons).                                                                                                                                                                           |
+| `DaySlots`             | Array of 7 days (Mon–Sun), each containing time-sorted slots for that day. Mirrors `Assignments` but structured for rendering.                                                                                                                                             |
+| `DayDistance`          | Array of 7 per-day walking penalty scores (Mon–Sun), each the sum of haversine distances between consecutive physical lessons.                                                                                                                                             |
 | `TotalDistance`        | Sum of all `DayDistance` values.                                                                                                                                                                                                                                           |
 | `Score`                | Final score from the scoring function. Lower is better.                                                                                                                                                                                                                    |
 | `shareableLink`        | NUSMods timetable URL containing only the lessons that were assigned (hard-constraint-satisfying slots only). Some lesson types may be absent if they were impossible to schedule given the constraints.                                                                   |
@@ -277,7 +281,11 @@ The scoring function combines four penalty/bonus terms. All values were empirica
 5. **Test the API**
 
 - Send a POST request following the request body format above to `http://localhost:8020/optimise`
-- Or run the integration tests (requires the test server to be running):
+- Run the unit tests:
+  ```bash
+  go test ./_models ./_modules ./_solver -v
+  ```
+- Run the integration tests (requires the test server to be running):
   ```bash
   go test ./_test/... -v
   ```

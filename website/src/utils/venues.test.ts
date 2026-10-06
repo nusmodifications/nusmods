@@ -143,6 +143,26 @@ describe(filterAvailability, () => {
     expect(availableVenues[0][0]).toEqual('LT1');
   });
 
+  test('should filter venues occupied on Sunday', () => {
+    const sundayVenues: VenueInfo = {
+      'Sunday Hall': [
+        {
+          day: 'Sunday',
+          classes: [],
+          availability: { '0900': 'occupied', '0930': 'occupied' },
+        },
+      ],
+    };
+
+    expect(
+      filterAvailability(sortVenues(sundayVenues), {
+        day: 6,
+        time: 9,
+        duration: 1,
+      }),
+    ).toEqual([]);
+  });
+
   test("should not return venues that are excluded from 'find free rooms' feature", () => {
     const availableVenues = filterAvailability(venues, {
       day: 0,

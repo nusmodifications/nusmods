@@ -27,6 +27,7 @@ interface OptimiserFormProps {
   timeRangeConflicts: TimeRangeConflict[];
   pinnedClashConflicts: PinnedClashConflict[];
   hasSaturday: boolean;
+  hasSunday: boolean;
   optimiserFormFields: OptimiserFormFields;
 }
 
@@ -37,6 +38,7 @@ const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
   timeRangeConflicts,
   pinnedClashConflicts,
   hasSaturday,
+  hasSunday,
   optimiserFormFields,
 }) => (
   <form className={styles.optimiserForm}>
@@ -53,7 +55,11 @@ const OptimiserFormComponent: React.FC<OptimiserFormProps> = ({
 
     <OptimiserPinnedClashConflicts pinnedClashConflicts={pinnedClashConflicts} />
 
-    <OptimiserFreeDaySelect hasSaturday={hasSaturday} optimiserFormFields={optimiserFormFields} />
+    <OptimiserFreeDaySelect
+      hasSaturday={hasSaturday}
+      hasSunday={hasSunday}
+      optimiserFormFields={optimiserFormFields}
+    />
 
     <OptimiserFreeDayConflicts freeDayConflicts={freeDayConflicts} />
 

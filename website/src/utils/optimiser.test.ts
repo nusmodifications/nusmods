@@ -1,6 +1,6 @@
 import { CS1010S, CS3216, MA1521 } from '__mocks__/modules';
 import { LessonOption, PinnedSlots, TimeRange } from 'types/optimiser';
-import { Module, WorkingDays } from 'types/modules';
+import { DaysOfWeek, Module } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import { shuffle } from 'lodash-es';
 import { OptimiseResponse } from 'apis/optimiser';
@@ -26,6 +26,7 @@ import {
   getTimeRangeConflicts,
   getTimetableClassNos,
   isSaturdayInOptions,
+  isSundayInOptions,
   sortDays,
   getUnassignedLessonOptions,
   getOptimiserAcadYear,
@@ -149,8 +150,8 @@ describe('getConflictingDays', () => {
 
 describe('sortDays', () => {
   it('should sort days in order', () => {
-    const days = shuffle([...WorkingDays]);
-    expect(sortDays(days)).toEqual(WorkingDays);
+    const days = shuffle([...DaysOfWeek]);
+    expect(sortDays(days)).toEqual(DaysOfWeek);
   });
 });
 
@@ -303,6 +304,28 @@ describe('isSaturdayInOptions', () => {
       },
     ];
     expect(isSaturdayInOptions(lessonOptions)).toBe(true);
+  });
+});
+
+describe('isSundayInOptions', () => {
+  it('should return false if there are no sunday classes', () => {
+    expect(isSundayInOptions([defaultLectureOption, defaultRecitationOption])).toBe(false);
+  });
+
+  it('should return true if a sunday class is possible', () => {
+    expect(
+      isSundayInOptions([
+        defaultLectureOption,
+        {
+          moduleCode: 'SUNDAY1010',
+          lessonType: 'Lecture',
+          colorIndex: 1,
+          lessonKey: 'SUNDAY1010|Lecture',
+          displayText: 'SUNDAY1010 Lecture',
+          days: ['Sunday'],
+        },
+      ]),
+    ).toBe(true);
   });
 });
 

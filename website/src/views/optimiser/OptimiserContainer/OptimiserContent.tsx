@@ -20,6 +20,7 @@ import {
   getTimetableClassNos,
   getUnassignedLessonOptions,
   isSaturdayInOptions,
+  isSundayInOptions,
 } from 'utils/optimiser';
 import {
   FreeDayConflict,
@@ -117,6 +118,7 @@ const OptimiserContent: React.FC = () => {
   );
 
   const hasSaturday = useMemo(() => isSaturdayInOptions(lessonOptions), [lessonOptions]);
+  const hasSunday = useMemo(() => isSundayInOptions(lessonOptions), [lessonOptions]);
 
   useEffect(() => {
     const availableKeys = new Set(lessonOptions.map((option) => option.lessonKey));
@@ -186,6 +188,7 @@ const OptimiserContent: React.FC = () => {
         timeRangeConflicts={timeRangeConflicts}
         pinnedClashConflicts={pinnedClashConflicts}
         hasSaturday={hasSaturday}
+        hasSunday={hasSunday}
         optimiserFormFields={optimiserFormFields}
       />
 

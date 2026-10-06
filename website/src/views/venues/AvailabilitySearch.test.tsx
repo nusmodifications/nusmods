@@ -1,4 +1,5 @@
-import { defaultSearchOptions } from 'views/venues/AvailabilitySearch';
+import { render, screen } from '@testing-library/react';
+import AvailabilitySearch, { defaultSearchOptions } from 'views/venues/AvailabilitySearch';
 
 describe('defaultSearchOptions', () => {
   test('should the nearest slots during school hours', () => {
@@ -31,7 +32,19 @@ describe('defaultSearchOptions', () => {
     // Sunday
     expect(defaultSearchOptions(new Date('2018-01-21T09:12:00'))).toMatchObject({
       time: 9,
-      day: 0,
+      day: 6,
     });
+  });
+
+  test('offers Sunday in the day selector', () => {
+    render(
+      <AvailabilitySearch
+        isEnabled
+        searchOptions={{ day: 0, time: 9, duration: 1 }}
+        onUpdate={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByRole('option', { name: 'Sundays' })).toHaveValue('6');
   });
 });
