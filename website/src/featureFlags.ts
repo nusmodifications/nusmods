@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
 /** Enable Course Planning Exercise */
-export const enableCPExforProd = false;
+export const enableCPExforProd = true;
 
-export const showCPExTab = false;
+export const showCPExTab = true;
