@@ -1,20 +1,28 @@
-import { flatMap, sortBy, get } from 'lodash-es';
+import { flatMap, sortBy, get, values } from 'lodash-es';
 
-import { ModulesMap } from 'types/reducers';
-import { TimetableConfig } from 'types/timetables';
+import { ModulesMap, TimetablesState } from 'types/reducers';
+import { SemTimetableConfig, TimetableConfig } from 'types/timetables';
 import { ModuleCode } from 'types/modules';
 
 // Module bank utils - exported separately so this does not become exported as an action creator
 
+// All lesson configs that pin their modules in the module bank: the live
+// timetable of every semester, plus every saved slot's snapshot
+export function getPinnedLessonConfigs(timetables: TimetablesState): SemTimetableConfig[] {
+  return [
+    ...values(timetables.lessons),
+    ...flatMap(values(timetables.slots), (slots) => slots.map((slot) => slot.data.lessons)),
+  ];
+}
+
 // Export for testing
-// eslint-disable-next-line import/prefer-default-export
 export function getLRUModules(
   modules: ModulesMap,
-  lessons: TimetableConfig,
+  lessons: TimetableConfig | SemTimetableConfig[],
   currentModule: string,
   toRemove = 1,
 ): ModuleCode[] {
-  // Pull all the modules in all the timetables
+  // Pull all the modules in all the timetables and saved slots
   const timetableModules = new Set(flatMap(lessons, (semester) => Object.keys(semester)));
 
   // Remove the module which is least recently used and which is not in timetable
