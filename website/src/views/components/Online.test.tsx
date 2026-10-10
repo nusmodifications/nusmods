@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { OnlineComponent } from './Online';
 
 const jest = vi;
@@ -6,32 +6,36 @@ describe(OnlineComponent, () => {
   const testContent = <span>Test</span>;
 
   test('should return nothing if the app is offline', () => {
-    const wrapper = shallow(<OnlineComponent isOnline={false}>{testContent}</OnlineComponent>);
-    expect(wrapper.type()).toBeNull();
+    const { container } = render(<OnlineComponent isOnline={false}>{testContent}</OnlineComponent>);
+    expect(container).toBeEmptyDOMElement();
   });
 
   test('should return content if the app is online', () => {
-    const wrapper = shallow(<OnlineComponent isOnline>{testContent}</OnlineComponent>);
-    expect(wrapper.contains(testContent)).toBe(true);
+    render(<OnlineComponent isOnline>{testContent}</OnlineComponent>);
+    expect(screen.getByText('Test')).toBeInTheDocument();
   });
 
   test('should call render function with isOnline status', () => {
-    const render = jest.fn().mockReturnValue(null);
-    const wrapper = shallow(<OnlineComponent isOnline>{render}</OnlineComponent>);
+    const renderFn = jest.fn().mockReturnValue(null);
+    const { rerender } = render(<OnlineComponent isOnline>{renderFn}</OnlineComponent>);
 
-    expect(render).toHaveBeenLastCalledWith(true);
-    wrapper.setProps({ isOnline: false });
-    expect(render).toHaveBeenLastCalledWith(false);
+    expect(renderFn).toHaveBeenLastCalledWith(true);
+    rerender(<OnlineComponent isOnline={false}>{renderFn}</OnlineComponent>);
+    expect(renderFn).toHaveBeenLastCalledWith(false);
   });
 
   test('should not rerender if isLive is false', () => {
-    const wrapper = shallow(
+    const { container, rerender } = render(
       <OnlineComponent isOnline={false} isLive={false}>
         {testContent}
       </OnlineComponent>,
     );
-    expect(wrapper.type()).toBeNull();
-    wrapper.setProps({ isOnline: true });
-    expect(wrapper.type()).toBeNull();
+    expect(container).toBeEmptyDOMElement();
+    rerender(
+      <OnlineComponent isOnline isLive={false}>
+        {testContent}
+      </OnlineComponent>,
+    );
+    expect(container).toBeEmptyDOMElement();
   });
 });
