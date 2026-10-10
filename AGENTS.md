@@ -15,7 +15,7 @@ NUSMods is the timetable builder and course catalogue for NUS. It's a pnpm monor
 
 ## Repo-wide
 
-- Run `pnpm install` once at the root, then run scripts from inside each package. `pnpm check` runs that package's lint, typecheck and tests; CircleCI (`.circleci/config.yml`) runs those checks for each package separately.
+- Run `pnpm install` once at the root, then run scripts from inside each package. `pnpm check` runs lint, typecheck and tests in each package that has one. `export` has no tests, and the two small `packages/*` (academic calendar, browserslist config) have no `check` script and no CI job. CircleCI (`.circleci/config.yml`) checks each package separately, plus the Go optimiser.
 - `pnpm format` / `pnpm format:check` at the root runs oxfmt (print width 100, single quotes, trailing commas). The husky pre-commit hook formats staged files and syncs `website/src/data/venues.json` into the optimiser.
 - The tools are **Vitest**, **oxlint** and **oxfmt**. READMEs and ARCHITECTURE.md still say Jest and ESLint, so ignore that.
 - Semester and academic-year rollover steps are in `MAINTENANCE.md`.

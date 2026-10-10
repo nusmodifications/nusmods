@@ -15,7 +15,7 @@ pnpm antlr4ts                 # regenerate the requisite parser after editing Nu
 
 - `src/index.ts`: yargs CLI that maps commands to tasks.
 - `src/tasks/`: pipeline steps, each extending `BaseTask`. `DataPipeline.ts` runs everything (`all`). Test fixtures live in `src/tasks/fixtures/`.
-- `src/services/nus-api.ts`: NUS API client (mocked in `services/__mocks__`). `services/io/` handles persistence: filesystem JSON (`fs.ts`) plus optional Elasticsearch (`elastic.ts`, skipped if `elasticConfig` isn't set).
+- `src/services/nus-api.ts`: NUS API client (mocked in `services/__mocks__`). `services/io/` handles persistence: filesystem JSON (`fs.ts`) plus Elasticsearch (`elastic.ts`). Outside production, Elasticsearch is skipped if `elasticConfig` isn't set. With `NODE_ENV=production` it is always used (`tasks/BaseTask.ts`), and a missing `elasticConfig` throws.
 - `src/services/requisite-tree/`: prerequisite string → tree parser. `antlr4/*.ts`, `*.interp` and `*.tokens` are **generated** from `NusMods.g4`. Edit the grammar, never the generated files.
 - `src/config.ts`: reads `env.json` at import time. `academicYear` here is part of the yearly rollover (see root `MAINTENANCE.md`).
 - Output goes to the shared `scrapers/data/` directory, which `cpex-scraper` also writes to.

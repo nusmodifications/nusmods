@@ -5,7 +5,7 @@ Scrapes the module list for NUS's Course Planning Exercise (CPEx/MPE) into `scra
 ## Commands
 
 ```bash
-pnpm test                       # vitest, scraper.ts takes injectable fs/logger so tests don't touch disk
+pnpm test                       # vitest; tests write/read real files in a temp dir (mkdtemp) and clean up
 pnpm lint && pnpm typecheck
 pnpm dev                        # build + run; needs env.json (baseUrl, acadApiKey, acadAppKey, courseApiKey) in this folder
 ```
