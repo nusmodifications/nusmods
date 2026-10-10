@@ -515,7 +515,7 @@ func TestOptimiser_PinnedSlotMalformed(t *testing.T) {
 // helpers
 
 // Day name constants for mapping
-var dayNames = []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
+var dayNames = []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}
 
 // validate checks that the timetable satisfies all constraints:
 // - No time collisions between lessons on the same day

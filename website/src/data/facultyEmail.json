@@ -199,6 +199,16 @@
     }
   },
   {
+    "id": "bisi_gd",
+    "label": "Behavioural and Implementation Sciences in Health (Graduate)",
+    "email": "bisilearning@nus.edu.sg",
+    "match": {
+      "type": "modulePrefix",
+      "prefix": "BIH",
+      "level": "grad"
+    }
+  },
+  {
     "id": "polsci_ug",
     "label": "Political Science (Undergrad)",
     "email": "polnyjw@nus.edu.sg",
@@ -700,8 +710,8 @@
   },
   {
     "id": "med_ug",
-    "label": "Medicine (Undergaduate)",
-    "email": "medlse@nus.edu.sg",
+    "label": "Medicine (Undergraduate)",
+    "email": "medstudentaffairs@nus.edu.sg",
     "match": {
       "type": "faculty",
       "faculty": "Yong Loo Lin Sch of Medicine",

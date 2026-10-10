@@ -49,6 +49,42 @@ describe(GetSemesterTimetable, () => {
     await expect(task.run()).resolves.toEqual({});
   });
 
+  test('should preserve Sunday timetable lessons', async () => {
+    const task = createTask(
+      [
+        {
+          activity: 'L',
+          csize: 50,
+          day: '7',
+          deptfac: '00602ACAD1',
+          end_time: '18:00',
+          eventdate: '2027-07-11',
+          modgrp: 'L1',
+          module: 'AI5207',
+          numweeks: 1,
+          room: 'COM3-01-25',
+          session: '1',
+          start_time: '08:00',
+          term: '2740',
+        },
+      ],
+      4,
+    );
+
+    const timetable = await task.getTimetable();
+
+    expect(timetable.AI5207).toMatchObject([
+      {
+        classNo: '1',
+        day: 'Sunday',
+        endTime: '1800',
+        lessonType: 'Lecture',
+        startTime: '0800',
+        venue: 'COM3-01-25',
+      },
+    ]);
+  });
+
   // This module has classes on recess and reading week for some reason
   test('should map CN4205E timetable lessons correctly', async () => {
     const task = createTask(CN4205ETimetable);

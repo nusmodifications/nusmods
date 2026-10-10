@@ -66,9 +66,13 @@ class Timetable extends React.PureComponent<Props, State> {
   override render() {
     const { highlightPeriod, currentTime } = this.props;
 
-    const schoolDays = SCHOOLDAYS.filter(
-      (day) => day !== 'Saturday' || this.props.lessons.Saturday,
-    );
+    const hasSunday =
+      Boolean(this.props.lessons.Sunday) || highlightPeriod?.day === SCHOOLDAYS.indexOf('Sunday');
+    const schoolDays = SCHOOLDAYS.filter((day) => {
+      if (day === 'Saturday') return Boolean(this.props.lessons.Saturday) || hasSunday;
+      if (day === 'Sunday') return hasSunday;
+      return true;
+    });
 
     const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons, highlightPeriod);
@@ -76,7 +80,7 @@ class Timetable extends React.PureComponent<Props, State> {
     // The timetable always reflects Singapore time, so derive the current day and
     // time from the SGT wall-clock rather than the viewer's local timezone.
     const singaporeTime = toSingaporeTime(currentTime);
-    const currentDayIndex = getDayIndex(singaporeTime); // Monday = 0, Friday = 4
+    const currentDayIndex = getDayIndex(singaporeTime); // Monday = 0, Sunday = 6
 
     // Calculate the margin offset for the CurrentTimeIndicator
     const columns = endingIndex - startingIndex;
@@ -98,30 +102,35 @@ class Timetable extends React.PureComponent<Props, State> {
         <div className={classnames(styles.container, elements.timetable)}>
           <TimetableTimings startingIndex={startingIndex} endingIndex={endingIndex} />
           <ol className={styles.days}>
-            {schoolDays.map((day, index) => (
-              <TimetableDay
-                key={day}
-                day={day}
-                startingIndex={startingIndex}
-                endingIndex={endingIndex}
-                onModifyCell={this.props.onModifyCell}
-                hoverLesson={this.state.hoverLesson}
-                onCellHover={this.onCellHover}
-                verticalMode={this.props.isVerticalOrientation || false}
-                showTitle={this.props.showTitle || false}
-                isScrolledHorizontally={this.props.isScrolledHorizontally || false}
-                dayLessonRows={this.props.lessons[day] || EMPTY_ROW_LESSONS}
-                isCurrentDay={index === currentDayIndex}
-                currentTimeIndicatorStyle={
-                  index === currentDayIndex && currentTimeIndicatorVisible
-                    ? currentTimeIndicatorStyle
-                    : nullCurrentTimeIndicatorStyle
-                }
-                highlightPeriod={
-                  highlightPeriod && index === highlightPeriod.day ? highlightPeriod : undefined
-                }
-              />
-            ))}
+            {schoolDays.map((day) => {
+              const dayIndex = SCHOOLDAYS.indexOf(day);
+              return (
+                <TimetableDay
+                  key={day}
+                  day={day}
+                  startingIndex={startingIndex}
+                  endingIndex={endingIndex}
+                  onModifyCell={this.props.onModifyCell}
+                  hoverLesson={this.state.hoverLesson}
+                  onCellHover={this.onCellHover}
+                  verticalMode={this.props.isVerticalOrientation || false}
+                  showTitle={this.props.showTitle || false}
+                  isScrolledHorizontally={this.props.isScrolledHorizontally || false}
+                  dayLessonRows={this.props.lessons[day] || EMPTY_ROW_LESSONS}
+                  isCurrentDay={dayIndex === currentDayIndex}
+                  currentTimeIndicatorStyle={
+                    dayIndex === currentDayIndex && currentTimeIndicatorVisible
+                      ? currentTimeIndicatorStyle
+                      : nullCurrentTimeIndicatorStyle
+                  }
+                  highlightPeriod={
+                    highlightPeriod && dayIndex === highlightPeriod.day
+                      ? highlightPeriod
+                      : undefined
+                  }
+                />
+              );
+            })}
           </ol>
         </div>
       </div>
