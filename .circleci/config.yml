@@ -7,7 +7,7 @@ executors:
 
   go-executor:
     docker:
-      - image: cimg/go:1.23
+      - image: cimg/go:1.27
 
 jobs:
   checkout:
