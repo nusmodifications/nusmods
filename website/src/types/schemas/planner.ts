@@ -29,5 +29,7 @@ export const PlannerStateSchema = z
     ignorePrereqCheck: z.boolean().optional(),
     modules: z.record(PlannerTimeSchema),
     custom: CustomModuleDataSchema,
+    // Default so that exports from before this field existed remain importable
+    programmes: z.array(z.string()).default([]),
   })
   .strip();

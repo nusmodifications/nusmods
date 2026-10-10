@@ -5,7 +5,11 @@ import classnames from 'classnames';
 import config from 'config';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
+import { programmeTypeLabels } from 'utils/programmes';
+import programmes, { programmeList } from 'data/programmes';
 import {
+  addPlannerProgramme,
+  removePlannerProgramme,
   setPlannerIBLOCs,
   setPlannerMaxYear,
   setPlannerMinYear,
@@ -15,6 +19,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import CloseButton from 'views/components/CloseButton';
 import { State } from 'types/state';
+import { ProgrammeType } from 'types/programmes';
 import styles from './PlannerSettings.scss';
 
 type Props = {
@@ -22,6 +27,7 @@ type Props = {
   readonly maxYear: string;
   readonly iblocs: boolean;
   readonly ignorePrereqCheck?: boolean;
+  readonly selectedProgrammes: string[];
 
   // Actions
   readonly onCloseButtonClicked: () => void;
@@ -29,6 +35,8 @@ type Props = {
   readonly setMaxYear: (str: string) => void;
   readonly setIBLOCs: (boolean: boolean) => void;
   readonly setPrereqsCheck: (boolean: boolean) => void;
+  readonly addProgramme: (programmeId: string) => void;
+  readonly removeProgramme: (programmeId: string) => void;
 };
 
 const MIN_YEARS = -5; // Studying year 6
@@ -115,6 +123,72 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
         </ul>
       </section>
 
+      <section>
+        <h2 className={styles.label}>Specialisations &amp; Minors</h2>
+
+        <p>
+          Track your progress towards focus areas, specialisations and minors. Requirement data is
+          community maintained — always double-check against the official programme page and your
+          faculty&apos;s double-counting rules.
+        </p>
+
+        {props.selectedProgrammes.length > 0 && (
+          <ul className={styles.programmeList}>
+            {props.selectedProgrammes.map((programmeId) => {
+              const programme = programmes[programmeId];
+              if (!programme) return null;
+
+              return (
+                <li key={programmeId} className={styles.programmeItem}>
+                  <span className={styles.programmeName}>
+                    {programme.name}
+                    <span className={styles.subtitle}>
+                      {programmeTypeLabels[programme.type]} · {programme.faculty} ·{' '}
+                      <ExternalLink href={programme.source}>Official page</ExternalLink>
+                    </span>
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-danger"
+                    onClick={() => props.removeProgramme(programmeId)}
+                  >
+                    Remove
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        <select
+          className="form-control"
+          aria-label="Add a programme"
+          value=""
+          onChange={(evt) => {
+            if (evt.target.value) props.addProgramme(evt.target.value);
+          }}
+        >
+          <option value="">Add a focus area, specialisation or minor…</option>
+          {(Object.keys(programmeTypeLabels) as ProgrammeType[]).map((type) => {
+            const options = programmeList.filter(
+              (programme) =>
+                programme.type === type && !props.selectedProgrammes.includes(programme.id),
+            );
+            if (options.length === 0) return null;
+
+            return (
+              <optgroup key={type} label={programmeTypeLabels[type]}>
+                {options.map((programme) => (
+                  <option key={programme.id} value={programme.id}>
+                    {programme.name} ({programme.faculty})
+                  </option>
+                ))}
+              </optgroup>
+            );
+          })}
+        </select>
+      </section>
+
       <section className={styles.toggleSection}>
         <div>
           <h2 className={styles.label}>Taking iBLOCs</h2>
@@ -161,12 +235,15 @@ const PlannerSettings = connect(
     maxYear: state.planner.maxYear,
     iblocs: state.planner.iblocs,
     ignorePrereqCheck: state.planner.ignorePrereqCheck,
+    selectedProgrammes: state.planner.programmes,
   }),
   {
     setMaxYear: setPlannerMaxYear,
     setMinYear: setPlannerMinYear,
     setIBLOCs: setPlannerIBLOCs,
     setPrereqsCheck: setIgnorePrerequisitesCheck,
+    addProgramme: addPlannerProgramme,
+    removeProgramme: removePlannerProgramme,
   },
 )(PlannerSettingsComponent);
 

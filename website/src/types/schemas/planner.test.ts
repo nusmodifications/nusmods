@@ -169,6 +169,32 @@ describe('PlannerStateSchema', () => {
 
     const parsed = PlannerStateSchema.safeParse(dataWithPersistConfig);
     expect(parsed.success).toBe(true);
-    expect(parsed.data).toEqual(data);
+    expect(parsed.data).toEqual({ ...data, programmes: [] });
+  });
+
+  it('round trips programmes', () => {
+    const data = {
+      minYear: '2024',
+      maxYear: '2028',
+      iblocs: false,
+      modules: {},
+      custom: {},
+      programmes: ['soc-minor-computer-science'],
+    };
+
+    const parsed = PlannerStateSchema.parse(data);
+    expect(parsed.programmes).toEqual(['soc-minor-computer-science']);
+  });
+
+  it('defaults programmes for exports created before the field existed', () => {
+    const legacyData = {
+      minYear: '2024',
+      maxYear: '2028',
+      iblocs: false,
+      modules: {},
+      custom: {},
+    };
+
+    expect(PlannerStateSchema.parse(legacyData).programmes).toEqual([]);
   });
 });

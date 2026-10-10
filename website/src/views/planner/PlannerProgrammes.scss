@@ -1,0 +1,107 @@
+@import '~styles/utils/modules-entry';
+@import 'variables';
+
+.programmes {
+  margin-bottom: 1rem;
+}
+
+.programme {
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--gray-lighter);
+  border-radius: 0.3rem;
+}
+
+.programmeHeader {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 0;
+  text-align: left;
+  background: none;
+  gap: 0.5rem;
+
+  :global(.badge) {
+    flex-shrink: 0;
+  }
+}
+
+.programmeName {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.programmeMCs {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--gray);
+}
+
+.statusIcon {
+  flex-shrink: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+
+  &.satisfied {
+    color: theme-color('success');
+  }
+
+  &.unsatisfied {
+    color: theme-color('warning');
+  }
+}
+
+.requirements {
+  padding: 0 0.8rem 0.6rem;
+}
+
+.requirement {
+  margin-bottom: 0.6rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+.requirementHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.progressLabel {
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--gray);
+}
+
+.progress {
+  height: 0.4rem;
+  margin: 0.25rem 0;
+}
+
+.barSatisfied {
+  background-color: theme-color('success');
+}
+
+.barUnsatisfied {
+  background-color: theme-color('warning');
+}
+
+.assignedModules {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+}
+
+.description {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  color: var(--gray);
+}

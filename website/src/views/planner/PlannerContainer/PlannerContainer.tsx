@@ -38,6 +38,7 @@ import { PlannerState } from 'types/reducers';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
+import PlannerProgrammes from '../PlannerProgrammes';
 import PlannerClearButton from '../PlannerClearButton';
 import PlannerImportButton from '../PlannerImportButton';
 import PlannerExportButton from '../PlannerExportButton';
@@ -229,6 +230,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
         <Title>Course Planner</Title>
 
         {this.renderHeader()}
+
+        <PlannerProgrammes />
 
         <DragDropContext onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
