@@ -249,8 +249,8 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
 
       <p className="alert alert-warning">
         This new version of the prerequisite tree is being tested and may not be accurate. Viewers
-        are encouraged to double check details with the prerequisite text above. To report bugs with
-        the new tree, please post a bug report on GitHub (preferred) at{' '}
+        are encouraged to double check details with the prerequisite information above. To report
+        bugs with the new tree, please post a bug report on GitHub (preferred) at{' '}
         <a
           href="https://github.com/nusmodifications/nusmods/issues/new/choose"
           target="_blank"
