@@ -1,5 +1,5 @@
 import type { MockInstance } from 'vitest';
-import { act, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosHeaders, AxiosResponse } from 'axios';
@@ -208,6 +208,49 @@ describe(TimetableContainerComponent, () => {
 
     // Expect import header to still be present
     expect(screen.getByRole('button', { name: 'Import' })).toBeInTheDocument();
+  });
+
+  test('should import shared timetable as a new slot without replacing the saved one', async () => {
+    const semester = 1;
+    const savedTimetable = { CS1010S: { Lecture: ['1'] } };
+    const importedTimetable = {
+      [moduleCodeThatCanBeLoaded]: {
+        'Sectional Teaching': ['A1'],
+      },
+    };
+    const location = timetableShare(semester, importedTimetable, [], []);
+    const { store } = make(location);
+
+    // Wait for redux-persist rehydration so it does not clobber the timetable
+    // we are about to dispatch
+    await waitFor(() =>
+      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-explicit-any
+      expect((store.getState().timetables as any)._persist?.rehydrated).toBe(true),
+    );
+
+    // Populate the user's existing saved timetable
+    await act(async () => {
+      store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS1010S });
+      (store.dispatch as Dispatch)(setTimetable(semester, savedTimetable));
+    });
+
+    const importAsNewButton = await screen.findByRole('button', {
+      name: 'Import as new timetable',
+    });
+    await act(async () => {
+      fireEvent.click(importAsNewButton);
+    });
+
+    const { timetables } = store.getState();
+
+    // The original timetable is preserved in the first slot
+    expect(timetables.slots[semester]).toHaveLength(2);
+    expect(timetables.slots[semester][0].data.lessons).toEqual(savedTimetable);
+
+    // The imported timetable is active in the new slot
+    expect(timetables.activeSlot[semester]).toBe(timetables.slots[semester][1].id);
+    expect(timetables.slots[semester][1].title).toBe('Imported');
+    expect(timetables.lessons[semester]).toHaveProperty(moduleCodeThatCanBeLoaded);
   });
 
   test('should display saved timetable when there is no imported timetable', async () => {
