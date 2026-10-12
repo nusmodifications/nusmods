@@ -122,10 +122,7 @@ describe(ModulesSelectComponent, () => {
 
       const noResultsTip = document.getElementById('no-results-tip');
       expect(noResultsTip).toHaveTextContent(/No courses found for "XYZ"/);
-      expect(noResultsTip).toHaveTextContent(
-        /This list only shows courses included in this CPEx round/,
-      );
-      expect(noResultsTip).toHaveTextContent(/a course listed in NUSMods may not appear here/);
+      expect(noResultsTip).toHaveTextContent(/See the NUS CPEx FAQ\./);
       const faqLink = screen.getByRole('link', { name: 'NUS CPEx FAQ' });
       expect(faqLink).toHaveAttribute(
         'href',

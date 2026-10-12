@@ -207,9 +207,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
               {inputValue}
               &quot;
             </strong>
-            . This list only shows courses included in this CPEx round, so a course listed in
-            NUSMods may not appear here. See the{' '}
-            <ExternalLink href={CPEX_FAQ_URL}>NUS CPEx FAQ</ExternalLink> for more information.
+            . See the <ExternalLink href={CPEX_FAQ_URL}>NUS CPEx FAQ</ExternalLink>.
           </div>
         )}
       </div>
