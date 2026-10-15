@@ -13,7 +13,7 @@ import {
   updateMpeSubmission,
   MpeSessionExpiredError,
 } from '../../apis/mpe';
-import { MAX_MODULES, MPE_AY, MPE_SEMESTER } from './constants';
+import { CPEX_FAQ_URL, MAX_MODULES, MPE_AY, MPE_SEMESTER } from './constants';
 import ModuleFormBeforeSignIn from './form/ModuleFormBeforeSignIn';
 import MpeFormContainer from './form/MpeFormContainer';
 import styles from './MpeContainer.scss';
@@ -166,10 +166,8 @@ const MpeContainer: React.FC = () => {
           </p>
           <p>
             For further questions, please refer to this{' '}
-            <ExternalLink href="https://www.nus.edu.sg/registrar/docs/info/cpex/cpex-faqs.pdf">
-              FAQ
-            </ExternalLink>{' '}
-            provided by NUS Office of the University Registrar.
+            <ExternalLink href={CPEX_FAQ_URL}>FAQ</ExternalLink> provided by NUS Office of the
+            University Registrar.
           </p>
           <div>
             {isLoggedIn ? (

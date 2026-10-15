@@ -1,31 +1,31 @@
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import DayHeader, { HeaderDate } from './DayHeader';
-import styles from './DayHeader.scss';
 import { addDays } from 'date-fns';
 
 describe(DayHeader, () => {
   const today = new Date('2016-11-23T09:00+0800');
 
   test('render one date when one date is specified', () => {
-    expect(shallow(<DayHeader date={today} offset={0} />).find(HeaderDate)).toHaveLength(1);
-    expect(shallow(<DayHeader date={[today]} offset={0} />).find(HeaderDate)).toHaveLength(1);
+    const { container, rerender } = render(<DayHeader date={today} offset={0} />);
+    expect(container.querySelectorAll('time')).toHaveLength(1);
+
+    rerender(<DayHeader date={[today]} offset={0} />);
+    expect(container.querySelectorAll('time')).toHaveLength(1);
   });
 
   test('render two date when more than one date is specified', () => {
-    const wrapperOne = shallow(<DayHeader date={[today, addDays(today, 1)]} offset={0} />);
-
-    const wrapperTwo = shallow(
-      <DayHeader date={[today, addDays(today, 1), addDays(today, 2)]} offset={0} />,
+    const { container, rerender } = render(
+      <DayHeader date={[today, addDays(today, 1)]} offset={0} />,
     );
+    expect(container.querySelectorAll('time')).toHaveLength(2);
 
-    expect(wrapperOne.find(HeaderDate)).toHaveLength(2);
-    expect(wrapperTwo.find(HeaderDate)).toHaveLength(2);
+    rerender(<DayHeader date={[today, addDays(today, 1), addDays(today, 2)]} offset={0} />);
+    expect(container.querySelectorAll('time')).toHaveLength(2);
   });
 
   test('render weather when it is specified', () => {
-    const wrapper = shallow(<DayHeader date={today} offset={0} forecast="Cloudy" />);
-
-    expect(wrapper.find(`.${styles.weather}`).exists()).toBe(true);
+    render(<DayHeader date={today} offset={0} forecast="Cloudy" />);
+    expect(screen.getByLabelText('Cloudy')).toBeInTheDocument();
   });
 });
 
@@ -33,41 +33,19 @@ describe(HeaderDate, () => {
   const today = new Date('2016-11-23T09:00+0800');
 
   test('render title as today if offset is zero', () => {
-    const wrapper = shallow(<HeaderDate offset={0}>{today}</HeaderDate>);
-    expect(wrapper.text()).toMatch('Today');
+    const { container } = render(<HeaderDate offset={0}>{today}</HeaderDate>);
+    expect(container).toHaveTextContent('Today');
   });
 
   test('render title as tomorrow if offset is one', () => {
-    const wrapper = shallow(<HeaderDate offset={1}>{today}</HeaderDate>);
-    expect(wrapper.text()).toMatch('Tomorrow');
+    const { container } = render(<HeaderDate offset={1}>{today}</HeaderDate>);
+    expect(container).toHaveTextContent('Tomorrow');
   });
 
-  test('render date as day of week if offset more than one', () => {
-    expect(shallow(<HeaderDate offset={2}>{today}</HeaderDate>)).toMatchInlineSnapshot(`
-<time
-  dateTime="2016-11-23T01:00:00.000Z"
->
-  <span
-    className="date"
-  >
-    23rd November
-  </span>
-   
-  Wednesday
-</time>
-`);
-    expect(shallow(<HeaderDate offset={3}>{today}</HeaderDate>)).toMatchInlineSnapshot(`
-<time
-  dateTime="2016-11-23T01:00:00.000Z"
->
-  <span
-    className="date"
-  >
-    23rd November
-  </span>
-   
-  Wednesday
-</time>
-`);
+  test.each([2, 3])('render date as day of week if offset is %i', (offset) => {
+    const { container } = render(<HeaderDate offset={offset}>{today}</HeaderDate>);
+    const time = container.querySelector('time');
+    expect(time).toHaveAttribute('dateTime', '2016-11-23T01:00:00.000Z');
+    expect(time).toHaveTextContent('23rd November Wednesday');
   });
 });
