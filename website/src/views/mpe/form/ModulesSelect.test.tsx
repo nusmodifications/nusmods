@@ -56,6 +56,7 @@ describe(ModulesSelectComponent, () => {
     await user.type(input, 'T');
     const items = await screen.findAllByRole('option');
     expect(items).toHaveLength(2);
+    expect(screen.queryByRole('link', { name: 'NUS CPEx FAQ' })).not.toBeInTheDocument();
 
     await user.clear(input);
     await user.type(input, 'T#');
@@ -121,6 +122,14 @@ describe(ModulesSelectComponent, () => {
 
       const noResultsTip = document.getElementById('no-results-tip');
       expect(noResultsTip).toHaveTextContent(/No courses found for "XYZ"/);
+      expect(noResultsTip).toHaveTextContent(
+        /Only courses in this CPEx round are listed here\. See the NUS CPEx FAQ\./,
+      );
+      const faqLink = screen.getByRole('link', { name: 'NUS CPEx FAQ' });
+      expect(faqLink).toHaveAttribute(
+        'href',
+        'https://www.nus.edu.sg/registrar/docs/info/cpex/cpex-faqs.pdf',
+      );
     });
   });
 
