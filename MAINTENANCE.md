@@ -60,41 +60,50 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 
 ## CPEx
 
-### Before CPEx Testing
+### Prepare scraper data
 
-- [ ] Update `ACADEMIC_YEAR` in `scrapers/cpex-scraper/src/index.ts`. It should be for the **next** semester
-- [ ] Create PR and merge to production
-- [ ] Run scraper
+- [ ] Set `ACADEMIC_YEAR` in [`scrapers/cpex-scraper/src/index.ts`](scrapers/cpex-scraper/src/index.ts) to the academic year of the upcoming CPEx round
+- [ ] Merge the scraper update before running it; follow [`scrapers/cpex-scraper/AGENTS.md`](scrapers/cpex-scraper/AGENTS.md) for the command and required environment
+- [ ] Keep this scraper work separate from the website availability change below
 
-### During CPEx Testing
+### Configure and test the website
 
-For `cpex-staging` deployment
+- [ ] Before editing the staging configuration, sync `cpex-staging` to the latest `master`:
 
-- [ ] Update `MPE_SEMESTER` in `website/src/views/mpe/constants.ts` to be the semester you're configuring CPEx for (usually the next semester)
-- [ ] Set the shared `cpexWindow` start and end timestamps in `website/src/data/modreg-schedule.json` using ISO 8601 timestamps with the Singapore UTC offset; access opens at `start` and closes at the exclusive `end`
-- [ ] Push onto `cpex-staging` branch (Ensure synced with `master` branch first), then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
-- [ ] Verify the CPEx form can be used on staging; staging remains available for testing outside the production window
+  ```bash
+  git switch master
+  git pull --ff-only
+  git switch cpex-staging
+  git reset --hard master
+  git push --force-with-lease origin cpex-staging
+  ```
 
-```bash
-git checkout master
-git pull
-git switch cpex-staging
-git reset --hard master
-git push
-```
+  This deliberately resets the staging branch to `master`; do not run it if that branch has unmerged work.
+
+- [ ] Set `MPE_AY` and `MPE_SEMESTER` in [`website/src/views/mpe/constants.ts`](website/src/views/mpe/constants.ts) to the academic year and semester being configured
+- [ ] After NUS confirms the dates, set the shared `cpexWindow` in [`website/src/data/modreg-schedule.json`](website/src/data/modreg-schedule.json) to ISO 8601 timestamps with the Singapore `+08:00` offset. Availability includes `start` and excludes `end`; keep `cpexWindow` as `null` until dates are confirmed
+- [ ] Commit and push these website changes to `cpex-staging` to deploy the preview
+- [ ] On <https://cpex-staging.nusmods.com/cpex>, verify NUS authentication and complete a staging form submission. Staging stays available for testing even when `cpexWindow` is `null`
 
 ### Before CPEx Opens
 
-- [ ] Confirm the shared CPEx window matches the dates announced by NUS
-- [ ] Keep `disableCPExForProd` false in `website/src/featureFlags.ts` unless the production emergency switch is needed
-- [ ] Merge the tested CPEx changes into `master` and deploy to `production` before the scheduled start time
+- [ ] Confirm `cpexWindow` matches NUS's announced opening and closing times
+- [ ] Keep `disableCPExForProd` false in [`website/src/featureFlags.ts`](website/src/featureFlags.ts); this is an emergency-only switch
+- [ ] After staging checks pass, open a PR from `cpex-staging` to `master`; merge it and deploy to production before `cpexWindow.start` using [`DEPLOYMENT.md`](DEPLOYMENT.md#website-and-export-vercel)
+- [ ] Before the window starts, confirm the CPEx tab is hidden, `/cpex` shows the opening time, and MPE submission requests are blocked; these behaviors are implemented in [`Navtabs.tsx`](website/src/views/layout/Navtabs.tsx), [`MpeContainer.tsx`](website/src/views/mpe/MpeContainer.tsx), and [`mpe.ts`](website/src/serverless/mpe.ts)
 
 ### During CPEx
 
-- [ ] Confirm CPEx becomes available at the scheduled start time and closes at the scheduled end time
+- [ ] Confirm the CPEx tab and form become available at `cpexWindow.start`; check that a submission succeeds
 - [ ] Monitor Sentry and Telegram for issues
+
+### Emergency shutdown
+
+- If CPEx must be stopped during an active window, set `disableCPExForProd` to `true` in [`website/src/featureFlags.ts`](website/src/featureFlags.ts), merge the emergency change, and deploy it to production
+- Restore it to `false` after the incident; the configured schedule will continue to control normal availability
 
 ### After CPEx
 
-- CPEx closes automatically at the configured end time; no closeout PR or flag change is needed
-- Keep CPEx scraper preparation and runs as a separate maintenance task
+- [ ] At `cpexWindow.end`, confirm the tab is hidden, `/cpex` shows the ended status, and MPE submission requests are blocked
+- CPEx closes automatically; no normal closeout PR or flag change is needed
+- Continue scraper preparation and runs as a separate maintenance task
