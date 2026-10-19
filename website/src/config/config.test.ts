@@ -57,6 +57,11 @@ describe('CPEx availability', () => {
     );
   });
 
+  test('formats the shared window in Singapore time', () => {
+    expect(window.start).toBe('Tuesday 20th October, 9:00 a.m.');
+    expect(window.end).toBe('Thursday 22nd October, 5:00 p.m.');
+  });
+
   test('fails closed for a missing, malformed, or reversed production window', () => {
     expect(convertCPExWindow(undefined)).toBeNull();
     expect(convertCPExWindow({ start: null, end: '2026-10-22T17:00:00+08:00' })).toBeNull();

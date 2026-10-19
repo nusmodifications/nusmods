@@ -1,6 +1,7 @@
 import { format, parseISO } from 'date-fns';
 
 import { AcadYear, Semester } from 'types/modules';
+import { toSingaporeTime } from 'utils/timify';
 
 import holidays from '../data/holidays.json';
 import modRegData from '../data/modreg-schedule.json';
@@ -120,9 +121,9 @@ export function convertCPExWindow(
   }
 
   return {
-    start: format(startDate, 'EEEE do LLLL, h:mm aaaa'),
+    start: format(toSingaporeTime(startDate), 'EEEE do LLLL, h:mm aaaa'),
     startDate,
-    end: format(endDate, 'EEEE do LLLL, h:mm aaaa'),
+    end: format(toSingaporeTime(endDate), 'EEEE do LLLL, h:mm aaaa'),
     endDate,
   };
 }
