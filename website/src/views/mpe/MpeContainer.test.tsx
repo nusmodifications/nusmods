@@ -68,6 +68,34 @@ describe(MpeContainer, () => {
     expect(screen.queryByText(/indicate the course\(s\) you would like to read/)).toBeNull();
   });
 
+  test('shows a load error instead of an empty submission when reopened after CPEx closes', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-22T17:00:00+08:00'));
+    mpeApiMocks.getLoginState.mockReturnValue(true);
+    mpeApiMocks.getMpeSubmission.mockRejectedValueOnce(new Error('CPEx is closed'));
+    vi.spyOn(config, 'isCPExAvailable').mockImplementation((now = new Date()) =>
+      isCPExAvailableAt(now, testWindow, true, false),
+    );
+
+    render(
+      <MemoryRouter>
+        <MpeContainer />
+      </MemoryRouter>,
+    );
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Unable to load your CPEx submission. Your saved choices are not displayed.',
+    );
+    expect(screen.queryByText('All changes are saved')).toBeNull();
+    expect(screen.queryByRole('spinbutton')).toBeNull();
+    expect(mpeApiMocks.getMpeSubmission).toHaveBeenCalledOnce();
+  });
+
   test('shows the scheduled opening date before the window starts', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-10-20T08:59:59+08:00'));
