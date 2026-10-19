@@ -150,6 +150,13 @@ export function isCPExAvailableAt(
   );
 }
 
+export function isProductionEnvironment(
+  buildEnvironment: string | undefined,
+  runtimeEnvironment: string | undefined,
+): boolean {
+  return (buildEnvironment ?? runtimeEnvironment) === 'production';
+}
+
 export function getNextCPExAvailabilityChangeAt(
   now: Date,
   window: CPExWindow | null,
@@ -195,6 +202,11 @@ const modRegSchedule: Config['modRegSchedule'] = {
   Graduate: [...convertModRegDates(modRegData.Graduate), ...(cpexPeriod ? [cpexPeriod] : [])],
 };
 
+const isProduction = isProductionEnvironment(
+  typeof NUSMODS_ENV === 'undefined' ? undefined : NUSMODS_ENV,
+  typeof process === 'undefined' ? undefined : process.env.VERCEL_ENV,
+);
+
 const augmentedConfig: Config = {
   ...appConfig,
 
@@ -204,18 +216,13 @@ const augmentedConfig: Config = {
 
   cpexWindow,
 
-  isCPExEmergencyDisabled: NUSMODS_ENV === 'production' && disableCPExForProd,
+  isCPExEmergencyDisabled: isProduction && disableCPExForProd,
 
   isCPExAvailable: (now: Date = new Date()): boolean =>
-    isCPExAvailableAt(now, cpexWindow, NUSMODS_ENV === 'production', disableCPExForProd),
+    isCPExAvailableAt(now, cpexWindow, isProduction, disableCPExForProd),
 
   getNextCPExAvailabilityChange: (now: Date): Date | null =>
-    getNextCPExAvailabilityChangeAt(
-      now,
-      cpexWindow,
-      NUSMODS_ENV === 'production',
-      disableCPExForProd,
-    ),
+    getNextCPExAvailabilityChangeAt(now, cpexWindow, isProduction, disableCPExForProd),
 
   examAvailabilitySet: new Set(appConfig.examAvailability),
 

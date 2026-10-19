@@ -37,23 +37,29 @@ const MpeContainer: React.FC = () => {
       });
   }, []);
 
-  const getSubmission = (): Promise<MpeSubmission> =>
-    getMpeSubmission().catch((err) => {
-      if (err instanceof MpeSessionExpiredError) {
-        setIsModalOpen(true);
-        setIsLoggedIn(false);
-      }
-      throw err;
-    });
+  const getSubmission = useCallback(
+    (): Promise<MpeSubmission> =>
+      getMpeSubmission().catch((err) => {
+        if (err instanceof MpeSessionExpiredError) {
+          setIsModalOpen(true);
+          setIsLoggedIn(false);
+        }
+        throw err;
+      }),
+    [],
+  );
 
-  const updateSubmission = (submission: MpeSubmission): Promise<void> =>
-    updateMpeSubmission(submission).catch((err) => {
-      if (err instanceof MpeSessionExpiredError) {
-        setIsModalOpen(true);
-        setIsLoggedIn(false);
-      }
-      throw err;
-    });
+  const updateSubmission = useCallback(
+    (submission: MpeSubmission): Promise<void> =>
+      updateMpeSubmission(submission).catch((err) => {
+        if (err instanceof MpeSessionExpiredError) {
+          setIsModalOpen(true);
+          setIsLoggedIn(false);
+        }
+        throw err;
+      }),
+    [],
+  );
 
   const renderCPExStatus = () => {
     if (config.isCPExEmergencyDisabled) {
@@ -92,6 +98,9 @@ const MpeContainer: React.FC = () => {
       </p>
     );
   };
+
+  const shouldShowSubmission =
+    isLoggedIn && (isCPExAvailable || (cpexWindow !== null && now >= cpexWindow.startDate));
 
   return (
     <div className={styles.pageContainer}>
@@ -138,28 +147,11 @@ const MpeContainer: React.FC = () => {
             <ExternalLink href={CPEX_FAQ_URL}>FAQ</ExternalLink> provided by NUS Office of the
             University Registrar.
           </p>
-          <div>
-            {isLoggedIn ? (
-              <MpeFormContainer getSubmission={getSubmission} updateSubmission={updateSubmission} />
-            ) : (
+          {!isLoggedIn && (
+            <div>
               <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isGettingSSOLink} />
-            )}
-          </div>
-          <Modal
-            isOpen={isModalOpen}
-            onRequestClose={() => setIsModalOpen(false)}
-            shouldCloseOnOverlayClick={false}
-            animate
-          >
-            <p>Your session has expired. Please sign in again!</p>
-            <button
-              type="button"
-              className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
-              onClick={() => setIsModalOpen(false)}
-            >
-              OK
-            </button>
-          </Modal>
+            </div>
+          )}
         </>
       ) : (
         <>
@@ -167,6 +159,28 @@ const MpeContainer: React.FC = () => {
           {renderCPExStatus()}
         </>
       )}
+      {shouldShowSubmission && (
+        <MpeFormContainer
+          getSubmission={getSubmission}
+          updateSubmission={updateSubmission}
+          isEditable={isCPExAvailable}
+        />
+      )}
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        shouldCloseOnOverlayClick={false}
+        animate
+      >
+        <p>Your session has expired. Please sign in again!</p>
+        <button
+          type="button"
+          className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
+          onClick={() => setIsModalOpen(false)}
+        >
+          OK
+        </button>
+      </Modal>
     </div>
   );
 };

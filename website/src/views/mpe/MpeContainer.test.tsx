@@ -1,8 +1,22 @@
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
-import config, { convertCPExWindow, isCPExAvailableAt } from 'config';
+import configureStore from 'bootstrapping/configure-store';
+import config, {
+  convertCPExWindow,
+  getNextCPExAvailabilityChangeAt,
+  isCPExAvailableAt,
+} from 'config';
+import { mockDom, mockDomReset } from 'test-utils/mockDom';
 import MpeContainer from './MpeContainer';
+
+const mpeApiMocks = vi.hoisted(() => ({
+  getLoginState: vi.fn(() => false),
+  fetchMpeModuleList: vi.fn(() => Promise.resolve([])),
+  getMpeSubmission: vi.fn(() => Promise.resolve({ intendedMCs: 0, preferences: [] })),
+  updateMpeSubmission: vi.fn(() => Promise.resolve()),
+}));
 
 const testWindow = convertCPExWindow({
   start: '2026-10-20T09:00:00+08:00',
@@ -11,10 +25,11 @@ const testWindow = convertCPExWindow({
 if (!testWindow) throw new Error('Invalid CPEx page test window');
 
 vi.mock('../../apis/mpe', () => ({
-  getLoginState: () => false,
+  getLoginState: mpeApiMocks.getLoginState,
   getSSOLink: vi.fn(),
-  getMpeSubmission: vi.fn(),
-  updateMpeSubmission: vi.fn(),
+  fetchMpeModuleList: mpeApiMocks.fetchMpeModuleList,
+  getMpeSubmission: mpeApiMocks.getMpeSubmission,
+  updateMpeSubmission: mpeApiMocks.updateMpeSubmission,
   MpeSessionExpiredError: class extends Error {},
 }));
 
@@ -23,10 +38,15 @@ describe(MpeContainer, () => {
 
   beforeEach(() => {
     config.cpexWindow = testWindow;
+    mpeApiMocks.getLoginState.mockReturnValue(false);
+    mpeApiMocks.fetchMpeModuleList.mockResolvedValue([]);
+    mpeApiMocks.getMpeSubmission.mockResolvedValue({ intendedMCs: 0, preferences: [] });
+    mpeApiMocks.updateMpeSubmission.mockResolvedValue();
   });
 
   afterEach(() => {
     config.cpexWindow = originalWindow;
+    mockDomReset();
     vi.restoreAllMocks();
     vi.useRealTimers();
   });
@@ -76,5 +96,61 @@ describe(MpeContainer, () => {
     );
 
     expect(screen.getByText(/indicate the course\(s\) you would like to read/)).toBeInTheDocument();
+  });
+
+  test('keeps the final save result visible and disables editing after the window closes', async () => {
+    mockDom();
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-22T16:59:59.999+08:00'));
+    mpeApiMocks.getLoginState.mockReturnValue(true);
+    vi.spyOn(config, 'isCPExAvailable').mockImplementation((now = new Date()) =>
+      isCPExAvailableAt(now, testWindow, true, false),
+    );
+    vi.spyOn(config, 'getNextCPExAvailabilityChange').mockImplementation((now) =>
+      getNextCPExAvailabilityChangeAt(now, testWindow, true, false),
+    );
+
+    let rejectSave!: (reason: Error) => void;
+    const pendingSave = new Promise<void>((_resolve, reject) => {
+      rejectSave = reject;
+    });
+    mpeApiMocks.updateMpeSubmission.mockReturnValueOnce(pendingSave);
+
+    const { store } = configureStore();
+    render(
+      <MemoryRouter>
+        <Provider store={store}>
+          <MpeContainer />
+        </Provider>
+      </MemoryRouter>,
+    );
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    const intendedUnits = screen.getByRole('spinbutton');
+    fireEvent.change(intendedUnits, { target: { value: '18' } });
+    expect(screen.getByText('Saving...')).toBeInTheDocument();
+    expect(mpeApiMocks.getMpeSubmission).toHaveBeenCalledOnce();
+
+    act(() => vi.advanceTimersByTime(1));
+    expect(screen.getByText(/CPEx has ended for AY/)).toBeInTheDocument();
+    expect(screen.getByRole('spinbutton')).toBeDisabled();
+    expect(screen.getByText('Saving...')).toBeInTheDocument();
+    expect(mpeApiMocks.getMpeSubmission).toHaveBeenCalledOnce();
+
+    vi.useRealTimers();
+    await act(async () => {
+      rejectSave(new Error('Save failed'));
+      await pendingSave.catch(() => undefined);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(screen.getByText(/Changes could not be saved/)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Retry Saving Changes' })).toBeNull();
   });
 });

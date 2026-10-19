@@ -61,13 +61,17 @@ export class ModulesSelectComponent extends Component<Props, State> {
   ) => {
     // Don't clear input on item select
     if (stateAndHelpers.selectedItem) return;
+    if (this.props.disabled) return;
 
     this.setState({
       inputValue,
     });
   };
 
-  onChange = (selectedItem: ModuleCode | null) => selectedItem && this.props.onChange(selectedItem);
+  onChange = (selectedItem: ModuleCode | null) => {
+    if (this.props.disabled) return;
+    if (selectedItem) this.props.onChange(selectedItem);
+  };
 
   closeSelect = () => {
     this.setState({
@@ -76,10 +80,12 @@ export class ModulesSelectComponent extends Component<Props, State> {
     });
   };
 
-  openSelect = () =>
+  openSelect = () => {
+    if (this.props.disabled) return;
     this.setState({
       isOpen: true,
     });
+  };
 
   stateReducer = (state: DownshiftState<ModuleCode>, changes: StateChangeOptions<ModuleCode>) => {
     switch (changes.type) {
@@ -119,9 +125,9 @@ export class ModulesSelectComponent extends Component<Props, State> {
     const { placeholder, disabled, moduleCount } = this.props;
     const isModalOpen = !this.props.matchBreakpoint && isOpen;
     const results = this.props.getFilteredModules(inputValue);
-    const showResults = isOpen && results.length > 0;
-    const showTip = isModalOpen && !results.length;
-    const showNoResultMessage = isOpen && inputValue && !results.length;
+    const showResults = !disabled && isOpen && results.length > 0;
+    const showTip = !disabled && isModalOpen && !results.length;
+    const showNoResultMessage = !disabled && isOpen && inputValue && !results.length;
     const removeBtnLabel = (moduleCode: ModuleCode) => `Remove ${moduleCode} from CPEx preferences`;
 
     return (
@@ -172,8 +178,9 @@ export class ModulesSelectComponent extends Component<Props, State> {
                           type="button"
                           className={classnames('btn btn-svg btn-sm', styles.actionButton)}
                           aria-label={removeBtnLabel(module.moduleCode)}
+                          disabled={disabled}
                           onClick={() => {
-                            this.props.onRemoveModule(module.moduleCode);
+                            if (!disabled) this.props.onRemoveModule(module.moduleCode);
                           }}
                         >
                           <Trash className={styles.actionIcon} />{' '}
@@ -221,7 +228,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
 
     const downshiftComponent = (
       <Downshift
-        isOpen={isOpen}
+        isOpen={isOpen && !disabled}
         onOuterClick={this.onOuterClick}
         inputValue={this.state.inputValue}
         onChange={this.onChange}

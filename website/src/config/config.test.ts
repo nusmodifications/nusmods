@@ -7,7 +7,13 @@ import { Semesters } from 'types/modules';
 import academicCalendar from 'data/academic-calendar';
 import { getModRegRoundKey } from 'selectors/modreg';
 
-import { convertCPExWindow, getNextCPExAvailabilityChangeAt, isCPExAvailableAt } from './index';
+import modregData from '../data/modreg-schedule.json';
+import {
+  convertCPExWindow,
+  getNextCPExAvailabilityChangeAt,
+  isCPExAvailableAt,
+  isProductionEnvironment,
+} from './index';
 import config from './index';
 
 test('Academic calendar should have start dates for the current academic year', () => {
@@ -22,12 +28,16 @@ describe('CPEx availability', () => {
   if (!window) throw new Error('Invalid CPEx availability test window');
 
   test('keeps the last confirmed window configured and closed after it ends', () => {
-    expect(config.cpexWindow).toMatchObject({
-      startDate: new Date('2026-10-12T00:00:00+08:00'),
-      endDate: new Date('2026-10-16T23:59:59+08:00'),
-    });
+    expect(config.cpexWindow).toEqual(convertCPExWindow(modregData.cpexWindow));
+    if (!config.cpexWindow) throw new Error('Missing configured CPEx window');
+
     expect(
-      isCPExAvailableAt(new Date('2026-10-19T12:00:00+08:00'), config.cpexWindow, true, false),
+      isCPExAvailableAt(
+        new Date(config.cpexWindow.endDate.getTime() + 1),
+        config.cpexWindow,
+        true,
+        false,
+      ),
     ).toBe(false);
     expect(
       config.modRegSchedule.Undergraduate.some(
@@ -37,6 +47,12 @@ describe('CPEx availability', () => {
     expect(
       config.modRegSchedule.Graduate.some(({ type }) => type === 'Course Planning Exercise (CPEx)'),
     ).toBe(true);
+  });
+
+  test('uses the Vercel runtime environment when the browser build global is absent', () => {
+    expect(isProductionEnvironment(undefined, 'production')).toBe(true);
+    expect(isProductionEnvironment(undefined, 'preview')).toBe(false);
+    expect(isProductionEnvironment('staging', 'production')).toBe(false);
   });
 
   test('opens at the start boundary and closes at the end boundary in Singapore time', () => {

@@ -25,12 +25,14 @@ type Props = {
   initialSubmission: MpeSubmission;
   mpeModuleList: MpeModule[];
   updateSubmission: (submission: MpeSubmission) => Promise<void>;
+  isEditable?: boolean;
 };
 
 const ModuleForm: React.FC<Props> = ({
   initialSubmission,
   mpeModuleList,
   updateSubmission: rawUpdateSubmission,
+  isEditable = true,
 }) => {
   const [intendedMCs, setIntendedMCs] = useState<MpeSubmission['intendedMCs']>(
     initialSubmission.intendedMCs,
@@ -56,6 +58,8 @@ const ModuleForm: React.FC<Props> = ({
   }, [preferences, mpeModuleList]);
 
   const updateSubmission = (newSubmission: MpeSubmission) => {
+    if (!isEditable) return;
+
     setIsUpdating(true);
     setUpdateError(undefined);
 
@@ -72,7 +76,7 @@ const ModuleForm: React.FC<Props> = ({
   };
 
   const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
+    if (!isEditable || !result.destination) return;
     updateSubmission({
       intendedMCs,
       preferences: reorder(preferences, result.source.index, result.destination.index),
@@ -131,18 +135,20 @@ const ModuleForm: React.FC<Props> = ({
     status = (
       <p className={classnames(styles.status, 'text-danger')}>
         Changes could not be saved.{' '}
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => {
-            updateSubmission({
-              intendedMCs,
-              preferences,
-            });
-          }}
-        >
-          Retry Saving Changes
-        </button>
+        {isEditable && (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => {
+              updateSubmission({
+                intendedMCs,
+                preferences,
+              });
+            }}
+          >
+            Retry Saving Changes
+          </button>
+        )}
       </p>
     );
   } else if (isUpdating) {
@@ -163,6 +169,7 @@ const ModuleForm: React.FC<Props> = ({
             min="0"
             inputMode="numeric"
             className="form-control"
+            disabled={!isEditable}
             value={intendedMCsInput}
             onChange={(e) => {
               setIntendedMCsInput(e.target.value);
@@ -192,6 +199,7 @@ const ModuleForm: React.FC<Props> = ({
                       key={preference.moduleCode}
                       draggableId={preference.moduleCode}
                       index={index}
+                      isDragDisabled={!isEditable}
                     >
                       {(innerProvided) => (
                         <div
@@ -205,6 +213,7 @@ const ModuleForm: React.FC<Props> = ({
                             preference={preference}
                             removeModule={removeModule}
                             updateModuleType={updateModuleType}
+                            isEditable={isEditable}
                             className={styles.card}
                           />
                         </div>
@@ -224,6 +233,7 @@ const ModuleForm: React.FC<Props> = ({
             moduleList={moduleSelectList}
             removeModule={removeModule}
             addModule={addModule}
+            isEditable={isEditable}
           />
         </div>
       ) : (

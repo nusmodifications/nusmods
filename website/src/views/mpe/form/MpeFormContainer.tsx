@@ -8,9 +8,14 @@ import ModuleForm from './ModuleForm';
 type Props = {
   getSubmission: () => Promise<MpeSubmission>;
   updateSubmission: (submission: MpeSubmission) => Promise<void>;
+  isEditable?: boolean;
 };
 
-const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) => {
+const MpeFormContainer: React.FC<Props> = ({
+  getSubmission,
+  updateSubmission,
+  isEditable = true,
+}) => {
   const [isInitialLoad, setIsInitialLoad] = useState(false);
   const [submission, setSubmission] = useState<MpeSubmission>({
     intendedMCs: 0,
@@ -61,6 +66,7 @@ const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) 
       initialSubmission={submission}
       mpeModuleList={mpeModuleList}
       updateSubmission={updateSubmission}
+      isEditable={isEditable}
     />
   );
 };
