@@ -21,19 +21,22 @@ describe('CPEx availability', () => {
   });
   if (!window) throw new Error('Invalid CPEx availability test window');
 
-  test('keeps production closed until the next confirmed window is configured', () => {
-    expect(config.cpexWindow).toBeNull();
+  test('keeps the last confirmed window configured and closed after it ends', () => {
+    expect(config.cpexWindow).toMatchObject({
+      startDate: new Date('2026-10-12T00:00:00+08:00'),
+      endDate: new Date('2026-10-16T23:59:59+08:00'),
+    });
     expect(
-      isCPExAvailableAt(new Date('2026-10-21T12:00:00+08:00'), config.cpexWindow, true, false),
+      isCPExAvailableAt(new Date('2026-10-19T12:00:00+08:00'), config.cpexWindow, true, false),
     ).toBe(false);
     expect(
       config.modRegSchedule.Undergraduate.some(
         ({ type }) => type === 'Course Planning Exercise (CPEx)',
       ),
-    ).toBe(false);
+    ).toBe(true);
     expect(
       config.modRegSchedule.Graduate.some(({ type }) => type === 'Course Planning Exercise (CPEx)'),
-    ).toBe(false);
+    ).toBe(true);
   });
 
   test('opens at the start boundary and closes at the end boundary in Singapore time', () => {

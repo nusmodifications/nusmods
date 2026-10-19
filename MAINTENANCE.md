@@ -81,9 +81,9 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
   This deliberately resets the staging branch to `master`; do not run it if that branch has unmerged work.
 
 - [ ] Set `MPE_AY` and `MPE_SEMESTER` in [`website/src/views/mpe/constants.ts`](website/src/views/mpe/constants.ts) to the academic year and semester being configured
-- [ ] After NUS confirms the dates, set the shared `cpexWindow` in [`website/src/data/modreg-schedule.json`](website/src/data/modreg-schedule.json) to ISO 8601 timestamps with the Singapore `+08:00` offset. Availability includes `start` and excludes `end`; keep `cpexWindow` as `null` until dates are confirmed
+- [ ] Keep the last NUS-confirmed window in `cpexWindow` between rounds. After NUS confirms the next dates, update the shared `cpexWindow` in [`website/src/data/modreg-schedule.json`](website/src/data/modreg-schedule.json) to ISO 8601 timestamps with the Singapore `+08:00` offset, and update `MPE_AY` and `MPE_SEMESTER` together. Availability includes `start` and excludes `end`; do not clear the previous window after it ends
 - [ ] Commit and push these website changes to `cpex-staging` to deploy the preview
-- [ ] On <https://cpex-staging.nusmods.com/cpex>, verify NUS authentication and complete a staging form submission. Staging stays available for testing even when `cpexWindow` is `null`
+- [ ] On <https://cpex-staging.nusmods.com/cpex>, verify NUS authentication and complete a staging form submission. Staging stays available for testing regardless of the configured window
 
 ### Before CPEx Opens
 

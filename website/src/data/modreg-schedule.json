@@ -1,5 +1,8 @@
 {
-  "cpexWindow": null,
+  "cpexWindow": {
+    "start": "2026-10-12T00:00:00+08:00",
+    "end": "2026-10-16T23:59:59+08:00"
+  },
   "Undergraduate": [
     {
       "type": "Select Courses",
