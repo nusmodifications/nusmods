@@ -63,4 +63,18 @@ describe(MpeContainer, () => {
 
     expect(screen.getByText(/CPEx will open on:/)).toBeInTheDocument();
   });
+
+  test('keeps the direct CPEx page available on previews after the configured window ends', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-23T12:00:00+08:00'));
+    vi.spyOn(config, 'isCPExAvailable').mockReturnValue(true);
+
+    render(
+      <MemoryRouter>
+        <MpeContainer />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText(/indicate the course\(s\) you would like to read/)).toBeInTheDocument();
+  });
 });

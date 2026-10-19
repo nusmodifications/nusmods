@@ -8,7 +8,7 @@ import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
 import { initAction } from 'test-utils/redux';
 
-import Navtabs from './Navtabs';
+import Navtabs, { shouldRenderCPExTab } from './Navtabs';
 
 const relevantStoreContents = {
   app: { activeSemester: 1 },
@@ -64,5 +64,11 @@ describe(Navtabs, () => {
     );
     make();
     expect(screen.getByRole('link', { name: 'CPEx' })).toHaveAttribute('href', '/cpex');
+  });
+
+  test('keeps CPEx off preview and staging navigation while allowing the direct page', () => {
+    expect(shouldRenderCPExTab(true, 'preview')).toBe(false);
+    expect(shouldRenderCPExTab(true, 'staging')).toBe(false);
+    expect(shouldRenderCPExTab(true, 'production')).toBe(true);
   });
 });
