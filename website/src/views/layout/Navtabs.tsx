@@ -15,13 +15,13 @@ import {
   Trello,
 } from 'react-feather';
 
-import { showCPExTab } from 'featureFlags';
 import ExternalLink from 'views/components/ExternalLink';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
 import type { State } from 'types/state';
+import useCPExAvailability from 'views/hooks/useCPExAvailability';
 
 import styles from './Navtabs.scss';
 
@@ -29,6 +29,7 @@ export const NAVTAB_HEIGHT = 48;
 
 const Navtabs: FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
+  const { isAvailable: isCPExAvailable } = useCPExAvailability();
 
   const tabProps = {
     className: styles.link,
@@ -56,7 +57,7 @@ const Navtabs: FC = () => {
         <BookOpen />
         <span className={styles.title}>Courses</span>
       </NavLink>
-      {showCPExTab && (
+      {isCPExAvailable && (
         <NavLink {...tabProps} to="/cpex">
           <Target />
           <span className={styles.title}>CPEx</span>

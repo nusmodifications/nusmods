@@ -71,9 +71,9 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 For `cpex-staging` deployment
 
 - [ ] Update `MPE_SEMESTER` in `website/src/views/mpe/constants.ts` to be the semester you're configuring CPEx for (usually the next semester)
-- [ ] Update dates in the ModReg schedule in `website/src/data/modreg-schedule.json`
-- [ ] Enable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
+- [ ] Set the shared `cpexWindow` start and end timestamps in `website/src/data/modreg-schedule.json` using ISO 8601 timestamps with the Singapore UTC offset; access opens at `start` and closes at the exclusive `end`
 - [ ] Push onto `cpex-staging` branch (Ensure synced with `master` branch first), then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
+- [ ] Verify the CPEx form can be used on staging; staging remains available for testing outside the production window
 
 ```bash
 git checkout master
@@ -83,13 +83,18 @@ git reset --hard master
 git push
 ```
 
+### Before CPEx Opens
+
+- [ ] Confirm the shared CPEx window matches the dates announced by NUS
+- [ ] Keep `disableCPExForProd` false in `website/src/featureFlags.ts` unless the production emergency switch is needed
+- [ ] Merge the tested CPEx changes into `master` and deploy to `production` before the scheduled start time
+
 ### During CPEx
 
-- [ ] Merge `cpex-staging` into `master` via PR
-- [ ] Deploy latest `master` to `production`
+- [ ] Confirm CPEx becomes available at the scheduled start time and closes at the scheduled end time
+- [ ] Monitor Sentry and Telegram for issues
 
 ### After CPEx
 
-- [ ] Disable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
-- [ ] Merge into `master`
-- [ ] Deploy latest `master` to `production`
+- CPEx closes automatically at the configured end time; no closeout PR or flag change is needed
+- Keep CPEx scraper preparation and runs as a separate maintenance task

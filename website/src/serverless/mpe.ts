@@ -107,7 +107,7 @@ export const featureFlagEnablerMiddleware =
   async (req, res): Promise<void> => {
     // Load the shared config only when an MPE endpoint uses this middleware.
     const config = (await import('../config')).default;
-    if (!config.enableCPEx) {
+    if (!config.isCPExAvailable()) {
       res.status(404).end();
       return;
     }

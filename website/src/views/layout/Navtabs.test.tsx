@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { showCPExTab } from 'featureFlags';
+import config, { convertCPExWindow, isCPExAvailableAt } from 'config';
 import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
 import { initAction } from 'test-utils/redux';
@@ -16,6 +16,11 @@ const relevantStoreContents = {
 };
 
 const initialState = reducers(undefined, initAction());
+const testWindow = convertCPExWindow({
+  start: '2026-10-20T09:00:00+08:00',
+  end: '2026-10-22T17:00:00+08:00',
+});
+if (!testWindow) throw new Error('Invalid CPEx navigation test window');
 
 function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
   const { store } = configureStore(
@@ -35,71 +40,29 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
 }
 
 describe(Navtabs, () => {
-  test('should render into nav element', () => {
-    make();
-    if (showCPExTab) {
-      expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-        [
-          "Today",
-          "Timetable",
-          "Optimiser",
-          "Courses",
-          "CPEx",
-          "Venues",
-          "Planner",
-          "Settings",
-          "Contribute",
-          "Whispers",
-        ]
-      `);
-    } else {
-      expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-        [
-          "Today",
-          "Timetable",
-          "Optimiser",
-          "Courses",
-          "Venues",
-          "Planner",
-          "Settings",
-          "Contribute",
-          "Whispers",
-        ]
-      `);
-    }
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
-  test('should show beta tabs if beta is true', () => {
-    make({ settings: { beta: true } });
-    if (showCPExTab) {
-      expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-        [
-          "Today",
-          "Timetable",
-          "Optimiser",
-          "Courses",
-          "CPEx",
-          "Venues",
-          "Planner",
-          "Settings",
-          "Contribute",
-          "Whispers",
-        ]
-      `);
-    } else {
-      expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-        [
-          "Today",
-          "Timetable",
-          "Optimiser",
-          "Courses",
-          "Venues",
-          "Planner",
-          "Settings",
-          "Contribute",
-          "Whispers",
-        ]
-      `);
-    }
+  test('hides the CPEx tab when the shared window is closed', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-20T08:59:59.999+08:00'));
+    vi.spyOn(config, 'isCPExAvailable').mockImplementation((now = new Date()) =>
+      isCPExAvailableAt(now, testWindow, true, false),
+    );
+    make();
+    expect(screen.queryByRole('link', { name: 'CPEx' })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Courses' })).toBeInTheDocument();
+  });
+
+  test('shows the CPEx tab when the shared window is open', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-20T09:00:00+08:00'));
+    vi.spyOn(config, 'isCPExAvailable').mockImplementation((now = new Date()) =>
+      isCPExAvailableAt(now, testWindow, true, false),
+    );
+    make();
+    expect(screen.getByRole('link', { name: 'CPEx' })).toHaveAttribute('href', '/cpex');
   });
 });
