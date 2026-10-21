@@ -129,6 +129,35 @@ describe(ADD_PLANNER_MODULE, () => {
       1: { id: '1', moduleCode: 'CS1231', year: '2018/2019', semester: 1, index: 1 },
     });
   });
+
+  test('does not add a course to a semester that already has it', () => {
+    const again = addPlannerModule('2018/2019', 1, { type: 'module', moduleCode: 'CS1010S' });
+
+    expect(reducer(initial, again)).toBe(initial);
+  });
+
+  test('adds a course already planned in another semester, for a retake', () => {
+    expect(
+      reducer(initial, addPlannerModule('2018/2019', 2, { type: 'module', moduleCode: 'CS1010S' }))
+        .modules,
+    ).toEqual({
+      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
+      1: { id: '1', moduleCode: 'CS1010S', year: '2018/2019', semester: 2, index: 0 },
+    });
+  });
+
+  test('adds the same placeholder to a semester more than once', () => {
+    const placeholder = addPlannerModule('2018/2019', 2, {
+      type: 'placeholder',
+      placeholderId: 'ue',
+    });
+
+    expect(reducer(reducer(initial, placeholder), placeholder).modules).toEqual({
+      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
+      1: { id: '1', placeholderId: 'ue', year: '2018/2019', semester: 2, index: 0 },
+      2: { id: '2', placeholderId: 'ue', year: '2018/2019', semester: 2, index: 1 },
+    });
+  });
 });
 
 describe(MOVE_PLANNER_MODULE, () => {
