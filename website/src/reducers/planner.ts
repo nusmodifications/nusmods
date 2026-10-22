@@ -86,6 +86,16 @@ export default function planner(
       const { payload } = action;
       const { year, semester } = payload;
 
+      // A course is in a semester at most once; another semester (a retake) is fine
+      if (
+        payload.type === 'module' &&
+        filterModuleForSemester(state.modules, year, semester).some(
+          (module) => module.moduleCode === payload.moduleCode,
+        )
+      ) {
+        return state;
+      }
+
       const id = nextId(state.modules);
       const index = getSemesterIds(state.modules, year, semester).length;
       const props =
