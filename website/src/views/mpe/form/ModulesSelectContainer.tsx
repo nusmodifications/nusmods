@@ -11,6 +11,7 @@ type Props = {
   moduleList: ModuleSelectList;
   addModule: (moduleCode: ModuleCode) => void;
   removeModule: (moduleCode: ModuleCode) => void;
+  isEditable: boolean;
 };
 
 const RESULTS_LIMIT = 500;
@@ -19,7 +20,7 @@ const RESULTS_LIMIT = 500;
  * Container for modules select
  * Governs the module filtering logic and non-select related logic such as notification.
  */
-function ModulesSelectContainer({ moduleList, addModule, removeModule }: Props) {
+function ModulesSelectContainer({ moduleList, addModule, removeModule, isEditable }: Props) {
   const getFilteredModules = useCallback(
     (inputValue: string | null) => {
       if (!inputValue) return [];
@@ -40,7 +41,7 @@ function ModulesSelectContainer({ moduleList, addModule, removeModule }: Props) 
           placeholder={
             isOnline ? 'Add course to the preference list' : 'You need to be online to add courses'
           }
-          disabled={!isOnline}
+          disabled={!isOnline || !isEditable}
           onRemoveModule={removeModule}
         />
       )}
