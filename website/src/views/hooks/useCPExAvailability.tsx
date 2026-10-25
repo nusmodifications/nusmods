@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 
 import config from 'config';
 
-const MAX_TIMEOUT = 2_147_483_647;
+// setTimeout overflows above 2^31 - 1 ms, so cap long waits and recalculate when they fire.
+const MAX_TIMEOUT_DELAY_MS = 2_147_483_647;
 
 export type CPExAvailability = {
   isAvailable: boolean;
@@ -25,7 +26,7 @@ export default function useCPExAvailability(): CPExAvailability {
       if (nextChange) {
         const delay = Math.max(
           1,
-          Math.min(nextChange.getTime() - currentTime.getTime(), MAX_TIMEOUT),
+          Math.min(nextChange.getTime() - currentTime.getTime(), MAX_TIMEOUT_DELAY_MS),
         );
         timeoutId = window.setTimeout(update, delay);
       }
