@@ -17,3 +17,9 @@ catalog:
   oxlint: ^1.55.0
   typescript: 5.9.3
   vitest: ^4.1.0
+
+# react-scrollspy imports Babel 7 helpers but only declares babel-runtime (Babel 6).
+packageExtensions:
+  react-scrollspy@3.4.3:
+    dependencies:
+      '@babel/runtime': 7.28.6
