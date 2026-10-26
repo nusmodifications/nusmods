@@ -15,20 +15,30 @@ import {
   Trello,
 } from 'react-feather';
 
-import { showCPExTab } from 'featureFlags';
 import ExternalLink from 'views/components/ExternalLink';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
 import type { State } from 'types/state';
+import useCPExAvailability from 'views/hooks/useCPExAvailability';
 
 import styles from './Navtabs.scss';
 
 export const NAVTAB_HEIGHT = 48;
 
+export function shouldRenderCPExTab(
+  isCPExAvailable: boolean,
+  environment: typeof NUSMODS_ENV,
+): boolean {
+  // Preview and staging testers can open /cpex directly without adding it to public navigation.
+  return isCPExAvailable && environment !== 'preview' && environment !== 'staging';
+}
+
 const Navtabs: FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
+  const { isAvailable: isCPExAvailable } = useCPExAvailability();
+  const showCPExTab = shouldRenderCPExTab(isCPExAvailable, NUSMODS_ENV);
 
   const tabProps = {
     className: styles.link,

@@ -10,12 +10,19 @@ type Props = {
     moduleType: MpePreference['moduleType'],
   ) => void;
   readonly moduleType: MpePreference['moduleType'];
+  readonly isEditable: boolean;
 };
 
-const ModuleTypeMenu: React.FC<Props> = ({ moduleCode, updateModuleType, moduleType }) => (
+const ModuleTypeMenu: React.FC<Props> = ({
+  moduleCode,
+  updateModuleType,
+  moduleType,
+  isEditable,
+}) => (
   <select
     value={moduleType}
     className={classnames('form-control', styles.menu)}
+    disabled={!isEditable}
     onChange={(e) => {
       const modType = e.target.value as MpePreference['moduleType'];
       updateModuleType(moduleCode, modType);

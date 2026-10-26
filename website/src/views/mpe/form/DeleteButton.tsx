@@ -8,9 +8,10 @@ type Props = {
   label: string;
   removeModule: (moduleCodeToRemove: string) => void;
   moduleCode: string;
+  isEditable: boolean;
 };
 
-const DeleteButton: React.FC<Props> = ({ label, removeModule, moduleCode }) => {
+const DeleteButton: React.FC<Props> = ({ label, removeModule, moduleCode, isEditable }) => {
   const handleClick = useCallback(() => removeModule(moduleCode), [moduleCode, removeModule]);
   return (
     <Tooltip content={label} touch="hold">
@@ -18,6 +19,7 @@ const DeleteButton: React.FC<Props> = ({ label, removeModule, moduleCode }) => {
         type="button"
         className={classnames('btn btn-outline-secondary btn-svg', styles.delete)}
         aria-label={label}
+        disabled={!isEditable}
         onClick={handleClick}
       >
         <X className={styles.x} />
