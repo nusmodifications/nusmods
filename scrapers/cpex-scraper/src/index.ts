@@ -20,10 +20,13 @@ scrapeCPEx({
   env,
   logger,
   threshold,
-}).then(async () => {
-  await logger.close();
-}).catch(async (error) => {
-  logger.log(`Failed to scrape: ${error}`);
-  await logger.close();
-  process.exitCode = 1;
-});
+})
+  .catch((error) => {
+    process.exitCode = 1;
+    logger.log(`Failed to scrape: ${error}`);
+  })
+  .finally(() => logger.close())
+  .catch((error) => {
+    process.exitCode = 1;
+    console.error(`Failed to write scrape log: ${error}`);
+  });

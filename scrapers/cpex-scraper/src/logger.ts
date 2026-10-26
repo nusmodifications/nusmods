@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { finished } from 'node:stream/promises';
 
 // At runtime, __dirname is build/src/ (compiled from src/).
 // Two levels up reaches the scraper root: build/src/ -> build/ -> scrapers/cpex-scraper/
@@ -35,13 +36,11 @@ export type FileLogger = Pick<Console, 'log'> & {
  *
  * Satisfies the `Pick<Console, 'log'>` interface used by the CPEx scraper.
  */
-export function createFileLogger(now: Date = new Date()): FileLogger {
-  if (!fs.existsSync(LOG_DIR)) {
-    fs.mkdirSync(LOG_DIR, { recursive: true });
-  }
+export function createFileLogger(now: Date = new Date(), logDir: string = LOG_DIR): FileLogger {
+  fs.mkdirSync(logDir, { recursive: true });
 
   const filename = `cpex-${formatTimestamp(now)}.log`;
-  const logPath = path.join(LOG_DIR, filename);
+  const logPath = path.join(logDir, filename);
   const stream = fs.createWriteStream(logPath, { flags: 'a' });
 
   stream.on('error', (err) => {
@@ -54,13 +53,15 @@ export function createFileLogger(now: Date = new Date()): FileLogger {
     const line = `[${timestamp}] ${message}`;
 
     console.log(line);
-    stream.write(`${line}\n`);
+    if (!stream.destroyed && !stream.writableEnded) {
+      stream.write(`${line}\n`);
+    }
   }
 
-  function close(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      stream.end((err?: Error | null) => (err ? reject(err) : resolve()));
-    });
+  async function close(): Promise<void> {
+    const completion = finished(stream, { cleanup: true });
+    stream.end();
+    await completion;
   }
 
   return { close, log };
