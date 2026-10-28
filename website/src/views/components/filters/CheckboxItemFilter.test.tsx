@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { SearchkitManager } from 'searchkit';
 
 import CheckboxItemFilter from './CheckboxItemFilter';
@@ -11,7 +11,7 @@ describe(CheckboxItemFilter, () => {
   });
 
   it('renders', () => {
-    const wrapper = mount(
+    render(
       <CheckboxItemFilter
         searchkit={mockSearchkit}
         label="Test Checkbox"
@@ -25,9 +25,8 @@ describe(CheckboxItemFilter, () => {
       />,
     );
 
-    const checkboxInputs = wrapper.find('input[type="checkbox"]');
-    expect(checkboxInputs).toHaveLength(1);
-    expect(checkboxInputs.at(0).prop('checked')).toBeFalsy();
-    expect(wrapper.text()).toMatch('Test Checkbox');
+    const checkbox = screen.getByRole('checkbox', { name: /Test Checkbox/ });
+    expect(checkbox).not.toBeChecked();
+    expect(screen.getByText(/Test Checkbox/)).toBeInTheDocument();
   });
 });
