@@ -2,13 +2,16 @@ import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
   REMOVE_PLANNER_MODULE,
+  SET_PLACEHOLDER_MODULE,
   SET_PLANNER_MIN_YEAR,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_IBLOCS,
   SET_IGNORE_PREREQUISITES_CHECK,
   addPlannerModule,
+  addPlanToTakeModule,
   movePlannerModule,
   removePlannerModule,
+  setPlaceholderModule,
   setPlannerMinYear,
   setPlannerMaxYear,
   setPlannerIBLOCs,
@@ -136,14 +139,14 @@ describe(ADD_PLANNER_MODULE, () => {
     expect(reducer(initial, again)).toBe(initial);
   });
 
-  test('adds a course already planned in another semester, for a retake', () => {
-    expect(
-      reducer(initial, addPlannerModule('2018/2019', 2, { type: 'module', moduleCode: 'CS1010S' }))
-        .modules,
-    ).toEqual({
-      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
-      1: { id: '1', moduleCode: 'CS1010S', year: '2018/2019', semester: 2, index: 0 },
-    });
+  test('does not add a course already planned in another semester', () => {
+    const again = addPlannerModule('2018/2019', 2, { type: 'module', moduleCode: 'CS1010S' });
+
+    expect(reducer(initial, again)).toBe(initial);
+  });
+
+  test('does not add a planned course to Plan to Take', () => {
+    expect(reducer(initial, addPlanToTakeModule('CS1010S'))).toBe(initial);
   });
 
   test('adds the same placeholder to a semester more than once', () => {
@@ -216,6 +219,31 @@ describe(MOVE_PLANNER_MODULE, () => {
       1: { id: '1', moduleCode: 'CS2030', year: '2018/2019', semester: 2, index: 0 },
       2: { id: '2', moduleCode: 'CS2105', year: '2018/2019', semester: 2, index: 2 },
     });
+  });
+});
+
+describe(SET_PLACEHOLDER_MODULE, () => {
+  const initial: PlannerState = {
+    ...defaultState,
+    modules: {
+      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
+      1: { id: '1', placeholderId: 'ue', year: '2018/2019', semester: 2, index: 0 },
+    },
+  };
+
+  test('picks a course for a placeholder', () => {
+    expect(reducer(initial, setPlaceholderModule('1', 'CS2030')).modules[1]).toEqual({
+      id: '1',
+      placeholderId: 'ue',
+      moduleCode: 'CS2030',
+      year: '2018/2019',
+      semester: 2,
+      index: 0,
+    });
+  });
+
+  test('does not pick a course that is already planned', () => {
+    expect(reducer(initial, setPlaceholderModule('1', 'CS1010S'))).toBe(initial);
   });
 });
 
