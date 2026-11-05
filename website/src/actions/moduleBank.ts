@@ -18,7 +18,7 @@ import {
   REMOVE_LRU_MODULE,
   UPDATE_MODULE_TIMESTAMP,
 } from './constants';
-import { getLRUModules } from './moduleBank-lru';
+import { getLRUModules, getPinnedLessonConfigs } from './moduleBank-lru';
 
 export function fetchModuleList() {
   return requestAction(FETCH_MODULE_LIST, {
@@ -102,7 +102,7 @@ export function fetchModule(moduleCode: ModuleCode) {
 
         const LRUModule = getLRUModules(
           moduleBank.modules,
-          timetables.lessons,
+          getPinnedLessonConfigs(timetables),
           moduleCode,
           overLimitCount,
         );
