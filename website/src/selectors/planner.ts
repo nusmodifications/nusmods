@@ -1,4 +1,5 @@
 import { flatMap, get, sortBy, values } from 'lodash-es';
+import { createSelector } from 'reselect';
 import { ModuleCode, Semester, Semesters } from 'types/modules';
 import {
   PlannerState,
@@ -16,7 +17,11 @@ import {
   IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
+  getModuleCredit,
 } from 'utils/planner';
+import { checkProgramme, ProgrammeModule } from 'utils/programmes';
+import { ProgrammeFulfilment } from 'types/programmes';
+import programmes from 'data/programmes';
 import { findExamClashes } from 'utils/timetables';
 import { Conflict, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/planner';
 import placeholders from 'utils/placeholders';
@@ -264,3 +269,39 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
 
   return modules;
 }
+
+// Assumed when neither the module bank nor the student's custom data has MC
+// information for a module, matching the assumption made for placeholders
+const DEFAULT_MODULE_CREDIT = 4;
+
+/**
+ * Checks the planned modules against each programme (specialisation, focus
+ * area or minor) the student has selected in the planner settings.
+ *
+ * Scheduled and exempted modules count towards programme requirements;
+ * "plan to take" modules do not, since they represent modules the student has
+ * not committed to a semester yet.
+ */
+export const getProgrammeFulfilments = createSelector(
+  (state: State) => state.planner.programmes,
+  (state: State) => state.planner.modules,
+  (state: State) => state.planner.custom,
+  (state: State) => state.moduleBank.modules,
+  (programmeIds, plannerModules, custom, modulesMap): ProgrammeFulfilment[] => {
+    const modules: ProgrammeModule[] = values(plannerModules)
+      .filter((time) => time.year !== PLAN_TO_TAKE_YEAR)
+      .map((time) => time.moduleCode)
+      .filter(notNull)
+      .map((moduleCode) => ({
+        moduleCode,
+        moduleCredit:
+          getModuleCredit({ moduleInfo: modulesMap[moduleCode], customInfo: custom[moduleCode] }) ??
+          DEFAULT_MODULE_CREDIT,
+      }));
+
+    return programmeIds
+      .map((programmeId) => programmes[programmeId])
+      .filter(notNull)
+      .map((programme) => checkProgramme(modules, programme));
+  },
+);
