@@ -1,10 +1,9 @@
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash-es';
 import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
-import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
 import ModuleFinderPager, { displayPageRange } from './ModuleFinderPager';
 
-const jest = vi;
 describe(displayPageRange, () => {
   test('calculate page range correctly', () => {
     // One page
@@ -57,12 +56,34 @@ describe('ModuleFinderPager', () => {
     onGoToLast: noop,
   };
 
-  test('should not render if totalNumPages <= 0', () => {
-    const zeroPagesPager = shallow(<ModuleFinderPager {...defaultProps} totalNumPages={0} />);
-    expect(zeroPagesPager.type()).toEqual(null);
+  // On page 2 of 3 every button is enabled, so each one can be clicked.
+  function clickableProps() {
+    return {
+      ...defaultProps,
+      selectedPage: 2,
+      totalNumPages: 3,
+      onGoToFirst: vi.fn(),
+      onGoToPrevious: vi.fn(),
+      onGoToPage: vi.fn(),
+      onGoToNext: vi.fn(),
+      onGoToLast: vi.fn(),
+    };
+  }
 
-    const negativePagesPager = shallow(<ModuleFinderPager {...defaultProps} totalNumPages={-1} />);
-    expect(negativePagesPager.type()).toEqual(null);
+  async function clickAllButtons() {
+    for (const button of screen.getAllByRole('button')) {
+      await userEvent.click(button);
+    }
+  }
+
+  test('should not render if totalNumPages <= 0', () => {
+    const { container, rerender } = render(
+      <ModuleFinderPager {...defaultProps} totalNumPages={0} />,
+    );
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<ModuleFinderPager {...defaultProps} totalNumPages={-1} />);
+    expect(container).toBeEmptyDOMElement();
   });
 
   describe('when on desktop', () => {
@@ -71,25 +92,20 @@ describe('ModuleFinderPager', () => {
     });
 
     test('should contain pager buttons', () => {
-      const onDesktop = shallow(<ModuleFinderPager {...defaultProps} />);
-      expect(onDesktop.find(ModuleFinderPagerButton)).toHaveLength(5);
+      render(<ModuleFinderPager {...defaultProps} />);
+      // First, previous, page 1, next and last
+      expect(screen.getAllByRole('button')).toHaveLength(5);
     });
 
-    test('should respond to clicks on buttons', () => {
-      const props = {
-        ...defaultProps,
-        onGoToFirst: jest.fn(),
-        onGoToPrevious: jest.fn(),
-        onGoToPage: jest.fn(),
-        onGoToNext: jest.fn(),
-        onGoToLast: jest.fn(),
-      };
+    test('should respond to clicks on buttons', async () => {
+      const props = clickableProps();
+      render(<ModuleFinderPager {...props} />);
 
-      const actual = shallow(<ModuleFinderPager {...props} />);
-      actual.find(ModuleFinderPagerButton).forEach((n) => n.simulate('click'));
+      await clickAllButtons();
       expect(props.onGoToFirst).toHaveBeenCalled();
       expect(props.onGoToPrevious).toHaveBeenCalled();
       expect(props.onGoToPage).toHaveBeenCalledWith(1);
+      expect(props.onGoToPage).toHaveBeenCalledWith(3);
       expect(props.onGoToNext).toHaveBeenCalled();
       expect(props.onGoToLast).toHaveBeenCalled();
     });
@@ -101,22 +117,17 @@ describe('ModuleFinderPager', () => {
     });
 
     test('should contain pager buttons', () => {
-      const onMobile = shallow(<ModuleFinderPager {...defaultProps} />);
-      expect(onMobile.find(ModuleFinderPagerButton)).toHaveLength(4);
+      render(<ModuleFinderPager {...defaultProps} />);
+      // First, previous, next and last; the page number is shown as text instead
+      expect(screen.getAllByRole('button')).toHaveLength(4);
+      expect(screen.getByText('Page 1')).toBeInTheDocument();
     });
 
-    test('should respond to clicks on buttons', () => {
-      const props = {
-        ...defaultProps,
-        onGoToFirst: jest.fn(),
-        onGoToPrevious: jest.fn(),
-        onGoToPage: jest.fn(),
-        onGoToNext: jest.fn(),
-        onGoToLast: jest.fn(),
-      };
+    test('should respond to clicks on buttons', async () => {
+      const props = clickableProps();
+      render(<ModuleFinderPager {...props} />);
 
-      const actual = shallow(<ModuleFinderPager {...props} />);
-      actual.find(ModuleFinderPagerButton).forEach((n) => n.simulate('click'));
+      await clickAllButtons();
       expect(props.onGoToFirst).toHaveBeenCalled();
       expect(props.onGoToPrevious).toHaveBeenCalled();
       expect(props.onGoToPage).not.toHaveBeenCalled(); // No page buttons

@@ -1,10 +1,9 @@
 import type { Mock } from 'vitest';
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { captureException } from 'utils/error';
 import ErrorBoundary from './ErrorBoundary';
 
-const jest = vi;
 const mockCaptureException = captureException as Mock;
 
 vi.mock('utils/error');
@@ -30,7 +29,7 @@ describe('ErrorBoundary', () => {
 
     // Silence console errors
     consoleError = global.console.error;
-    global.console.error = jest.fn();
+    global.console.error = vi.fn();
   });
 
   afterEach(() => {
@@ -38,42 +37,43 @@ describe('ErrorBoundary', () => {
   });
 
   test('should display children when there is no error', () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ErrorBoundary>
         <div>Some content</div>
       </ErrorBoundary>,
     );
 
-    expect(wrapper.text()).toEqual('Some content');
+    expect(container).toHaveTextContent(/^Some content$/);
   });
 
   test('should show nothing by default when error is thrown', () => {
-    const wrapper = mount(
+    const { container } = render(
       <ErrorBoundary>
         <ThrowsError>Some content</ThrowsError>
       </ErrorBoundary>,
     );
 
-    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(container).toBeEmptyDOMElement();
     expect(mockCaptureException).toHaveBeenCalledWith(error, expect.any(Object));
   });
 
   test('should show custom error page if provided', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const errorPage = jest.fn((_error: Error) => 'Custom content');
+    const errorPage = vi.fn((_error: Error) => 'Custom content');
 
-    const wrapper = mount(
+    const { container } = render(
       <ErrorBoundary errorPage={errorPage}>
         <ThrowsError>Some content</ThrowsError>
       </ErrorBoundary>,
     );
 
-    expect(wrapper.text()).toEqual('Custom content');
+    expect(container).toHaveTextContent(/^Custom content$/);
+    expect(screen.queryByText('Some content')).not.toBeInTheDocument();
     expect(errorPage).toHaveBeenCalledWith(error);
   });
 
   test('should not capture error if captureError is false', () => {
-    mount(
+    render(
       <ErrorBoundary captureError={false}>
         <ThrowsError>Some content</ThrowsError>
       </ErrorBoundary>,

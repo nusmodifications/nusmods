@@ -1,5 +1,5 @@
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { mount } from 'enzyme';
 import { entries } from 'lodash-es';
 
 import { ModuleCodeMap } from 'types/reducers';
@@ -49,48 +49,43 @@ describe(LinkModuleCodesComponent, () => {
       },
     } as any);
 
-    return mount(
+    return render(
       <MemoryRouter>
         <LinkModuleCodesComponent getModuleCondensed={getModule}>
           {content}
         </LinkModuleCodesComponent>
       </MemoryRouter>,
-    );
+    ).container;
   }
 
   test('should convert module codes to links', () => {
-    const component = create('CS3216, CS1010FC, ACC1002, BMA 5000A', testModules);
-    const links = component.find('Link');
+    create('CS3216, CS1010FC, ACC1002, BMA 5000A', testModules);
+    const links = screen.getAllByRole('link');
     expect(links).toHaveLength(4);
 
     const moduleEntries = entries(testModules);
-    links.forEach((a, index) => {
+    links.forEach((link, index) => {
       const [code] = moduleEntries[index];
-      expect(a.text().replace(' ', '')).toEqual(code);
-      expect(a.prop('to')).toContain(code);
+      expect(link.textContent?.replace(' ', '')).toEqual(code);
+      expect(link.getAttribute('href')).toContain(code);
     });
   });
 
   test('should keep text unchanged', () => {
     const noModulesText = 'This text does not contain module codes';
-    const noModules = create(noModulesText, testModules);
-    expect(noModules.text()).toEqual(noModulesText);
+    expect(create(noModulesText, testModules).textContent).toEqual(noModulesText);
 
     const mixedModulesText = 'ACC1002This text has CS-1010S random module coPS1101Edes in it';
-    const mixedModules = create(mixedModulesText, testModules);
-    expect(mixedModules.text()).toEqual(mixedModulesText);
+    expect(create(mixedModulesText, testModules).textContent).toEqual(mixedModulesText);
   });
 
   test('should check words only', () => {
-    const component = create(
-      'CS1010FCThis teCS1010FCxt contains module codes in wordsACC1010FC',
-      testModules,
-    );
-    expect(component.find('Link')).toHaveLength(0);
+    create('CS1010FCThis teCS1010FCxt contains module codes in wordsACC1010FC', testModules);
+    expect(screen.queryAllByRole('link')).toHaveLength(0);
   });
 
   test('should ignore modules that are not available', () => {
-    const component = create('CS1010FC, CS1020, ACC1002', {
+    create('CS1010FC, CS1020, ACC1002', {
       ACC1002: {
         moduleCode: 'ACC1002',
         title: 'Financial Accounting',
@@ -98,8 +93,8 @@ describe(LinkModuleCodesComponent, () => {
       },
     });
 
-    expect(component.find('Link')).toHaveLength(1);
-    const ACC1002 = component.find('Link').at(0);
-    expect(ACC1002.text()).toEqual('ACC1002');
+    const links = screen.getAllByRole('link');
+    expect(links).toHaveLength(1);
+    expect(links[0]).toHaveTextContent('ACC1002');
   });
 });

@@ -1,12 +1,22 @@
-import { shallow } from 'enzyme';
+import type { ReactNode } from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash-es';
-
-import Tooltip from 'views/components/Tooltip';
 
 import ModuleFinderPagerButton from './ModuleFinderPagerButton';
 import styles from './ModuleFinderPagerButton.scss';
 
-const jest = vi;
+// The real Tooltip is loaded lazily and only appears on hover, so render its content inline
+// to check whether the button was given one.
+vi.mock('views/components/Tooltip', () => ({
+  default: ({ content, children }: { content: ReactNode; children: ReactNode }) => (
+    <>
+      {children}
+      <span role="tooltip">{content}</span>
+    </>
+  ),
+}));
+
 describe(ModuleFinderPagerButton, () => {
   const defaultProps = {
     onClick: noop,
@@ -14,41 +24,35 @@ describe(ModuleFinderPagerButton, () => {
   };
 
   test('should render inactive and enabled by default', () => {
-    const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} />);
-    expect(componentWrapper.exists('button')).toBe(true);
-    const button = componentWrapper.find('button');
-    expect(button.hasClass(styles.active)).toBe(false);
-    expect(button.prop('disabled')).toBeFalsy();
+    render(<ModuleFinderPagerButton {...defaultProps} />);
+    const button = screen.getByRole('button');
+    expect(button).not.toHaveClass(styles.active);
+    expect(button).toBeEnabled();
   });
 
   test('should render active button', () => {
-    const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} active />);
-    const button = componentWrapper.find('button');
-    expect(button.hasClass(styles.active)).toBe(true);
+    render(<ModuleFinderPagerButton {...defaultProps} active />);
+    expect(screen.getByRole('button')).toHaveClass(styles.active);
   });
 
   test('should render disabled button', () => {
-    const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} disabled />);
-    const button = componentWrapper.find('button');
-    expect(button.prop('disabled')).toBe(true);
+    render(<ModuleFinderPagerButton {...defaultProps} disabled />);
+    expect(screen.getByRole('button')).toBeDisabled();
   });
 
   test('should only render tooltip in appropriate conditions', () => {
-    const componentWrapperWithoutTitle = shallow(<ModuleFinderPagerButton {...defaultProps} />);
-    expect(componentWrapperWithoutTitle.exists(Tooltip)).toBe(false);
+    const { unmount } = render(<ModuleFinderPagerButton {...defaultProps} />);
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    unmount();
 
-    const componentWrapperWithTitle = shallow(
-      <ModuleFinderPagerButton {...defaultProps} tooltipTitle="test" />,
-    );
-    expect(componentWrapperWithTitle.exists(Tooltip)).toBe(true);
+    render(<ModuleFinderPagerButton {...defaultProps} tooltipTitle="test" />);
+    expect(screen.getByRole('tooltip')).toHaveTextContent('test');
   });
 
-  test('should respond to clicks', () => {
-    const onClick = jest.fn();
-    const componentWrapper = shallow(
-      <ModuleFinderPagerButton {...defaultProps} onClick={onClick} />,
-    );
-    componentWrapper.find('button').simulate('click');
+  test('should respond to clicks', async () => {
+    const onClick = vi.fn();
+    render(<ModuleFinderPagerButton {...defaultProps} onClick={onClick} />);
+    await userEvent.click(screen.getByRole('button'));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 });
