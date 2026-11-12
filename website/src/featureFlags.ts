@@ -1,6 +1,4 @@
 /* eslint-disable import/prefer-default-export */
 
-/** Enable Course Planning Exercise */
-export const enableCPExforProd = false;
-
-export const showCPExTab = false;
+/** Emergency switch to disable CPEx in production, regardless of its scheduled window. */
+export const disableCPExForProd = false;

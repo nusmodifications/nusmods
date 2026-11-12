@@ -11,6 +11,7 @@ type Props = {
   preference: MpePreference;
   removeModule: (moduleCodeToRemove: string) => void;
   updateModuleType: (moduleCode: ModuleCode, moduleType: MpePreference['moduleType']) => void;
+  isEditable: boolean;
 };
 
 const ModuleCard: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const ModuleCard: React.FC<Props> = ({
   preference,
   removeModule,
   updateModuleType,
+  isEditable,
 }) => (
   <div className={classnames(styles.card, className)}>
     <div className={styles.rank}>{rank + 1}</div>
@@ -35,6 +37,7 @@ const ModuleCard: React.FC<Props> = ({
           moduleCode={preference.moduleCode}
           moduleType={preference.moduleType}
           updateModuleType={updateModuleType}
+          isEditable={isEditable}
         />
       </div>
     </div>
@@ -42,6 +45,7 @@ const ModuleCard: React.FC<Props> = ({
       label={`Remove ${preference.moduleCode}`}
       removeModule={removeModule}
       moduleCode={preference.moduleCode}
+      isEditable={isEditable}
     />
   </div>
 );

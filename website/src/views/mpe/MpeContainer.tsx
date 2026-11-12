@@ -5,7 +5,6 @@ import Modal from 'views/components/Modal';
 import type { MpeSubmission } from 'types/mpe';
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
-import { format } from 'date-fns';
 import {
   getLoginState,
   getSSOLink,
@@ -14,6 +13,7 @@ import {
   MpeSessionExpiredError,
 } from '../../apis/mpe';
 import { CPEX_FAQ_URL, MAX_MODULES, MPE_AY, MPE_SEMESTER } from './constants';
+import useCPExAvailability from 'views/hooks/useCPExAvailability';
 import ModuleFormBeforeSignIn from './form/ModuleFormBeforeSignIn';
 import MpeFormContainer from './form/MpeFormContainer';
 import styles from './MpeContainer.scss';
@@ -23,27 +23,8 @@ const MpeContainer: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(getLoginState(useLocation(), useHistory()));
 
-  const ugCPEx = config.modRegSchedule.Undergraduate.find(
-    ({ type: t }) => t === 'Course Planning Exercise (CPEx)',
-  );
-  const gdCPEx = config.modRegSchedule.Graduate.find(
-    ({ type: t }) => t === 'Course Planning Exercise (CPEx)',
-  );
-  const hasCPEx = ugCPEx && gdCPEx;
-  const sameTime = hasCPEx && ugCPEx.startDate.getTime() === gdCPEx.startDate.getTime();
-  const { enableCPEx } = config;
-
-  // Check if Undergraduate CPEx has ended
-  const isUgCPExEnded = (): boolean => {
-    const now = new Date();
-    return !!(ugCPEx && ugCPEx.endDate && now > ugCPEx.endDate);
-  };
-
-  // Check if Graduate CPEx has ended
-  const isGdCPExEnded = (): boolean => {
-    const now = new Date();
-    return !!(gdCPEx && gdCPEx.endDate && now > gdCPEx.endDate);
-  };
+  const { now, isAvailable: isCPExAvailable } = useCPExAvailability();
+  const { cpexWindow } = config;
 
   const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
@@ -56,65 +37,70 @@ const MpeContainer: React.FC = () => {
       });
   }, []);
 
-  const getSubmission = (): Promise<MpeSubmission> =>
-    getMpeSubmission().catch((err) => {
-      if (err instanceof MpeSessionExpiredError) {
-        setIsModalOpen(true);
-        setIsLoggedIn(false);
-      }
-      throw err;
-    });
+  const getSubmission = useCallback(
+    (): Promise<MpeSubmission> =>
+      getMpeSubmission().catch((err) => {
+        if (err instanceof MpeSessionExpiredError) {
+          setIsModalOpen(true);
+          setIsLoggedIn(false);
+        }
+        throw err;
+      }),
+    [],
+  );
 
-  const updateSubmission = (submission: MpeSubmission): Promise<void> =>
-    updateMpeSubmission(submission).catch((err) => {
-      if (err instanceof MpeSessionExpiredError) {
-        setIsModalOpen(true);
-        setIsLoggedIn(false);
-      }
-      throw err;
-    });
+  const updateSubmission = useCallback(
+    (submission: MpeSubmission): Promise<void> =>
+      updateMpeSubmission(submission).catch((err) => {
+        if (err instanceof MpeSessionExpiredError) {
+          setIsModalOpen(true);
+          setIsLoggedIn(false);
+        }
+        throw err;
+      }),
+    [],
+  );
 
   const renderCPExStatus = () => {
-    if (!hasCPEx) return null;
-
-    const ugEnded = isUgCPExEnded();
-    const gdEnded = isGdCPExEnded();
-
-    if (sameTime) {
-      if (ugEnded) {
-        return (
-          <p>
-            <strong>
-              CPEx has ended for AY{MPE_AY} Semester {MPE_SEMESTER}.
-            </strong>
-          </p>
-        );
-      }
+    if (config.isCPExEmergencyDisabled) {
       return (
         <p>
-          <strong>CPEx will open on:</strong> {ugCPEx.start}
+          <strong>CPEx is temporarily unavailable.</strong>
+        </p>
+      );
+    }
+    if (!cpexWindow) {
+      return (
+        <p>
+          <strong>CPEx is not currently scheduled.</strong>
+        </p>
+      );
+    }
+    if (now < cpexWindow.startDate) {
+      return (
+        <p>
+          <strong>CPEx will open on:</strong> {cpexWindow.start} (Singapore time)
+        </p>
+      );
+    }
+    if (now >= cpexWindow.endDate) {
+      return (
+        <p>
+          <strong>
+            CPEx has ended for AY{MPE_AY} Semester {MPE_SEMESTER}.
+          </strong>
         </p>
       );
     }
     return (
-      <div>
-        <p>
-          <strong>
-            {ugEnded
-              ? `Undergraduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
-              : `Undergraduate CPEx will open on: ${ugCPEx.start}`}
-          </strong>
-        </p>
-        <p>
-          <strong>
-            {gdEnded
-              ? `Graduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
-              : `Graduate CPEx will open on: ${gdCPEx.start}`}
-          </strong>
-        </p>
-      </div>
+      <p>
+        <strong>CPEx is temporarily unavailable.</strong>
+      </p>
     );
   };
+
+  const shouldShowSubmission =
+    isLoggedIn && (isCPExAvailable || (cpexWindow !== null && now >= cpexWindow.startDate));
 
   return (
     <div className={styles.pageContainer}>
@@ -131,7 +117,7 @@ const MpeContainer: React.FC = () => {
         students’ demand for specific courses (as decided by the Course Host Departments) and
         facilitate the Departments in their resource and timetable planning.
       </p>
-      {enableCPEx ? (
+      {isCPExAvailable ? (
         <>
           <p>
             For this round of exercise, please{' '}
@@ -145,18 +131,10 @@ const MpeContainer: React.FC = () => {
             <strong>solely for planning purposes </strong> and there is no guarantee that you will
             be allocated the selected courses during the CourseReg Exercise.
           </p>
-          {!isUgCPExEnded() && (
+          {cpexWindow && (
             <p>
-              For undergraduates, the CPEx for this round will be from&nbsp;
-              {format(ugCPEx?.startDate ?? 0, 'dd MMM')} to&nbsp;
-              {format(ugCPEx?.endDate ?? 0, 'dd MMM yyyy')}.
-            </p>
-          )}
-          {!isGdCPExEnded() && (
-            <p>
-              For graduates, the CPEx for this round will be from&nbsp;
-              {format(gdCPEx?.startDate ?? 0, 'dd MMM')} to&nbsp;
-              {format(gdCPEx?.endDate ?? 0, 'dd MMM yyyy')}.
+              CPEx for this round will be open from {cpexWindow.start} to {cpexWindow.end}{' '}
+              (Singapore time).
             </p>
           )}
           <p>
@@ -166,31 +144,14 @@ const MpeContainer: React.FC = () => {
           </p>
           <p>
             For further questions, please refer to this{' '}
-            <ExternalLink href={CPEX_FAQ_URL}>FAQ</ExternalLink>{' '}
-            provided by NUS Office of the University Registrar.
+            <ExternalLink href={CPEX_FAQ_URL}>FAQ</ExternalLink> provided by NUS Office of the
+            University Registrar.
           </p>
-          <div>
-            {isLoggedIn ? (
-              <MpeFormContainer getSubmission={getSubmission} updateSubmission={updateSubmission} />
-            ) : (
+          {!isLoggedIn && (
+            <div>
               <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isGettingSSOLink} />
-            )}
-          </div>
-          <Modal
-            isOpen={isModalOpen}
-            onRequestClose={() => setIsModalOpen(false)}
-            shouldCloseOnOverlayClick={false}
-            animate
-          >
-            <p>Your session has expired. Please sign in again!</p>
-            <button
-              type="button"
-              className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
-              onClick={() => setIsModalOpen(false)}
-            >
-              OK
-            </button>
-          </Modal>
+            </div>
+          )}
         </>
       ) : (
         <>
@@ -198,6 +159,28 @@ const MpeContainer: React.FC = () => {
           {renderCPExStatus()}
         </>
       )}
+      {shouldShowSubmission && (
+        <MpeFormContainer
+          getSubmission={getSubmission}
+          updateSubmission={updateSubmission}
+          isEditable={isCPExAvailable}
+        />
+      )}
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        shouldCloseOnOverlayClick={false}
+        animate
+      >
+        <p>Your session has expired. Please sign in again!</p>
+        <button
+          type="button"
+          className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
+          onClick={() => setIsModalOpen(false)}
+        >
+          OK
+        </button>
+      </Modal>
     </div>
   );
 };

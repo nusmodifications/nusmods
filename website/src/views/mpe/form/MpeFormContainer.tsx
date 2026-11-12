@@ -8,10 +8,15 @@ import ModuleForm from './ModuleForm';
 type Props = {
   getSubmission: () => Promise<MpeSubmission>;
   updateSubmission: (submission: MpeSubmission) => Promise<void>;
+  isEditable?: boolean;
 };
 
-const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) => {
-  const [isInitialLoad, setIsInitialLoad] = useState(false);
+const MpeFormContainer: React.FC<Props> = ({
+  getSubmission,
+  updateSubmission,
+  isEditable = true,
+}) => {
+  const [loadState, setLoadState] = useState<'loading' | 'loaded' | 'error'>('loading');
   const [submission, setSubmission] = useState<MpeSubmission>({
     intendedMCs: 0,
     preferences: [],
@@ -20,7 +25,7 @@ const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) 
 
   // fetch mpe modules and preferences
   useEffect(() => {
-    setIsInitialLoad(true);
+    setLoadState('loading');
 
     Promise.all([fetchMpeModuleList(), getSubmission()])
       .then(([fetchedMpeModuleList, fetchedSubmission]) => {
@@ -41,19 +46,21 @@ const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) 
             };
           }),
         });
+        setLoadState('loaded');
       })
-      .catch((err) => {
-        // this is a temporary fix
-        // eslint-disable-next-line no-console
-        console.log(err);
-      })
-      .finally(() => {
-        setIsInitialLoad(false);
-      });
+      .catch(() => setLoadState('error'));
   }, [getSubmission]);
 
-  if (isInitialLoad) {
+  if (loadState === 'loading') {
     return <LoadingSpinner />;
+  }
+
+  if (loadState === 'error') {
+    return (
+      <p className="text-danger" role="alert">
+        Unable to load your CPEx submission. Your saved choices are not displayed.
+      </p>
+    );
   }
 
   return (
@@ -61,6 +68,7 @@ const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) 
       initialSubmission={submission}
       mpeModuleList={mpeModuleList}
       updateSubmission={updateSubmission}
+      isEditable={isEditable}
     />
   );
 };
