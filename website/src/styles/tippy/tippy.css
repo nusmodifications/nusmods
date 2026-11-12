@@ -35,7 +35,7 @@
 
 .tippy-popper[x-placement^='top'] .tippy-arrow {
   border-top: 8px solid #333;
-  border-top: 8px solid var(--gray);
+  border-top: 8px solid var(--tooltip-bg);
   border-right: 8px solid transparent;
   border-left: 8px solid transparent;
   bottom: -7px;
@@ -122,7 +122,7 @@
 
 .tippy-popper[x-placement^='bottom'] .tippy-arrow {
   border-bottom: 8px solid #333;
-  border-bottom: 8px solid var(--gray);
+  border-bottom: 8px solid var(--tooltip-bg);
   border-right: 8px solid transparent;
   border-left: 8px solid transparent;
   top: -7px;
@@ -209,7 +209,7 @@
 
 .tippy-popper[x-placement^='left'] .tippy-arrow {
   border-left: 8px solid #333;
-  border-left: 8px solid var(--gray);
+  border-left: 8px solid var(--tooltip-bg);
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
   right: -7px;
@@ -296,7 +296,7 @@
 
 .tippy-popper[x-placement^='right'] .tippy-arrow {
   border-right: 8px solid #333;
-  border-right: 8px solid var(--gray);
+  border-right: 8px solid var(--tooltip-bg);
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
   left: -7px;
@@ -369,7 +369,7 @@
 .tippy-tooltip {
   position: relative;
   color: #fff;
-  color: var(--body-bg);
+  color: var(--tooltip-color);
   border-radius: 4px;
   font-size: 0.9rem;
   padding: 0.3rem 0.6rem;
@@ -379,7 +379,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #333;
-  background-color: var(--gray);
+  background-color: var(--tooltip-bg);
 }
 
 .tippy-tooltip[data-size='small'] {
@@ -428,7 +428,7 @@
   position: absolute;
   will-change: transform;
   background-color: #333;
-  background-color: var(--gray);
+  background-color: var(--tooltip-bg);
   border-radius: 50%;
   width: calc(110% + 2rem);
   left: 50%;
