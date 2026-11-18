@@ -270,6 +270,9 @@ importers:
 
   scrapers/demand-allocation-scraper:
     dependencies:
+      nusmods-academic-calendar:
+        specifier: workspace:*
+        version: link:../../packages/nusmods-academic-calendar
       puppeteer-core:
         specifier: ^24.38.0
         version: 24.38.0

@@ -55,7 +55,7 @@ python3 scripts/import_courserekt_pdfs.py /path/to/courserekt
 
 ## Download the current semester
 
-Run from this package with no positional arguments to read the academic year and semester from `website/src/config/app-config.json`.
+Run from this package with no positional arguments to use the academic year and semester in [the shared scraper config](../../packages/nusmods-academic-calendar/scraper-period.json).
 
 ```sh
 JAVA_HOME=/path/to/java pnpm dev --python .venv/bin/python

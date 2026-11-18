@@ -15,7 +15,7 @@ Create a new issue on GitHub with this checklist after the finals every semester
 - **Prepare "PR1"**
   - [ ] Update `packages/nusmods-academic-calendar/academic-calendar.json` with data for the new academic year so scraper and website Special Term overlap routing remains correct
   - [ ] Update with next year's holiday data from academic calendar to `website/src/data/holidays.json` - Singapore & NUS Holidays (e.g. Well-Being day): <https://www.nus.edu.sg/registrar/calendar>
-  - [ ] Update academic year in `scrapers/nus-v2/src/config.ts`
+  - [ ] Set the new academic year and Semester 1 in `packages/nusmods-academic-calendar/scraper-period.json` for both scrapers. The website advances to the new year in PR2.
 
 - **Prepare "PR2"**
   - [ ] In `app-config.json`, update `academicYear` and `examAvailability` to include only the semesters where exam information is available
@@ -54,11 +54,12 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 
 ## Every Semester
 
-- [ ] Update semester in `website/src/config/app-config.json`
+- [ ] Update the website semester in `website/src/config/app-config.json`
+- [ ] For Semesters 1 and 2, update the scraper semester in `packages/nusmods-academic-calendar/scraper-period.json`
 - [ ] Update the ModReg schedule in `website/src/data/modreg-schedule.json`, and make sure the correct version is pointed to in `website/src/config/index.ts`
   - Reference PR: [PR #2764](https://github.com/nusmodifications/nusmods/pull/2764)
 - [ ] After each CourseReg round is released, run the [demand allocation scraper](scrapers/demand-allocation-scraper) for the current semester. From that package, run `pnpm dev --round <round> --python .venv/bin/python`.
-  - Verify that the PDFs contain released data, not "Information not available yet", and that `scrapers/nus-v2/data/<acad-year>/semesters/<semester>/courseRegHistory.json` is generated with non-empty module history for the academic-year archive
+  - Verify that `scrapers/data/<acad-year>/semesters/<semester>/courseRegHistory.json` contains module history for the released round
 
 ## CPEx
 

@@ -1,6 +1,5 @@
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { parseArgs } from 'node:util';
+import { scraperPeriod } from 'nusmods-academic-calendar';
 
 import { DemandAllocationScraper, normalizeAcademicYearForPath } from './scraper';
 import type { CourseRegRound, Semester } from './types';
@@ -8,7 +7,7 @@ import type { CourseRegRound, Semester } from './types';
 const usage = `Usage:
   pnpm dev [<semester> <academic-year>] [options]
 
-With no semester or academic year, use the NUSMods website config and download
+With no semester or academic year, use the shared scraper period and download
 the available CourseReg PDFs.
 
 Options:
@@ -23,13 +22,15 @@ Options:
 `;
 
 const normalizeAcademicYear = (value: string) => {
-  if (value.length === 2) {
-    return `20${value}/20${Number(value) + 1}`;
+  if (/^(?:\d{2}|\d{4})$/.test(value)) {
+    const start = value.length === 2 ? 2000 + Number(value) : Number(value);
+    return `${start}/${start + 1}`;
   }
-  if (value.length === 4) {
-    return `${value}/${Number(value) + 1}`;
+  const [start, end] = value.split(/[-/]/);
+  if (!/^\d{4}[-/]\d{4}$/.test(value) || Number(end) !== Number(start) + 1) {
+    throw new Error(`Invalid academic year: ${value}`);
   }
-  return value.replace('-', '/');
+  return `${start}/${end}`;
 };
 
 const parseSemester = (value: string): Semester => {
@@ -67,7 +68,8 @@ async function main() {
     },
   });
 
-  if (values.help) {
+  const { help, round, download, ...options } = values;
+  if (help) {
     console.log(usage);
     return;
   }
@@ -77,18 +79,12 @@ async function main() {
   }
 
   const current = positionals.length === 0;
-  const [semesterValue, academicYearValue] = current ? await readCurrentPeriod() : positionals;
-  const semester = parseSemester(semesterValue);
-  const academicYear = normalizeAcademicYear(academicYearValue);
-  const download = values.download ?? (current && !values.pdfDir);
+  const semester = current ? scraperPeriod.semester : parseSemester(positionals[0]);
+  const academicYear = current ? scraperPeriod.academicYear : normalizeAcademicYear(positionals[1]);
   const scraper = new DemandAllocationScraper(semester, academicYear, {
-    archiveDir: values.archiveDir,
-    download,
-    inputDir: values.inputDir,
-    outputDir: values.outputDir,
-    pdfDir: values.pdfDir,
-    python: values.python,
-    round: parseRound(values.round),
+    ...options,
+    download: download ?? (current && !options.pdfDir),
+    round: parseRound(round),
   });
 
   console.info(
@@ -100,12 +96,6 @@ async function main() {
     }),
   );
   await scraper.run();
-}
-
-async function readCurrentPeriod(): Promise<[string, string]> {
-  const configPath = path.resolve(__dirname, '../../../../website/src/config/app-config.json');
-  const { academicYear, semester } = JSON.parse(await readFile(configPath, 'utf8'));
-  return [String(semester), String(academicYear)];
 }
 
 main().catch((error) => {

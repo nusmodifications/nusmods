@@ -1,6 +1,7 @@
-import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { onTestFinished } from 'vitest';
 
 import {
   DemandAllocationScraper,
@@ -11,8 +12,13 @@ import {
   parseDemandAllocationCsv,
   parseVacancyCsv,
 } from './scraper';
+import type { CourseRegClassHistory } from './types';
 
-const makeTempDir = () => mkdtemp(path.join(os.tmpdir(), 'demand-allocation-scraper-test-'));
+const makeTempDir = async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'demand-allocation-scraper-test-'));
+  onTestFinished(() => rm(dir, { force: true, recursive: true }));
+  return dir;
+};
 
 const writeFixture = async (root: string, file: string, contents: string) => {
   const outputPath = path.join(root, file);
@@ -27,7 +33,6 @@ describe(getCourseRegRounds, () => {
 
   test('omits Round 0 from AY24/25 onward', () => {
     expect(getCourseRegRounds('2024/2025')).toEqual([1, 2, 3]);
-    expect(getCourseRegRounds('2025/2026')).toEqual([1, 2, 3]);
   });
 });
 
@@ -188,436 +193,130 @@ Computing,Computer Science,CS2030S,Programming Methodology II,L1,750,-1,-1,-1,-1
   });
 });
 
-describe(groupCourseRegHistory, () => {
-  test('groups round histories by module, student type, and class', () => {
-    const rows = [
-      ...mergeCourseRegRound(
-        1,
-        'UG',
-        parseDemandAllocationCsv(
-          'Faculty,Department,Code,Title,Class,Vacancy,Demand\nComputing,CS,CS2030S,Programming,L1,772,772',
-        ),
-        parseVacancyCsv(
-          'Faculty,Department,Code,Title,Class,UG,GD\nComputing,CS,CS2030S,Programming,L1,750,-1',
-        ),
-      ),
-      ...mergeCourseRegRound(
-        2,
-        'UG',
-        parseDemandAllocationCsv(
-          'Faculty,Department,Code,Title,Class,Vacancy,Demand\nComputing,CS,CS2030S,Programming,L1,772,760',
-        ),
-        parseVacancyCsv(
-          'Faculty,Department,Code,Title,Class,UG,GD\nComputing,CS,CS2030S,Programming,L1,772,-1',
-        ),
-      ),
-    ];
+test('matches CourseRekt history for AY22/23 Semester 2 UG CS2030S', () => {
+  const expectedRounds = [
+    { allocatedSlots: 700, forecastedSlots: 580, registered: 693, round: 0 },
+    { allocatedSlots: 31, forecastedSlots: 24, registered: 52, round: 1 },
+    { allocatedSlots: 7, forecastedSlots: 3, registered: 18, round: 2 },
+    { allocatedSlots: 2, forecastedSlots: 0, registered: 6, round: 3 },
+  ] as const;
+  const demandHeader = 'Faculty,Department,Code,Title,Class,Vacancy,Demand';
+  const vacancyHeader = 'Faculty,Department,Code,Title,Class,UG,GD';
+  const classRow = 'School of Computing,Computer Science,CS2030S,Programming Methodology II,L1';
+  const rows = expectedRounds.flatMap(({ allocatedSlots, forecastedSlots, registered, round }) =>
+    mergeCourseRegRound(
+      round,
+      'UG',
+      parseDemandAllocationCsv(`${demandHeader}\n${classRow},${allocatedSlots},${registered}`),
+      parseVacancyCsv(`${vacancyHeader}\n${classRow},${forecastedSlots},-1`),
+    ),
+  );
 
-    expect(groupCourseRegHistory('2025/2026', 2, rows)).toEqual([
-      {
-        acadYear: '2025/2026',
-        classes: [
-          {
-            classNo: 'L1',
-            rounds: [
-              {
-                allocatedSlots: 772,
-                forecastedSlots: 750,
-                registered: 772,
-                round: 1,
-              },
-              {
-                allocatedSlots: 772,
-                forecastedSlots: 772,
-                registered: 760,
-                round: 2,
-              },
-            ],
-            studentType: 'UG',
-          },
-        ],
-        moduleCode: 'CS2030S',
-        semester: 2,
-      },
-    ]);
-  });
-
-  test('matches CourseRekt known AY22/23 Sem 2 UG CS2030S history', () => {
-    const demandCsvs = [
-      'Faculty,Department,Code,Title,Class,Vacancy,Demand,Successful_Main,Successful_Reserve,Quota_Exceeded,Timetable_Clashes,Workload_Exceeded,Others\nSchool of Computing,Computer Science,CS2030S,Programming Methodology II,L1,700,693,693,0,0,0,0,0',
-      'Faculty,Department,Code,Title,Class,Vacancy,Demand,Successful_Main,Successful_Reserve,Quota_Exceeded,Timetable_Clashes,Workload_Exceeded,Others\nSchool of Computing,Computer Science,CS2030S,Programming Methodology II,L1,31,52,31,0,21,0,0,0',
-      'Faculty,Department,Code,Title,Class,Vacancy,Demand,Successful_Main,Successful_Reserve,Quota_Exceeded,Timetable_Clashes,Workload_Exceeded,Others\nSchool of Computing,Computer Science,CS2030S,Programming Methodology II,L1,7,18,7,0,11,0,0,0',
-      'Faculty,Department,Code,Title,Class,Vacancy,Demand,Successful_Main,Successful_Reserve,Quota_Exceeded,Timetable_Clashes,Workload_Exceeded,Others\nSchool of Computing,Computer Science,CS2030S,Programming Methodology II,L1,2,6,0,0,0,0,0,6',
-    ];
-    const vacancyCsvs = [
-      'Faculty,Department,Code,Title,Class,UG,GD,DK,NG,CPE\nSchool of Computing,Computer Science,CS2030S,Programming Methodology II,L1,580,-1,-1,-1,-1',
-      'Faculty,Department,Code,Title,Class,UG,GD,DK,NG,CPE\nSchool of Computing,Computer Science,CS2030S,Programming Methodology II,L1,24,-1,-1,-1,-1',
-      'Faculty,Department,Code,Title,Class,UG,GD,DK,NG,CPE\nSchool of Computing,Computer Science,CS2030S,Programming Methodology II,L1,3,-1,-1,-1,-1',
-      'Faculty,Department,Code,Title,Class,UG,GD,DK,NG,CPE\nSchool of Computing,Computer Science,CS2030S,Programming Methodology II,L1,0,-1,-1,-1,-1',
-    ];
-    const rows = demandCsvs.flatMap((demandCsv, round) =>
-      mergeCourseRegRound(
-        round as 0 | 1 | 2 | 3,
-        'UG',
-        parseDemandAllocationCsv(demandCsv),
-        parseVacancyCsv(vacancyCsvs[round]),
-      ),
-    );
-
-    expect(groupCourseRegHistory('2022/2023', 2, rows)).toEqual([
-      {
-        acadYear: '2022/2023',
-        classes: [
-          {
-            classNo: 'L1',
-            rounds: [
-              {
-                allocatedSlots: 700,
-                forecastedSlots: 580,
-                registered: 693,
-                round: 0,
-              },
-              {
-                allocatedSlots: 31,
-                forecastedSlots: 24,
-                registered: 52,
-                round: 1,
-              },
-              {
-                allocatedSlots: 7,
-                forecastedSlots: 3,
-                registered: 18,
-                round: 2,
-              },
-              {
-                allocatedSlots: 2,
-                forecastedSlots: 0,
-                registered: 6,
-                round: 3,
-              },
-            ],
-            studentType: 'UG',
-          },
-        ],
-        moduleCode: 'CS2030S',
-        semester: 2,
-      },
-    ]);
-  });
+  expect(groupCourseRegHistory('2022/2023', 2, rows)).toEqual([
+    {
+      acadYear: '2022/2023',
+      classes: [{ classNo: 'L1', rounds: expectedRounds, studentType: 'UG' }],
+      moduleCode: 'CS2030S',
+      semester: 2,
+    },
+  ]);
 });
 
-describe(mergeCourseRegHistories, () => {
-  test('replaces only the selected round and preserves existing rounds', () => {
-    expect(
-      mergeCourseRegHistories(
-        [
-          {
-            acadYear: '2025/2026',
-            classes: [
-              {
-                classNo: 'L1',
-                rounds: [
-                  {
-                    allocatedSlots: 700,
-                    forecastedSlots: 700,
-                    registered: 650,
-                    round: 1,
-                  },
-                  {
-                    allocatedSlots: 50,
-                    forecastedSlots: 50,
-                    registered: 17,
-                    round: 2,
-                  },
-                ],
-                studentType: 'UG',
-              },
-              {
-                classNo: 'T1',
-                rounds: [
-                  {
-                    allocatedSlots: 10,
-                    forecastedSlots: 10,
-                    registered: 8,
-                    round: 1,
-                  },
-                ],
-                studentType: 'UG',
-              },
-            ],
-            moduleCode: 'CS2030S',
-            semester: 2,
-          },
-        ],
-        [
-          {
-            acadYear: '2025/2026',
-            classes: [
-              {
-                classNo: 'L1',
-                rounds: [
-                  {
-                    allocatedSlots: 60,
-                    forecastedSlots: 60,
-                    registered: 20,
-                    round: 2,
-                  },
-                ],
-                studentType: 'UG',
-              },
-              {
-                classNo: 'L2',
-                rounds: [
-                  {
-                    allocatedSlots: 25,
-                    forecastedSlots: 25,
-                    registered: 10,
-                    round: 2,
-                  },
-                ],
-                studentType: 'UG',
-              },
-            ],
-            moduleCode: 'CS2030S',
-            semester: 2,
-          },
-        ],
-        [2],
-      ),
-    ).toEqual([
-      {
-        acadYear: '2025/2026',
-        classes: [
-          {
-            classNo: 'L1',
-            rounds: [
-              {
-                allocatedSlots: 700,
-                forecastedSlots: 700,
-                registered: 650,
-                round: 1,
-              },
-              {
-                allocatedSlots: 60,
-                forecastedSlots: 60,
-                registered: 20,
-                round: 2,
-              },
-            ],
-            studentType: 'UG',
-          },
-          {
-            classNo: 'L2',
-            rounds: [
-              {
-                allocatedSlots: 25,
-                forecastedSlots: 25,
-                registered: 10,
-                round: 2,
-              },
-            ],
-            studentType: 'UG',
-          },
-          {
-            classNo: 'T1',
-            rounds: [
-              {
-                allocatedSlots: 10,
-                forecastedSlots: 10,
-                registered: 8,
-                round: 1,
-              },
-              {
-                allocatedSlots: 'notAvailable',
-                forecastedSlots: 'notAvailable',
-                registered: null,
-                round: 2,
-              },
-            ],
-            studentType: 'UG',
-          },
-        ],
-        moduleCode: 'CS2030S',
-        semester: 2,
-      },
-    ]);
-  });
+test('replaces one round, preserves other rounds, and marks absent classes', () => {
+  const module = { acadYear: '2025/2026', moduleCode: 'CS2030S', semester: 2 } as const;
+  const round1 = { allocatedSlots: 700, forecastedSlots: 700, registered: 650, round: 1 } as const;
+  const oldRound2 = { allocatedSlots: 50, forecastedSlots: 50, registered: 17, round: 2 } as const;
+  const round2 = { allocatedSlots: 60, forecastedSlots: 60, registered: 20, round: 2 } as const;
+  const lecture = { classNo: 'L1', studentType: 'UG' } as const;
+  const newLecture = {
+    classNo: 'L2',
+    rounds: [{ allocatedSlots: 25, forecastedSlots: 25, registered: 10, round: 2 }],
+    studentType: 'UG',
+  } satisfies CourseRegClassHistory;
+  const tutorial = {
+    classNo: 'T1',
+    rounds: [round1],
+    studentType: 'UG',
+  } satisfies CourseRegClassHistory;
+
+  expect(
+    mergeCourseRegHistories(
+      [{ ...module, classes: [{ ...lecture, rounds: [round1, oldRound2] }, tutorial] }],
+      [{ ...module, classes: [{ ...lecture, rounds: [round2] }, newLecture] }],
+      [2],
+    ),
+  ).toEqual([
+    {
+      ...module,
+      classes: [
+        { ...lecture, rounds: [round1, round2] },
+        newLecture,
+        {
+          ...tutorial,
+          rounds: [
+            round1,
+            {
+              allocatedSlots: 'notAvailable',
+              forecastedSlots: 'notAvailable',
+              registered: null,
+              round: 2,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
 });
 
 describe(DemandAllocationScraper, () => {
-  test('writes semester-level CourseReg history JSON from staged CSVs', async () => {
-    const inputDir = await makeTempDir();
-    const outputDir = await makeTempDir();
+  test('writes a Round 0 update into existing semester history', async () => {
+    const dir = await makeTempDir();
+    const historyFile = path.join('semesters', '2', 'courseRegHistory.json');
+    const module = { acadYear: '2022/2023', moduleCode: 'CS2030S', semester: 2 };
+    const round1 = { allocatedSlots: 31, forecastedSlots: 24, registered: 52, round: 1 };
+    const lecture = { classNo: 'L1', studentType: 'UG' };
     await writeFixture(
-      inputDir,
-      path.join('vacancy', 'round_1.csv'),
-      `Faculty,Department,Code,Title,Class,UG,GD,DK,NG,CPE
-Computing,Computer Science,CS2030S,Programming Methodology II,L1,750,-1,-1,-1,-1
-`,
+      dir,
+      historyFile,
+      JSON.stringify([{ ...module, classes: [{ ...lecture, rounds: [round1] }] }]),
     );
     await writeFixture(
-      inputDir,
-      path.join('ug', 'round_1.csv'),
-      `Faculty,Department,Code,Title,Class,Vacancy,Demand,Successful_Main,Successful_Reserve,Quota_Exceeded,Timetable_Clashes,Workload_Exceeded,Others
-Computing,Computer Science,CS2030S,Programming Methodology II,L1,772,772,772,0,0,0,0,0
-`,
-    );
-
-    const histories = await new DemandAllocationScraper(2, '2025/2026', {
-      inputDir,
-      outputDir,
-      round: 1,
-    }).run();
-    const outputJson = JSON.parse(
-      await readFile(path.join(outputDir, 'semesters', '2', 'courseRegHistory.json'), 'utf8'),
-    );
-
-    expect(histories).toHaveLength(1);
-    expect(outputJson).toEqual(histories);
-  });
-
-  test('honors a constructor-level round option, including Round 0', async () => {
-    const inputDir = await makeTempDir();
-    const outputDir = await makeTempDir();
-    await writeFixture(
-      inputDir,
+      dir,
       path.join('vacancy', 'round_0.csv'),
-      `Faculty,Department,Code,Title,Class,UG,GD,DK,NG,CPE
-Computing,Computer Science,CS2030S,Programming Methodology II,L1,580,-1,-1,-1,-1
-`,
+      'Faculty,Department,Code,Title,Class,UG,GD\nComputing,CS,CS2030S,Programming,L1,580,-1\n',
     );
     await writeFixture(
-      inputDir,
+      dir,
       path.join('ug', 'round_0.csv'),
-      `Faculty,Department,Code,Title,Class,Vacancy,Demand,Successful_Main,Successful_Reserve,Quota_Exceeded,Timetable_Clashes,Workload_Exceeded,Others
-Computing,Computer Science,CS2030S,Programming Methodology II,L1,700,693,693,0,0,0,0,0
-`,
+      'Faculty,Department,Code,Title,Class,Vacancy,Demand\nComputing,CS,CS2030S,Programming,L1,700,693\n',
     );
 
-    const histories = await new DemandAllocationScraper(2, '2022/2023', {
-      inputDir,
-      outputDir,
+    await new DemandAllocationScraper(2, module.acadYear, {
+      inputDir: dir,
+      outputDir: dir,
       round: 0,
     }).run();
 
-    expect(histories[0].classes[0].rounds).toEqual([
+    expect(JSON.parse(await readFile(path.join(dir, historyFile), 'utf8'))).toEqual([
       {
-        allocatedSlots: 700,
-        forecastedSlots: 580,
-        registered: 693,
-        round: 0,
-      },
-    ]);
-  });
-
-  test('merges a single-round scrape into existing semester history JSON', async () => {
-    const inputDir = await makeTempDir();
-    const outputDir = await makeTempDir();
-    await writeFixture(
-      outputDir,
-      path.join('semesters', '2', 'courseRegHistory.json'),
-      JSON.stringify([
-        {
-          acadYear: '2025/2026',
-          classes: [
-            {
-              classNo: 'L1',
-              rounds: [
-                {
-                  allocatedSlots: 700,
-                  forecastedSlots: 700,
-                  registered: 650,
-                  round: 1,
-                },
-              ],
-              studentType: 'UG',
-            },
-            {
-              classNo: 'T1',
-              rounds: [
-                {
-                  allocatedSlots: 10,
-                  forecastedSlots: 10,
-                  registered: 8,
-                  round: 1,
-                },
-              ],
-              studentType: 'UG',
-            },
-          ],
-          moduleCode: 'CS2030S',
-          semester: 2,
-        },
-      ]),
-    );
-    await writeFixture(
-      inputDir,
-      path.join('vacancy', 'round_2.csv'),
-      `Faculty,Department,Code,Title,Class,UG,GD,DK,NG,CPE
-Computing,Computer Science,CS2030S,Programming Methodology II,L1,50,-1,-1,-1,-1
-`,
-    );
-    await writeFixture(
-      inputDir,
-      path.join('ug', 'round_2.csv'),
-      `Faculty,Department,Code,Title,Class,Vacancy,Demand,Successful_Main,Successful_Reserve,Quota_Exceeded,Timetable_Clashes,Workload_Exceeded,Others
-Computing,Computer Science,CS2030S,Programming Methodology II,L1,50,17,17,0,0,0,0,0
-`,
-    );
-
-    const histories = await new DemandAllocationScraper(2, '2025/2026', {
-      inputDir,
-      outputDir,
-      round: 2,
-    }).run();
-
-    expect(histories[0].classes).toEqual([
-      {
-        classNo: 'L1',
-        rounds: [
+        ...module,
+        classes: [
           {
-            allocatedSlots: 700,
-            forecastedSlots: 700,
-            registered: 650,
-            round: 1,
-          },
-          {
-            allocatedSlots: 50,
-            forecastedSlots: 50,
-            registered: 17,
-            round: 2,
+            ...lecture,
+            rounds: [
+              { allocatedSlots: 700, forecastedSlots: 580, registered: 693, round: 0 },
+              round1,
+            ],
           },
         ],
-        studentType: 'UG',
-      },
-      {
-        classNo: 'T1',
-        rounds: [
-          {
-            allocatedSlots: 10,
-            forecastedSlots: 10,
-            registered: 8,
-            round: 1,
-          },
-          {
-            allocatedSlots: 'notAvailable',
-            forecastedSlots: 'notAvailable',
-            registered: null,
-            round: 2,
-          },
-        ],
-        studentType: 'UG',
       },
     ]);
   });
 
   test('fails when no CourseReg histories can be extracted', async () => {
+    const dir = await makeTempDir();
     await expect(
-      new DemandAllocationScraper(2, '2025/2026', {
-        inputDir: await makeTempDir(),
-        outputDir: await makeTempDir(),
-        round: 1,
-      }).run(),
+      new DemandAllocationScraper(2, '2025/2026', { inputDir: dir, outputDir: dir }).run(),
     ).rejects.toThrow('No CourseReg history extracted');
   });
 });

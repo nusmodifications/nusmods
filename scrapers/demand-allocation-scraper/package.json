@@ -16,6 +16,7 @@
     "check": "run-s lint typecheck test"
   },
   "dependencies": {
+    "nusmods-academic-calendar": "workspace:*",
     "puppeteer-core": "^24.38.0"
   },
   "devDependencies": {
