@@ -2,7 +2,7 @@
 
 This scraper builds CourseReg demand allocation and vacancy history for the NUSMods API.
 
-The scraper is intentionally separate from `scrapers/nus-v2` because it works from CourseReg PDFs rather than the module/timetable APIs. It still writes generated API data into the NUS v2 data tree:
+The scraper reads CourseReg PDFs and writes to the shared NUSMods API data directory.
 
 ```text
 ../data/<acad-year>/semesters/<semester>/courseRegHistory.json
@@ -25,6 +25,12 @@ python3 -m venv .venv
 ```
 
 Then pass the pinned environment to scraper runs with `--python .venv/bin/python`. Automatic downloads also require an installed Google Chrome. Set `CHROME_EXECUTABLE_PATH` to use an alternate Chrome or Chromium executable.
+
+## Scheduled refresh
+
+The regular `nus-v2` job checks every round for the configured semester after it finishes refreshing the main NUS data. On that host, install Chrome and Java, expose `JAVA_HOME` to the job, and create the Python environment above at `.venv` in this package. A skipped or failed CourseReg refresh is logged separately.
+
+Every run creates a fresh Chrome profile under the system temporary directory and removes it along with the working PDFs and CSVs when the run ends. A successful round refresh replaces the saved PDF and CSV for each report type at fixed paths for that semester.
 
 ## Source PDF Archive
 
