@@ -59,7 +59,7 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 - [ ] Update the ModReg schedule in `website/src/data/modreg-schedule.json`, and make sure the correct version is pointed to in `website/src/config/index.ts`
   - Reference PR: [PR #2764](https://github.com/nusmodifications/nusmods/pull/2764)
 - [ ] After each CourseReg round is released, verify that the [scheduled demand allocation refresh](scrapers/demand-allocation-scraper#scheduled-refresh) added it to `scrapers/data/<acad-year>/semesters/<semester>/courseRegHistory.json`
-  - To refresh a round immediately, run `pnpm dev --round <round> --python .venv/bin/python` from the demand allocation scraper package
+  - To check for new or revised reports immediately, run `pnpm dev all` from the demand allocation scraper package
 
 ## CPEx
 

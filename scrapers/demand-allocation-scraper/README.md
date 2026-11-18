@@ -24,7 +24,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 ```
 
-Then pass the pinned environment to scraper runs with `--python .venv/bin/python`. Automatic downloads also require an installed Google Chrome. Set `CHROME_EXECUTABLE_PATH` to use an alternate Chrome or Chromium executable.
+The scraper uses `.venv/bin/python` when present and falls back to `python3`. Automatic downloads also require an installed Google Chrome. Set `CHROME_EXECUTABLE_PATH` to use an alternate Chrome or Chromium executable.
 
 ## Scheduled refresh
 
@@ -51,7 +51,7 @@ archive/pdfs/2025-2026/semesters/2/ug/round_1.pdf
 archive/pdfs/2025-2026/semesters/2/gd/round_1.pdf
 ```
 
-`archive/pdfs/` is gitignored. Use `--archiveDir` to archive the PDFs in a persistent directory for the target academic year and semester.
+`archive/pdfs/` is gitignored. Set `COURSE_REG_ARCHIVE_DIR` to use a different archive root, such as a persistent mount. The scraper appends the academic year and semester to that root.
 
 To import the PDFs from an existing CourseRekt checkout, run the import script.
 
@@ -61,52 +61,22 @@ python3 scripts/import_courserekt_pdfs.py /path/to/courserekt
 
 ## Download the current semester
 
-Run from this package with no positional arguments to use the academic year and semester in [the shared scraper config](../../packages/nusmods-academic-calendar/scraper-period.json).
+Run `all` from this package to use the academic year and semester in [the shared scraper config](../../packages/nusmods-academic-calendar/scraper-period.json).
 
 ```sh
-JAVA_HOME=/path/to/java pnpm dev --python .venv/bin/python
+pnpm dev all
 ```
 
 Headless Chrome opens the public report URLs directly. The scraper checks the period printed in each report and updates rounds with all three reports for that period. Previously generated rounds are preserved if their reports are unavailable. If no complete round is available, the command fails and leaves the existing JSON intact.
 
-Add `--round 3` to refresh a single round or `--outputDir /tmp/course-reg-api` to write to a separate directory while testing. The `--download` flag enables the same download mode when specifying an explicit semester and academic year.
+Either command accepts `--output-dir /tmp/course-reg-api` to write the academic-year output to a separate directory while testing.
 
 ## Run from staged PDFs
 
-Build CourseReg history after manually staging one newly released round.
+Stage PDFs in the archive layout above, then import the available rounds for that semester. Existing history is preserved for rounds absent from the input.
 
 ```sh
-JAVA_HOME=/path/to/java \
-pnpm dev 2 2025/2026 \
-  --round 1 \
-  --pdfDir archive/pdfs/2025-2026/semesters/2 \
-  --python .venv/bin/python
-```
-
-When `--round` is provided, the scraper updates that round in the existing
-`courseRegHistory.json` if one exists, while preserving previously scraped rounds.
-Classes that existed in earlier rounds but are missing from the newly scraped
-round are recorded as `"notAvailable"` for that round.
-
-To rebuild all available rounds from staged PDFs, omit `--round`.
-
-```sh
-JAVA_HOME=/path/to/java \
-pnpm dev 2 2025/2026 \
-  --pdfDir archive/pdfs/2025-2026/semesters/2 \
-  --python .venv/bin/python
-```
-
-To test against a temporary output directory, provide `--outputDir`.
-
-```sh
-JAVA_HOME=/path/to/java \
-pnpm dev 2 2025/2026 \
-  --round 1 \
-  --pdfDir archive/pdfs/2025-2026/semesters/2 \
-  --inputDir /tmp/demand-allocation-csv \
-  --outputDir /tmp/demand-allocation-output \
-  --python .venv/bin/python
+pnpm dev import 2 2025/2026
 ```
 
 ## Data Semantics

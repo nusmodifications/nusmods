@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import os
 import shutil
 from pathlib import Path
 
@@ -81,7 +82,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--output-dir",
-        default=Path(__file__).resolve().parents[1] / "archive" / "pdfs",
+        default=os.environ.get("COURSE_REG_ARCHIVE_DIR")
+        or Path(__file__).resolve().parents[1] / "archive" / "pdfs",
         type=Path,
         help="output CourseReg PDF archive directory",
     )

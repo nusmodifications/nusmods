@@ -26,7 +26,7 @@ pnpm docs
 coursereg_dir=../demand-allocation-scraper
 if [ -x "$coursereg_dir/.venv/bin/python" ]; then
   echo "Checking CourseReg reports"
-  if ! (cd "$coursereg_dir" && pnpm dev --python .venv/bin/python); then
+  if ! (cd "$coursereg_dir" && pnpm dev all); then
     echo "CourseReg refresh failed. The main NUS data refresh succeeded." >&2
   fi
 else

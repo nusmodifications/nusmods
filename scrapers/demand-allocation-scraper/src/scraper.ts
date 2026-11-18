@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -21,16 +22,6 @@ const COURSE_REG_ROUNDS_AFTER_AY_2425: Array<CourseRegRound> = [1, 2, 3];
 const STUDENT_TYPES: Array<CourseRegStudentType> = ['UG', 'GD'];
 
 type CsvRow = Array<string>;
-
-export type DemandAllocationScraperOptions = {
-  archiveDir?: string;
-  download?: boolean;
-  inputDir?: string;
-  outputDir?: string;
-  pdfDir?: string;
-  python?: string;
-  round?: CourseRegRound;
-};
 
 type DemandAllocationRow = {
   allocatedSlots: CourseRegSlotValue;
@@ -55,14 +46,6 @@ type MergedClassRound = {
 type CourseClassKey = `${ModuleCode}:${string}`;
 
 const REPORT_TYPES = ['vacancy', ...STUDENT_TYPES] as const;
-
-export const normalizeAcademicYearForPath = (academicYear: string) =>
-  academicYear.replace('/', '-');
-
-export const getDefaultPdfArchiveRoot = () => path.resolve(process.cwd(), 'archive', 'pdfs');
-
-export const getDefaultApiOutputRoot = (academicYear: string) =>
-  path.resolve(process.cwd(), '..', 'data', normalizeAcademicYearForPath(academicYear));
 
 export function getCourseRegRounds(academicYear: string): Array<CourseRegRound> {
   const yearStart = Number(academicYear.replace('/', '').replace('-', '').slice(0, 4));
@@ -546,76 +529,40 @@ export class DemandAllocationScraper {
 
   private readonly archiveDir: string;
 
-  private readonly download: boolean;
-
-  private readonly inputDir: string;
+  private readonly csvDir: string;
 
   private readonly outputDir: string;
 
-  private readonly pdfDir?: string;
-
   private readonly python: string;
-
-  private readonly round?: CourseRegRound;
 
   private readonly semester: Semester;
 
-  constructor(
-    semester: Semester,
-    academicYear: string,
-    options: DemandAllocationScraperOptions = {},
-  ) {
-    const academicYearPath = normalizeAcademicYearForPath(academicYear);
+  constructor(semester: Semester, academicYear: string, outputDir?: string) {
+    const yearDir = academicYear.replace('/', '-');
+    const archiveRoot = process.env.COURSE_REG_ARCHIVE_DIR || 'archive/pdfs';
     this.academicYear = academicYear;
     this.semester = semester;
-    this.archiveDir =
-      options.archiveDir ??
-      path.join(getDefaultPdfArchiveRoot(), academicYearPath, 'semesters', String(semester));
-    this.download = options.download ?? false;
-    this.inputDir =
-      options.inputDir ??
-      path.resolve(process.cwd(), 'data', academicYearPath, 'semesters', String(semester), 'csv');
-    this.outputDir = options.outputDir ?? getDefaultApiOutputRoot(academicYear);
-    this.pdfDir = options.pdfDir;
-    this.python = options.python ?? 'python3';
-    this.round = options.round;
+    this.archiveDir = path.resolve(archiveRoot, yearDir, 'semesters', String(semester));
+    this.csvDir = path.resolve('data', yearDir, 'semesters', String(semester), 'csv');
+    this.outputDir = outputDir ?? path.resolve('..', 'data', yearDir);
+    const venvPython = path.resolve('.venv/bin/python');
+    this.python = existsSync(venvPython) ? venvPython : 'python3';
   }
 
-  async run(options: DemandAllocationScraperOptions = {}) {
-    const inputDir = options.inputDir ?? this.inputDir;
-    const outputDir = options.outputDir ?? this.outputDir;
-    const pdfDir = options.pdfDir ?? this.pdfDir;
-    const python = options.python ?? this.python;
-    const round = options.round ?? this.round;
-    const rounds = round === undefined ? getCourseRegRounds(this.academicYear) : [round];
-
-    if (options.download ?? this.download) {
-      return this.runDownload(
-        pdfDir ?? options.archiveDir ?? this.archiveDir,
-        inputDir,
-        outputDir,
-        rounds,
-        python,
-      );
-    }
-
-    if (pdfDir) {
+  async importArchive() {
+    const csvDir = await mkdtemp(path.join(tmpdir(), 'nusmods-coursereg-'));
+    try {
       console.info(
-        JSON.stringify({ inputDir, pdfDir, message: 'Converting CourseReg PDFs to CSVs' }),
+        JSON.stringify({ archiveDir: this.archiveDir, message: 'Importing CourseReg PDFs' }),
       );
-      await convertPdfsToCsvs(pdfDir, inputDir, python);
+      await convertPdfsToCsvs(this.archiveDir, csvDir, this.python);
+      return await this.writeHistory(csvDir);
+    } finally {
+      await rm(csvDir, { force: true, recursive: true });
     }
-
-    return this.writeHistory(inputDir, outputDir, rounds, round !== undefined);
   }
 
-  private async runDownload(
-    archiveDir: string,
-    inputDir: string,
-    outputDir: string,
-    rounds: Array<CourseRegRound>,
-    python: string,
-  ) {
+  async download() {
     if (this.semester !== 1 && this.semester !== 2) {
       throw new Error('CourseReg PDF downloads are supported for semesters 1 and 2');
     }
@@ -624,10 +571,11 @@ export class DemandAllocationScraper {
     try {
       const pdfDir = path.join(temporaryDir, 'pdfs');
       const csvDir = path.join(temporaryDir, 'csv');
+      const rounds = getCourseRegRounds(this.academicYear);
       const period = { academicYear: this.academicYear, semester: this.semester };
       console.info(JSON.stringify({ ...period, rounds, message: 'Downloading CourseReg PDFs' }));
       await downloadCurrentPdfs(temporaryDir, pdfDir, rounds);
-      await convertPdfsToCsvs(pdfDir, csvDir, python, period);
+      await convertPdfsToCsvs(pdfDir, csvDir, this.python, period);
 
       const completeRounds: Array<CourseRegRound> = [];
       for (const round of rounds) {
@@ -650,24 +598,19 @@ export class DemandAllocationScraper {
       for (const round of completeRounds) {
         for (const reportType of REPORT_TYPES) {
           const pdf = await readFile(resolvePdfFile(pdfDir, round, reportType));
-          await outputFile(resolvePdfFile(archiveDir, round, reportType), pdf);
+          await outputFile(resolvePdfFile(this.archiveDir, round, reportType), pdf);
           const csv = await readFile(resolveInputFile(csvDir, round, reportType));
-          await outputFile(resolveInputFile(inputDir, round, reportType), csv);
+          await outputFile(resolveInputFile(this.csvDir, round, reportType), csv);
         }
       }
 
-      return await this.writeHistory(csvDir, outputDir, completeRounds, true);
+      return await this.writeHistory(csvDir, completeRounds);
     } finally {
       await rm(temporaryDir, { force: true, recursive: true });
     }
   }
 
-  private async writeHistory(
-    inputDir: string,
-    outputDir: string,
-    rounds: Array<CourseRegRound>,
-    preserveExisting: boolean,
-  ) {
+  async writeHistory(inputDir: string, rounds = getCourseRegRounds(this.academicYear)) {
     const mergedRows: Array<MergedClassRound> = [];
     for (const round of rounds) {
       const vacancyFile = resolveInputFile(inputDir, round, 'vacancy');
@@ -711,16 +654,18 @@ export class DemandAllocationScraper {
     }
 
     const outputPath = path.join(
-      outputDir,
+      this.outputDir,
       'semesters',
       String(this.semester),
       'courseRegHistory.json',
     );
-    const existingHistories = preserveExisting
-      ? await readJsonIfExists<Array<CourseRegModuleSemesterHistory>>(outputPath)
-      : undefined;
+    const existingHistories =
+      await readJsonIfExists<Array<CourseRegModuleSemesterHistory>>(outputPath);
+    const updatedRounds = Array.from(
+      new Set(mergedRows.map(({ roundHistory }) => roundHistory.round)),
+    );
     const histories = existingHistories
-      ? mergeCourseRegHistories(existingHistories, extractedHistories, rounds)
+      ? mergeCourseRegHistories(existingHistories, extractedHistories, updatedRounds)
       : extractedHistories;
 
     await outputJson(outputPath, histories);

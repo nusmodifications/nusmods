@@ -291,11 +291,7 @@ describe(DemandAllocationScraper, () => {
       'Faculty,Department,Code,Title,Class,Vacancy,Demand\nComputing,CS,CS2030S,Programming,L1,700,693\n',
     );
 
-    await new DemandAllocationScraper(2, module.acadYear, {
-      inputDir: dir,
-      outputDir: dir,
-      round: 0,
-    }).run();
+    await new DemandAllocationScraper(2, module.acadYear, dir).writeHistory(dir);
 
     expect(JSON.parse(await readFile(path.join(dir, historyFile), 'utf8'))).toEqual([
       {
@@ -316,7 +312,7 @@ describe(DemandAllocationScraper, () => {
   test('fails when no CourseReg histories can be extracted', async () => {
     const dir = await makeTempDir();
     await expect(
-      new DemandAllocationScraper(2, '2025/2026', { inputDir: dir, outputDir: dir }).run(),
+      new DemandAllocationScraper(2, '2025/2026', dir).writeHistory(dir),
     ).rejects.toThrow('No CourseReg history extracted');
   });
 });
