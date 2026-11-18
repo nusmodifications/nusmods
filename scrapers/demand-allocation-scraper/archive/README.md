@@ -1,9 +1,9 @@
 # Demand Allocation PDF Archive
 
-This directory is for operator-staged CourseReg source PDFs used by the demand
+This directory holds downloaded and operator-staged CourseReg source PDFs used by the demand
 allocation scraper.
 
-PDFs should be stored under:
+PDFs use this layout.
 
 ```text
 archive/pdfs/<acad-year>/semesters/<semester>/
@@ -13,4 +13,4 @@ archive/pdfs/<acad-year>/semesters/<semester>/
 ```
 
 The PDF files are ignored by git. Generated API data is written separately to
-`../nus-v2/data/<acad-year>/semesters/<semester>/courseRegHistory.json`.
+`../data/<acad-year>/semesters/<semester>/courseRegHistory.json`.

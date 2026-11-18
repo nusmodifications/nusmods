@@ -1,15 +1,20 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import { parseArgs } from 'node:util';
 
 import { DemandAllocationScraper, normalizeAcademicYearForPath } from './scraper';
 import type { CourseRegRound, Semester } from './types';
 
 const usage = `Usage:
-  pnpm dev <semester> <academic-year> [options]
+  pnpm dev [<semester> <academic-year>] [options]
+
+With no semester or academic year, use the NUSMods website config and download
+the available CourseReg PDFs.
 
 Options:
   --archiveDir <dir>  Directory used to archive staged/downloaded PDFs
-  --download          Try to download current PDFs before conversion
-  --inputDir <dir>    Directory containing extracted CSVs
+  --download          Download current PDFs with headless Chrome before conversion
+  --inputDir <dir>    Directory for extracted CSVs
   --outputDir <dir>   API output academic-year directory
   --pdfDir <dir>      Directory containing staged PDFs
   --python <path>     Python executable for PDF conversion
@@ -67,15 +72,18 @@ async function main() {
     return;
   }
 
-  if (positionals.length < 2) {
-    throw new Error(`Semester and academic year are required.\n\n${usage}`);
+  if (positionals.length !== 0 && positionals.length !== 2) {
+    throw new Error(`Provide both semester and academic year, or neither.\n\n${usage}`);
   }
 
-  const semester = parseSemester(positionals[0]);
-  const academicYear = normalizeAcademicYear(positionals[1]);
+  const current = positionals.length === 0;
+  const [semesterValue, academicYearValue] = current ? await readCurrentPeriod() : positionals;
+  const semester = parseSemester(semesterValue);
+  const academicYear = normalizeAcademicYear(academicYearValue);
+  const download = values.download ?? (current && !values.pdfDir);
   const scraper = new DemandAllocationScraper(semester, academicYear, {
     archiveDir: values.archiveDir,
-    download: values.download,
+    download,
     inputDir: values.inputDir,
     outputDir: values.outputDir,
     pdfDir: values.pdfDir,
@@ -92,6 +100,12 @@ async function main() {
     }),
   );
   await scraper.run();
+}
+
+async function readCurrentPeriod(): Promise<[string, string]> {
+  const configPath = path.resolve(__dirname, '../../../../website/src/config/app-config.json');
+  const { academicYear, semester } = JSON.parse(await readFile(configPath, 'utf8'));
+  return [String(semester), String(academicYear)];
 }
 
 main().catch((error) => {

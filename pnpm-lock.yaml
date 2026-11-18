@@ -269,6 +269,10 @@ importers:
         version: 4.1.0(@types/node@22.19.19)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.19.19)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2))
 
   scrapers/demand-allocation-scraper:
+    dependencies:
+      puppeteer-core:
+        specifier: ^24.38.0
+        version: 24.38.0
     devDependencies:
       '@nkzw/eslint-plugin':
         specifier: 'catalog:'
@@ -281,7 +285,7 @@ importers:
         version: 22.19.19
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 4.1.0(vitest@4.1.0(@types/node@22.19.19)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.19.19)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
+        version: 4.1.11(vitest@4.1.0(@types/node@22.19.19)(jsdom@24.1.3)(vite@7.3.1(@types/node@22.19.19)(jiti@1.21.7)(sass@1.83.1)(terser@5.46.0)(yaml@2.8.2)))
       eslint-plugin-no-only-tests:
         specifier: 'catalog:'
         version: 3.3.0

@@ -1,7 +1,10 @@
 import { spawn } from 'node:child_process';
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
+import { mkdir, mkdtemp, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { downloadCurrentPdfs } from './download';
 import type {
   CourseRegClassHistory,
   CourseRegModuleSemesterHistory,
@@ -51,14 +54,7 @@ type MergedClassRound = {
 
 type CourseClassKey = `${ModuleCode}:${string}`;
 
-const COURSE_REG_PDF_URLS = {
-  gd: (round: CourseRegRound) =>
-    `https://www.nus.edu.sg/CourseReg/docs/DemandAllocationRptGD_R${round}.pdf`,
-  ug: (round: CourseRegRound) =>
-    `https://www.nus.edu.sg/CourseReg/docs/DemandAllocationRptUG_R${round}.pdf`,
-  vacancy: (round: CourseRegRound) =>
-    `https://www.nus.edu.sg/coursereg/docs/VacancyRpt_R${round}.pdf`,
-};
+const REPORT_TYPES = ['vacancy', ...STUDENT_TYPES] as const;
 
 export const normalizeAcademicYearForPath = (academicYear: string) =>
   academicYear.replace('/', '-');
@@ -66,7 +62,7 @@ export const normalizeAcademicYearForPath = (academicYear: string) =>
 export const getDefaultPdfArchiveRoot = () => path.resolve(process.cwd(), 'archive', 'pdfs');
 
 export const getDefaultApiOutputRoot = (academicYear: string) =>
-  path.resolve(process.cwd(), '..', 'nus-v2', 'data', normalizeAcademicYearForPath(academicYear));
+  path.resolve(process.cwd(), '..', 'data', normalizeAcademicYearForPath(academicYear));
 
 export function getCourseRegRounds(academicYear: string): Array<CourseRegRound> {
   const yearStart = Number(academicYear.replace('/', '').replace('-', '').slice(0, 4));
@@ -469,13 +465,15 @@ const resolvePdfFile = (
   return path.join(pdfDir, reportType.toLowerCase(), `round_${round}.pdf`);
 };
 
-const isPdf = (buffer: Buffer, contentType?: string | null) =>
-  contentType?.toLowerCase().includes('application/pdf') ||
-  buffer.subarray(0, 4).toString() === '%PDF';
-
 const outputFile = async (file: string, data: Buffer | string) => {
   await mkdir(path.dirname(file), { recursive: true });
-  await writeFile(file, data);
+  const temporaryFile = `${file}.${randomUUID()}.tmp`;
+  try {
+    await writeFile(temporaryFile, data);
+    await rename(temporaryFile, file);
+  } finally {
+    await rm(temporaryFile, { force: true });
+  }
 };
 
 const outputJson = async (file: string, data: unknown) => {
@@ -496,65 +494,38 @@ const readJsonIfExists = async <T>(file: string): Promise<T | undefined> => {
 
 const pathExists = async (file: string) => {
   try {
-    await readFile(file);
+    await stat(file);
     return true;
   } catch (error) {
-    return (error as NodeJS.ErrnoException).code !== 'ENOENT';
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      return false;
+    }
+    throw error;
   }
-};
-
-const downloadPdf = async (url: string, outputPath: string) => {
-  const response = await fetch(url, {
-    signal: AbortSignal.timeout(30_000),
-  });
-  const buffer = Buffer.from(await response.arrayBuffer());
-  const contentType = response.headers.get('content-type');
-
-  if (response.status !== 200 || !isPdf(buffer, contentType)) {
-    console.warn(
-      JSON.stringify({
-        contentType,
-        outputPath,
-        size: buffer.length,
-        status: response.status,
-        url,
-        warning: 'CourseReg PDF download did not return a PDF',
-      }),
-    );
-    return false;
-  }
-
-  await outputFile(outputPath, buffer);
-  return true;
-};
-
-const downloadCurrentPdfs = async (pdfDir: string, rounds: Array<CourseRegRound>) => {
-  let downloaded = 0;
-
-  for (const round of rounds) {
-    const downloads = await Promise.all([
-      downloadPdf(COURSE_REG_PDF_URLS.vacancy(round), resolvePdfFile(pdfDir, round, 'vacancy')),
-      downloadPdf(COURSE_REG_PDF_URLS.ug(round), resolvePdfFile(pdfDir, round, 'UG')),
-      downloadPdf(COURSE_REG_PDF_URLS.gd(round), resolvePdfFile(pdfDir, round, 'GD')),
-    ]);
-    downloaded += downloads.filter(Boolean).length;
-  }
-
-  if (!downloaded) {
-    throw new Error('No CourseReg PDFs could be downloaded');
-  }
-
-  console.info(JSON.stringify({ downloaded, pdfDir, message: 'CourseReg PDFs downloaded' }));
 };
 
 const getPdfToCsvScriptPath = () =>
   path.resolve(process.cwd(), 'scripts', 'coursereg_pdf_to_csv.py');
 
-const convertPdfsToCsvs = (pdfDir: string, csvDir: string, python: string) =>
+const convertPdfsToCsvs = (
+  pdfDir: string,
+  csvDir: string,
+  python: string,
+  period?: { academicYear: string; semester: Semester },
+) =>
   new Promise<void>((resolve, reject) => {
     const child = spawn(
       python,
-      [getPdfToCsvScriptPath(), '--pdf-dir', pdfDir, '--csv-dir', csvDir],
+      [
+        getPdfToCsvScriptPath(),
+        '--pdf-dir',
+        pdfDir,
+        '--csv-dir',
+        csvDir,
+        ...(period
+          ? ['--academic-year', period.academicYear, '--semester', String(period.semester)]
+          : []),
+      ],
       {
         stdio: 'inherit',
       },
@@ -613,26 +584,91 @@ export class DemandAllocationScraper {
   async run(options: DemandAllocationScraperOptions = {}) {
     const inputDir = options.inputDir ?? this.inputDir;
     const outputDir = options.outputDir ?? this.outputDir;
-    const pdfDir = options.pdfDir ?? this.pdfDir ?? this.archiveDir;
+    const pdfDir = options.pdfDir ?? this.pdfDir;
     const python = options.python ?? this.python;
     const round = options.round ?? this.round;
     const rounds = round === undefined ? getCourseRegRounds(this.academicYear) : [round];
-    const mergedRows: Array<MergedClassRound> = [];
 
     if (options.download ?? this.download) {
-      console.info(
-        JSON.stringify({ pdfDir, rounds, message: 'Downloading current CourseReg PDFs' }),
+      return this.runDownload(
+        pdfDir ?? options.archiveDir ?? this.archiveDir,
+        inputDir,
+        outputDir,
+        rounds,
+        python,
       );
-      await downloadCurrentPdfs(pdfDir, rounds);
     }
 
-    if (options.pdfDir || options.download || this.pdfDir || this.download) {
+    if (pdfDir) {
       console.info(
         JSON.stringify({ inputDir, pdfDir, message: 'Converting CourseReg PDFs to CSVs' }),
       );
       await convertPdfsToCsvs(pdfDir, inputDir, python);
     }
 
+    return this.writeHistory(inputDir, outputDir, rounds, round !== undefined);
+  }
+
+  private async runDownload(
+    archiveDir: string,
+    inputDir: string,
+    outputDir: string,
+    rounds: Array<CourseRegRound>,
+    python: string,
+  ) {
+    if (this.semester !== 1 && this.semester !== 2) {
+      throw new Error('CourseReg PDF downloads are supported for semesters 1 and 2');
+    }
+
+    const temporaryDir = await mkdtemp(path.join(tmpdir(), 'nusmods-coursereg-'));
+    try {
+      const pdfDir = path.join(temporaryDir, 'pdfs');
+      const csvDir = path.join(temporaryDir, 'csv');
+      const period = { academicYear: this.academicYear, semester: this.semester };
+      console.info(JSON.stringify({ ...period, rounds, message: 'Downloading CourseReg PDFs' }));
+      await downloadCurrentPdfs(temporaryDir, pdfDir, rounds);
+      await convertPdfsToCsvs(pdfDir, csvDir, python, period);
+
+      const completeRounds: Array<CourseRegRound> = [];
+      for (const round of rounds) {
+        const csvsExist = await Promise.all(
+          REPORT_TYPES.map((reportType) => pathExists(resolveInputFile(csvDir, round, reportType))),
+        );
+        if (csvsExist.every(Boolean)) {
+          completeRounds.push(round);
+        } else {
+          console.warn(JSON.stringify({ round, warning: 'Skipping incomplete CourseReg round' }));
+        }
+      }
+
+      if (!completeRounds.length) {
+        throw new Error(
+          'No complete CourseReg rounds available for the configured academic period',
+        );
+      }
+
+      for (const round of completeRounds) {
+        for (const reportType of REPORT_TYPES) {
+          const pdf = await readFile(resolvePdfFile(pdfDir, round, reportType));
+          await outputFile(resolvePdfFile(archiveDir, round, reportType), pdf);
+          const csv = await readFile(resolveInputFile(csvDir, round, reportType));
+          await outputFile(resolveInputFile(inputDir, round, reportType), csv);
+        }
+      }
+
+      return await this.writeHistory(csvDir, outputDir, completeRounds, true);
+    } finally {
+      await rm(temporaryDir, { force: true, recursive: true });
+    }
+  }
+
+  private async writeHistory(
+    inputDir: string,
+    outputDir: string,
+    rounds: Array<CourseRegRound>,
+    preserveExisting: boolean,
+  ) {
+    const mergedRows: Array<MergedClassRound> = [];
     for (const round of rounds) {
       const vacancyFile = resolveInputFile(inputDir, round, 'vacancy');
       if (!(await pathExists(vacancyFile))) {
@@ -680,10 +716,9 @@ export class DemandAllocationScraper {
       String(this.semester),
       'courseRegHistory.json',
     );
-    const existingHistories =
-      round === undefined
-        ? undefined
-        : await readJsonIfExists<Array<CourseRegModuleSemesterHistory>>(outputPath);
+    const existingHistories = preserveExisting
+      ? await readJsonIfExists<Array<CourseRegModuleSemesterHistory>>(outputPath)
+      : undefined;
     const histories = existingHistories
       ? mergeCourseRegHistories(existingHistories, extractedHistories, rounds)
       : extractedHistories;

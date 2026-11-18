@@ -15,6 +15,9 @@
     "test:watch": "vitest",
     "check": "run-s lint typecheck test"
   },
+  "dependencies": {
+    "puppeteer-core": "^24.38.0"
+  },
   "devDependencies": {
     "@nkzw/eslint-plugin": "catalog:",
     "@nkzw/oxlint-config": "catalog:",
