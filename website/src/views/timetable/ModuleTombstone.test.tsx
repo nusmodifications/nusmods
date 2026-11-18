@@ -1,5 +1,6 @@
 import type { Mocked } from 'vitest';
-import { shallow, mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 /* @var {Module} */
 import CS1010S from '__mocks__/modules/CS1010S.json';
@@ -19,23 +20,14 @@ describe(DisconnectedModuleTombstone, () => {
     } as any;
   });
 
-  it('renders', () => {
-    const wrapper = shallow(<DisconnectedModuleTombstone {...mockProps} />);
-    expect(wrapper.exists()).toEqual(true);
-  });
-
   it('should display the module code', () => {
-    const wrapper = shallow(<DisconnectedModuleTombstone {...mockProps} />);
-    const tombstoneText = wrapper.find('span');
-    expect(tombstoneText.text()).toEqual(`CS1010S removed`);
+    render(<DisconnectedModuleTombstone {...mockProps} />);
+    expect(screen.getByText('CS1010S removed')).toBeInTheDocument();
   });
 
-  it('should call resetTombstone when Dismiss is clicked', () => {
-    const wrapper = mount(<DisconnectedModuleTombstone {...mockProps} />);
-    const dismissBtn = wrapper
-      .find('button')
-      .filterWhere((e) => Boolean(e.text().match(/dismiss/i)));
-    dismissBtn.simulate('click');
-    expect(mockProps.resetTombstone.mock.calls.length).toEqual(1);
+  it('should call resetTombstone when Dismiss is clicked', async () => {
+    render(<DisconnectedModuleTombstone {...mockProps} />);
+    await userEvent.click(screen.getByRole('button', { name: /dismiss/i }));
+    expect(mockProps.resetTombstone).toHaveBeenCalledTimes(1);
   });
 });

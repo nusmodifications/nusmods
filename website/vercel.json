@@ -41,8 +41,8 @@
   ],
   "rewrites": [
     {
-      "source": "/api(/.*)?",
-      "destination": "https://api.nusmods.com$1"
+      "source": "/api/:path*",
+      "destination": "https://api.nusmods.com/:path*"
     }
   ],
   "redirects": [

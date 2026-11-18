@@ -1,0 +1,81 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`parseString > parses a complex same-program-type honours module 1`] = `
+{
+  "or": [
+    {
+      "and": [
+        {
+          "cohort": {
+            "rule": "MUST_BE_IN",
+            "years": [
+              "E:2019/20",
+            ],
+          },
+        },
+        {
+          "or": [
+            {
+              "nOf": [
+                7,
+                [
+                  "SE%:D",
+                ],
+              ],
+            },
+            {
+              "nOf": [
+                7,
+                [
+                  "PS%:D",
+                ],
+              ],
+            },
+            {
+              "nOf": [
+                7,
+                [
+                  "GL%:D",
+                ],
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      "and": [
+        {
+          "cohort": {
+            "rule": "MUST_BE_IN",
+            "years": [
+              "S:2020/21",
+              "E:2020/21",
+            ],
+          },
+        },
+        {
+          "or": [
+            {
+              "nOf": [
+                7,
+                [
+                  "SE%:D",
+                ],
+              ],
+            },
+            {
+              "nOf": [
+                7,
+                [
+                  "PS%:D",
+                ],
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+`;

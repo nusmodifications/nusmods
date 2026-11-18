@@ -1,26 +1,40 @@
 import {
-  filter,
   first,
   get,
-  groupBy,
+  isEmpty,
   isEqual,
-  isNumber,
   keys,
   map,
+  mapValues,
   partition,
   pick,
   reduce,
+  size,
   some,
 } from 'lodash-es';
 
-import { RawLessonWithIndex, Module, ModuleCode, Semester } from 'types/modules';
+import {
+  ClassNo,
+  LessonId,
+  Module,
+  ModuleCode,
+  ModuleLessonMap,
+  RawLesson,
+  Semester,
+} from 'types/modules';
 
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 
 import { ModuleCodeMap } from 'types/reducers';
 
-import { getModuleTimetable } from 'utils/modules';
-import { getRecoveryLessonIndices } from 'utils/timetables';
+import { getModuleLessonMap } from 'utils/modules';
+import {
+  deserializeLessonDetails,
+  getClosestClassNo,
+  getRecoveryClassNo,
+  getRecoverySerializedLessonDetails,
+  isClassNo,
+} from './lessonId';
 
 /**
  * Validates the modules in a timetable. It removes all modules which do not exist in
@@ -45,47 +59,71 @@ export function validateTimetableModules(
 /**
  * Validates TA module's {@link ModuleLessonConfig|lesson configs} based on a list of lessons to provide the lesson type info of each lesson
  *
- * Valid TA modules configs must have lesson indices that belong to the correct lesson type
+ * Valid TA modules configs must have `LessonId`s that belong to the correct lesson type
  * @param lessonConfig {@link ModuleLessonConfig|lesson configs} to validate
- * @param validLessons {@link RawLessonWithIndex|lesson}s to validate against
+ * @param lessonMap of valid {@link RawLesson|RawLesson}s to validate against
  * @returns
  * - validated TA modules' {@link ModuleLessonConfig|lesson config}
  * - whether the input is valid, to signal to skip dispatch
  */
 export function validateTaModuleLessons(
   lessonConfig: ModuleLessonConfig,
-  validLessons: readonly RawLessonWithIndex[],
+  lessonMap: Readonly<ModuleLessonMap<RawLesson>>,
 ): {
   validatedLessonConfig: ModuleLessonConfig;
   valid: boolean;
 } {
-  const lessonsByType = groupBy(validLessons, (lesson) => lesson.lessonType);
-  const { config: validatedLessonConfig, valid } = reduce(
+  const {
+    config: validatedLessonConfig,
+    numberOfLessons,
+    valid,
+  } = reduce(
     lessonConfig,
-    (accumulatedValidationResult, configLessonIndices, lessonType) => {
-      const validLessonIndices = map(lessonsByType[lessonType], 'lessonIndex');
-      if (!validLessonIndices.length) {
+    (accumulatedValidationResult, configLessonTypeLessonIds, lessonType) => {
+      const validLessonTypeLessonIds: Set<LessonId> = new Set(keys(get(lessonMap, lessonType, {})));
+      if (!validLessonTypeLessonIds.size) {
         return {
-          config: accumulatedValidationResult.config,
+          ...accumulatedValidationResult,
           valid: false,
         };
       }
-      const hasInvalidLesson = some(
-        configLessonIndices,
-        (lessonIndex) => !validLessonIndices.includes(lessonIndex),
-      );
+      const hasInvalidLesson =
+        isClassNo(configLessonTypeLessonIds) ||
+        some(configLessonTypeLessonIds, (lessonId) => !validLessonTypeLessonIds.has(lessonId));
+      const validatedLessonTypeLessonIds: LessonId[] = hasInvalidLesson
+        ? getRecoverySerializedLessonDetails(
+            get(lessonMap, lessonType, {}),
+            configLessonTypeLessonIds,
+          )
+        : configLessonTypeLessonIds;
+
       return {
         config: {
           ...accumulatedValidationResult.config,
-          [lessonType]: hasInvalidLesson
-            ? getRecoveryLessonIndices(lessonsByType[lessonType])
-            : configLessonIndices,
+          [lessonType]: validatedLessonTypeLessonIds,
         },
+        numberOfLessons:
+          accumulatedValidationResult.numberOfLessons + validatedLessonTypeLessonIds.length,
         valid: accumulatedValidationResult.valid && !hasInvalidLesson,
       };
     },
-    { config: {}, valid: true } as { config: ModuleLessonConfig; valid: boolean },
+    { config: {}, numberOfLessons: 0, valid: true } as {
+      config: ModuleLessonConfig;
+      numberOfLessons: number;
+      valid: boolean;
+    },
   );
+
+  if (numberOfLessons < 1 && !isEmpty(lessonMap)) {
+    const recoveredModuleLessonConfig: ModuleLessonConfig = mapValues(
+      lessonMap,
+      (lessonTypeLessons) => getRecoverySerializedLessonDetails(lessonTypeLessons, []),
+    );
+    return {
+      validatedLessonConfig: recoveredModuleLessonConfig,
+      valid: false,
+    };
+  }
 
   return {
     validatedLessonConfig,
@@ -96,65 +134,104 @@ export function validateTaModuleLessons(
 /**
  * Valid non-TA modules must have one and only one classNo for each lesson type
  * @param lessonConfig lesson configs to validate
- * @param validLessons lessons to validate against
+ * @param lessonMap of valid {@link RawLesson|RawLesson}s to validate against
  * @returns
  * - validated non-TA lesson config
+ *     - invalid lesson configs are recovered to lessons with the classNo of the first lesson in the invalid config
+ *     - if a classNo cannot be obtained, the classNo of the first lesson in the timetable is used
  * - whether the input is valid, to signal to skip dispatch
  */
-function validateNonTaModuleLesson(
+export function validateNonTaModuleLesson(
   lessonConfig: ModuleLessonConfig,
-  validLessons: readonly RawLessonWithIndex[],
+  lessonMap: Readonly<ModuleLessonMap<RawLesson>>,
 ): {
   validatedLessonConfig: ModuleLessonConfig;
   valid: boolean;
 } {
-  const lessonsByType = groupBy(validLessons, (lesson) => lesson.lessonType);
   const lessonTypesInLessonConfig = keys(lessonConfig);
-  const { config: validatedLessonConfig, valid: configValid } = reduce(
-    lessonsByType,
-    (accumulatedValidationResult, lessonsWithLessonType, lessonType) => {
-      const lessonTypeInLessonConfig = lessonTypesInLessonConfig.includes(lessonType);
-      const configLessonIndices = lessonConfig[lessonType];
-      const firstLessonIndex = first(configLessonIndices);
 
-      if (
-        !(
-          lessonTypeInLessonConfig &&
-          configLessonIndices.length &&
-          isNumber(firstLessonIndex) &&
-          firstLessonIndex < validLessons.length
-        )
-      ) {
-        const validLessonIndices = getRecoveryLessonIndices(lessonsWithLessonType);
+  const lessonTypesValidationResults = map(lessonMap, (validLessons, lessonType) => {
+    const lessonTypeInLessonConfig: boolean = lessonTypesInLessonConfig.includes(lessonType);
+    const configLessonIdentifier: [ClassNo] | LessonId[] = get(lessonConfig, lessonType, []);
+
+    if (isClassNo(configLessonIdentifier)) {
+      const firstLessonIdentifier: ClassNo = configLessonIdentifier[0];
+      const isValidClassNo: boolean = some(
+        validLessons,
+        (lesson) => lesson.classNo === firstLessonIdentifier,
+      );
+      const classNo: ClassNo | null = isValidClassNo
+        ? firstLessonIdentifier
+        : getRecoveryClassNo(validLessons);
+
+      return {
+        lessonType,
+        validLessonIds: classNo ? [classNo] : [],
+        valid: isValidClassNo,
+      };
+    }
+
+    const firstLessonId = first(configLessonIdentifier);
+    if (!lessonTypeInLessonConfig || !firstLessonId) {
+      const recoveryClassNo: ClassNo | null = getRecoveryClassNo(validLessons);
+      return {
+        lessonType,
+        validLessonIds: recoveryClassNo ? [recoveryClassNo] : [],
+        valid: false,
+      };
+    }
+
+    if (size(pick(validLessons, configLessonIdentifier)) > 0) {
+      const closestClassNo: ClassNo | null = getClosestClassNo(
+        validLessons,
+        configLessonIdentifier,
+      );
+      if (closestClassNo) {
         return {
-          config: {
-            ...accumulatedValidationResult.config,
-            [lessonType]: validLessonIndices,
-          },
+          lessonType,
+          validLessonIds: closestClassNo ? [closestClassNo] : [],
           valid: false,
         };
       }
+    }
 
-      const firstLesson = get(validLessons, firstLessonIndex);
-      const { classNo } = firstLesson;
-      const classNoLessonIndices = map(
-        filter(lessonsWithLessonType, (lesson) => lesson.classNo === classNo),
-        'lessonIndex',
+    try {
+      const firstLessonClassNo: ClassNo = deserializeLessonDetails(firstLessonId).classNo;
+      const isValidClassNo: boolean = some(
+        validLessons,
+        (lesson) => lesson.classNo === firstLessonClassNo,
       );
-      const configLessonIndicesValid = isEqual(
-        new Set(configLessonIndices),
-        new Set(classNoLessonIndices),
-      );
-      const validLessonIndices = configLessonIndicesValid
-        ? classNoLessonIndices
-        : getRecoveryLessonIndices(lessonsWithLessonType);
+      const classNo: ClassNo | null = isValidClassNo
+        ? firstLessonClassNo
+        : getRecoveryClassNo(validLessons);
 
       return {
+        lessonType,
+        validLessonIds: classNo ? [classNo] : [],
+        valid: false,
+      };
+    } catch {
+      const recoveryClassNo: ClassNo | null = getRecoveryClassNo(validLessons);
+      return {
+        lessonType,
+        validLessonIds: recoveryClassNo ? [recoveryClassNo] : [],
+        valid: false,
+      };
+    }
+  });
+
+  const { config: validatedLessonConfig, valid: configValid } = reduce(
+    lessonTypesValidationResults,
+    (accumulated, { lessonType, validLessonIds, valid }) => {
+      if (validLessonIds.length !== 1) {
+        return accumulated;
+      }
+      return {
         config: {
-          ...accumulatedValidationResult.config,
-          [lessonType]: validLessonIndices,
+          ...accumulated.config,
+          [lessonType]: validLessonIds as [ClassNo],
         },
-        valid: accumulatedValidationResult.valid && configLessonIndicesValid,
+        valid: accumulated.valid && valid,
       };
     },
     { config: {}, valid: true } as { config: ModuleLessonConfig; valid: boolean },
@@ -173,8 +250,8 @@ function validateNonTaModuleLesson(
 
 /**
  * Validates the lesson config for a specific module. It replaces all lessons
- * which invalid class number with the first available class numbers, and
- * removes lessons that are no longer valid
+ * with invalid `ClassNo` or `LessonId` with the first available `ClassNo` or `LessonId`
+ * removing lessons that are no longer valid
  * @param semester
  * @param lessonConfig
  * @param module
@@ -185,11 +262,11 @@ export function validateModuleLessons(
   module: Module,
   isTa: boolean,
 ): { validatedLessonConfig: ModuleLessonConfig; valid: boolean } {
-  const validLessons = getModuleTimetable(module, semester);
+  const lessonMap = getModuleLessonMap(module, semester);
 
   if (isTa) {
-    return validateTaModuleLessons(lessonConfig, validLessons);
+    return validateTaModuleLessons(lessonConfig, lessonMap);
   }
 
-  return validateNonTaModuleLesson(lessonConfig, validLessons);
+  return validateNonTaModuleLesson(lessonConfig, lessonMap);
 }

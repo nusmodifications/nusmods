@@ -1,5 +1,5 @@
 import type { MockedFunction } from 'vitest';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import insertScript from 'utils/insertScript';
 import { CommentCountComponent } from './CommentCount';
 
@@ -16,13 +16,13 @@ const disqusConfig = {
 
 describe(CommentCountComponent, () => {
   test('should be disabled (render null) if user has enabled loadDisqusManually', () => {
-    const wrapper = mount(<CommentCountComponent {...disqusConfig} loadDisqusManually />);
-    expect(wrapper.isEmptyRender()).toBe(true);
-    expect(insertScript).not.toBeCalled();
+    const { container } = render(<CommentCountComponent {...disqusConfig} loadDisqusManually />);
+    expect(container).toBeEmptyDOMElement();
+    expect(insertScript).not.toHaveBeenCalled();
   });
 
   test('should insert Disqus script if loadDisqusManually is false', () => {
-    mount(<CommentCountComponent {...disqusConfig} loadDisqusManually={false} />);
-    expect(insertScript).toBeCalled();
+    render(<CommentCountComponent {...disqusConfig} loadDisqusManually={false} />);
+    expect(insertScript).toHaveBeenCalled();
   });
 });

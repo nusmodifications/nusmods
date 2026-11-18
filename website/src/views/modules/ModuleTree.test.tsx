@@ -92,6 +92,95 @@ describe(ModuleTreeComponent, () => {
     expect(component).toMatchSnapshot('PC2130');
   });
 
+  test('should render a cohort-gated prereq tree', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="NGT2001E"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
+        prereqTree={{
+          cohort: { rule: 'IF_IN', years: ['S:2022'] },
+          then: {
+            and: ['LC1016:D', 'NTW%:D', 'NSW%:D'],
+          },
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('NGT2001E');
+  });
+
+  test('should render a bare cohort eligibility constraint', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="DBA3702"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
+        prereqTree={{
+          and: [
+            { or: ['DAO1704%:D', 'DSC1007:D'] },
+            { cohort: { rule: 'MUST_BE_IN', years: ['S:2017'] } },
+          ],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('DBA3702');
+  });
+
+  test('should render a program-type-gated prereq tree', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="IT5003"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
+        prereqTree={{
+          or: [
+            { programType: { rule: 'IF_IN', types: ['CPE (Certificate)'] }, then: 'IT5003:D' },
+            {
+              programType: { rule: 'IF_IN', types: ['Graduate Degree Coursework'] },
+              then: 'IT5003:D',
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('IT5003');
+  });
+
+  test('should render a prereq tree with multiple cohort gates', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="BT4103"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
+        prereqTree={{
+          and: [
+            {
+              cohort: { rule: 'IF_IN', years: ['E:2021'] },
+              then: {
+                and: ['BT3102:D', 'BT3103:D', { or: ['IS2101:D', 'ES1601:D', 'ES2002:D'] }],
+              },
+            },
+            {
+              cohort: { rule: 'IF_IN', years: ['S:2022'] },
+              then: {
+                and: [
+                  'BT2101:D',
+                  'BT3103:D',
+                  { or: ['IS2101:D', 'UWC2101%:D', 'ES2002:D', 'ES1601:D'] },
+                ],
+              },
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('BT4103');
+  });
+
   test('should render prereq tree to the right when tree direction is set to right', () => {
     const component = render(
       <ModuleTreeComponent

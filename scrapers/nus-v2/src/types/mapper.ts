@@ -4,7 +4,7 @@
  */
 
 import { ModuleInfo } from './api';
-import { Module, ModuleCode, RawLesson, SemesterData } from './modules';
+import { Module, ModuleCode, RawLesson, Semester, SemesterData } from './modules';
 
 /**
  * Module info with the AcademicGrp and AcademicOrg mapped to the actual
@@ -27,6 +27,16 @@ export type WritableSemesterModuleData = {
 };
 
 export type SemesterModuleData = Readonly<WritableSemesterModuleData>;
+
+/**
+ * One semester's worth of module data, tagged with the semester it was fetched
+ * for. The semester is carried explicitly rather than inferred from a module's
+ * timetable, so it is known even for batches in which no module is offered.
+ */
+export type SemesterModuleBatch = {
+  modules: Array<SemesterModuleData>;
+  semester: Semester;
+};
 
 export type ModuleWithoutTree = Omit<Module, 'prereqTree'>;
 

@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: cimg/node:22.14.0
+      - image: cimg/node:22.23.4
 
   go-executor:
     docker:
@@ -157,6 +157,8 @@ jobs:
       - run:
           name: Run tests
           command: |
+            go test ./_models ./_modules ./_solver -v
+
             go run ./_test/server/main.go -port 8020 &
             SERVER_PID=$!
 

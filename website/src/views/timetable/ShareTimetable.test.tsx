@@ -31,7 +31,7 @@ describe('ShareTimetable', () => {
 
   const timetable = {
     CS1010S: {
-      Lecture: [0],
+      Lecture: ['1|WED|1000|1200|LT26|1_2_3_4_5_6_7_8_9_10_11_12_13'],
     },
   };
 
@@ -171,6 +171,18 @@ describe('ShareTimetable', () => {
     await shortenAndWait(wrapper);
 
     expect(wrapper.find('input').prop('value')).toContain('hidden=CS1010S,CS1231S');
+  });
+
+  test('should not include TA key in long URL if there are no TA modules', async () => {
+    mockAxios.put.mockResolvedValue({} as AxiosResponse); // No short URL
+    const wrapper = shallow(
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+    );
+
+    openModal(wrapper);
+    await shortenAndWait(wrapper);
+
+    expect(wrapper.find('input').prop('value')).not.toContain('ta=CS1010S');
   });
 
   test('should include TA key in long URL if there are TA modules', async () => {

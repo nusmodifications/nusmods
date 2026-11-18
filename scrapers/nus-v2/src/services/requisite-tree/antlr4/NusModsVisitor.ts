@@ -5,6 +5,10 @@ import { ParseTreeVisitor } from 'antlr4ts/tree/ParseTreeVisitor';
 import { OverallContext } from './NusModsParser';
 import { Program_typesContext } from './NusModsParser';
 import { CompoundContext } from './NusModsParser';
+import { Program_types_conditionalContext } from './NusModsParser';
+import { Program_types_gateContext } from './NusModsParser';
+import { Cohort_conditionalContext } from './NusModsParser';
+import { Subject_years_conditionalContext } from './NusModsParser';
 import { BinopContext } from './NusModsParser';
 import { Boolean_exprContext } from './NusModsParser';
 import { OpContext } from './NusModsParser';
@@ -24,6 +28,8 @@ import { CoursesContext } from './NusModsParser';
 import { Course_itemsContext } from './NusModsParser';
 import { Must_be_inContext } from './NusModsParser';
 import { Must_not_be_inContext } from './NusModsParser';
+import { If_inContext } from './NusModsParser';
+import { If_not_inContext } from './NusModsParser';
 import { Contains_numberContext } from './NusModsParser';
 
 /**
@@ -54,6 +60,34 @@ export interface NusModsVisitor<Result> extends ParseTreeVisitor<Result> {
    * @return the visitor result
    */
   visitCompound?: (ctx: CompoundContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.program_types_conditional`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitProgram_types_conditional?: (ctx: Program_types_conditionalContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.program_types_gate`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitProgram_types_gate?: (ctx: Program_types_gateContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.cohort_conditional`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitCohort_conditional?: (ctx: Cohort_conditionalContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.subject_years_conditional`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitSubject_years_conditional?: (ctx: Subject_years_conditionalContext) => Result;
 
   /**
    * Visit a parse tree produced by `NusModsParser.binop`.
@@ -187,6 +221,20 @@ export interface NusModsVisitor<Result> extends ParseTreeVisitor<Result> {
    * @return the visitor result
    */
   visitMust_not_be_in?: (ctx: Must_not_be_inContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.if_in`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitIf_in?: (ctx: If_inContext) => Result;
+
+  /**
+   * Visit a parse tree produced by `NusModsParser.if_not_in`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitIf_not_in?: (ctx: If_not_inContext) => Result;
 
   /**
    * Visit a parse tree produced by `NusModsParser.contains_number`.

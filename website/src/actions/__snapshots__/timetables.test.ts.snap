@@ -10,8 +10,8 @@ exports[`cancelModifyLesson should not have payload 1`] = `
 exports[`changeLesson should return updated information to change lesson 1`] = `
 {
   "payload": {
-    "lessonIndices": [
-      1,
+    "lessonIds": [
+      "1|THU|1000|1100|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13",
     ],
     "lessonType": "Recitation",
     "moduleCode": "CS1010S",

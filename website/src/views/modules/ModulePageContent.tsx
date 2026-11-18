@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash-es';
@@ -8,6 +8,7 @@ import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules
 
 import config from 'config';
 import { getSemestersOffered, isOffered, renderMCs } from 'utils/modules';
+import { getPreviousAyShortName, shouldShowSt2ExamExternalLink } from 'utils/specialTerm';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
@@ -32,6 +33,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 import ModuleTree from './ModuleTree';
+import ModuleHistoryMenu from './ModuleHistoryMenu';
 
 export type Props = {
   module: Module;
@@ -46,12 +48,6 @@ const SIDE_MENU_LABELS = {
 };
 
 const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
-
-const prevAYShortName = config.archiveYears
-  .slice(-1)?.[0]
-  ?.split('/')
-  ?.map((x) => x.substring(2, 4))
-  ?.join('/');
 
 const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,6 +69,21 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   if (module.aliases) moduleCodes.push(...module.aliases);
 
   useScrollToTop();
+
+  // Smoothly scroll to section anchors from the side menu, but only while on
+  // this page. `scroll-behavior` must live on the scrolling root (`html`), so
+  // we scope it to the module page's lifecycle here instead of a global
+  // stylesheet rule that would leak to every other route. Respects
+  // `prefers-reduced-motion` for users who opt out of animations.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    const { style } = document.documentElement;
+    style.scrollBehavior = 'smooth';
+    return () => {
+      style.scrollBehavior = '';
+    };
+  }, []);
 
   return (
     <div className={classnames('page-container', styles.moduleInfoPage)}>
@@ -224,28 +235,24 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                   </div>
                 ))}
 
-                {/* Added because ST2 exams rely on previous AY's data due to
-                  ModReg R0, which is difficult for us to get, so we show a
-                  link instead. */}
-                {config.showSt2ExamTimetable &&
-                  module.semesterData.find((semester) => semester.semester === 4) && (
-                    <div className={styles.exam}>
-                      <h3 className={styles.descriptionHeading}>
-                        AY{prevAYShortName} Special Term II Exam
-                      </h3>
-                      <p>
-                        Please visit{' '}
-                        <a
-                          href={config.st2ExamTimetableUrl}
-                          target="_blank"
-                          rel="noopener noreferrer nofollow"
-                        >
-                          the exam timetable
-                        </a>{' '}
-                        instead.
-                      </p>
-                    </div>
-                  )}
+                {shouldShowSt2ExamExternalLink(module) && (
+                  <div className={styles.exam}>
+                    <h3 className={styles.descriptionHeading}>
+                      AY{getPreviousAyShortName()} Special Term II Exam
+                    </h3>
+                    <p>
+                      Please visit{' '}
+                      <a
+                        href={config.st2ExamTimetableUrl}
+                        target="_blank"
+                        rel="noopener noreferrer nofollow"
+                      >
+                        the exam timetable
+                      </a>{' '}
+                      instead.
+                    </p>
+                  </div>
+                )}
 
                 {!isArchive && offered && (
                   <>
@@ -261,6 +268,12 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                 <div>
                   <ReportError module={module} />
                 </div>
+
+                <ModuleHistoryMenu
+                  moduleCode={moduleCode}
+                  moduleTitle={title}
+                  archiveYear={archiveYear}
+                />
               </div>
             </section>
           </div>
@@ -291,28 +304,31 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                       <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
                         <h3>Hi There!</h3>
                         <p>
-                          We would like to encourage everyone who enjoyed using NUSMods to
-                          contribute back to the community by writing reviews for courses that you
-                          have taken before. Your efforts will go a long way in building up a
-                          vibrant and rich NUS community.
+                          Help other students by reviewing courses you have taken. Please start your
+                          review with the semester taken and the professor who taught it.
                         </p>
+                        <strong>Guidelines:</strong>
+                        <ol className={styles.modReviewDescription}>
+                          <li>
+                            Critical and negative reviews are allowed as long as they are
+                            constructive and not personal attacks.
+                          </li>
+                          <li>No spam or advertising.</li>
+                          <li>No hate speech, slurs, threats, harassment or sexual content.</li>
+                          <li>
+                            Reviews that break these rules may be edited or removed, whether they
+                            are positive or negative and regardless of who reported them.
+                          </li>
+                        </ol>
                         <strong>Please note:</strong>
                         <ol className={styles.modReviewDescription}>
                           <li>
-                            Because the experience of each course will differ according to the
-                            professor teaching the course, at the start of your review, please state
-                            the semester taken and the name of the professor who taught the course
-                            in that semester.
+                            NUS does not monitor these reviews. For official feedback, use the
+                            Student Feedback system.
                           </li>
                           <li>
-                            Other students will read your review to get an idea of what taking the
-                            course will be like. If you'd like to give feedback about the course to
-                            NUS, please use the official Student Feedback system as NUS does not
-                            monitor these reviews.
-                          </li>
-                          <li>
-                            The claims made in these reviews have not been verified by NUS or
-                            NUSMods. Please take all claims with a grain of salt.
+                            Claims made here are not verified by NUS or NUSMods. Please take them
+                            with a grain of salt.
                           </li>
                         </ol>
                       </div>

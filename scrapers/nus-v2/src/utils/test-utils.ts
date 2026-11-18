@@ -1,5 +1,5 @@
 import type { Mocked } from 'vitest';
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { omit, sortBy, zip } from 'lodash';
 import httpStatus from 'http-status';
 
@@ -101,13 +101,22 @@ export function mockResponse<T>(
   } = {},
 ): AxiosResponse<T> {
   const { config, headers, request, status, statusText } = additionalFields;
+  const responseConfigHeaders = new AxiosHeaders();
+
+  if (config?.headers) {
+    for (const [name, value] of Object.entries(config.headers)) {
+      if (value !== undefined) {
+        responseConfigHeaders.set(name, value);
+      }
+    }
+  }
 
   return {
     data,
     // The server almost always returns 200, even if there is an application error
     status: status || 200,
     // Mildly horrifying coercions to make this at least somewhat readable
-    config: config || {},
+    config: { ...config, headers: responseConfigHeaders },
     headers: headers || {},
     request: request || {},
     statusText: statusText || (httpStatus as any)[status!] || 'OK',

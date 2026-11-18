@@ -6,9 +6,15 @@ import {
   ModuleAliases,
   ModuleWithoutTree,
   SemesterModule,
-  SemesterModuleData,
+  SemesterModuleBatch,
 } from '../types/mapper';
-import { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
+import {
+  Module,
+  ModuleCode,
+  ModuleCondensed,
+  ModuleInformation,
+  SemesterData,
+} from '../types/modules';
 import type { MPEModule } from '../types/mpe';
 
 import BaseTask from './BaseTask';
@@ -21,7 +27,8 @@ import { isModuleInMPE } from '../utils/mpe';
 
 interface Input {
   aliases: Array<ModuleAliases>;
-  semesterData: Array<Array<SemesterModuleData>>;
+  preserveModuleInfoSemesters?: ReadonlySet<number>;
+  semesterData: Array<SemesterModuleBatch>;
 }
 type Output = Array<Module>;
 
@@ -75,18 +82,41 @@ export function moduleDataCheck(
   };
 }
 
+export function upsertSemesterData(
+  semesterData: Array<SemesterData>,
+  incoming: SemesterData,
+): Array<SemesterData> {
+  return [...semesterData.filter((data) => data.semester !== incoming.semester), incoming].sort(
+    (left, right) => left.semester - right.semester,
+  );
+}
+
+type CombineModulesOptions = {
+  preserveModuleInfoSemesters?: ReadonlySet<number>;
+};
+
 /**
  * Combine modules from multiple semesters into one
  */
 export function combineModules(
-  semesters: Array<Array<SemesterModuleData>>,
+  semesters: Array<SemesterModuleBatch>,
   aliases: { [moduleCode: string]: Array<ModuleCode> },
   logger: Logger,
+  options: CombineModulesOptions = {},
 ): Array<ModuleWithoutTree> {
+  const { preserveModuleInfoSemesters } = options;
   const modules: { [moduleCode: string]: ModuleWithoutTree } = {};
 
-  // 1. Iterate over each module
-  for (const semesterModules of semesters) {
+  // 1. Iterate over each semester's batch of modules
+  for (const { modules: semesterModules, semester } of semesters) {
+    // When a semester's data is sourced from a previous academic year (the
+    // special-term fallback during an AY migration), its module info must not
+    // override the current year's. The batch carries its semester explicitly, so
+    // this holds for every module in it - including modules that exist in the
+    // catalog but are not offered this semester (and therefore have no timetable,
+    // and no semester of their own to infer from).
+    const isPreservedSemester = preserveModuleInfoSemesters?.has(semester) ?? false;
+
     for (const semesterModule of semesterModules) {
       const { moduleCode, semesterData } = semesterModule;
 
@@ -107,9 +137,24 @@ export function combineModules(
           logger.warn(difference, 'Module with different module info between semesters');
         }
 
-        // 4. Always use the latest semester's data. In case the two semester's data
-        //    diverge we trust the latest semester's data to be canonical as most
-        //    changes are additive, eg. adding more prereq options
+        // 4. For preserved semesters (previous-AY special terms), keep the existing
+        //    current-year module info and only merge in this semester's timetable,
+        //    if the module is actually offered. This applies to every module in the
+        //    batch, including those with no timetable this semester.
+        if (isPreservedSemester) {
+          modules[moduleCode] = {
+            ...existingData,
+            aliases: aliases[moduleCode] ?? existingData.aliases,
+            semesterData: semesterData
+              ? upsertSemesterData(existingData.semesterData, semesterData)
+              : existingData.semesterData,
+          };
+          continue;
+        }
+
+        // 5. Otherwise always use the latest semester's data. In case the two
+        //    semesters' data diverge we trust the latest semester's data to be
+        //    canonical as most changes are additive, eg. adding more prereq options
         module.semesterData.unshift(...existingData.semesterData);
       }
 
@@ -208,12 +253,13 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
   async run(input: Input) {
     this.logger.info(`Collating modules for ${this.academicYear}`);
 
-    const { aliases, semesterData } = input;
+    const { aliases, preserveModuleInfoSemesters, semesterData } = input;
     const combinedAliases = mergeAliases(aliases);
     const modulesWithoutTree: Array<ModuleWithoutTree> = combineModules(
       semesterData,
       combinedAliases,
       this.logger,
+      { preserveModuleInfoSemesters },
     );
 
     // Insert prerequisite trees into the modules and order them by module code

@@ -9,12 +9,74 @@ import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry, containsNbsps } from '../utils/api';
 import { TaskError, UnknownApiError } from '../utils/errors';
+import { Logger } from '../services/logger';
 
 interface Input {
   faculties: Array<AcademicGrp>;
 }
 
 type Output = Array<ModuleInfo>;
+
+/**
+ * Compare two records of the same module code by catalog version.
+ *
+ * The API returns one record per catalog revision, so a single module code can
+ * appear multiple times (e.g. a legacy version under a placeholder academic
+ * group alongside the current one). VersionMajor.VersionMinor is monotonic -
+ * higher means a more recent revision - so we pick the highest version, falling
+ * back to the latest EffectiveDate when versions tie (observed only when the
+ * same revision is duplicated across academic groups on the same date).
+ *
+ * Returns a positive number when `a` is newer than `b`, negative when older,
+ * and zero when they cannot be distinguished.
+ */
+export function compareModuleVersion(a: ModuleInfo, b: ModuleInfo): number {
+  if ((a.VersionMajor ?? 0) !== (b.VersionMajor ?? 0)) {
+    return (a.VersionMajor ?? 0) - (b.VersionMajor ?? 0);
+  }
+  if ((a.VersionMinor ?? 0) !== (b.VersionMinor ?? 0)) {
+    return (a.VersionMinor ?? 0) - (b.VersionMinor ?? 0);
+  }
+  // Tie-break on EffectiveDate. The format ("YYYY-MM-DD ...") sorts correctly
+  // lexicographically; treat a missing date as oldest.
+  const dateA = a.EffectiveDate ?? '';
+  const dateB = b.EffectiveDate ?? '';
+  if (dateA !== dateB) {
+    return dateA < dateB ? -1 : 1;
+  }
+  return 0;
+}
+
+/**
+ * Deduplicate module info by module code, keeping the newest catalog revision
+ * (see compareModuleVersion). This must run before the data is keyed by module
+ * code downstream (GetSemesterData), which would otherwise resolve duplicates
+ * by array order and could select a stale revision.
+ */
+export function deduplicateModulesByVersion(
+  modules: Array<ModuleInfo>,
+  logger?: Logger,
+): Array<ModuleInfo> {
+  const byCode = new Map<string, ModuleInfo>();
+  for (const mod of modules) {
+    const moduleCode = mod.SubjectArea + mod.CatalogNumber;
+    const existing = byCode.get(moduleCode);
+    // Replace on a newer-or-equal revision. On an exact tie (same version and
+    // effective date) this keeps the later record in iteration order: in the
+    // per-semester fallback that is the later semester, preserving the "latest
+    // semester's data is canonical" convention that CollateModules relies on.
+    if (!existing || compareModuleVersion(mod, existing) >= 0) {
+      byCode.set(moduleCode, mod);
+    }
+  }
+
+  const dropped = modules.length - byCode.size;
+  if (dropped > 0) {
+    logger?.info(`Dropped ${dropped} stale duplicate module revision(s)`);
+  }
+
+  return Array.from(byCode.values());
+}
 
 /**
  * Download module info for all faculties across the entire academic year.
@@ -55,8 +117,9 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
       modules = await this.fetchWithoutSemester(input);
       if (modules.length > 0) {
         this.logger.info(`Fetched ${modules.length} modules without semester filter`);
-        await this.modulesCache.write(modules);
-        return modules;
+        const deduplicated = deduplicateModulesByVersion(modules, this.logger);
+        await this.modulesCache.write(deduplicated);
+        return deduplicated;
       }
       this.logger.warn(
         'No modules returned without semester filter, falling back to per-semester fetch',
@@ -69,11 +132,12 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
     }
 
     // Fallback: fetch for all semesters in parallel, then deduplicate
-    modules = await this.fetchAllSemestersAndDeduplicate(input);
-    this.logger.info(`Fetched ${modules.length} unique modules from all semesters`);
+    modules = await this.fetchAllSemesters(input);
+    const deduplicated = deduplicateModulesByVersion(modules, this.logger);
+    this.logger.info(`Fetched ${deduplicated.length} unique modules from all semesters`);
 
-    await this.modulesCache.write(modules);
-    return modules;
+    await this.modulesCache.write(deduplicated);
+    return deduplicated;
   }
 
   private async fetchWithoutSemester(input: Input): Promise<Array<ModuleInfo>> {
@@ -107,21 +171,14 @@ export default class GetAllModules extends BaseTask implements Task<Input, Outpu
     return flatten<ModuleInfo>(await Promise.all(requests));
   }
 
-  private async fetchAllSemestersAndDeduplicate(input: Input): Promise<Array<ModuleInfo>> {
+  private async fetchAllSemesters(input: Input): Promise<Array<ModuleInfo>> {
     const semesterResults = await Promise.all(
       Semesters.map((semester) => this.fetchForSemester(semester, input)),
     );
 
-    // Deduplicate by module code - later semesters take priority,
-    // matching the "always use latest semester's data" convention
-    const moduleMap = new Map<string, ModuleInfo>();
-    for (const modules of semesterResults) {
-      for (const mod of modules) {
-        moduleMap.set(mod.SubjectArea + mod.CatalogNumber, mod);
-      }
-    }
-
-    return Array.from(moduleMap.values());
+    // Duplicates across semesters (and across catalog revisions) are resolved
+    // by deduplicateModulesByVersion in run(), so just flatten here.
+    return flatten<ModuleInfo>(semesterResults);
   }
 
   private async fetchForSemester(semester: number, input: Input): Promise<Array<ModuleInfo>> {

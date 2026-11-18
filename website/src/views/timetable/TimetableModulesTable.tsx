@@ -17,8 +17,8 @@ import {
   selectModuleColor,
   hideLessonInTimetable,
   showLessonInTimetable,
-  addTaModule,
   disableTaModule,
+  enableTaModule,
 } from 'actions/timetables';
 import {
   getExamDate,
@@ -206,7 +206,7 @@ export default connect(
     selectModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
-    enableTaModule: addTaModule,
+    enableTaModule,
     disableTaModule,
   },
 )(React.memo(TimetableModulesTableComponent));

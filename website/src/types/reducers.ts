@@ -2,7 +2,14 @@ import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 
 import { ColorSchemePreference } from './settings';
-import { TaModulesConfigV1, ColorIndex, LessonWithIndex, TimetableConfig } from './timetables';
+import {
+  ColorIndex,
+  Lesson,
+  TaModulesConfigV1,
+  TimetableConfig,
+  TimetableConfigV1,
+  TimetableConfigV2,
+} from './timetables';
 import {
   Faculty,
   Module,
@@ -50,7 +57,7 @@ export type NotificationData = { readonly message: string } & NotificationOption
 
 export type AppState = {
   readonly activeSemester: Semester;
-  readonly activeLesson: LessonWithIndex | null;
+  readonly activeLesson: Lesson | null;
   readonly isOnline: boolean;
   readonly isFeedbackModalOpen: boolean;
   readonly notifications: NotificationData[];
@@ -123,7 +130,7 @@ export type TimetablesState = {
   readonly ta: TaModulesMap;
   readonly academicYear: string;
   // Mapping of academic year to old timetable config
-  readonly archive: { [key: string]: TimetableConfig };
+  readonly archive: { [key: string]: TimetableConfig | TimetableConfigV2 | TimetableConfigV1 };
 };
 
 /* venueBank.js */

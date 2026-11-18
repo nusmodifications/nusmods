@@ -25,8 +25,8 @@ const COLORS = {
 };
 
 const CS3216_LESSONS = {
-  Lecture: [
-    {
+  Lecture: {
+    '1|MON|1830|2030|VCRm|1_2_3_4_5_6_7_8_9_10_11_12_13': {
       moduleCode: 'CS3216',
       title: 'Software Product Engineering for Digital Markets',
       classNo: '1',
@@ -36,14 +36,13 @@ const CS3216_LESSONS = {
       startTime: '1830',
       endTime: '2030',
       venue: 'VCRm',
-      lessonIndex: 0,
     },
-  ],
+  },
 };
 
 const CS1010S_LESSONS = {
-  Recitation: [
-    {
+  Recitation: {
+    '9|THU|1100|1200|i3-0344|1_2_3_4_5_6_7_8_9_10_11_12_13': {
       moduleCode: 'CS1010S',
       title: 'Programming Methodology',
       classNo: '9',
@@ -53,14 +52,13 @@ const CS1010S_LESSONS = {
       startTime: '1100',
       endTime: '1200',
       venue: 'i3-0344',
-      lessonIndex: 0,
     },
-  ],
+  },
 };
 
 const PC1222_LESSONS = {
-  Laboratory: [
-    {
+  Laboratory: {
+    'U02|TUE|1400|1700|S12-0402|(4,6,8,10,12)': {
       moduleCode: 'PC1222',
       title: 'Fundamentals of Physics II',
       classNo: 'U02',
@@ -70,11 +68,10 @@ const PC1222_LESSONS = {
       startTime: '1400',
       endTime: '1700',
       venue: 'S12-0402',
-      lessonIndex: 0,
     },
-  ],
-  Tutorial: [
-    {
+  },
+  Tutorial: {
+    'T11|WED|0900|1000|CQT/SR0315|1_2_3_4_5_6_7_8_9_10_11_12_13': {
       moduleCode: 'PC1222',
       title: 'Fundamentals of Physics II',
       classNo: 'T11',
@@ -84,11 +81,10 @@ const PC1222_LESSONS = {
       startTime: '0900',
       endTime: '1000',
       venue: 'CQT/SR0315',
-      lessonIndex: 0,
     },
-  ],
-  Lecture: [
-    {
+  },
+  Lecture: {
+    'SL1|TUE|1200|1400|LT25|1_2_3_4_5_6_7_8_9_10_11_12_13': {
       moduleCode: 'PC1222',
       title: 'Fundamentals of Physics II',
       classNo: 'SL1',
@@ -98,9 +94,8 @@ const PC1222_LESSONS = {
       startTime: '1200',
       endTime: '1400',
       venue: 'LT25',
-      lessonIndex: 0,
     },
-    {
+    'SL1|FRI|1200|1400|LT25|1_2_3_4_5_6_7_8_9_10_11_12_13': {
       moduleCode: 'PC1222',
       title: 'Fundamentals of Physics II',
       classNo: 'SL1',
@@ -110,9 +105,8 @@ const PC1222_LESSONS = {
       startTime: '1200',
       endTime: '1400',
       venue: 'LT25',
-      lessonIndex: 0,
     },
-  ],
+  },
 };
 
 const LESSONS = {

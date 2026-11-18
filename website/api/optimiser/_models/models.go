@@ -8,7 +8,6 @@ import (
 
 type LessonType = string
 type ClassNo = string
-type LessonIndex = int
 
 // ModuleTimetableMap organises module slots by Module -> LessonType -> ClassNo -> []ModuleSlot
 type ModuleTimetableMap = map[string]map[LessonType]map[ClassNo][]ModuleSlot
@@ -19,6 +18,7 @@ type ModuleDefaultSlotsMap = map[string]map[LessonType][]ModuleSlot
 type OptimiserRequest struct {
 	Modules             []string `json:"modules"`             // Format: ["CS1010S", "CS2030S"]
 	Recordings          []string `json:"recordings"`          // Format: ["CS1010S|Lecture", "CS2030S|Laboratory"]
+	PinnedSlots         []string `json:"pinnedSlots"`         // Format: ["CS1010S|Tutorial|01"], classes the user has fixed
 	FreeDays            []string `json:"freeDays"`            // Format: ["Monday", "Tuesday"]
 	EarliestTime        string   `json:"earliestTime"`        // Format: "1504" (HHMM)
 	LatestTime          string   `json:"latestTime"`          // Format: "1504" (HHMM)
@@ -29,10 +29,11 @@ type OptimiserRequest struct {
 	LunchEnd            string   `json:"lunchEnd"`            // Format: "1500" (HHMM)
 
 	// Parsed fields
-	EarliestMin   int `json:"-"`
-	LatestMin     int `json:"-"`
-	LunchStartMin int `json:"-"`
-	LunchEndMin   int `json:"-"`
+	EarliestMin   int                `json:"-"`
+	LatestMin     int                `json:"-"`
+	LunchStartMin int                `json:"-"`
+	LunchEndMin   int                `json:"-"`
+	PinnedMap     map[string]ClassNo `json:"-"` // lessonKey ("MODULE|LessonType") -> pinned ClassNo
 }
 
 // ParseOptimiserRequestFields validates and parses time fields into minutes.
@@ -61,6 +62,37 @@ func (r *OptimiserRequest) ParseOptimiserRequestFields() error {
 	// TODO: Time range validation for earliest time, latest time, lunch start time, lunch end time
 	// Ensure earlier time <= later time. Currently not ensured in frontend yet. Once that is completed
 	// we can add this check for completion.
+
+	if err = r.parsePinnedSlots(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// parsePinnedSlots validates PinnedSlots entries ("MODULE|LessonType|ClassNo") and
+// builds PinnedMap keyed by lessonKey ("MODULE|LessonType").
+func (r *OptimiserRequest) parsePinnedSlots() error {
+	requestModules := make(map[string]struct{}, len(r.Modules))
+	for _, module := range r.Modules {
+		requestModules[strings.ToUpper(module)] = struct{}{}
+	}
+
+	r.PinnedMap = make(map[string]ClassNo, len(r.PinnedSlots))
+	for _, pinnedSlot := range r.PinnedSlots {
+		parts := strings.SplitN(pinnedSlot, "|", 3)
+		if len(parts) != 3 || parts[0] == "" || parts[1] == "" || parts[2] == "" {
+			return fmt.Errorf("invalid pinnedSlot format: %s", pinnedSlot)
+		}
+		module, lessonType, classNo := strings.ToUpper(parts[0]), parts[1], parts[2]
+		if _, ok := requestModules[module]; !ok {
+			return fmt.Errorf("pinned slot %s references module not in request", pinnedSlot)
+		}
+		lessonKey := module + "|" + lessonType
+		if _, ok := r.PinnedMap[lessonKey]; ok {
+			return fmt.Errorf("duplicate pinned slot for %s", lessonKey)
+		}
+		r.PinnedMap[lessonKey] = classNo
+	}
 	return nil
 }
 
@@ -81,8 +113,8 @@ type SolveResponse struct {
 
 type TimetableState struct {
 	Assignments   map[string]string `json:"Assignments"`   // lessonKey -> chosen classNo
-	DaySlots      [6][]ModuleSlot   `json:"DaySlots"`      // For each day, a time-sorted slice of slots
-	DayDistance   [6]float64        `json:"DayDistance"`   // Per-day walking penalty score (sum of haversine distances between consecutive physical lessons)
+	DaySlots      [7][]ModuleSlot   `json:"DaySlots"`      // For each day, a time-sorted slice of slots
+	DayDistance   [7]float64        `json:"DayDistance"`   // Per-day walking penalty score (sum of haversine distances between consecutive physical lessons)
 	TotalDistance float64           `json:"TotalDistance"` // Sum of all DayDistance
 
 	// Calculated fields
@@ -102,11 +134,10 @@ type ModuleSlot struct {
 	// Parsed fields
 	StartMin    int              `json:"StartMin"`  // Minutes from 00:00 (e.g., 540 for 09:00)
 	EndMin      int              `json:"EndMin"`    // Minutes from 00:00
-	DayIndex    int              `json:"DayIndex"`  // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
+	DayIndex    int              `json:"DayIndex"`  // 0=Monday, ..., 5=Saturday, 6=Sunday
 	LessonKey   string           `json:"LessonKey"` // "MODULE|LessonType"
 	WeeksSet    map[int]struct{} `json:"WeeksSet"`
 	WeeksString string           `json:"WeeksString"`
-	LessonIndex LessonIndex      `json:"LessonIndex"`
 }
 
 // ParseModuleSlotFields parses and populates the parsed fields in ModuleSlot for faster computation
@@ -147,6 +178,7 @@ var dayToIndex = map[string]int{
 	"THURSDAY":  3,
 	"FRIDAY":    4,
 	"SATURDAY":  5,
+	"SUNDAY":    6,
 }
 
 // Helper Functions

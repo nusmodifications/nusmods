@@ -1,4 +1,5 @@
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { VenueLocationMap } from 'types/venues';
 import { UnmappedVenuesComponent } from './UnmappedVenues';
 
@@ -17,14 +18,16 @@ describe(UnmappedVenuesComponent, () => {
   };
 
   test('should show percentage in progress bar', () => {
-    const wrapper = shallow(
-      <UnmappedVenuesComponent venueList={venueList} venueLocations={venueLocations} />,
+    render(
+      <MemoryRouter>
+        <UnmappedVenuesComponent venueList={venueList} venueLocations={venueLocations} />
+      </MemoryRouter>,
     );
 
-    const progressBar = wrapper.find('.progress').first();
+    const progressBar = screen.getByRole('progressbar');
     // Text should not be too long and we should only count venues with location
     // ie. LT17 counts but not LT19, so the percentage is 1/3
-    expect(progressBar.text()).toMatch('33.3');
-    expect(progressBar.text().length).toBeLessThanOrEqual(5);
+    expect(progressBar).toHaveTextContent('33.3');
+    expect(progressBar.textContent?.length).toBeLessThanOrEqual(5);
   });
 });

@@ -53,14 +53,13 @@ const (
 	ConsecutiveHoursPenaltyRate = 100
 )
 
-// This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client
-const ModuleCodeSeparator = ";"
+const LessonParamsSeparator = ","
 
 // Beam search parameters
 const (
 	BeamWidth       = 5000
 	BranchingFactor = 100
-	DaysPerWeek     = 6
+	DaysPerWeek     = 7
 )
 
 // Indicates that a Coordinate was invalid

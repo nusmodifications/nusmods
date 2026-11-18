@@ -72,7 +72,7 @@ const SettingsContainer: React.FC<Props> = ({
   prereqTreeOnLeft,
   ...props
 }) => {
-  const [allowTracking, setAllowTracking] = useState(true);
+  const [allowTracking, setAllowTracking] = useState(false);
 
   const onToggleTracking = useCallback((isTrackingAllowed: boolean) => {
     withTracker((tracker: Tracker) => {

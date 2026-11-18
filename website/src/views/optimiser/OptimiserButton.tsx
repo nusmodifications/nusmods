@@ -1,6 +1,11 @@
 import classnames from 'classnames';
 import { Zap } from 'react-feather';
-import { FreeDayConflict, LessonOption } from 'types/optimiser';
+import {
+  FreeDayConflict,
+  LessonOption,
+  PinnedClashConflict,
+  TimeRangeConflict,
+} from 'types/optimiser';
 import { isEmpty } from 'lodash-es';
 import styles from './OptimiserButton.scss';
 
@@ -8,16 +13,25 @@ export interface OptimiserButtonProps {
   isOptimising: boolean;
   lessonOptions: LessonOption[];
   freeDayConflicts: FreeDayConflict[];
+  timeRangeConflicts: TimeRangeConflict[];
+  pinnedClashConflicts: PinnedClashConflict[];
   onClick: () => void;
 }
 
 const OptimiserButton: React.FC<OptimiserButtonProps> = ({
   freeDayConflicts,
+  timeRangeConflicts,
+  pinnedClashConflicts,
   lessonOptions,
   isOptimising,
   onClick,
 }) => {
-  const isDisabled = isOptimising || isEmpty(lessonOptions) || !isEmpty(freeDayConflicts);
+  const isDisabled =
+    isOptimising ||
+    isEmpty(lessonOptions) ||
+    !isEmpty(freeDayConflicts) ||
+    !isEmpty(timeRangeConflicts) ||
+    !isEmpty(pinnedClashConflicts);
 
   return (
     <div className={styles.optimizeButtonSection}>

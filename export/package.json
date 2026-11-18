@@ -20,7 +20,7 @@
   "dependencies": {
     "@sentry/node": "5.30.0",
     "@sparticuz/chromium": "^143.0.4",
-    "axios": "0.30.0",
+    "axios": "1.20.0",
     "bunyan": "1.8.15",
     "fs-extra": "9.1.0",
     "http-graceful-shutdown": "2.4.0",
@@ -31,7 +31,7 @@
     "koa-views": "6.3.1",
     "lodash": "4.18.1",
     "nodemon": "2.0.22",
-    "pug": "3.0.3",
+    "pug": "3.0.4",
     "puppeteer-core": "^24.38.0"
   },
   "devDependencies": {
@@ -42,7 +42,7 @@
     "@types/koa-router": "7.4.9",
     "@types/koa-static": "^4.0.4",
     "@types/koa-views": "2.0.4",
-    "@types/lodash": "4.17.24",
+    "@types/lodash": "4.17.25",
     "@types/node": "catalog:",
     "@types/pug": "2.0.10",
     "@vercel/node": "1.15.4",

@@ -25,7 +25,7 @@ import {
   removePlannerModule,
   setPlaceholderModule,
 } from 'actions/planner';
-import { toggleFeedback } from 'actions/app';
+import { openNotification, toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { addModule as addModuleToTimetable } from 'actions/timetables';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
@@ -54,6 +54,7 @@ export type Props = Readonly<{
 
   // Actions
   fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
+  openNotification: (message: string) => void;
   toggleFeedback: () => void;
 
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
@@ -85,7 +86,6 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
   };
 
   override componentDidMount() {
-    // TODO: Handle error
     const modules = [
       ...flatten(flatMap(this.props.modules, values)),
       ...this.props.exemptions,
@@ -93,14 +93,16 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       ...this.props.iblocsModules,
     ];
 
-    Promise.all(
-      modules.map((module) =>
-        this.props.fetchModule(module.moduleCode).catch(() => {
-          // TODO: Handle error
-        }),
-      ),
-    ).then(() => this.setState({ loading: false }));
+    Promise.all(modules.map((module) => this.fetchModuleOrNotify(module.moduleCode))).then(() =>
+      this.setState({ loading: false }),
+    );
   }
+
+  // Fetches a module's details, notifying the user if it could not be found
+  fetchModuleOrNotify = (moduleCode: ModuleCode) =>
+    this.props.fetchModule(moduleCode).catch(() => {
+      this.props.openNotification(`Unable to load ${moduleCode}. The course may not exist.`);
+    });
 
   onAddModule = (year: string, semester: Semester, module: AddModuleData) => {
     if (module.type === 'module') {
@@ -110,8 +112,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       if (moduleCodes) {
         moduleCodes.forEach((moduleCode) => {
           this.props.addModule(year, semester, { type: 'module', moduleCode });
-          // TODO: Handle error
-          this.props.fetchModule(moduleCode);
+          this.fetchModuleOrNotify(moduleCode);
         });
       }
     } else {
@@ -146,6 +147,18 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
   onAddModuleToTimetable = (semester: Semester, module: ModuleCode) =>
     this.props.fetchModule(module).then(() => this.props.addModuleToTimetable(semester, module));
 
+  onImportPlanner = (importedState: PlannerState) => {
+    this.props.importPlanner(importedState);
+
+    // Fetch the details of each imported module so they display correctly
+    // without requiring a page refresh (componentDidMount only fetches on load)
+    values(importedState.modules).forEach((module) => {
+      if (module.moduleCode) {
+        this.fetchModuleOrNotify(module.moduleCode);
+      }
+    });
+  };
+
   closeAddCustomData = () => this.setState({ showCustomModule: null });
 
   closeSettingsModal = () => this.setState({ showSettings: false });
@@ -171,7 +184,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
           <div className={classnames(styles.buttonGroup)}>
             <PlannerClearButton clearPlanner={this.props.clearPlanner} />
-            <PlannerImportButton importPlanner={this.props.importPlanner} />
+            <PlannerImportButton importPlanner={this.onImportPlanner} />
             <PlannerExportButton downloadPlanner={this.props.downloadPlanner} />
 
             <button
@@ -316,6 +329,7 @@ const mapStateToProps = (state: StoreState) => ({
 
 const PlannerContainer = connect(mapStateToProps, {
   fetchModule,
+  openNotification,
   toggleFeedback,
   setPlaceholderModule,
   addModule: addPlannerModule,

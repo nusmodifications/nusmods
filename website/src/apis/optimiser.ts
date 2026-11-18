@@ -10,6 +10,7 @@ export interface OptimiseRequest {
   earliestTime: string;
   latestTime: string;
   recordings: string[];
+  pinnedSlots: string[];
   lunchStart: string;
   lunchEnd: string;
   maxConsecutiveHours: number;

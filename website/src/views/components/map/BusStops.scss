@@ -7,8 +7,9 @@ $route-colors: (
   D2: #732172,
   E: #01823b,
   K: #305597,
-  BTC: #ff9a00,
-  L: #d9d9d9,
+  R1: #ff9a00,
+  R2: #008000,
+  P: #d9d9d9,
   PUBLIC: #eee,
 );
 
@@ -115,11 +116,6 @@ $route-colors: (
   background: map-get($route-colors, 'A2');
 }
 
-.routeE {
-  color: white;
-  background: map-get($route-colors, 'E');
-}
-
 .routeK {
   color: white;
   background: map-get($route-colors, 'K');
@@ -135,14 +131,19 @@ $route-colors: (
   background: map-get($route-colors, 'D2');
 }
 
-.routeBTC {
+.routeR1 {
   color: black;
-  background: map-get($route-colors, 'BTC');
+  background: map-get($route-colors, 'R1');
 }
 
-.routeL {
+.routeR2 {
+  color: white;
+  background: map-get($route-colors, 'R2');
+}
+
+.routeP {
   color: black;
-  background: map-get($route-colors, 'L');
+  background: map-get($route-colors, 'P');
 }
 
 .routePUBLIC {

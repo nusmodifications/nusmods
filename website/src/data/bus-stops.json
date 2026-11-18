@@ -8,20 +8,8 @@
     "longitude": 103.81783962249756,
     "shuttles": [
       {
-        "name": "BTC",
-        "routeId": 90292
-      },
-      {
-        "name": "BTC",
-        "routeId": 90292
-      },
-      {
-        "name": "L",
-        "routeId": 90288
-      },
-      {
-        "name": "L",
-        "routeId": 90288
+        "name": "P",
+        "routeId": 183488
       }
     ],
     "opposite": null
@@ -35,12 +23,8 @@
     "longitude": 103.81625175476076,
     "shuttles": [
       {
-        "name": "BTC",
-        "routeId": 90292
-      },
-      {
-        "name": "L",
-        "routeId": 90288
+        "name": "P",
+        "routeId": 183488
       }
     ],
     "opposite": "CG"
@@ -66,8 +50,8 @@
         "routeId": 90297
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "P",
+        "routeId": 183488
       },
       {
         "name": "PUB:95"
@@ -87,10 +71,6 @@
     "latitude": 1.297437218656418,
     "longitude": 103.78099948167802,
     "shuttles": [
-      {
-        "name": "BTC",
-        "routeId": 90292
-      },
       {
         "name": "D2",
         "routeId": 90295
@@ -121,10 +101,6 @@
     "longitude": 103.77864047884944,
     "shuttles": [
       {
-        "name": "BTC",
-        "routeId": 90292
-      },
-      {
         "name": "D2",
         "routeId": 90295
       },
@@ -154,8 +130,8 @@
     "longitude": 103.77559281885625,
     "shuttles": [
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "P",
+        "routeId": 183488
       },
       {
         "name": "D2",
@@ -196,16 +172,16 @@
         "routeId": 90294
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "R1",
+        "routeId": 183492
       },
       {
-        "name": "E",
-        "routeId": 90296
+        "name": "R2",
+        "routeId": 183432
       },
       {
-        "name": "E",
-        "routeId": 90296
+        "name": "P",
+        "routeId": 183488
       }
     ],
     "opposite": null
@@ -219,12 +195,8 @@
     "longitude": 103.77260483801366,
     "shuttles": [
       {
-        "name": "BTC",
-        "routeId": 90292
-      },
-      {
-        "name": "E",
-        "routeId": 90296
+        "name": "R2",
+        "routeId": 183432
       },
       {
         "name": "PUB:151"
@@ -246,16 +218,20 @@
     "longitude": 103.76963295042516,
     "shuttles": [
       {
+        "name": "R2",
+        "routeId": 183432
+      },
+      {
         "name": "K",
         "routeId": 90297
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "R1",
+        "routeId": 183492
       },
       {
-        "name": "E",
-        "routeId": 90296
+        "name": "P",
+        "routeId": 183488
       }
     ],
     "leftLabel": true,
@@ -282,12 +258,12 @@
         "routeId": 90294
       },
       {
-        "name": "K",
-        "routeId": 90297
+        "name": "R1",
+        "routeId": 183492
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "K",
+        "routeId": 90297
       },
       {
         "name": "PUB:151"
@@ -312,8 +288,8 @@
         "routeId": 90287
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "R1",
+        "routeId": 183492
       },
       {
         "name": "K",
@@ -348,8 +324,8 @@
         "routeId": 90294
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "R1",
+        "routeId": 183492
       },
       {
         "name": "K",
@@ -377,12 +353,12 @@
         "routeId": 90294
       },
       {
-        "name": "A1",
-        "routeId": 90287
+        "name": "R1",
+        "routeId": 183492
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "A1",
+        "routeId": 90287
       }
     ],
     "collapse": 15,
@@ -403,12 +379,12 @@
         "routeId": 90294
       },
       {
-        "name": "A1",
-        "routeId": 90287
+        "name": "R1",
+        "routeId": 183492
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "A1",
+        "routeId": 90287
       }
     ],
     "leftLabel": true,
@@ -430,12 +406,12 @@
         "routeId": 90287
       },
       {
-        "name": "D1",
-        "routeId": 90294
+        "name": "R1",
+        "routeId": 183492
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "D1",
+        "routeId": 90294
       }
     ],
     "leftLabel": true,
@@ -458,8 +434,12 @@
         "routeId": 90287
       },
       {
-        "name": "BTC",
-        "routeId": 90292
+        "name": "R1",
+        "routeId": 183492
+      },
+      {
+        "name": "R2",
+        "routeId": 183432
       },
       {
         "name": "K",
@@ -478,12 +458,8 @@
     "longitude": 103.81638050079347,
     "shuttles": [
       {
-        "name": "BTC",
-        "routeId": 90292
-      },
-      {
-        "name": "L",
-        "routeId": 90288
+        "name": "P",
+        "routeId": 183488
       },
       {
         "name": "PUB:151"
@@ -513,67 +489,6 @@
     "opposite": "BG-MRT"
   },
   {
-    "caption": "EA",
-    "name": "EA",
-    "longName": "EA",
-    "shortName": "EA",
-    "latitude": 1.300698281714852,
-    "longitude": 103.77012077718973,
-    "shuttles": [
-      {
-        "name": "E",
-        "routeId": 90296
-      },
-      {
-        "name": "PUB:183"
-      },
-      {
-        "name": "PUB:188"
-      },
-      {
-        "name": "PUB:33"
-      },
-      {
-        "name": "PUB:96"
-      }
-    ],
-    "collapse": 16,
-    "collapseBehavior": "interchange",
-    "collapsePair": "JP-SCH-16151",
-    "opposite": "JP-SCH-16151"
-  },
-  {
-    "caption": "SDE 3",
-    "name": "SDE3",
-    "longName": "SDE 3",
-    "shortName": "SDE 3",
-    "latitude": 1.2978737200173858,
-    "longitude": 103.76983042806388,
-    "shuttles": [
-      {
-        "name": "E",
-        "routeId": 90296
-      },
-      {
-        "name": "PUB:183"
-      },
-      {
-        "name": "PUB:188"
-      },
-      {
-        "name": "PUB:33"
-      },
-      {
-        "name": "PUB:96"
-      }
-    ],
-    "collapse": 16,
-    "collapseBehavior": "interchange",
-    "leftLabel": false,
-    "collapsePair": "SDE3-OPP",
-    "opposite": "SDE3-OPP"
-  },
-  {
     "caption": "Information Technology",
     "name": "IT",
     "longName": "Information Technology",
@@ -586,12 +501,12 @@
         "routeId": 90289
       },
       {
-        "name": "D1",
-        "routeId": 90294
+        "name": "R2",
+        "routeId": 183432
       },
       {
-        "name": "E",
-        "routeId": 90296
+        "name": "D1",
+        "routeId": 90294
       },
       {
         "name": "PUB:151"
@@ -619,12 +534,12 @@
         "routeId": 90294
       },
       {
-        "name": "A2",
-        "routeId": 90289
+        "name": "R2",
+        "routeId": 183432
       },
       {
-        "name": "E",
-        "routeId": 90296
+        "name": "A2",
+        "routeId": 90289
       },
       {
         "name": "PUB:151"
@@ -694,9 +609,7 @@
     ],
     "collapse": 16,
     "collapseBehavior": "hide",
-    "leftLabel": true,
-    "collapsePair": "EA",
-    "opposite": "EA"
+    "leftLabel": true
   },
   {
     "caption": "University Health Centre",
@@ -852,14 +765,6 @@
         "routeId": 90294
       },
       {
-        "name": "D1",
-        "routeId": 90294
-      },
-      {
-        "name": "D2",
-        "routeId": 90295
-      },
-      {
         "name": "D2",
         "routeId": 90295
       }
@@ -877,6 +782,10 @@
       {
         "name": "D1",
         "routeId": 90294
+      },
+      {
+        "name": "R2",
+        "routeId": 183432
       },
       {
         "name": "A2",
@@ -901,6 +810,10 @@
         "routeId": 90289
       },
       {
+        "name": "R2",
+        "routeId": 183432
+      },
+      {
         "name": "D1",
         "routeId": 90294
       }
@@ -921,6 +834,10 @@
       {
         "name": "A2",
         "routeId": 90289
+      },
+      {
+        "name": "R2",
+        "routeId": 183432
       },
       {
         "name": "D1",
@@ -948,14 +865,6 @@
       {
         "name": "A2",
         "routeId": 90289
-      },
-      {
-        "name": "A2",
-        "routeId": 90289
-      },
-      {
-        "name": "A1",
-        "routeId": 90287
       },
       {
         "name": "PUB:10"

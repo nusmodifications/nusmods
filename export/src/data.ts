@@ -7,6 +7,7 @@ import type { Middleware } from 'koa';
 
 import config from './config';
 import type { ExportData, State } from './types';
+import { makeModuleLessonMap } from './makeModuleLessonMap';
 
 async function fetchModule(moduleCode: string) {
   const fileName = `${moduleCode}.json`;
@@ -37,7 +38,20 @@ async function fetchModule(moduleCode: string) {
 
 export async function getModules(moduleCodes: Array<string>) {
   const modules = await Promise.all(
-    moduleCodes.map((moduleCode) => fetchModule(moduleCode).catch(() => null)),
+    moduleCodes.map(async (moduleCode) =>
+      // Not in use currently, refer to https://github.com/nusmodifications/nusmods/discussions/4387
+      fetchModule(moduleCode)
+        .then((module) => {
+          return {
+            ...module,
+            semesterData: _.map(module.semesterData, (semesterData) => ({
+              ...semesterData,
+              lessonMap: makeModuleLessonMap(semesterData.timetable),
+            })),
+          };
+        })
+        .catch(() => null),
+    ),
   );
 
   return modules.filter(Boolean);
@@ -67,12 +81,12 @@ export function validateExportData(data: ExportData) {
 
   /**
    * type ModuleLessonConfig = {
-   *   [lessonType: LessonType]: LessonIndex[];
+   *   [lessonType: LessonType]: LessonId[];
    * };
    */
   const moduleLessonConfigSchema = Joi.object().pattern(
     Joi.string(),
-    Joi.array().items(Joi.number().integer().min(0)),
+    Joi.array().items(Joi.string()),
   );
 
   /**

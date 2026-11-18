@@ -70,7 +70,7 @@ export function mapLessonWeeks(dates: Array<string>, semester: number, logger: L
   }
 
   const semesterName = SEMESTER_NAMES[semester];
-  const lessonDates = dates.map((date) => parseISO(date)).sort(compareAsc);
+  const lessonDates = Array.from(new Set(dates)).map((date) => parseISO(date)).sort(compareAsc);
   const weekInfo = lessonDates.map(NUSModerator.academicCalendar.getAcadWeekInfo);
 
   // Normal instructional week - return an array of weeks

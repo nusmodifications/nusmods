@@ -5,8 +5,10 @@ import type { RequestActions } from 'middlewares/requests-middleware';
 import type { Dispatch, GetState } from 'types/redux';
 
 import { requestAction } from 'actions/requests';
+import { SUCCESS_KEY } from 'middlewares/requests-middleware';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
+import { getEffectiveSpecialTermAcadYear, mergePreviousAySpecialTermData } from 'utils/specialTerm';
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
@@ -42,8 +44,50 @@ export const Internal = {
   },
 };
 
+async function enrichModuleWithPreviousAySpecialTerm(
+  dispatch: Dispatch,
+  getState: GetState,
+  moduleCode: ModuleCode,
+  module: Module,
+): Promise<Module> {
+  const specialTermAcadYear = getEffectiveSpecialTermAcadYear(
+    config.academicYear,
+    config.specialTermAcademicYear,
+  );
+
+  if (specialTermAcadYear === config.academicYear) {
+    return module;
+  }
+
+  const cachedArchive = getState().moduleBank.moduleArchive[moduleCode]?.[specialTermAcadYear];
+  let archiveModule = cachedArchive;
+
+  if (!archiveModule) {
+    try {
+      archiveModule = await dispatch<Module>(fetchModuleArchive(moduleCode, specialTermAcadYear));
+    } catch {
+      return module;
+    }
+  }
+
+  const mergedModule = mergePreviousAySpecialTermData(module, archiveModule);
+  if (mergedModule === module) {
+    return module;
+  }
+
+  // Intentionally re-dispatch SUCCESS after async archive enrichment.
+  // requestAction already stored the fetched module; components may briefly
+  // show current-AY special-term data before archive data replaces it.
+  dispatch({
+    type: SUCCESS_KEY(FETCH_MODULE),
+    payload: mergedModule,
+  });
+
+  return mergedModule;
+}
+
 export function fetchModule(moduleCode: ModuleCode) {
-  return (dispatch: Dispatch, getState: GetState) => {
+  return async (dispatch: Dispatch, getState: GetState) => {
     const onFinally = () => {
       // Update the timestamp of the accessed module if it is in the store.
       if (getState().moduleBank.modules[moduleCode]) {
@@ -71,20 +115,26 @@ export function fetchModule(moduleCode: ModuleCode) {
 
     const key = fetchModuleRequest(moduleCode);
 
-    return dispatch<Module>(
-      requestAction(key, FETCH_MODULE, {
-        url: NUSModsApi.moduleDetailsUrl(moduleCode),
-      }),
-    ).then(
-      (module) => {
-        onFinally();
-        return module;
-      },
-      (error: Error) => {
-        onFinally();
-        throw error;
-      },
-    );
+    try {
+      const module = await dispatch<Module>(
+        requestAction(key, FETCH_MODULE, {
+          url: NUSModsApi.moduleDetailsUrl(moduleCode),
+        }),
+      );
+
+      const enrichedModule = await enrichModuleWithPreviousAySpecialTerm(
+        dispatch,
+        getState,
+        moduleCode,
+        module,
+      );
+
+      onFinally();
+      return enrichedModule;
+    } catch (error) {
+      onFinally();
+      throw error;
+    }
   };
 }
 export type FetchModuleActions = RequestActions<typeof FETCH_MODULE, Omit<Module, 'timestamp'>>;

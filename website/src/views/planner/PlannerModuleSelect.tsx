@@ -1,6 +1,6 @@
 import { HTMLProps, useEffect, useMemo, useRef } from 'react';
 import { connect } from 'react-redux';
-import Downshift from 'downshift';
+import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 
 import { State } from 'types/state';
@@ -37,6 +37,20 @@ const MAX_MODULES = 50;
 function filterModules(term: string, modules: ModuleCondensed[]): ModuleCondensed[] {
   const predicate = createSearchPredicate(term);
   return takeUntil<ModuleCondensed>(modules, MAX_MODULES, predicate);
+}
+
+// By default Downshift resets the input value to the empty string whenever the
+// textarea is blurred (e.g. switching browser tabs or alt-tabbing away from the
+// window). Keep whatever the user has typed so their in-progress search isn't
+// lost, while still letting the menu close.
+function stateReducer(
+  state: DownshiftState<ModuleCode>,
+  changes: StateChangeOptions<ModuleCode>,
+): Partial<StateChangeOptions<ModuleCode>> {
+  if (changes.type === Downshift.stateChangeTypes.blurInput) {
+    return { ...changes, inputValue: state.inputValue };
+  }
+  return changes;
 }
 
 /**
@@ -88,6 +102,7 @@ export function PlannerModuleSelectComponent({
     <Downshift
       onChange={onSelect}
       onOuterClick={onBlur}
+      stateReducer={stateReducer}
       initialInputValue={defaultValue}
       initialIsOpen={false}
       initialHighlightedIndex={0}

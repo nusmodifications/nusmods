@@ -11,6 +11,12 @@ import GetAllModules from './GetAllModules';
 import GetSemesterData from './GetSemesterData';
 import CollateVenues from './CollateVenues';
 import CollateModules from './CollateModules';
+import {
+  getEffectiveSpecialTermAcadYear,
+  isUsingPreviousAySpecialTermData,
+  shouldUsePreviousAyForSemester,
+  SPECIAL_TERM_SEMESTERS,
+} from 'nusmods-academic-calendar';
 
 /**
  * Run the entire data pipeline
@@ -45,29 +51,75 @@ export default class DataPipeline extends BaseTask implements Task<void, Array<M
       faculties: organizations.faculties,
     });
 
+    const specialTermAcadYear = getEffectiveSpecialTermAcadYear(
+      this.academicYear,
+      config.specialTermAcademicYear,
+    );
+    const usePreviousAySpecialTerms = isUsingPreviousAySpecialTermData(
+      this.academicYear,
+      config.specialTermAcademicYear,
+    );
+
+    let specialTermOrganizations = organizations;
+    let specialTermModules = allModules;
+
+    if (usePreviousAySpecialTerms) {
+      this.logger.info(
+        { specialTermAcadYear },
+        'Using previous academic year data for Special Term I and II',
+      );
+
+      specialTermOrganizations = await new GetFacultyDepartment(specialTermAcadYear).run();
+      specialTermModules = await new GetAllModules(specialTermAcadYear).run({
+        faculties: specialTermOrganizations.faculties,
+      });
+    }
+
     // With module info fetched upfront, per-semester timetable and exam
     // fetches can run in parallel across semesters
     const semesterResults = await Promise.all(
       Semesters.map(async (semester) => {
         this.logger.info(`Getting data for semester ${semester}`);
 
-        const getSemesterData = new GetSemesterData(semester, this.academicYear);
+        const usePreviousAy = shouldUsePreviousAyForSemester(
+          semester,
+          this.academicYear,
+          config.specialTermAcademicYear,
+        );
+        const semesterAcadYear = usePreviousAy ? specialTermAcadYear : this.academicYear;
+        const semesterOrganizations = usePreviousAy ? specialTermOrganizations : organizations;
+        const semesterModules = usePreviousAy ? specialTermModules : allModules;
+
+        const getSemesterData = new GetSemesterData(semester, semesterAcadYear);
         const modules = await getSemesterData.run({
-          ...organizations,
-          modules: allModules,
+          ...semesterOrganizations,
+          modules: semesterModules,
         });
 
-        const { aliases } = await new CollateVenues(semester, this.academicYear).run(modules);
+        const { aliases } = await new CollateVenues(semester, semesterAcadYear).run(modules);
 
-        return { aliases, modules };
+        // Also write venue files under the current AY so website lookups keyed
+        // by config.academicYear succeed. Aliases from this call are discarded;
+        // CollateModules uses aliases from the fetch AY above.
+        if (usePreviousAy) {
+          await new CollateVenues(semester, this.academicYear).run(modules);
+        }
+
+        return { aliases, modules, semester };
       }),
     );
 
-    const semesterData = semesterResults.map((r) => r.modules);
+    const semesterData = semesterResults.map((r) => ({ modules: r.modules, semester: r.semester }));
     const allAliases = semesterResults.map((r) => r.aliases);
 
     const collateModules = new CollateModules(this.academicYear);
-    const modules = await collateModules.run({ aliases: allAliases, semesterData });
+    const modules = await collateModules.run({
+      aliases: allAliases,
+      preserveModuleInfoSemesters: usePreviousAySpecialTerms
+        ? new Set(SPECIAL_TERM_SEMESTERS)
+        : undefined,
+      semesterData,
+    });
 
     // Delete all modules that are no longer active
     const removedModules = difference(

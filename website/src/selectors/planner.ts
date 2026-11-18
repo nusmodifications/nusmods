@@ -7,7 +7,7 @@ import {
   CustomModuleData,
   PlannerTime,
 } from 'types/reducers';
-import config from 'config';
+import config, { ScheduleType } from 'config';
 import { getYearsBetween, subtractAcadYear } from 'utils/modules';
 import {
   checkPrerequisite,
@@ -52,12 +52,17 @@ export function filterModuleForSemester(
  * Checks if a module has unfulfilled prereqs
  */
 const prereqConflict =
-  (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) =>
+  (
+    modulesMap: ModulesMap,
+    modulesTaken: Set<ModuleCode>,
+    cohortYear?: number,
+    scheduleType?: ScheduleType,
+  ) =>
   (moduleCode: ModuleCode): Conflict | null => {
     const prereqs = get(modulesMap, [moduleCode, 'prereqTree']);
     if (!prereqs) return null;
 
-    const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs);
+    const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs, cohortYear, scheduleType);
     if (!unfulfilledPrereqs.length) return null;
 
     return { type: 'prereq', unfulfilledPrereqs };
@@ -193,7 +198,7 @@ export const getPlanToTake = (state: State): PlannerModuleInfo[] =>
  * consumed by the UI
  */
 export function getAcadYearModules(state: State): PlannerModulesWithInfo {
-  const { planner, moduleBank } = state;
+  const { planner, moduleBank, settings } = state;
   const years = getYearsBetween(planner.minYear, planner.maxYear);
   const exemptions = [
     // Normal exemptions
@@ -235,7 +240,14 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
       ];
 
       if (!planner.ignorePrereqCheck) {
-        conflictChecks.push(prereqConflict(moduleBank.modules, modulesTaken));
+        // planner.minYear is the matriculation year set in planner settings,
+        // e.g. '2022/2023' -> cohort 2022, used to evaluate cohort-gated prereqs.
+        const cohortYear = parseInt(planner.minYear, 10);
+        // The Undergraduate/Graduate setting, used to evaluate program-type gates.
+        const { scheduleType } = settings.modRegNotification;
+        conflictChecks.push(
+          prereqConflict(moduleBank.modules, modulesTaken, cohortYear, scheduleType),
+        );
       }
 
       modules[year][semester] = moduleTimes.map((moduleCode) =>

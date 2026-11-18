@@ -25,8 +25,12 @@ const freeRoomMessage = (
 
 const BeforeLessonCard: React.FC<Props> = (props) => {
   const { nextLesson, currentTime, marker } = props;
-  const nextLessonDate = getStartTimeAsDate(nextLesson);
-  const hoursTillNextLesson = differenceInHours(nextLessonDate, props.currentTime);
+  // `currentTime` is the current instant expressed on Singapore time (see
+  // TodayContainer). Anchoring the lesson's start time to the same reference
+  // means the difference below reflects the real duration until the lesson,
+  // regardless of the viewer's local timezone.
+  const nextLessonDate = getStartTimeAsDate(nextLesson, currentTime);
+  const hoursTillNextLesson = differenceInHours(nextLessonDate, currentTime);
 
   let comment = null;
 

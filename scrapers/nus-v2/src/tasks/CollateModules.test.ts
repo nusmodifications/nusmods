@@ -78,27 +78,36 @@ describe(combineModules, () => {
     expect(
       combineModules(
         [
-          [
-            {
-              module,
-              moduleCode,
-              semesterData: semesterOneData,
-            },
-          ],
-          [
-            {
-              module,
-              moduleCode,
-              semesterData: semesterTwoData,
-            },
-          ],
-          [
-            {
-              module,
-              moduleCode,
-              // No semesterData - should be ignored
-            },
-          ],
+          {
+            modules: [
+              {
+                module,
+                moduleCode,
+                semesterData: semesterOneData,
+              },
+            ],
+            semester: 1,
+          },
+          {
+            modules: [
+              {
+                module,
+                moduleCode,
+                semesterData: semesterTwoData,
+              },
+            ],
+            semester: 2,
+          },
+          {
+            modules: [
+              {
+                module,
+                moduleCode,
+                // No semesterData - should be ignored
+              },
+            ],
+            semester: 3,
+          },
         ],
         {},
         logger,
@@ -112,13 +121,161 @@ describe(combineModules, () => {
 
     // 2 modules without semesterData - should result in empty semesterData array.
     expect(
-      combineModules([[{ module, moduleCode }], [{ module, moduleCode }]], {}, logger),
+      combineModules(
+        [
+          { modules: [{ module, moduleCode }], semester: 1 },
+          { modules: [{ module, moduleCode }], semester: 2 },
+        ],
+        {},
+        logger,
+      ),
     ).toEqual([
       {
         ...module,
         semesterData: [],
       },
     ]);
+  });
+
+  test('should preserve module info when merging preserved semesters', () => {
+    const currentYearModule = {
+      acadYear: '2025/2026',
+      department: 'Computer Science',
+      description: 'Updated description',
+      faculty: 'Computing',
+      moduleCode: 'CS1010S',
+      moduleCredit: '4',
+      title: 'Programming Methodology',
+      workload: [2, 1, 0, 2, 2],
+    };
+
+    const previousYearModule = {
+      ...currentYearModule,
+      acadYear: '2024/2025',
+      description: 'Old description',
+    };
+
+    const semesterFourData: SemesterData = {
+      covidZones: ['A'],
+      examDate: '2025-07-28T09:00:00.000+08:00',
+      examDuration: 120,
+      semester: 4,
+      timetable: [
+        {
+          classNo: '1',
+          covidZone: 'A',
+          day: 'Monday',
+          endTime: '1200',
+          lessonType: 'Lecture',
+          size: 20,
+          startTime: '1000',
+          venue: 'LT19',
+          weeks: [1, 2, 3, 4, 5, 6],
+        },
+      ],
+    };
+
+    expect(
+      combineModules(
+        [
+          {
+            modules: [
+              { module: currentYearModule, moduleCode: 'CS1010S', semesterData: undefined },
+            ],
+            semester: 1,
+          },
+          {
+            modules: [
+              {
+                module: previousYearModule,
+                moduleCode: 'CS1010S',
+                semesterData: semesterFourData,
+              },
+            ],
+            semester: 4,
+          },
+        ],
+        {},
+        logger,
+        { preserveModuleInfoSemesters: new Set([3, 4]) },
+      ),
+    ).toEqual([
+      {
+        ...currentYearModule,
+        semesterData: [semesterFourData],
+      },
+    ]);
+  });
+
+  test('should keep current-year module info when a preserved batch has no offered modules', () => {
+    // Hardening for the AY-migration bug and its edge case: a preserved
+    // (previous-AY special term) batch in which NO module is offered - every entry
+    // has semesterData: undefined. Because the batch carries its semester
+    // explicitly, its stale module info must still not overwrite the current
+    // year's, even though the semester cannot be inferred from any timetable.
+    const currentYearModule = {
+      acadYear: '2026/2027',
+      department: 'Geography',
+      description: 'New description',
+      faculty: 'Arts and Social Science',
+      moduleCode: 'GE4204',
+      moduleCredit: '4',
+      title: "'Slumdog' Cities: Urban Theory from the Margins",
+      workload: [0, 0, 0, 3, 7],
+    };
+
+    // Same module code, stale info from the previous academic year.
+    const previousYearModule = {
+      ...currentYearModule,
+      acadYear: '2025/2026',
+      description: 'Old description',
+      title: 'New Geographies of Urban Theory',
+    };
+
+    const semesterOneData: SemesterData = {
+      covidZones: ['C'],
+      semester: 1,
+      timetable: [
+        {
+          classNo: '1',
+          covidZone: 'C',
+          day: 'Thursday',
+          endTime: '1500',
+          lessonType: 'Seminar-Style Module Class',
+          size: 40,
+          startTime: '1200',
+          venue: 'AS2-0302',
+          weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        },
+      ],
+    };
+
+    const result = combineModules(
+      [
+        // Semester 1 (current AY): GE4204 offered with the new title.
+        {
+          modules: [
+            { module: currentYearModule, moduleCode: 'GE4204', semesterData: semesterOneData },
+          ],
+          semester: 1,
+        },
+        // Semester 3 (previous-AY special term): GE4204 present but not offered,
+        // and no module in the batch is offered at all (all semesterData undefined).
+        {
+          modules: [{ module: previousYearModule, moduleCode: 'GE4204', semesterData: undefined }],
+          semester: 3,
+        },
+      ],
+      {},
+      logger,
+      { preserveModuleInfoSemesters: new Set([3, 4]) },
+    );
+
+    const ge4204 = result.find((module) => module.moduleCode === 'GE4204');
+    expect(ge4204).toEqual({
+      ...currentYearModule,
+      semesterData: [semesterOneData],
+    });
   });
 });
 

@@ -16,9 +16,11 @@ import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
+import ExternalLink from 'views/components/ExternalLink';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 
+import { CPEX_FAQ_URL } from '../constants';
 import styles from './ModulesSelect.scss';
 
 type Props = {
@@ -205,7 +207,8 @@ export class ModulesSelectComponent extends Component<Props, State> {
               {inputValue}
               &quot;
             </strong>
-            .
+            . Only courses in this CPEx round are listed here. See the{' '}
+            <ExternalLink href={CPEX_FAQ_URL}>NUS CPEx FAQ</ExternalLink>.
           </div>
         )}
       </div>
