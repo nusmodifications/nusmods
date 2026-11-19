@@ -84,3 +84,7 @@ pnpm dev import 2 2025/2026
 Class identity is keyed by course/module code plus class code. Titles and departments from the PDFs are not used as identifiers because they can vary or be repeated.
 
 Slot values in the generated JSON are non-negative integers, `"unlimited"`, or `"notAvailable"`. `0` is preserved as a real slot count; `"unlimited"` represents uncapped vacancies; `"notAvailable"` represents a class or student type that is not listed for that round/report.
+
+## Credits
+
+Thanks to lunaflight for creating CourseRekt, which inspired this scraper. We used its historical PDF archive and published results to validate the generated CourseReg history. [CourseRekt on GitHub](https://github.com/lunaflight/courserekt)
