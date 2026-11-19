@@ -11,6 +11,11 @@ export declare const SPECIAL_TERM_SEMESTERS: readonly [3, 4];
 export declare const academicCalendar: AcademicCalendar;
 export default academicCalendar;
 
+export declare const scraperPeriod: Readonly<{
+  academicYear: string;
+  semester: 1 | 2;
+}>;
+
 export declare function subtractAcadYear(acadYear: string): string;
 
 export declare function getSemesterStart(acadYear: string, semester: number): Date | null;

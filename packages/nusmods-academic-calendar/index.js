@@ -1,4 +1,5 @@
 const academicCalendar = require('./academic-calendar.json');
+const scraperPeriod = require('./scraper-period.json');
 
 const SPECIAL_TERM_SEMESTERS = [3, 4];
 
@@ -75,6 +76,7 @@ function shouldUsePreviousAyForSemester(
 module.exports = {
   SPECIAL_TERM_SEMESTERS,
   academicCalendar,
+  scraperPeriod,
   default: academicCalendar,
   subtractAcadYear,
   getSemesterStart,
