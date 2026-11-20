@@ -86,6 +86,14 @@ export default function planner(
       const { payload } = action;
       const { year, semester } = payload;
 
+      // A course is planned at most once across the whole plan, Plan to Take included
+      if (
+        payload.type === 'module' &&
+        Object.values(state.modules).some((module) => module.moduleCode === payload.moduleCode)
+      ) {
+        return state;
+      }
+
       const id = nextId(state.modules);
       const index = getSemesterIds(state.modules, year, semester).length;
       const props =
@@ -147,6 +155,16 @@ export default function planner(
       });
 
     case SET_PLACEHOLDER_MODULE:
+      // Picking a course for a placeholder plans it too, so the same limit applies
+      if (
+        Object.values(state.modules).some(
+          (module) =>
+            module.id !== action.payload.id && module.moduleCode === action.payload.moduleCode,
+        )
+      ) {
+        return state;
+      }
+
       return produce(state, (draft) => {
         draft.modules[action.payload.id].moduleCode = action.payload.moduleCode;
       });
