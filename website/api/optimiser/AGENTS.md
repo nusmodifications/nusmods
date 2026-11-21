@@ -6,7 +6,7 @@ Go 1.23 timetable optimiser served as a Vercel Go function (`optimise.go` → `H
 
 ```bash
 cp ../../src/data/venues.json _constants/venues.json   # required before build/test
-go test ./_models ./_modules ./_solver                  # unit tests
+go test ./_client ./_models ./_modules ./_solver         # unit tests
 go run ./_test/server/main.go -port 8020                # local server, POST /optimise
 go test ./_test/.                                       # API tests, need the server above running
 golangci-lint run && golangci-lint fmt                  # CI fails on lint or fmt diff
