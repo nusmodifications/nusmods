@@ -357,9 +357,8 @@ const notAvailableRound = (round: CourseRegRound): CourseRegRoundHistory => ({
 export function mergeCourseRegHistories(
   existingHistories: Array<CourseRegModuleSemesterHistory>,
   incomingHistories: Array<CourseRegModuleSemesterHistory>,
-  replaceRounds: Array<CourseRegRound>,
+  replaceRounds: Record<CourseRegStudentType, ReadonlySet<CourseRegRound>>,
 ): Array<CourseRegModuleSemesterHistory> {
-  const replaceRoundSet = new Set<CourseRegRound>(replaceRounds);
   const moduleMap = new Map<ModuleCode, CourseRegModuleSemesterHistory>();
   const incomingClassKeys = new Set<string>();
 
@@ -368,7 +367,9 @@ export function mergeCourseRegHistories(
       ...moduleHistory,
       classes: moduleHistory.classes.map((historyClass) => ({
         ...historyClass,
-        rounds: historyClass.rounds.filter((round) => !replaceRoundSet.has(round.round)),
+        rounds: historyClass.rounds.filter(
+          ({ round }) => !replaceRounds[historyClass.studentType].has(round),
+        ),
       })),
     });
   }
@@ -389,7 +390,9 @@ export function mergeCourseRegHistories(
         ...historyClass,
         rounds: [
           ...(classMap.get(classKey)?.rounds ?? []),
-          ...historyClass.rounds.filter((round) => replaceRoundSet.has(round.round)),
+          ...historyClass.rounds.filter(({ round }) =>
+            replaceRounds[historyClass.studentType].has(round),
+          ),
         ],
       });
     }
@@ -411,7 +414,10 @@ export function mergeCourseRegHistories(
 
       return {
         ...historyClass,
-        rounds: [...historyClass.rounds, ...replaceRounds.map(notAvailableRound)],
+        rounds: [
+          ...historyClass.rounds,
+          ...Array.from(replaceRounds[historyClass.studentType], notAvailableRound),
+        ],
       };
     });
   }
@@ -661,9 +667,10 @@ export class DemandAllocationScraper {
     );
     const existingHistories =
       await readJsonIfExists<Array<CourseRegModuleSemesterHistory>>(outputPath);
-    const updatedRounds = Array.from(
-      new Set(mergedRows.map(({ roundHistory }) => roundHistory.round)),
-    );
+    const updatedRounds = { GD: new Set<CourseRegRound>(), UG: new Set<CourseRegRound>() };
+    for (const { studentType, roundHistory } of mergedRows) {
+      updatedRounds[studentType].add(roundHistory.round);
+    }
     const histories = existingHistories
       ? mergeCourseRegHistories(existingHistories, extractedHistories, updatedRounds)
       : extractedHistories;

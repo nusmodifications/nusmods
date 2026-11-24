@@ -243,7 +243,7 @@ test('replaces one round, preserves other rounds, and marks absent classes', () 
     mergeCourseRegHistories(
       [{ ...module, classes: [{ ...lecture, rounds: [round1, oldRound2] }, tutorial] }],
       [{ ...module, classes: [{ ...lecture, rounds: [round2] }, newLecture] }],
-      [2],
+      { GD: new Set(), UG: new Set([2]) },
     ),
   ).toEqual([
     {
@@ -269,16 +269,21 @@ test('replaces one round, preserves other rounds, and marks absent classes', () 
 });
 
 describe(DemandAllocationScraper, () => {
-  test('writes a Round 0 update into existing semester history', async () => {
+  test('imports UG Round 0 while preserving GD Round 0 and other rounds', async () => {
     const dir = await makeTempDir();
     const historyFile = path.join('semesters', '2', 'courseRegHistory.json');
     const module = { acadYear: '2022/2023', moduleCode: 'CS2030S', semester: 2 };
     const round1 = { allocatedSlots: 31, forecastedSlots: 24, registered: 52, round: 1 };
     const lecture = { classNo: 'L1', studentType: 'UG' };
+    const graduateLecture = {
+      classNo: 'L1',
+      rounds: [{ allocatedSlots: 20, forecastedSlots: 18, registered: 12, round: 0 }],
+      studentType: 'GD',
+    };
     await writeFixture(
       dir,
       historyFile,
-      JSON.stringify([{ ...module, classes: [{ ...lecture, rounds: [round1] }] }]),
+      JSON.stringify([{ ...module, classes: [graduateLecture, { ...lecture, rounds: [round1] }] }]),
     );
     await writeFixture(
       dir,
@@ -297,6 +302,7 @@ describe(DemandAllocationScraper, () => {
       {
         ...module,
         classes: [
+          graduateLecture,
           {
             ...lecture,
             rounds: [
