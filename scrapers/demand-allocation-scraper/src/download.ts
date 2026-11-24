@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import puppeteer, { TimeoutError } from 'puppeteer-core';
@@ -13,6 +13,7 @@ const REPORTS = {
 };
 
 const DOWNLOAD_TIMEOUT = 15_000;
+export const MAX_PDF_BYTES = 16 * 1024 * 1024;
 
 async function downloadPdf(page: Page, url: string, file: string) {
   const deadline = Date.now() + DOWNLOAD_TIMEOUT;
@@ -28,6 +29,10 @@ async function downloadPdf(page: Page, url: string, file: string) {
 
   do {
     try {
+      if ((await stat(file)).size > MAX_PDF_BYTES) {
+        console.warn(JSON.stringify({ url, warning: 'CourseReg PDF exceeds the size limit' }));
+        return undefined;
+      }
       const pdf = await readFile(file);
       return pdf.subarray(0, 5).toString() === '%PDF-' ? pdf : undefined;
     } catch (error) {
@@ -57,13 +62,40 @@ export async function downloadCurrentPdfs(
   const executablePath = process.env.CHROME_EXECUTABLE_PATH;
   const browser = await puppeteer.launch({
     ...(executablePath ? { executablePath } : { channel: 'chrome' }),
-    downloadBehavior: { downloadPath: downloadDir, policy: 'allow' },
     headless: true,
     pipe: true,
     userDataDir: profileDir,
   });
 
   try {
+    const session = await browser.target().createCDPSession();
+    const canceledDownloads = new Set<string>();
+    session.on('Browser.downloadProgress', ({ guid, state, receivedBytes, totalBytes }) => {
+      if (
+        state !== 'inProgress' ||
+        Math.max(receivedBytes, totalBytes) <= MAX_PDF_BYTES ||
+        canceledDownloads.has(guid)
+      ) {
+        return;
+      }
+      canceledDownloads.add(guid);
+      console.warn(
+        JSON.stringify({
+          receivedBytes,
+          totalBytes,
+          warning: 'CourseReg download exceeds the size limit',
+        }),
+      );
+      void session.send('Browser.cancelDownload', { guid }).catch(() => {
+        // The download may have finished before Chrome received the cancellation.
+      });
+    });
+    await session.send('Browser.setDownloadBehavior', {
+      behavior: 'allow',
+      downloadPath: downloadDir,
+      eventsEnabled: true,
+    });
+
     for (const round of rounds) {
       for (const [reportType, report] of Object.entries(REPORTS)) {
         const filename = `${report}_R${round}.pdf`;

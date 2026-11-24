@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-import os
 import re
 import shutil
 import sys
@@ -10,6 +9,10 @@ from pathlib import Path
 import jpype
 from tabula.backend import jar_path
 from tabula.io import convert_into_by_batch
+
+
+JAVA_HEAP_LIMIT = "-Xmx512m"
+REPORT_TYPES = ("vacancy", "ug", "gd")
 
 
 def ensure_pdf(pdf_file: Path) -> None:
@@ -41,28 +44,49 @@ def is_current_report(pdf_file: Path, academic_year: str, semester: int) -> bool
 
 
 def convert_pdf_dir(
-    pdf_dir: Path, csv_dir: Path, academic_year: str | None, semester: int | None
+    pdf_dir: Path,
+    csv_dir: Path,
+    academic_year: str | None,
+    semester: int | None,
+    max_pdf_bytes: int,
 ) -> None:
-    pdf_files = sorted(pdf_dir.rglob("*.pdf"))
+    pdf_dir = pdf_dir.resolve()
+    pdf_files = [
+        pdf_file
+        for report_type in REPORT_TYPES
+        for round_number in range(4)
+        if (pdf_file := pdf_dir / report_type / f"round_{round_number}.pdf").is_file()
+    ]
     if not pdf_files:
         raise ValueError(f"No PDF files found in {pdf_dir}")
 
     csv_dir.mkdir(parents=True, exist_ok=True)
-    if academic_year is not None:
-        jpype.startJVM(classpath=[jar_path()])
+    jpype.startJVM(JAVA_HEAP_LIMIT, classpath=[jar_path()])
 
-    with tempfile.TemporaryDirectory(prefix="nusmods-demand-allocation-pdfs-") as tmp_dir_raw:
-        tmp_dir = Path(tmp_dir_raw)
+    with tempfile.TemporaryDirectory(prefix="tabula-", dir=csv_dir) as staging_dir:
+        tmp_dir = Path(staging_dir)
+        output_paths: dict[str, Path] = {}
 
         for pdf_file in pdf_files:
+            if not pdf_file.resolve().is_relative_to(pdf_dir):
+                raise ValueError(f"{pdf_file} points outside the PDF archive")
+            if pdf_file.stat().st_size > max_pdf_bytes:
+                print(
+                    f"Skipping {pdf_file}: exceeds the {max_pdf_bytes}-byte PDF limit",
+                    file=sys.stderr,
+                )
+                continue
             ensure_pdf(pdf_file)
             if academic_year is not None and not is_current_report(pdf_file, academic_year, semester):
                 continue
-            relative_path = pdf_file.relative_to(pdf_dir)
-            encoded_name = str(relative_path).replace(os.sep, "||")
-            shutil.copy2(pdf_file, tmp_dir / encoded_name)
+            report_type = pdf_file.parent.name
+            staged_file = tmp_dir / f"{report_type}-{pdf_file.name}"
+            shutil.copy2(pdf_file, staged_file)
+            output_paths[staged_file.with_suffix(".csv").name] = (
+                csv_dir / report_type / pdf_file.with_suffix(".csv").name
+            )
 
-        if not any(tmp_dir.iterdir()):
+        if not output_paths:
             return
 
         convert_into_by_batch(
@@ -74,8 +98,7 @@ def convert_pdf_dir(
         )
 
         for csv_file in sorted(tmp_dir.glob("*.csv")):
-            relative_csv = Path(*csv_file.name.split("||")).with_suffix(".csv")
-            output_file = csv_dir / relative_csv
+            output_file = output_paths[csv_file.name]
             output_file.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(csv_file, output_file)
 
@@ -84,6 +107,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Convert CourseReg PDFs to CSVs")
     parser.add_argument("--pdf-dir", required=True, type=Path)
     parser.add_argument("--csv-dir", required=True, type=Path)
+    parser.add_argument("--max-pdf-bytes", required=True, type=int)
     parser.add_argument("--academic-year")
     parser.add_argument("--semester", type=int, choices=(1, 2))
     args = parser.parse_args()
@@ -91,7 +115,7 @@ def main() -> None:
     if (args.academic_year is None) != (args.semester is None):
         parser.error("--academic-year and --semester must be provided together")
 
-    convert_pdf_dir(args.pdf_dir, args.csv_dir, args.academic_year, args.semester)
+    convert_pdf_dir(args.pdf_dir, args.csv_dir, args.academic_year, args.semester, args.max_pdf_bytes)
 
 
 if __name__ == "__main__":

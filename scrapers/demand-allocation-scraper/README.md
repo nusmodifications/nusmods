@@ -71,9 +71,11 @@ Headless Chrome opens the public report URLs directly. The scraper checks the pe
 
 Either command accepts `--output-dir /tmp/course-reg-api` to write the academic-year output to a separate directory while testing.
 
+Reports are limited to 16 MiB each. PDF conversion has a two-minute deadline per run and a 512 MiB Java heap limit.
+
 ## Run from staged PDFs
 
-Stage PDFs in the archive layout above, then import the available rounds for that semester. Existing history is preserved for rounds absent from the input.
+An archive import rebuilds history from PDFs already saved on disk, such as reports from an earlier refresh or the CourseRekt archive. Stage the PDFs in the layout above, then import the available rounds for that semester. Existing history is preserved for rounds absent from the input.
 
 ```sh
 pnpm dev import 2 2025/2026

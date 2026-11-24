@@ -5,7 +5,7 @@ import { mkdir, mkdtemp, readFile, rename, rm, stat, writeFile } from 'node:fs/p
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { downloadCurrentPdfs } from './download';
+import { downloadCurrentPdfs, MAX_PDF_BYTES } from './download';
 import type {
   CourseRegClassHistory,
   CourseRegModuleSemesterHistory,
@@ -496,6 +496,8 @@ const pathExists = async (file: string) => {
 const getPdfToCsvScriptPath = () =>
   path.resolve(process.cwd(), 'scripts', 'coursereg_pdf_to_csv.py');
 
+const CONVERSION_TIMEOUT_MS = 120_000;
+
 const convertPdfsToCsvs = (
   pdfDir: string,
   csvDir: string,
@@ -511,21 +513,29 @@ const convertPdfsToCsvs = (
         pdfDir,
         '--csv-dir',
         csvDir,
+        '--max-pdf-bytes',
+        String(MAX_PDF_BYTES),
         ...(period
           ? ['--academic-year', period.academicYear, '--semester', String(period.semester)]
           : []),
       ],
       {
+        killSignal: 'SIGKILL',
         stdio: 'inherit',
+        timeout: CONVERSION_TIMEOUT_MS,
       },
     );
 
     child.on('error', reject);
-    child.on('exit', (code) => {
+    child.on('exit', (code, signal) => {
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`CourseReg PDF conversion failed with exit code ${code}`));
+        reject(
+          new Error(
+            `CourseReg PDF conversion failed (${signal ?? `exit code ${code}`}, timeout ${CONVERSION_TIMEOUT_MS / 1000}s)`,
+          ),
+        );
       }
     });
   });
