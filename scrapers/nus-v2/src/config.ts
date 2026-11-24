@@ -1,6 +1,7 @@
 import path from 'node:path';
 import * as fs from 'fs-extra';
 import { ClientOptions } from '@elastic/elasticsearch';
+import { scraperPeriod } from 'nusmods-academic-calendar';
 
 export type Config = Readonly<{
   acadApiKey: string;
@@ -56,7 +57,7 @@ const config: Config = {
   ttApiKey: env.ttApiKey,
 
   // Other config
-  academicYear: '2026/2027',
+  academicYear: scraperPeriod.academicYear,
   dataPath: path.resolve(__dirname, '../../data'),
   specialTermAcademicYear: env.specialTermAcademicYear ?? null,
 };
